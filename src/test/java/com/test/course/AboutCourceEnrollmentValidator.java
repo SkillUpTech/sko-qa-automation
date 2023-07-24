@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.seo.pompages.AboutCourseEnrollmentLocators;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class AboutCourceEnrollmentValidator
 {

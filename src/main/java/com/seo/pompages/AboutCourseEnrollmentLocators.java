@@ -16,8 +16,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
-import com.seo.utility.TestUtil;
 
 public class AboutCourseEnrollmentLocators
 {

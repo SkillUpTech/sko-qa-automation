@@ -22,10 +22,10 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.regression.utility.TestUtil;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.regression.testing.OpenWebsite;
 import com.seo.regression.testing.RegressionTesting;
-import com.seo.utility.TestUtil;
 
 public class StagecategoryLocator
 {

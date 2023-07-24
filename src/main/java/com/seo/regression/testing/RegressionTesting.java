@@ -10,15 +10,12 @@ import java.util.Map.Entry;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.seo.dataProvider.ConfigFileReader;
-import com.seo.utility.ProcessExcel;
-import com.seo.utility.Utils;
+import com.regression.utility.ProcessExcel;
+import com.regression.utility.Utils;
 
 public class RegressionTesting 
 {
@@ -59,9 +56,9 @@ public class RegressionTesting
 	public void startTest()
 	{
 		System.out.println(driver);
-		//new RegressionTesting().startTesting();
+//		new RegressionTesting().startTesting();
 		this.startTesting();
-		//driver.quit();
+		driver.quit();
 	}
 	
 	public void startTesting()
@@ -107,7 +104,10 @@ public class RegressionTesting
 								sheetStatus = regressionGenericValidator.processSheetData();
 							}
 							break;
-							case "urlValidation":
+							case "checkURL":
+								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
+								break;
+							case "verifyURL":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
 								break;
 							case"SignUp":

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.seo.pompages.AboutCourseLocators;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class AboutCourseValidator 
 {

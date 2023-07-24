@@ -22,7 +22,7 @@ public class EditProfileValidation
 		System.out.println("Edit profile Process started");
 	}
 	
-	public String start()
+	public String start() throws InterruptedException
 	{
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -36,120 +36,61 @@ public class EditProfileValidation
 				case "ProfileIcon":
 					verifyProfileIcon();
 					break;
-				case "contacts_updateIcon":
-					//verifyUpdateIcon();
-					break;
-				case "contacts_submitWithoutData":
-					//verifySubmitWithoutDataForMobile();
-					break;
-				case "contacts_submitInvalidData_mobile":
-					//verifySubmitInvalidDataForMobile(row.get(1));
-					break;
-				case "contacts_cancelIcon":
-					//verifyCancelIcon();
-					break;
-				case "contacts_Alert_close":
-					//verifyContactsAlertClose();
-					break;
-				case "contacts_submitValidData_mobile":
-					//verifySubmitValidDataForMobile(row.get(1));
-					break;
-				case "contacts_Alert_yesButton":
-				//	verifyAlertYesButton();
-					break;
-				case "contacts_Alert_goBackButton":
-					//verifyAlertGoBackButton();
-					break;
-				case "AreasOfInterest_updateIcon":
-					//verifyAreasOfInterestUpdateIcon();
-					break;
-				case "AreasOfInterest_cancelIcon":
-					//verifyAreasOfInterestCancelIcon();
-					break;
-				case "AreasOfInterest_Alert_close":
-					//verifyAreasOfInterestAlertClose();
-					break;
-				case "AreasOfInterest_submitValidData":
-					// verifyAreasOfInterestSubmitValidData(row);
-					  break;
-				case "AreasOfInterest_Alert_yesButton":
-					//verifyAreasOfInterestAlertyesButton();
-					break;
-				case "AreasOfInterest_Alert_goBackButton":
-				//	verifyAreasOfInterestAlertGoBackButton();
-					break;
-				case "CurrentWorkStatus_updateIcon":
-					CurrentWorkStatus_updateIcon();
-					break;
-				case "CurrentWorkStatus_cancelIcon":
-					CurrentWorkStatus_cancelIcon();
-					break;
-				case "CurrentWorkStatus_Alert_close":
-					CurrentWorkStatus_Alert_close();
-					break;	
-				case "CurrentWorkStatus_submitValidData":
-					CurrentWorkStatus_submitValidData(row);
-					break;
-				case "CurrentWorkStatus_Alert_yesButton":
-					CurrentWorkStatus_Alert_yesButton();
-					break;
-				case "CurrentWorkStatus_Alert_goBackButton":
+				/*
+				 * case "contacts_updateIcon": verifyUpdateIcon(); break; case
+				 * "contacts_submitWithoutData": verifySubmitWithoutDataForMobile(); break; case
+				 * "contacts_submitInvalidData_mobile":
+				 * verifySubmitInvalidDataForMobile(row.get(1)); break; case
+				 * "contacts_cancelIcon": verifyCancelIcon(); break; case
+				 * "contacts_Alert_close": verifyContactsAlertClose(); break; case
+				 * "contacts_submitValidData_mobile":
+				 * verifySubmitValidDataForMobile(row.get(1)); break; case
+				 * "contacts_Alert_yesButton": verifyAlertYesButton(); break; case
+				 * "contacts_Alert_goBackButton": verifyAlertGoBackButton(); break;
+				 */
+				/*
+				 * case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
+				 * case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
+				 * case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
+				 * case "AreasOfInterest_submitValidData":
+				 * verifyAreasOfInterestSubmitValidData(row); break; case
+				 * "AreasOfInterest_Alert_yesButton": verifyAreasOfInterestAlertyesButton();
+				 * break; case "AreasOfInterest_Alert_goBackButton":
+				 * verifyAreasOfInterestAlertGoBackButton(); break;
+				 */
+				
+				  case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
+				  case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
+				  case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
+				  case "CurrentWorkStatus_submitValidData":
+				  CurrentWorkStatus_submitValidData(row); break; case
+				  "CurrentWorkStatus_Alert_yesButton": CurrentWorkStatus_Alert_yesButton();
+				  break; case "CurrentWorkStatus_Alert_goBackButton":
 					CurrentWorkStatus_Alert_goBackButton();
 					break;
-				case "WorkExperience_updateIcon":
-					WorkExperience_updateIcon();
-					break;
-				case "WorkExperience_cancelIcon":
-					WorkExperience_cancelIcon();
-					break;
-				case "WorkExperience_Alert_close":
-					WorkExperience_Alert_close();
-					break;	
-				case "WorkExperience_submitValidData":
-					WorkExperience_submitValidData(row);
-					break;
-				case "WorkExperience_Alert_yesButton":
-					WorkExperience_Alert_yesButton();
-					break;
-				case "WorkExperience_Alert_goBackButton":
-					WorkExperience_Alert_goBackButton();
-					break;
-				case "PersonalDetails_updateIcon":
-					verifyAlertGoBackButton();
-					break;
-				case "PersonalDetails_cancelIcon":
-					verifyAlertGoBackButton();
-					break;
-				case "PersonalDetails_Alert_close":
-					verifyAlertGoBackButton();
-					break;	
-				case "PersonalDetails_submitValidData":
-					verifyAlertGoBackButton();
-					break;
-				case "PersonalDetails_Alert_yesButton":
-					verifyAlertGoBackButton();
-					break;
-				case "PersonalDetails_Alert_goBackButton":
-					verifyAlertGoBackButton();
-					break;
-				case "Education_updateIcon":
-					//verifyAlertGoBackButton();
-					break;
-				case "Education_cancelIcon":
-				//	verifyAlertGoBackButton();
-					break;
-				case "Education_Alert_close":
-					//verifyAlertGoBackButton();
-					break;	
-				case "Education_submitValidData":
-					//verifyAlertGoBackButton();
-					break;
-				case "Education_Alert_yesButton":
-					//verifyAlertGoBackButton();
-					break;
-				case "Education_Alert_goBackButton":
-					//verifyAlertGoBackButton();
-					break;
+					/*
+							 * case "WorkExperience_updateIcon": WorkExperience_updateIcon(); break; case
+							 * "WorkExperience_cancelIcon": WorkExperience_cancelIcon(); break; case
+							 * "WorkExperience_Alert_close": WorkExperience_Alert_close(); break; case
+							 * "WorkExperience_submitValidData": WorkExperience_submitValidData(row); break;
+							 * case "WorkExperience_Alert_yesButton": WorkExperience_Alert_yesButton();
+							 * break; case "WorkExperience_Alert_goBackButton":
+							 * WorkExperience_Alert_goBackButton(); break; case
+							 * "PersonalDetails_updateIcon": PersonalDetails_updateIcon(); break; case
+							 * "PersonalDetails_cancelIcon": PersonalDetails_cancelIcon(); break; case
+							 * "PersonalDetails_Alert_close": PersonalDetails_Alert_close(); break; case
+							 * "PersonalDetails_submitValidData": PersonalDetails_submitValidData(row);
+							 * break; case "PersonalDetails_Alert_yesButton":
+							 * PersonalDetails_Alert_yesButton(); break; case
+							 * "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
+							 * break; case "Education_updateIcon": Education_updateIcon(); break; case
+							 * "Education_cancelIcon": Education_cancelIcon(); break; case
+							 * "Education_Alert_close": Education_Alert_close(); break; case
+							 * "Education_submitValidData": Education_submitValidData(row); break; case
+							 * "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
+							 * "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
+							 */
+				 
 			}
 		}
 		return sheetStatus;
@@ -485,5 +426,64 @@ public class EditProfileValidation
 		}
 	}
 
+	public void Education_updateIcon()
+	{
+		String getStatus = editProfileLocator.checkEducation_updateIcon();
+		if(!getStatus.equalsIgnoreCase("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(34).set(0, "Education_updateIcon - failed");
+		}
+	}
+	public void Education_cancelIcon()
+	{
+		String getStatus = editProfileLocator.checkEducation_cancelIcon();
+		if(!getStatus.equalsIgnoreCase("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(35).set(0, "Education_cancelIcon - failed");
+		}
+	}
+	public void Education_Alert_close()
+	{
+		String getStatus = editProfileLocator.checkEducation_Alert_close();
+		if(!getStatus.equalsIgnoreCase("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(36).set(0, "Education_Alert_close - failed");
+		}
+	}
+	public void Education_submitValidData(ArrayList<String> data)
+	{
+		ArrayList<String> getStatus = editProfileLocator.checkEducation_submitValidData(data);
+		for(int i = 0; i < getStatus.size(); i++)
+		{
+			if(!data.contains(getStatus.get(i)))
+			{
+				int position = data.indexOf(getStatus.get(i));
+				sheetStatus = "Fail";
+				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(37).get(position);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(37).set(position, (cellValue + " - failed"));
+			}
+		}
+	}
+	public void Education_Alert_yesButton()
+	{
+		String getStatus = editProfileLocator.checkEducation_Alert_yesButton();
+		if(!getStatus.equalsIgnoreCase("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(38).set(0, "Education_Alert_yesButton - failed");
+		}
+	}
+	public void Education_Alert_goBackButton()
+	{
+		String getStatus = editProfileLocator.checkEducation_Alert_goBackButton();
+		if(!getStatus.equalsIgnoreCase("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(39).set(0, "Education_Alert_goBackButton - failed");
+		}
+	}
 
 }
