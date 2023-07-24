@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.seo.pompages.FrontEndAboutPageLocator;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class FrontEndAboutPageValidator
 {

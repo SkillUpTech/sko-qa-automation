@@ -1,4 +1,4 @@
-package com.seo.utility;
+package com.regression.utility;
 
 public class TestUtil 
 {

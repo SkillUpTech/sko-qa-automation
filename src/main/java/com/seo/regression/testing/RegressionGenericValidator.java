@@ -6,7 +6,7 @@ import java.util.Calendar;
 
 import org.openqa.selenium.WebDriver;
 
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class RegressionGenericValidator 
 {

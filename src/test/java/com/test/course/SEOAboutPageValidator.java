@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.SEOAboutPageLocators;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class SEOAboutPageValidator
 {

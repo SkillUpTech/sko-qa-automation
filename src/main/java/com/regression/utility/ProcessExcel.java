@@ -1,4 +1,4 @@
-package com.seo.utility;
+package com.regression.utility;
 
 import java.awt.Color;
 import java.io.File;

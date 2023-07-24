@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import com.seo.pompages.FrontEndAboutCourseLocator;
 import com.seo.pompages.NewAboutCourseLocator;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class FrontEndAboutCourseValidator
 {

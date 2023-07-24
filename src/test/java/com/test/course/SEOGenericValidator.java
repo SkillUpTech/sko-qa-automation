@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import com.seo.pompages.SEOGenericLocator;
-import com.seo.utility.Utils;
+import com.regression.utility.Utils;
 
 public class SEOGenericValidator 
 {
