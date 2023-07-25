@@ -100,7 +100,8 @@ public class SearchPageLocator
 										WebElement getCourse = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_courseHeading__1Ohrn'] p"));
 										if(getCourse.getText().equalsIgnoreCase(dataFromExcel.get(i)))
 										{
-											getCourse.click();
+											//getCourse.click();
+											js.executeScript("arguments[0].click()", getCourse);
 											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 											Thread.sleep(1000);
 											String parent1 = driver.getWindowHandle();
