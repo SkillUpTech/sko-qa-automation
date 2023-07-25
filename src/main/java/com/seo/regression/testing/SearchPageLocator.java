@@ -64,10 +64,11 @@ public class SearchPageLocator
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
 				wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				Thread.sleep(1000);
+				Thread.sleep(2000);
 				searchBox.sendKeys(dataFromExcel.get(i));
 				//searchBox.clear();
-				Thread.sleep(1000);
+				Thread.sleep(2000);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				if(driver.findElements(By.xpath("//ul[contains(@class,'Header_headSearch_')]/descendant::ul/li")).size()>0)
 				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
@@ -135,6 +136,7 @@ public class SearchPageLocator
 							}
 						}
 					}
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				}
 				else
 				{
