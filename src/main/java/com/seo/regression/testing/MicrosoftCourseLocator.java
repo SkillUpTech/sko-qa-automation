@@ -98,43 +98,37 @@ public class MicrosoftCourseLocator
 		}
 		return status;
 	}
-	public ArrayList<String> verifyMicrosoftScourses(ArrayList<String> data)
+	public ArrayList<String> verifyMicrosoftScourses(ArrayList<String> courses)
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
 		try
 		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 1100)", "");
+			Thread.sleep(1000);
 			WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='ManageCardsLimit_showMoreSection'] button"));
 			js.executeScript("arguments[0].click()", clickShowMore);
 			List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_cardRow'] div[class*='LearningCatalog_customCard']"));
 			for(int i = 0; i < listOfCourses.size(); i++)
 			{
 				String courseURL = listOfCourses.get(i).findElement(By.cssSelector(" div a[href]")).getAttribute("href");
-				if(data.get(i+1).equalsIgnoreCase(listOfCourses.get(i).findElement(By.cssSelector(" div[class='RegularCourseCard_courseHeading__1Ohrn'] p")).getText()))
+				String urlLink = this.checkURLStatus(courseURL);
+				if(urlLink.equalsIgnoreCase("fail"))
 				{
-					String urlLink = this.checkURLStatus(courseURL);
-					if(urlLink.equalsIgnoreCase("fail"))
-					{
-						processStatus.add(data.get(i+1));
-					}
-					else
-					{
-						processStatus.add("pass");
-					}
-					JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
-							"window. open('"+urlLink+"');" );
-					String parentWindow = driver.getWindowHandle();
-					Set<String> childWnidow = driver.getWindowHandles();
-					for(String windows : childWnidow)
+					processStatus.add(courseURL);
+				}
+				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
+						"window. open('"+urlLink+"');" );
+				String parentWindow = driver.getWindowHandle();
+				Set<String> childWnidow = driver.getWindowHandles();
+				for(String windows : childWnidow)
+				{
+					driver.switchTo().window(windows);
+					if(!parentWindow.equalsIgnoreCase(windows))
 					{
 						driver.switchTo().window(windows);
-						if(!parentWindow.equalsIgnoreCase(windows))
-						{
-							driver.switchTo().window(windows);
-							driver.close();
-							driver.switchTo().window(parentWindow);
-						}
+						driver.close();
+						driver.switchTo().window(parentWindow);
 					}
 				}
 			}
