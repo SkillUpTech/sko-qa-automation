@@ -39,7 +39,9 @@ public class ProcessLogin
 			{
 				String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 				clickLogin.sendKeys(n);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			String parentWindow = driver.getWindowHandle();
 			Set<String> nextWindow = driver.getWindowHandles();
 			for(String window : nextWindow)

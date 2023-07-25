@@ -46,7 +46,7 @@ public class EditProfileLocator
 					submit.click();
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 					Set<String> allWindows1 = driver.getWindowHandles();
 					for(String window1 : allWindows1)
 					{
@@ -54,8 +54,8 @@ public class EditProfileLocator
 					if(driver.getCurrentUrl().contains("dashboard"))
 					{
 						driver.switchTo().window(window1);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(200));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 						Thread.sleep(1000);
 						System.out.println("dashboard page");//dashboard page (1)
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
@@ -89,7 +89,7 @@ public class EditProfileLocator
 					clickDropDown.click();
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
-					Thread.sleep(1000);
+					Thread.sleep(2000);
 					WebElement clickProfile = driver.findElement(By.cssSelector("ul[class='dropdown-menu Primary02_Blue'] li:nth-child(3)"));
 					clickProfile.click();
 					Thread.sleep(1000);
@@ -955,7 +955,7 @@ public class EditProfileLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					Thread.sleep(1000);
 					status = "pass";
-					System.out.println(driver.getCurrentUrl());
+					System.out.println("Alert close process done");
 				}
 			}
 		}
@@ -981,6 +981,7 @@ public class EditProfileLocator
 					driver.switchTo().window(window);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+					Thread.sleep(1000);
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0, -200)","");
 					Thread.sleep(1000);
@@ -999,7 +1000,7 @@ public class EditProfileLocator
 								Thread.sleep(1000);
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-								System.out.println(selectWorkExperience.get(i)+" is selected");
+								System.out.println(selectWorkExperience.get(i).getText()+" is selected");
 								if(k == data.size()-1)
 								{
 									break;
@@ -1007,6 +1008,7 @@ public class EditProfileLocator
 							}
 						}
 					}
+					Thread.sleep(2000);
 					js.executeScript("window.scrollBy(0, 500)","");
 					Thread.sleep(1000);
 					WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']"));
@@ -1020,7 +1022,7 @@ public class EditProfileLocator
 						driver.switchTo().window(window);
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 						List<WebElement> selectInterestedTopicsFromHome = driver.findElements(By.cssSelector("div[class='profileheadLeft'] div[class='ProfileJourny_main']:nth-child(3) div[class='ProfileUserDetails'] ul>li a"));
 						for(int j = 0; j < selectInterestedTopicsFromHome.size(); j++)
 						{
@@ -1033,7 +1035,14 @@ public class EditProfileLocator
 								}
 							}
 					    }
-				  }
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						Thread.sleep(2000);
+					}
+					System.out.println("submit process done for current work status");
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+					Thread.sleep(2000);
 			}
 		
 		}
@@ -1097,9 +1106,9 @@ public class EditProfileLocator
 					}
 					}
 				}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-			Thread.sleep(1000);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+			Thread.sleep(2000);
 		}
 		catch(Exception e)
 		{
@@ -1121,15 +1130,18 @@ public class EditProfileLocator
 				if(driver.getCurrentUrl().contains("/u/"))
 				{
 					driver.switchTo().window(window);
+					Thread.sleep(2000);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					Thread.sleep(1000);
 					JavascriptExecutor jse1 = (JavascriptExecutor) driver;
+					jse1.executeScript("window.scrollBy(0, 400)","");
+					Thread.sleep(2000);
 					jse1.executeScript("window.scrollBy(0, -100)","");
-					
-					WebElement clickUpdateFromAreaOfInterest = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a"));
+					Thread.sleep(2000);
+					WebElement clickUpdateFromCurrentWork = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a"));
 					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("arguments[0].click()", clickUpdateFromAreaOfInterest);
+					js.executeScript("arguments[0].scrollIntoView();", clickUpdateFromCurrentWork);
+					js.executeScript("arguments[0].click()", clickUpdateFromCurrentWork);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					Thread.sleep(1000);
@@ -1300,6 +1312,10 @@ public class EditProfileLocator
 				}
 			}
 			System.out.println("alert close from work experience");
+			Thread.sleep(1000);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			Thread.sleep(1000);
 		}
 		catch(Exception e)
 		{
@@ -1313,6 +1329,9 @@ public class EditProfileLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			Thread.sleep(1000);
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
 			{
@@ -1320,12 +1339,17 @@ public class EditProfileLocator
 				if(driver.getCurrentUrl().contains("workexperienceUpdate"))
 				{
 					driver.switchTo().window(window);
+					Thread.sleep(1000);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					Thread.sleep(1000);
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0, -200)","");
+					Thread.sleep(1000);
 					List<WebElement> selectWorkExperience = driver.findElements(By.cssSelector("div[class='Workexperience_currentWork__btBja'] ul li input[type='radio']"));
 					for(int i = 0; i < selectWorkExperience.size(); i++)
 					{
-						String getDataFromBrowser = selectWorkExperience.get(i).getAttribute("id");
+						String getDataFromBrowser = selectWorkExperience.get(i).getAttribute("value");
 						for(int k = 0 ; k < data.size(); k++)
 						{
 							String getDataFromExcel = data.get(k);
@@ -1333,8 +1357,10 @@ public class EditProfileLocator
 							{
 								selectWorkExperience.get(i).click();
 								Thread.sleep(1000);
-								System.out.println(selectWorkExperience.get(i)+" is selected");
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 								Thread.sleep(1000);
+								System.out.println(selectWorkExperience.get(i).getText()+" is selected");
 								if(k == data.size()-1)
 								{
 									break;
@@ -1342,18 +1368,23 @@ public class EditProfileLocator
 							}
 						}
 					}
-					js.executeScript("window.scrollBy(0, 400)","");
-					WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']"));
-					clickUpdateFromContacts.click();
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					Thread.sleep(2000);
+					Thread.sleep(3000);
+					js.executeScript("window.scrollBy(0, 400)","");
+					WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class*='Workexperience_buttonBottom__5NssD'] button[type='submit']"));
+					clickUpdateFromContacts.click();
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+					Thread.sleep(1000);
 					driver.switchTo().window(window);
 					if(driver.getCurrentUrl().contains("/u/"))
 					{
 						driver.switchTo().window(window);
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						Thread.sleep(1000);
+						js.executeScript("window.scrollBy(0, 400)","");
 						Thread.sleep(1000);
 						List<WebElement> selectInterestedTopicsFromHome = driver.findElements(By.cssSelector("div[class='profileheadLeft'] div[class='ProfileJourny_main']:nth-child(4) div[class='ProfileUserDetails'] ul>li a"));
 						for(int j = 0; j < selectInterestedTopicsFromHome.size(); j++)
@@ -1367,10 +1398,17 @@ public class EditProfileLocator
 							}
 					    }
 						System.out.println("work experience SubmitValidData process done");
+						Thread.sleep(1000);
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						Thread.sleep(1000);
 				  }
 			}
 		
 		}
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			Thread.sleep(1000);
 		}
 		catch(Exception e)
 		{
@@ -1383,6 +1421,9 @@ public class EditProfileLocator
 		String status = "";
 		try
 		{
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			Thread.sleep(1000);
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
 			{
@@ -1426,6 +1467,10 @@ public class EditProfileLocator
 							status = "pass";
 							driver.switchTo().window(window);
 							System.out.println("WorkExperience_Alert_goBackButton process done");
+							Thread.sleep(1000);
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							Thread.sleep(1000);
 						}
 					}
 					}
@@ -1445,6 +1490,9 @@ public class EditProfileLocator
 		String status = "";
 		try
 		{
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			Thread.sleep(1000);
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
 			{
@@ -1479,6 +1527,9 @@ public class EditProfileLocator
 								+ ""));
 						JavascriptExecutor js2 = (JavascriptExecutor) driver;
 						js2.executeScript("arguments[0].click()", clickCancel);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+						Thread.sleep(1000);
 						driver.switchTo().window(window1);
 						if(driver.getCurrentUrl().contains("workexperienceUpdate"))
 						{
