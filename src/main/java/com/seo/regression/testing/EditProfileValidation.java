@@ -31,39 +31,40 @@ public class EditProfileValidation {
 			case "ProfileIcon":
 				verifyProfileIcon();
 				break;
-			/*
-			 * case "contacts_updateIcon": verifyUpdateIcon(); break; case
-			 * "contacts_submitWithoutData": verifySubmitWithoutDataForMobile(); break; case
-			 * "contacts_submitInvalidData_mobile":
-			 * verifySubmitInvalidDataForMobile(row.get(1)); break; case
-			 * "contacts_cancelIcon": verifyCancelIcon(); break; case
-			 * "contacts_Alert_close": verifyContactsAlertClose(); break; case
-			 * "contacts_submitValidData_mobile":
-			 * verifySubmitValidDataForMobile(row.get(1)); break; case
-			 * "contacts_Alert_yesButton": verifyAlertYesButton(); break; case
-			 * "contacts_Alert_goBackButton": verifyAlertGoBackButton(); break;
-			 */
-			/*
-			 * case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
-			 * case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
-			 * case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
-			 * case "AreasOfInterest_submitValidData":
-			 * verifyAreasOfInterestSubmitValidData(row); break; case
-			 * "AreasOfInterest_Alert_yesButton": verifyAreasOfInterestAlertyesButton();
-			 * break; case "AreasOfInterest_Alert_goBackButton":
-			 * verifyAreasOfInterestAlertGoBackButton(); break;
-			 */
+			
+			  case "contacts_updateIcon": verifyUpdateIcon(); break; case
+			  "contacts_submitWithoutData": verifySubmitWithoutDataForMobile(); break; case
+			  "contacts_submitInvalidData_mobile":
+			  verifySubmitInvalidDataForMobile(row.get(1)); break; case
+			  "contacts_cancelIcon": verifyCancelIcon(); break; case
+			  "contacts_Alert_close": verifyContactsAlertClose(); break; case
+			  "contacts_submitValidData_mobile":
+			  verifySubmitValidDataForMobile(row.get(1)); break; case
+			  "contacts_Alert_yesButton": verifyAlertYesButton(); break; case
+			  "contacts_Alert_goBackButton": verifyAlertGoBackButton(); break;
+			 
+			
+			  case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
+			  case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
+			  case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
+			  case "AreasOfInterest_submitValidData":
+			  verifyAreasOfInterestSubmitValidData(row); break; case
+			  "AreasOfInterest_Alert_yesButton": verifyAreasOfInterestAlertyesButton();
+			  break; case "AreasOfInterest_Alert_goBackButton":
+			  verifyAreasOfInterestAlertGoBackButton(); break;
+			 
 
-			/*
-			 * case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
-			 * case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
-			 * case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
-			 * case "CurrentWorkStatus_submitValidData":
-			 * CurrentWorkStatus_submitValidData(row); break; case
-			 * "CurrentWorkStatus_Alert_yesButton": CurrentWorkStatus_Alert_yesButton();
-			 * break; case "CurrentWorkStatus_Alert_goBackButton":
-			 * CurrentWorkStatus_Alert_goBackButton(); break;
-			 */
+			
+			  case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
+			  case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
+			  case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
+			  case "CurrentWorkStatus_submitValidData":
+			  CurrentWorkStatus_submitValidData(row); break; case
+			  "CurrentWorkStatus_Alert_yesButton": CurrentWorkStatus_Alert_yesButton();
+			  break; case "CurrentWorkStatus_Alert_goBackButton":
+			  CurrentWorkStatus_Alert_goBackButton(); break;
+			 
+			
 			
 			  case "WorkExperience_updateIcon": WorkExperience_updateIcon(); break; case
 			  "WorkExperience_cancelIcon": WorkExperience_cancelIcon(); break; case
@@ -72,21 +73,25 @@ public class EditProfileValidation {
 			  case "WorkExperience_Alert_yesButton": WorkExperience_Alert_yesButton();
 			  break; case "WorkExperience_Alert_goBackButton":
 			  WorkExperience_Alert_goBackButton(); break;
-			/*
-			 * case "PersonalDetails_updateIcon": PersonalDetails_updateIcon(); break; case
-			 * "PersonalDetails_cancelIcon": PersonalDetails_cancelIcon(); break; case
-			 * "PersonalDetails_Alert_close": PersonalDetails_Alert_close(); break; case
-			 * "PersonalDetails_submitValidData": PersonalDetails_submitValidData(row);
-			 * break; case "PersonalDetails_Alert_yesButton":
-			 * PersonalDetails_Alert_yesButton(); break; case
-			 * "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
-			 * break; case "Education_updateIcon": Education_updateIcon(); break; case
-			 * "Education_cancelIcon": Education_cancelIcon(); break; case
-			 * "Education_Alert_close": Education_Alert_close(); break; case
-			 * "Education_submitValidData": Education_submitValidData(row); break; case
-			 * "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
-			 * "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
-			 */
+			 
+			
+			
+			  case "PersonalDetails_updateIcon": PersonalDetails_updateIcon(); break; case
+			  "PersonalDetails_cancelIcon": PersonalDetails_cancelIcon(); break; case
+			  "PersonalDetails_Alert_close": PersonalDetails_Alert_close(); break; case
+			  "PersonalDetails_submitValidData": PersonalDetails_submitValidData(row);
+			  break; case "PersonalDetails_Alert_yesButton":
+			  PersonalDetails_Alert_yesButton(); break; case
+			  "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
+			  break;
+			 
+							  case "Education_updateIcon": Education_updateIcon(); break; case
+							  "Education_cancelIcon": Education_cancelIcon(); break; case
+							  "Education_Alert_close": Education_Alert_close(); break; case
+							  "Education_submitValidData": Education_submitValidData(row); break; case
+							  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
+							  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
+							 
 			  
 			 
 			}
@@ -388,10 +393,13 @@ public class EditProfileValidation {
 		}
 	}
 
-	public void PersonalDetails_submitValidData(ArrayList<String> data) {
+	public void PersonalDetails_submitValidData(ArrayList<String> data)
+	{
 		ArrayList<String> getStatus = editProfileLocator.checkPersonalDetailsSubmitValidData(data);
-		for (int i = 0; i < getStatus.size(); i++) {
-			if (!data.contains(getStatus.get(i))) {
+		for (int i = 0; i < getStatus.size(); i++)
+		{
+			if (!data.contains(getStatus.get(i))) 
+			{
 				int position = data.indexOf(getStatus.get(i));
 				sheetStatus = "Fail";
 				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(31)

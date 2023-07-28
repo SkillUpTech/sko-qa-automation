@@ -152,6 +152,12 @@ public class RegressionTesting
 							case "EditProfile":
 								sheetStatus = new EditProfileValidation(sheetData, driver).start();
 								break;
+							case "LoginPageLinks":
+								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
+								break;
+							case "BusinessPage":
+								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
+								break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
