@@ -12,10 +12,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -152,6 +155,7 @@ public class ProcessExcel
 	public static boolean writeExcelFileAsRows(LinkedHashMap<String, ArrayList<ArrayList<String>>> data, String filePathToWrite, String fileName)
 	{
 		XSSFWorkbook workbook = new XSSFWorkbook();
+		 XSSFCellStyle cellStyle = workbook.createCellStyle();//new code
 		for(Entry<String, ArrayList<ArrayList<String>>> entry: data.entrySet())
 		{
 			String sheetName = entry.getKey();
@@ -194,14 +198,14 @@ public class ProcessExcel
 		                		}
 		                		if(styleToDo.indexOf("color") >= 0)
 		                		{
-		                			String color = "";
+		            		        XSSFColor color = null;
 		                			if(styleToDo.equalsIgnoreCase("colorGreen"))
 		                			{
-		                				color = Utils.HEXA_GREEN_COLOR;
+		                				color = Constants.GREEN;
 		                			}
 		                			else if(styleToDo.equalsIgnoreCase("colorRed"))
 		                			{
-		                				color = Utils.HEXA_RED_COLOR;
+		                				color = Constants.RED;
 		                			}
 		                			cell = changeCellFontColor(workbook, cell, color);
 		                		}
@@ -256,11 +260,11 @@ public class ProcessExcel
 			}
 			if(sheetTabColor.equalsIgnoreCase("green"))
 			{
-				sheet.setTabColor(3);
+				sheet.setTabColor(Constants.GREEN);
 			}
 			else if(sheetTabColor.equalsIgnoreCase("red") || sheetHasFailedCell)
 			{
-				sheet.setTabColor(2);
+				sheet.setTabColor(Constants.RED);
 			}
 		}
 		try (FileOutputStream outputStream = new FileOutputStream(filePathToWrite + "\\" + fileName)) {
@@ -274,10 +278,10 @@ public class ProcessExcel
 		return true;
 	}
 	
-	public static Cell changeCellFontColor(XSSFWorkbook wb, Cell cell, String color) {
+	public static Cell changeCellFontColor(XSSFWorkbook wb, Cell cell, XSSFColor color) {
 		CellStyle style = cell.getCellStyle();
 		XSSFFont font = wb.createFont();
-		font.setColor(new XSSFColor(Color.decode(color)));
+		font.setColor(color);
 		style.setFont(font);
 		cell.setCellStyle(style);
 		return cell;
@@ -297,7 +301,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(color.getIndex());
 		style.setFillBackgroundColor(color.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
         cell.setCellStyle(style);
         return cell;
 	}
@@ -305,10 +309,10 @@ public class ProcessExcel
 	public static Cell setCellBorder(Cell cell)
 	{
 		CellStyle style = cell.getCellStyle();
-		style.setBorderBottom(CellStyle.BORDER_THIN);
-		style.setBorderTop(CellStyle.BORDER_THIN);
-		style.setBorderLeft(CellStyle.BORDER_THIN);
-		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setBorderBottom(BorderStyle.THIN);
+		style.setBorderTop(BorderStyle.THIN);
+		style.setBorderLeft(BorderStyle.THIN);
+		style.setBorderRight(BorderStyle.THIN);
 		cell.setCellStyle(style);
 		return cell;
 	}
@@ -317,7 +321,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.RED.getIndex());
 		style.setFillBackgroundColor(IndexedColors.RED.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
         cell.setCellStyle(style);
 	}
 	
@@ -326,14 +330,14 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.ORCHID.getIndex());
 		style.setFillBackgroundColor(IndexedColors.ORCHID.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
         cell.setCellStyle(style);
 	}
 	public static void ignoreCell(XSSFWorkbook wb, Cell cell) {
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.GOLD.getIndex());
 		style.setFillBackgroundColor(IndexedColors.GOLD.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
         cell.setCellStyle(style);
 	}
 	
@@ -341,7 +345,7 @@ public class ProcessExcel
 		CellStyle style = cell.getCellStyle();
 		style.setFillForegroundColor(IndexedColors.PALE_BLUE.getIndex());
 		style.setFillBackgroundColor(IndexedColors.PALE_BLUE.getIndex());  
-        style.setFillPattern(CellStyle.BIG_SPOTS);
+        style.setFillPattern(FillPatternType.BIG_SPOTS);
         cell.setCellStyle(style);
 	}
 }
