@@ -155,9 +155,14 @@ public class RegressionTesting
 							case "LoginPageLinks":
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
-							case "BusinessPage":
-								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
-								break;
+							/*
+							 * case "BusinessPage": sheetStatus = new LoginPageLinksValidation(sheetData,
+							 * driver).start(); break;
+							 */
+							/*
+							 * case "verifyInvalidURL": sheetStatus = new InvalidURL(sheetData,
+							 * driver).start(); break;
+							 */
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
