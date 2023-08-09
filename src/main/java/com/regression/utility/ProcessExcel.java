@@ -261,6 +261,7 @@ public class ProcessExcel
 			if(sheetTabColor.equalsIgnoreCase("green"))
 			{
 				sheet.setTabColor(Constants.GREEN);
+				sheet.setTabColor(Constants.GREEN);
 			}
 			else if(sheetTabColor.equalsIgnoreCase("red") || sheetHasFailedCell)
 			{

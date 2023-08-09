@@ -14,8 +14,9 @@ public class RegressionGenericValidator
 	private String SHEET_NAME;
 	private ArrayList<ArrayList<String>> ROWS;
 	private int CURRENT_ROW = 0;
+	
 	private RegressionGenericLocator regressionGenericLocator;
-	private String sheetStatus = "Pass";
+	String sheetStatus = "Pass";
 	private String startTime = "";
 	private String endTime = "";
 	private String duration = "";
@@ -102,6 +103,7 @@ public class RegressionGenericValidator
 			String checkCourseCode = regressionGenericLocator.getCourseCodeText(courseCodeFromExcel);
 			if(!(courseCodestatus).equals(checkCourseCode))
 			{
+				sheetStatus = "Fail";
 				markProcessFailed();
 			}
 		}
@@ -207,7 +209,7 @@ public class RegressionGenericValidator
 				}
 			}
 			else
-			{sheetStatus = "Fail";
+			{
 				markProcessIgnored();
 			}
 				
@@ -233,7 +235,6 @@ public class RegressionGenericValidator
 			}
 			else
 			{
-				sheetStatus = "Fail";
 				markProcessIgnored();
 			}
 		}
@@ -294,7 +295,6 @@ public class RegressionGenericValidator
 			}
 			else
 			{
-				sheetStatus = "Fail";
 				markProcessIgnored();
 			}
 		}
