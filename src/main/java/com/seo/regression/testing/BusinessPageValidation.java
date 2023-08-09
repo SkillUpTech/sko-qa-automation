@@ -141,7 +141,7 @@ public class BusinessPageValidation implements Runnable
 					checkEcommerceBigDataValidData();
 					break;
 				case "verifyE-commerce_Artificial Intelligence_Empty":
-					checkEcommerceBigDataValidData();
+					checkE-commerceArtificialIntelligenceEmpty();
 					break;
 				case "verifyE-commerce_Artificial Intelligence_InvalidData":
 					checkEcommerceBigDataValidData();

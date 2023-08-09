@@ -1,7 +1,5 @@
 package com.seo.regression.testing;
 
-import static org.testng.Assert.ARRAY_MISMATCH_TEMPLATE;
-
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
@@ -148,22 +146,34 @@ public class RegressionGenericLocator {
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
 					By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button")));
-			for (int i = 0; i < navigateFunctions.size(); i++) {
-				if (i == 0) {
+			for (int i = 0; i < navigateFunctions.size(); i++) 
+			{
+				if (i == 0) 
+				{
 					WebElement overview = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"));
 					wait.until(ExpectedConditions.elementToBeClickable(overview));
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", overview);
+					Thread.sleep(1000);
 					System.out.println("Overview is displayed");
 					navigationStatus = "pass";
 				}
 				driver.navigate().refresh();
 				Thread.sleep(1000);
-				if (i == 1) {
+				if (i == 1)
+				{
 					WebElement whySkillupNavigation = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"));
-					wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
+					
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+					 if(whySkillupNavigation.isDisplayed())
+					 {
+						 wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
+						 driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+						 Thread.sleep(1000);
+					 }
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", whySkillupNavigation);
+					Thread.sleep(1000);
 					System.out.println("WhySkillUpOnline? content is displayed");
 					navigationStatus = "pass";
 				}
@@ -172,6 +182,7 @@ public class RegressionGenericLocator {
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"));
 					wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation));
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", FAQNavigation);
+					Thread.sleep(1000);
 					System.out.println("FAQ is displayed");
 					navigationStatus = "pass";
 				}
@@ -204,57 +215,80 @@ public class RegressionGenericLocator {
 			}
 			System.out.println(kv);
 			System.out.println(kv.get("name"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript("window.scrollBy(0,400)");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement clickbutton = driver.findElement(By.cssSelector(
 					"div[class='CourseDescription_buttonsContent__qPhJg '] button[class='CourseDescription_getFreeConsultationBtn__KkZ46']"));
-			if (clickbutton.isDisplayed()) {
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+			if(clickbutton.isDisplayed()) 
+			{
+				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 				wait.until(ExpectedConditions.elementToBeClickable(clickbutton));
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickbutton);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement fullName = driver.findElement(By.cssSelector("input[name='fullname']"));
 				fullName.clear();
 				fullName.sendKeys(kv.get("name"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement email = driver.findElement(
 						By.cssSelector("div[class='GetConsultationForm_formContent__Q7Cwa'] input[name='email']"));
 				email.clear();
 				email.sendKeys(kv.get("mail"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				Select select = new Select(driver.findElement(By.cssSelector("select[name='country']")));
 				select.selectByVisibleText(kv.get("country"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement mbl = driver.findElement(By.cssSelector(
 						"div[class='GetConsultationForm_formContent__Q7Cwa'] input[name='contactnumber']"));
 				mbl.clear();
 				mbl.sendKeys(kv.get("mbl"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("arguments[0].scrollIntoView(true);", mbl);
 				Select currentStatus = new Select(driver.findElement(By.cssSelector("select[name*='user']")));
 				currentStatus.selectByVisibleText(kv.get("status"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement message = driver.findElement(By.cssSelector("#message"));
 				message.clear();
 				message.sendKeys(kv.get("msg"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+				Thread.sleep(1000);
 				List<WebElement> shareConsultationForm = driver.findElements(By.cssSelector(
 						"div[class='row gy-3'] div[class='col-12 GetConsultationForm_bySharing__ztrLr'] a"));
-				for (int i = 0; i < shareConsultationForm.size(); i++) {
+				
+				for (int i = 0; i < shareConsultationForm.size(); i++) 
+				{
 					WebElement clickConsultation = shareConsultationForm.get(i);
-					Thread.sleep(300);
-					if (clickConsultation.isDisplayed()) {
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+					Thread.sleep(1000);
+					if (clickConsultation.isDisplayed())
+					{
 						clickConsultation.click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						String parentwindow = driver.getWindowHandle();
 						Set<String> allWindows = driver.getWindowHandles();
-						for (String handle : allWindows) {
-							if (!handle.equals(parentwindow)) {
+						for (String handle : allWindows)
+						{
+							if (!handle.equals(parentwindow))
+							{
 								driver.switchTo().window(handle);
 								System.out.println(driver.getCurrentUrl());
-								if (driver.getCurrentUrl().equalsIgnoreCase("" + setHost + "/privacy/")) {
+								if (driver.getCurrentUrl().contains("/privacy/")) 
+								{
 									driver.switchTo().window(handle);
 									System.out.println("privacy policy window");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+									Thread.sleep(1000);
 									driver.close();
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 									driver.switchTo().window(parentwindow);
-								} else if (driver.getCurrentUrl().equals("" + setHost + "/tos/")) {
+								}
+								else if (driver.getCurrentUrl().contains( "/tos/")) 
+								{
 									driver.switchTo().window(handle);
 									System.out.println("terms of service");
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+									Thread.sleep(1000);
 									driver.close();
 									driver.switchTo().window(parentwindow);
 								}
@@ -262,23 +296,38 @@ public class RegressionGenericLocator {
 						}
 					}
 				}
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 				WebElement submit = driver.findElement(
 						By.cssSelector("div[class*='col-12 GetConsultationForm_ButtonSection'] button[type='submit']"));
 				submit.click();
-				try {
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+				try 
+				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 					List<WebElement> checkValidation = driver
 							.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
-					if (checkValidation.size() > 0) {
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+					if(checkValidation.size() > 0) 
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 						freeConsultationStatus.add("Fail");
 						WebElement closePopUp = driver
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
-						if (closePopUp.isDisplayed()) {
+						if (closePopUp.isDisplayed()) 
+						{
 							closePopUp.click();
 						}
-					} else {
+					} 
+					else 
+					{
+						WebElement closePopUp = driver
+								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+						closePopUp.click();
 						freeConsultationStatus.add("pass");
 					}
-				} catch (Exception e) {
+				} 
+				catch(Exception e)
+				{
 					e.printStackTrace();
 				}
 			}
@@ -288,53 +337,63 @@ public class RegressionGenericLocator {
 		return freeConsultationStatus;
 	}
 
-	public String checkOutRazorpay(String amountFromExcel) {
+	public String checkOutRazorpay(String amountFromExcel)
+	{
 		String checkRazorpay = "fail";
 		String amountWithTax[] = amountFromExcel.split("=");
 		String amt = amountWithTax[1].replaceAll("\\s", "");
 		String value = amt.toString();
 		int excelValue = Integer.parseInt(value);
-		try {
+		try 
+		{
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
-			for (String window : allWindows) {
+			for (String window : allWindows)
+			{
 				driver.switchTo().window(window);
-				if (driver.getCurrentUrl().contains("/basket/")) {
+				if(driver.getCurrentUrl().contains("/basket/") && driver.getCurrentUrl().contains("-in."))
+				{
 					driver.switchTo().window(window);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+					
 					WebElement checkoutAmount = driver.findElement(By.cssSelector("div[class='selected-plan'] span"));
 					String getCheckoutAmount = checkoutAmount.getText();
 					System.out.println("checkout Razorpay amount from Browser :" + getCheckoutAmount);
-					// WebElement getAmountWithGST =
-					// driver.findElement(By.cssSelector("div[class='selected-plan']
-					// span[class='h5-regular24 Accent_Red02-text']"));
-					// String amountWithGSTFromBrowser =
-					// getAmountWithGST.getText().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s",
-					// "");
 					String val[] = getCheckoutAmount.split("\\.");
 					String editVal = val[0].replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").toString();
 
 					int browserValue = Integer.parseInt(editVal);
 
 					System.out.println("amountWithGST From Browser in Razorpay : " + browserValue);
-					if (browserValue == excelValue) {
+					if (browserValue == excelValue) 
+					{
 						System.out.println("both Razorpay amount and excel amount are same");
 						checkRazorpay = "pass";
-					} else {
+					} 
+					else 
+					{
 						System.out.println(" amount with GST from Excel : " + amountWithTax[1]);
 						checkRazorpay = "fail";
 					}
+					if(!driver.getCurrentUrl().contains("-in."))
+					{
+						
+						WebElement clickPromoTab = driver.findElement(By.cssSelector("a#ui-collapse-729"));
+						clickPromoTab.click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+						WebElement enterPromo = driver.findElement(By.cssSelector("input#id_code"));
+						enterPromo.sendKeys("");
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+						WebElement clickApply = driver.findElement(By.cssSelector("button#apply-voucher-button"));
+						clickApply.click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					}
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0,200)");
-					/*
-					 * WebElement enterPromo =
-					 * driver.findElement(By.cssSelector("a[id*='ui-collapse']"));
-					 * enterPromo.click();
-					 */
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 					WebElement completePayment = driver
 							.findElement(By.xpath("//button[@id='razorpay' or @id='stripecheckout']"));
@@ -1081,7 +1140,8 @@ public class RegressionGenericLocator {
 			String getLinkText = copyLink.getText();
 			copyLink.click();
 			List<WebElement> share = driver.findElements(By.cssSelector("a[class='ShareCourse_socialIcon__f7x_3']"));
-			for (int i = 0; i < share.size(); i++) {
+			for (int i = 0; i < share.size(); i++)
+			{
 				if (share.get(i).getAttribute("href").contains(shareFromExcel)) {
 					share.get(i).click();
 					String parentWindow = driver.getWindowHandle();
@@ -1131,17 +1191,20 @@ public class RegressionGenericLocator {
 
 	public ArrayList<String> programLocator(ArrayList<String> programFromExcel) {
 		ArrayList<String> checkProgramProcess = new ArrayList<String>();
-		try {
+		try 
+		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			// js.executeScript("window.scrollBy(0,-150)");
 			String programText = driver
 					.findElement(By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a[href]"))
 					.getAttribute("href");
-			if (!programText.isEmpty() || programText.isBlank()) {
+			if (!programText.isEmpty() || programText.isBlank())
+			{
 				WebElement programLocator = driver
 						.findElement(By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a"));
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-				if (programLocator.isDisplayed()) {
+				if (programLocator.isDisplayed())
+				{
 					Thread.sleep(400);
 					JavascriptExecutor jse2 = (JavascriptExecutor) driver;
 					wait.until(ExpectedConditions.elementToBeClickable(
@@ -1150,9 +1213,11 @@ public class RegressionGenericLocator {
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", programLocator);
 					String parentWindow = driver.getWindowHandle();
 					Set<String> nextWindow = driver.getWindowHandles();
-					for (String handle : nextWindow) {
+					for (String handle : nextWindow)
+					{
 						driver.switchTo().window(handle);
-						if (driver.getCurrentUrl().contains(programText)) {
+						if (driver.getCurrentUrl().contains(programText))
+						{
 							driver.switchTo().window(handle);
 							System.out.println("Program window");
 							checkProgramProcess.add("pass");
@@ -1162,11 +1227,15 @@ public class RegressionGenericLocator {
 					driver.close();
 					driver.switchTo().window(parentWindow);
 				}
-			} else {
+			}
+			else 
+			{
 				System.out.println("program is not available");
 				checkProgramProcess.add("fail");
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			e.printStackTrace();
 			checkProgramProcess.add("fail");
 		}
@@ -1174,10 +1243,12 @@ public class RegressionGenericLocator {
 	}
 
 	public void validationProcess() {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 		List<WebElement> errorMsg = driver
 				.findElements(By.cssSelector("p[class='mt-2 NewsAndUpdates_inputMessage___Y1G_ ']"));
-		if (errorMsg.size() > 0) {
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+		if (errorMsg.size() > 0)
+		{
 			System.out.println("validation message shown");
 		} else {
 			System.out.println("no validation message is displayed");
@@ -1193,19 +1264,26 @@ public class RegressionGenericLocator {
 			System.out.println(key);
 			String value = splitDetails[1];
 			System.out.println(value);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,800)");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			WebElement fullName = driver.findElement(By.xpath("(//input[@name='full_name'])[2]"));
 			fullName.clear();
 			fullName.sendKeys(key);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			validationProcess();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			js.executeScript("window.scrollBy(0,-100)");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			WebElement email = driver.findElement(By.xpath("(//input[@name='email'])[3]"));
 			email.clear();
 			email.sendKeys(value);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			validationProcess();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+			js.executeScript("window.scrollBy(0,100)");
 			WebElement clickSubscribe = driver.findElement(By.xpath("(//button[contains(text(),'Subscribe')])[2]"));
 			if (clickSubscribe.isDisplayed()) {
 				try {
