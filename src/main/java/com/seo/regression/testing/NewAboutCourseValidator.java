@@ -25,7 +25,8 @@ public class NewAboutCourseValidator
 	private String duration = "";
 	String getMetaHost;
 	WebDriver driver;
-	public NewAboutCourseValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> rows) {
+	public NewAboutCourseValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> rows)
+	{
 		this.SHEET_NAME = sheetName;
 		this.ROWS = rows;
 		this.driver = driver;
