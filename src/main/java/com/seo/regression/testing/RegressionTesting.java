@@ -104,10 +104,7 @@ public class RegressionTesting
 								sheetStatus = regressionGenericValidator.processSheetData();
 							}
 							break;
-							case "checkURL":
-								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
-								break;
-							case "verifyURL":
+							case "URLValidation":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
 								break;
 							case"SignUp":
