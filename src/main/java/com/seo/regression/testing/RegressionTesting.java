@@ -110,6 +110,9 @@ public class RegressionTesting
 							case"SignUp":
 								sheetStatus = new SignUpValidation(sheetData, driver).start();
 								break;
+							case"Login if mail id not verified":
+								sheetStatus = new CheckLoginValidation(sheetData, driver).start();
+								break;
 							case"ForGotPwd":
 								sheetStatus = new ForgotPasswordValidation(sheetData, driver).start();
 								break;
@@ -153,8 +156,9 @@ public class RegressionTesting
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
 							
-							  case "BusinessPage": sheetStatus = new BusinessPageValidation(sheetData,
-							  driver).start(); break;
+							 case "BusinessPage":
+								 sheetStatus = new BusinessPageValidation(sheetData, driver).start(); 
+								 break;
 							 
 							default:
 								System.out.println("Not class found to work with the sheet");

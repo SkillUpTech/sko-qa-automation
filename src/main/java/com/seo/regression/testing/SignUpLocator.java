@@ -297,6 +297,7 @@ public class SignUpLocator
 							Thread.sleep(1000);
 						}
 					}
+					break;
 				}
 			}
 			System.out.println("signout is done");

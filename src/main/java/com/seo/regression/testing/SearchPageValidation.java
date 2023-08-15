@@ -34,7 +34,7 @@ public class SearchPageValidation
 					invalidDataSearch(row);
 					break;
 				case "emptySeach":
-					emptySeach(row.get(1));
+					emptySeach(row);
 					break;
 			}
 		}
@@ -46,9 +46,18 @@ public class SearchPageValidation
 		if(!dataFromExcel.contains("NA"))
 		{
 			ArrayList<String> getStatus = searchPageLocator.validDataSearchProcess(dataFromExcel);
-			if(getStatus.contains("fail"))
-			{sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(0).set(0, "validDataSearch - failed");
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				if(getStatus.contains("fail"))
+				{
+					sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(0).set(0, "validDataSearch - failed");
+				}
+				else if(getStatus.contains("not"))
+				{
+					sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(0).add(i+2, (getStatus.get(i) + " - failed"));
+				}
 			}
 		}
 	}
@@ -58,21 +67,37 @@ public class SearchPageValidation
 		if(!dataFromExcel.contains("NA"))
 		{
 			ArrayList<String> getStatus = searchPageLocator.invalidDataSearchProcess(dataFromExcel);
-			if(getStatus.contains("fail"))
-			{sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(1).set(0, "invalidDataSearch - failed");
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				if(getStatus.contains("fail"))
+				{sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(1).set(0, "invalidDataSearch - failed");
+				}
+				else if(getStatus.contains("not"))
+				{
+					sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(1).add(i+2, (getStatus.get(i) + " - failed"));
+				}
 			}
 		}
 	}
 	
-	public void emptySeach(String dataFromExcel)
+	public void emptySeach(ArrayList<String> dataFromExcel)
 	{
 		if(!dataFromExcel.contains("NA"))
 		{
 			ArrayList<String> getStatus = searchPageLocator.emptySearchProcess(dataFromExcel);
-			if(getStatus.contains(""))
-			{sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(2).set(0, "emptySeach - failed");
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				if(getStatus.contains(""))
+				{sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(2).set(0, "emptySeach - failed");
+				}
+				else if(getStatus.contains("not"))
+				{
+					sheetStatus="Fail";
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(2).add(i+2, (getStatus.get(i) + " - failed"));
+				}
 			}
 		}
 	}
