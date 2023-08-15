@@ -1,5 +1,6 @@
 package com.seo.regression.testing;
 
+import java.awt.Image;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
@@ -53,18 +54,20 @@ public class SearchPageLocator {
 			System.out.println("valid data search started");
 			for(int i = 1; i < dataFromExcel.size(); i++)
 			{
+				if(i == 1)
+				{
+					
 				WebElement searchBox = driver.findElement(By.cssSelector("ul[class*='Header_headSearch_'] input#contentSearch[value]"));
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", searchBox);
+				
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
-				//wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
+				wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 				//Thread.sleep(2000);
 				searchBox.sendKeys(dataFromExcel.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				//searchBox.clear();
-				//Thread.sleep(2000);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		/*		if(driver.findElements(By.xpath("//ul[contains(@class,'Header_headSearch_')]/descendant::ul/li")).size()>0)
+				if(driver.findElements(By.xpath("//ul[contains(@class,'Header_headSearch_')]/descendant::ul/li")).size()>0)
 				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 					List<WebElement> checkListOfCourse = driver.findElements(By.xpath("//ul[contains(@class,'Header_headSearch_')]/descendant::ul/li"));
@@ -75,11 +78,10 @@ public class SearchPageLocator {
 							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(1)))
 							{
 								System.out.println("Entered course available");
-								//checkListOfCourse.get(j).click();
-								((JavascriptExecutor)driver).executeScript("arguments[0].click();", checkListOfCourse.get(j));
-								WebElement clickSearchIcon = driver.findElement(By.cssSelector("ul[class='nav navbar-nav Header_headSearch___BeK7'] button#btnCheck"));
-								clickSearchIcon.click();
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								checkListOfCourse.get(j).click();
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+								
 								String parent = driver.getWindowHandle();
 								Set<String> windows = driver.getWindowHandles();
 								for(String window : windows)
@@ -87,10 +89,35 @@ public class SearchPageLocator {
 									driver.switchTo().window(window);
 									if(driver.getCurrentUrl().contains("search="))
 									{
+										driver.switchTo().window(window);
 										System.out.println("results found window");
-										this.verifyHeader();
+										ArrayList<Integer> getHeaderStatus = new ArrayList<Integer>();
+										ArrayList<Integer> getFooterStatus = new ArrayList<Integer>();
+										//getProcessStatus.addAll(this.verifyHeader());
+										getHeaderStatus = this.verifyHeader();
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-										this.verifyFooter();
+										
+										//getProcessStatus.addAll(this.verifyFooter());
+										getFooterStatus = this.verifyFooter();
+										for(int k = 0; k < getHeaderStatus.size(); k++)
+										{
+											if(getHeaderStatus.get(0) != getFooterStatus.get(0))
+											{
+												statusOfProcess.add("category not same");	
+											}
+											if(getHeaderStatus.get(2) != getFooterStatus.get(2))
+											{
+												statusOfProcess.add("popular courses not same");
+											}
+											if(getHeaderStatus.get(1) != 5)
+											{
+												statusOfProcess.add("popular learning partner count not correct in header");
+											}
+											if(getFooterStatus.get(1) != 3)
+											{
+												statusOfProcess.add("blog count not correct in footer");
+											}
+										}
 										JavascriptExecutor js = (JavascriptExecutor) driver;
 										js.executeScript("window.scrollBy(0, -700)", "");
 										WebElement getCourse = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_courseHeading__1Ohrn'] p"));
@@ -120,6 +147,7 @@ public class SearchPageLocator {
 													break;
 												}
 											}
+											
 										}
 									}
 								}
@@ -133,69 +161,28 @@ public class SearchPageLocator {
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				}
-				else
-				{
-					
-					 * WebElement clickSearchIcon = driver.findElement(By.
-					 * cssSelector("ul[class='nav navbar-nav Header_headSearch___BeK7'] button#btnCheck"
-					 * )); clickSearchIcon.click();
-					 
-					String getResultText = driver.findElement(By.cssSelector("div[class*='LearningCatalog_titleContent']")).getText();
-					if(getResultText.contains("0"))
-					{
-						System.out.println("course is not available");
-						statusOfProcess.add("fail");
-					}*/
-				//	else
-					{
-						List<WebElement> courseCards = driver.findElements(By.cssSelector("div[class*='RegularCourseCard_RegularcardLinks'] div[class*='RegularCourseCard_courseHeading'] p"));
-						for(int j = 0; j < courseCards.size(); j++)
-						{
-							if(courseCards.get(j).getText().equalsIgnoreCase(dataFromExcel.get(1)))
-							{
-								courseCards.get(j).click();
-								String parent1 = driver.getWindowHandle();
-								Set<String> windows1 = driver.getWindowHandles();
-								for(String window1 : windows1)
-								{
-									driver.switchTo().window(window1);
-									if(driver.getCurrentUrl().contains("/courses/"))
-									{
-										driver.switchTo().window(window1);
-										System.out.println("course is opened");
-										statusOfProcess.add("sucess");
-										Thread.sleep(1000);
-										String courseURL = driver.getCurrentUrl();
-										System.out.println("search course url : "+ courseURL);
-										String result = OpenWebsite.setHost;//courseURL.substring(0, courseURL.indexOf("/Courses"));
-										System.out.println("homepage url : "+result);
-										driver.get(result);
-										Thread.sleep(1000);
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-										statusOfProcess.add("sucess");
-										break;
-									}
-								}
-							}
-						}
-					}
-				/*}*/
-			}
 			System.out.println("valid data search completed");
-		}catch(
-
-	Exception e)
-	{
-		e.printStackTrace();
-		statusOfProcess.add("fail");
-	}return statusOfProcess;
+			break;
+			}
+			}
+		}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				statusOfProcess.add("fail");
+			}
+		return statusOfProcess;
 	}
 
 	public ArrayList<String> invalidDataSearchProcess(ArrayList<String> dataFromExcel) {
 		ArrayList<String> statusOfProcess = new ArrayList<String>();
 		try {
 			System.out.println("In valid data search started");
-			for (int i = 1; i < dataFromExcel.size(); i++) {
+			for (int i = 1; i < dataFromExcel.size(); i++)
+			{
+				if(i == 1)
+				{
+					
 				WebElement searchBox = driver.findElement(By.cssSelector(
 						"ul[class='nav navbar-nav Header_headSearch___BeK7'] form#searchForm input#contentSearch"));
 				WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -226,17 +213,33 @@ public class SearchPageLocator {
 						}
 					}
 				}
-				this.verifyHeader();
-				/*
-				 * List<WebElement> exploreAll = driver.findElements(By.
-				 * cssSelector("div[class='Collaborate_excollaborationInner__m_SiL'] ul li a"));
-				 * for(int j = 0; j < exploreAll.size(); j++) { if(exploreAll.size() == 5) {
-				 * System.out.println("explore All link : "+exploreAll.get(j).getAttribute(
-				 * "href")); } else {
-				 * System.out.println("explore All size is not same : "+exploreAll.get(j).
-				 * getAttribute("href")); } }
-				 */
-				this.verifyFooter();
+				ArrayList<Integer> getHeaderStatus = new ArrayList<Integer>();
+				ArrayList<Integer> getFooterStatus = new ArrayList<Integer>();
+				//getProcessStatus.addAll(this.verifyHeader());
+				getHeaderStatus = this.verifyHeader();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+				
+				//getProcessStatus.addAll(this.verifyFooter());
+				getFooterStatus = this.verifyFooter();
+				for(int k = 0; k < getHeaderStatus.size(); k++)
+				{
+					if(getHeaderStatus.get(0) != getFooterStatus.get(0))
+					{
+						statusOfProcess.add("category not same");	
+					}
+					if(getHeaderStatus.get(2) != getFooterStatus.get(2))
+					{
+						statusOfProcess.add("popular courses not same");
+					}
+					if(getHeaderStatus.get(1) != 5)
+					{
+						statusOfProcess.add("popular learning partner count not correct in header");
+					}
+					if(getFooterStatus.get(1) != 3)
+					{
+						statusOfProcess.add("blog count not correct in footer");
+					}
+				}
 				Thread.sleep(1000);
 				// String courseURL = driver.getCurrentUrl();
 				String result = OpenWebsite.setHost;// courseURL.substring(0, courseURL.indexOf("/Courses"));
@@ -245,159 +248,167 @@ public class SearchPageLocator {
 				Thread.sleep(1000);
 			}
 			System.out.println("Invalid data search completed");
-		} catch (Exception e) {
+			break;
+			}
+		} 
+			catch (Exception e) {
 			e.printStackTrace();
 		}
 		return statusOfProcess;
 	}
 
-	public ArrayList<String> emptySearchProcess(String dataFromExcel) {
+	public ArrayList<String> emptySearchProcess(ArrayList<String> dataFromExcel)
+	{
 		ArrayList<String> statusOfProcess = new ArrayList<String>();
 		try {
 			System.out.println("empty search started");
-			WebElement searchBox = driver.findElement(By.cssSelector(
-					"ul[class='nav navbar-nav Header_headSearch___BeK7'] form#searchForm input#contentSearch"));
-			WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
-			wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
-			Thread.sleep(3000);
-			searchBox.sendKeys(dataFromExcel);
-			String getValue = searchBox.getAttribute("value");
-			System.out.println(getValue);
-			if (dataFromExcel.equalsIgnoreCase("empty")) {
-				searchBox.sendKeys("");
-				WebElement clickSearchIcon = driver.findElement(
-						By.cssSelector("ul[class='nav navbar-nav Header_headSearch___BeK7'] button#btnCheck"));
-				clickSearchIcon.click();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> windows = driver.getWindowHandles();
-				for (String window : windows) {
-					driver.switchTo().window(window);
-					if (driver.getCurrentUrl().contains("?search")) {
-						driver.switchTo().window(window);
-						if (driver.findElements(By.cssSelector("div[class='Course_NotiFicaTIon__Anb5F'] li"))
-								.size() > 0) {
-							WebElement checkListOfCourse = driver
-									.findElement(By.cssSelector("div[class='Course_NotiFicaTIon__Anb5F'] li"));
-							if (checkListOfCourse.isDisplayed()) {
-								System.out.println(checkListOfCourse.getText());
+			for(int i = 0; i < dataFromExcel.size(); i++)
+			{
+				if(i == 1)
+				{
+					WebElement searchBox = driver.findElement(By.cssSelector(
+							"ul[class='nav navbar-nav Header_headSearch___BeK7'] form#searchForm input#contentSearch"));
+					WebDriverWait wb = new WebDriverWait(driver, Duration.ofSeconds(30));
+					wb.until(ExpectedConditions.elementToBeClickable(searchBox)).click();
+					Thread.sleep(3000);
+					searchBox.sendKeys(dataFromExcel.get(i));
+					String getValue = searchBox.getAttribute("value");
+					System.out.println(getValue);
+					if (dataFromExcel.get(i).equalsIgnoreCase("empty")) {
+						searchBox.sendKeys("");
+						WebElement clickSearchIcon = driver.findElement(
+								By.cssSelector("ul[class='nav navbar-nav Header_headSearch___BeK7'] button#btnCheck"));
+						clickSearchIcon.click();
+						String parentWindow = driver.getWindowHandle();
+						Set<String> windows = driver.getWindowHandles();
+						for (String window : windows) {
+							driver.switchTo().window(window);
+							if (driver.getCurrentUrl().contains("?search")) {
+								driver.switchTo().window(window);
+								if (driver.findElements(By.cssSelector("div[class='Course_NotiFicaTIon__Anb5F'] li"))
+										.size() > 0) {
+									WebElement checkListOfCourse = driver
+											.findElement(By.cssSelector("div[class='Course_NotiFicaTIon__Anb5F'] li"));
+									if (checkListOfCourse.isDisplayed()) {
+										System.out.println(checkListOfCourse.getText());
+									}
+								} else {
+									System.out.println("zero result found");
+									break;
+								}
 							}
-						} else {
-							System.out.println("zero result found");
-							break;
 						}
 					}
+					ArrayList<Integer> getHeaderStatus = new ArrayList<Integer>();
+					ArrayList<Integer> getFooterStatus = new ArrayList<Integer>();
+					//getProcessStatus.addAll(this.verifyHeader());
+					getHeaderStatus = this.verifyHeader();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					
+					//getProcessStatus.addAll(this.verifyFooter());
+					getFooterStatus = this.verifyFooter();
+					for(int k = 0; k < getHeaderStatus.size(); k++)
+					{
+						if(getHeaderStatus.get(0) != getFooterStatus.get(0))
+						{
+							statusOfProcess.add("category not same");	
+						}
+						if(getHeaderStatus.get(2) != getFooterStatus.get(2))
+						{
+							statusOfProcess.add("popular courses not same");
+						}
+						if(getHeaderStatus.get(1) != 5)
+						{
+							statusOfProcess.add("popular learning partner count not correct in header");
+						}
+						if(getFooterStatus.get(1) != 3)
+						{
+							statusOfProcess.add("blog count not correct in footer");
+						}
+					}
+					Thread.sleep(1000);
+					// String courseURL = driver.getCurrentUrl();
+					String result = OpenWebsite.setHost;// courseURL.substring(0, courseURL.indexOf("/Courses"));
+					System.out.println("homepage url : " + result);
+					driver.get(result);
+					Thread.sleep(1000);
+					System.out.println("empty data search completed");
 				}
 			}
-			this.verifyHeader();
-			/*
-			 * List<WebElement> exploreAll = driver.findElements(By.
-			 * cssSelector("div[class='Collaborate_excollaborationInner__m_SiL'] ul li a"));
-			 * for(int j = 0; j < exploreAll.size(); j++) { if(exploreAll.size() == 5) {
-			 * System.out.println("explore All link : "+exploreAll.get(j).getAttribute(
-			 * "href")); } else {
-			 * System.out.println("explore All size is not same : "+exploreAll.get(j).
-			 * getAttribute("href")); } }
-			 */
-			this.verifyFooter();
-			Thread.sleep(1000);
-			// String courseURL = driver.getCurrentUrl();
-			String result = OpenWebsite.setHost;// courseURL.substring(0, courseURL.indexOf("/Courses"));
-			System.out.println("homepage url : " + result);
-			driver.get(result);
-			Thread.sleep(1000);
-			System.out.println("empty data search completed");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return statusOfProcess;
 	}
 
-	public void verifyHeader() {
-		WebElement dropDown = driver.findElement(By.cssSelector("a#navbarDropdown img[alt=icon]"));
-		dropDown.click();
-		List<WebElement> categories = driver.findElements(By.cssSelector(
-				"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] ul[class='categorylist dropdown-submenu'] li a"));
-		for (int i = 0; i < categories.size(); i++) {
-			if (categories.size() == 14) {
-				System.out.println(" categories " + categories.get(i).getText());
-			} else {
-				System.out.println("categories size is not 14 : " + categories.get(i).getText());
-			}
-		}
-		List<WebElement> learningPartners = driver.findElements(By.cssSelector(
-				"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn'] ul[class='learning-Partners'] li a"));
-		for (int j = 0; j < learningPartners.size(); j++) {
-			if (learningPartners.size() == 5) {
-				System.out.println(" learningPartners " + learningPartners.get(j).getAttribute("href"));
-			} else {
-				System.out.println("learningPartners size is not 5 : " + learningPartners.get(j).getText());
-			}
-		}
+	public ArrayList<Integer> verifyHeader()
+	{
+		ArrayList<Integer> process = new ArrayList<Integer>();
+		try
+		{
+			WebElement dropDown = driver.findElement(By.cssSelector("a#navbarDropdown img[alt=icon]"));
+			dropDown.click();
+			List<WebElement> categories = driver.findElements(By.cssSelector(
+					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] ul[class='categorylist customscroll dropdown-submenu']>li"));
+			int sizeOfCategories = categories.size();
+			process.add(sizeOfCategories);
+			
+			List<WebElement> learningPartners = driver.findElements(By.cssSelector(
+					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] ul[class='learning-Partners']>li"));
+			int sizeOfLearningPartner = learningPartners.size();
+			process.add(sizeOfLearningPartner);
 
-		List<WebElement> popularCourses = driver.findElements(By.cssSelector(
-				"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn'] ul[class='MegaMenu_PopularCourse'] li a"));
-		for (int k = 0; k < popularCourses.size(); k++) {
-			if (popularCourses.size() == 4) {
-				System.out.println(" popularCourses " + popularCourses.get(k).getText());
-			} else {
-				System.out.println("popularCourses size is not 4 : " + popularCourses.get(k).getText());
-			}
+			List<WebElement> popularCourses = driver.findElements(By.cssSelector(
+					"ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn divbox3'] ul[class='MegaMenu_PopularCourse']>li"));
+			int sizeOfPopularCourse = popularCourses.size();
+			process.add(sizeOfPopularCourse);
+			dropDown.click();
 		}
-		dropDown.click();
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return process;
 	}
 
-	public void verifyFooter() {
-		((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, -200)", "");
-		List<WebElement> shareSocialLink = driver
-				.findElements(By.cssSelector("ul[class=' Footer_socialIconsSection__5DztA d-flex'] li a"));
-		for (int l = 0; l < shareSocialLink.size(); l++) {
-			if (shareSocialLink.size() == 5) {
-				System.out.println("social links : " + shareSocialLink.get(l).getAttribute("href"));
-			} else {
-				System.out.println("social links size not match: " + shareSocialLink.get(l).getText());
-			}
-		}
+	public ArrayList<Integer> verifyFooter() 
+	{
+		ArrayList<Integer> getStatus = new ArrayList<Integer>();
+		try
+		{
+			((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, -200)", "");
+			
+			//List<WebElement> shareSocialLink = driver.findElements(By.cssSelector("ul[class=' Footer_socialIconsSection__5DztA d-flex'] li a"));
 
-		List<WebElement> company = driver.findElements(By.cssSelector("div[class='Footer_FootMenu__4fwEE'] ul li a"));
-		for (int m = 0; m < company.size(); m++) {
-			if (company.size() == 6) {
-				System.out.println("company links : " + company.get(m).getText());
-			} else {
-				System.out.println("company links size not match: " + company.get(m).getText());
-			}
-		}
-		JavascriptExecutor js1 = (JavascriptExecutor) driver;
-		js1.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		List<WebElement> popularCategory = driver
-				.findElements(By.cssSelector("div[class='Footer_PopularCategories__23uL0'] ul li a"));
-		for (int n = 0; n < popularCategory.size(); n++) {
-			if (popularCategory.size() == 14) {
-				System.out.println("popularCategory links : " + popularCategory.get(n).getText());
-			} else {
-				System.out.println("popularCategory links size not match: " + popularCategory.get(n).getText());
-			}
-		}
+		//	List<WebElement> company = driver.findElements(By.cssSelector("div[class='Footer_FootMenu__4fwEE'] ul li a"));
+			
+			JavascriptExecutor js1 = (JavascriptExecutor) driver;
+			js1.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			
+			List<WebElement> popularCategory = driver
+					.findElements(By.cssSelector("div[class='Footer_PopularCategories__23uL0'] ul li a"));
+			getStatus.add(popularCategory.size());
+			
+						List<WebElement> blog = driver.findElements(
+					By.cssSelector("div[class='Footer_LatestBlogs__QZ7i4'] div[class='Footer_LatestBlogsRepT__F2CHs'] a"));
+			getStatus.add(blog.size());
+			
+			List<WebElement> popularCoursesLink = driver
+					.findElements(By.cssSelector("div[class='Footer_PopularCourses__Yc9Ft'] ul li"));
+			
+			getStatus.add(popularCoursesLink.size());
 
-		List<WebElement> popularCoursesLink = driver
-				.findElements(By.cssSelector("div[class='Footer_PopularCourses__Yc9Ft'] ul li"));
-		for (int o = 0; o < popularCoursesLink.size(); o++) {
-			if (popularCoursesLink.size() == 4) {
-				System.out.println("popularCategory links : " + popularCoursesLink.get(o).getText());
-			} else {
-				System.out.println("popularCategory links size not match: " + popularCoursesLink.get(o).getText());
-			}
-		}
 
-		List<WebElement> blog = driver.findElements(
-				By.cssSelector("div[class='Footer_LatestBlogs__QZ7i4'] div[class='Footer_LatestBlogsRepT__F2CHs'] a"));
-		for (int p = 0; p < blog.size(); p++) {
-			if (blog.size() == 3) {
-				System.out.println("blog links : " + blog.get(p).getAttribute("href"));
-			} else {
-				System.out.println("blog links size not match: " + blog.get(p).getText());
-			}
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		return getStatus;
 	}
 }

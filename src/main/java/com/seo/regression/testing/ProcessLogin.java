@@ -104,7 +104,7 @@ public class ProcessLogin
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				if(errorMsg2.size()>0)
 				{
-					if(errorMsg2.get(0).getText().equalsIgnoreCase("Email or password is incorrect."))
+					if(errorMsg2.get(0).getText().equalsIgnoreCase("Email or password is incorrect.") || errorMsg2.get(0).getText().equalsIgnoreCase("In order to sign in, you need to activate your account."))
 					{
 						loginStatus = "Failed";
 					}

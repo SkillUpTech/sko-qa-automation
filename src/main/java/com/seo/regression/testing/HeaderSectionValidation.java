@@ -15,7 +15,7 @@ public class HeaderSectionValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
+		OpenWebsite.openSite(this.driver);
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
 		System.out.println("header process started");
 	}
@@ -58,9 +58,6 @@ public class HeaderSectionValidation
 						break;
 					case "signUP":
 						checkSignUP(row.get(1));
-						break;
-					case "searchCourses":
-						checkSearchCourses(row);
 						break;
 				}
 			}
@@ -171,16 +168,5 @@ public class HeaderSectionValidation
 			}
 		}
 	}
-	public void checkSearchCourses(ArrayList<String> data)
-	{
-		if(!data.contains("NA"))
-		{
-			String searchProcess = headerSectionLocator.checkSearchCourses(data.get(1));
-			if(searchProcess.equalsIgnoreCase("fail"))
-			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(9).set(0, "searchCourses - failed");
-			}
-		}
-	}
+	
 }

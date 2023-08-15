@@ -8,7 +8,6 @@ public class SignUpValidation
 {
 	String result = "failed";
 	ArrayList<ArrayList<String>> sheetData = null;
-	String userName;
 	WebDriver driver;
 	SignUpLocator signUpLocator;
 	String sheetStatus = "Pass";
@@ -20,7 +19,6 @@ public class SignUpValidation
 		this.sheetData = sheetData;
 		this.signUpLocator = new SignUpLocator(this.driver);
 		System.out.println("Sign up validation begins");
-	//	this.start();
 	}
 	
 	public String start() throws InterruptedException
@@ -44,11 +42,11 @@ public class SignUpValidation
 				 * case "invalidMobile": mobileValidation(row); break;
 				 */
 			  case "validData":
-					validData(row);
+					validDataProcess(row);
 					break;
-			  case "addUser":
-					addUser(row, i);
-					break;
+				/*
+				 * case "addUser": addUser(row, i); break;
+				 */
 					
 			}
 		}
@@ -325,7 +323,7 @@ public class SignUpValidation
 		}
 	}
 	
-	private void verifyInsertedData(ArrayList<String> data, int index)
+	public void verifyInsertedData(ArrayList<String> data, int index)
 	{
 		try
 		{
@@ -382,7 +380,7 @@ public class SignUpValidation
 		}
 	}
 	
-	public void validData(ArrayList<String> dataFromExcel)
+	public void validDataProcess(ArrayList<String> dataFromExcel)
 	{
 		this.verifyInsertedData(sheetData.get(3), 3);
 	}
