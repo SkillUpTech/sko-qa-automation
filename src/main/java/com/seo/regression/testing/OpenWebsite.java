@@ -8,7 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.regression.utility.TestUtil;
+import com.regression.utility.*;
 
 public class OpenWebsite
 {
@@ -18,7 +18,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_win32\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriver_v114\\chromedriver_win32_114.0.5735.90\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
