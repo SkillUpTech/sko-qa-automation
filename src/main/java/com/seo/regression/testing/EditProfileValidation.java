@@ -20,7 +20,8 @@ public class EditProfileValidation {
 		System.out.println("Edit profile Process started");
 	}
 
-	public String start() throws InterruptedException {
+	public String start() throws InterruptedException 
+	{
 		for (int i = 0; i < this.sheetData.size(); i++) {
 			ArrayList<String> row = this.sheetData.get(i);
 			String firstColumn = row.get(0);
