@@ -64,7 +64,7 @@ public class ProcessExcel
 			{
 				XSSFSheet excelSheet = workbook.getSheetAt(sheet);
 				int rowSize = excelSheet.getLastRowNum();
-				if(rowSize > 0)
+				if(rowSize >= 0)
 				{
 					ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();//to store more than 1 rows, created arraylist and for each row have multiple elements, so it stored in arraylist.
 					for(int i = 0; i <= rowSize; i++)
