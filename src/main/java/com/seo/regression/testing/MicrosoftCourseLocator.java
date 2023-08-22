@@ -31,7 +31,7 @@ public class MicrosoftCourseLocator
 		{
 			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("div[class=' Header_category__mr_e4']"));
 			clickCourseDropdown.click();
-			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn'] li a"));
+			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] ul[class='learning-Partners']>li>a"));
 			for(int i = 0; i < learningPartners.size();i++)
 			{
 				String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");

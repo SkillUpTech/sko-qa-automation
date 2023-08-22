@@ -33,7 +33,7 @@ public class PLULocators
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='nav-item dropdown Header_dropdown']>a[id='navbarDropdown']"));
 			clickDropdown.click();
-			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn'] li a"));
+			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] ul[class='learning-Partners']>li>a"));
 			for(int i = 0; i < learningPartners.size(); i++)
 			{
 				if(learningPartners.get(i).getAttribute("href").contains("pacific"))
