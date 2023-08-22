@@ -1049,6 +1049,13 @@ public class RegressionGenericLocator {
 			{
 				System.out.println("US Enroll Process");
 			}
+			WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='Header_SigNUP__cUzCw'] img[alt='icon']"));
+			clickDropdownIcon.click();
+			Thread.sleep(2000);
+			WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+			JavascriptExecutor js3 = (JavascriptExecutor) driver;
+			js3.executeScript("arguments[0].click()", clickSignOut);
+			Thread.sleep(2000);
 		} 
 		catch (Exception e) 
 		{
