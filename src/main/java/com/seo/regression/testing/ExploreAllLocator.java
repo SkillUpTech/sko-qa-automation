@@ -369,18 +369,18 @@ public class ExploreAllLocator
 					status.add("pass");
 					try
 					{
-						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] a"));
+						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class='CourseSection_courseResult__byBMX ps-3']>div[class*='row']>div a"));
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 						
-						int j;
-						for(j = 0; j < listOfCourses.size(); j++)
+						//int j;
+						for(int j = 0; j < listOfCourses.size(); j++)
 						{
+							String categoryCourseName = listOfCourses.get(j).getAttribute("href");
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-							System.out.println("course name :   "+listOfCourses.get(j).getAttribute("href"));
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							System.out.println("course name :   "+categoryCourseName);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 							if(j == listOfCourses.size()-1)
 							{
 								Thread.sleep(2000);
@@ -600,8 +600,8 @@ public class ExploreAllLocator
 						wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
 						Thread.sleep(1000);
 
-						click_ClearAll.click();
-						
+						//click_ClearAll.click();
+						jse2.executeScript("arguments[0].click()", click_ClearAll);
 						Thread.sleep(500);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					}
@@ -902,7 +902,8 @@ public class ExploreAllLocator
 			{
 				if(i == 0)
 				{
-					listOfCategories.get(i).click();
+					//listOfCategories.get(i).click();
+					jse3.executeScript("arguments[0].click()", listOfCategories.get(i));
 					break;
 				}
 			}

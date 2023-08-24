@@ -197,7 +197,7 @@ public class HeaderSectionLocator
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("ul[class='navbar-nav nav hoverefffect'] a#navbarDropdown"));
+			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("ul[class='navbar-nav nav '] a#navbarDropdown"));
 			clickCourseDropdown.click();
 			//Thread.sleep(4000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
