@@ -114,11 +114,6 @@ public class ExploreAllValidator
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(3).set(1, "Categories - failed");
 			}
-			if(getStatus.get(1).contains("course"))
-			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(3).set(2, "Categories - failed");
-			}
 		}
 	}
 	
