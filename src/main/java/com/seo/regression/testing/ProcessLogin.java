@@ -54,6 +54,7 @@ public class ProcessLogin
 					Thread.sleep(2000);
 					JavascriptExecutor js = (JavascriptExecutor)driver;
 					js.executeScript("window.scrollBy(0, 200)", "");
+					Thread.sleep(2000);
 					WebElement userNameElement = driver.findElement(By.cssSelector("input#email"));
 					userNameElement.clear();
 					userNameElement.sendKeys(userName);
