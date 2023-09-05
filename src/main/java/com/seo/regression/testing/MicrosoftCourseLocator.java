@@ -84,7 +84,7 @@ public class MicrosoftCourseLocator
 			if(respCode > 200)
 			{
 				System.out.println("broken link"+addHosturl);
-				status = "fail";
+				status = "fail" + respCode;
 			}
 			else
 			{
@@ -107,18 +107,20 @@ public class MicrosoftCourseLocator
 			js.executeScript("window.scrollBy(0, 1100)", "");
 			Thread.sleep(1000);
 			WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='ManageCardsLimit_showMoreSection'] button"));
-			js.executeScript("arguments[0].click()", clickShowMore);
+			while(clickShowMore.isDisplayed() != clickShowMore.getText().equalsIgnoreCase("Show less"))
+			{
+				js.executeScript("arguments[0].click()", clickShowMore);
+			}
 			List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_cardRow'] div[class*='LearningCatalog_customCard']"));
 			for(int i = 0; i < listOfCourses.size(); i++)
 			{
 				String courseURL = listOfCourses.get(i).findElement(By.cssSelector(" div a[href]")).getAttribute("href");
 				String urlLink = this.checkURLStatus(courseURL);
-				if(urlLink.equalsIgnoreCase("fail"))
+				if(urlLink.contains("fail"))
 				{
 					processStatus.add(courseURL);
 				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
-						"window. open('"+urlLink+"');" );
+				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript("window. open('"+urlLink+"');" );
 				String parentWindow = driver.getWindowHandle();
 				Set<String> childWnidow = driver.getWindowHandles();
 				for(String windows : childWnidow)

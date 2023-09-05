@@ -19,14 +19,26 @@ public class ErrorCodeLocator
 	
 	public ArrayList<String> checkCourseCode(ArrayList<String> codeFromExcel)
 	{
-		String url;
+		String url="";
 		int respCode = 200;
 		HttpURLConnection huc = null;
+		String addHosturl = "";
 		for(int i = 1; i < codeFromExcel.size(); i++)
 		{
 			String endURL = codeFromExcel.get(i);
-			url = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+endURL;
-				String addHosturl = url;
+			if(endURL.contains("enterprise")||endURL.contains("fluideducation"))
+			{	
+				if(OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE).contains("stage"))
+				{
+					url = "https://stagecourses-in.skillup.online"+endURL;
+					addHosturl = url;
+				}
+			}
+			else
+			{
+				url = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+endURL;
+				addHosturl = url;
+			}
 				try
 				{
 					huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
