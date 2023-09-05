@@ -298,11 +298,11 @@ public class PLULocators
 			for(int i = 0; i < techProgram.size(); i++)
 			{
 				String url = techProgram.get(i).getAttribute("href");
-				System.out.println("tech program starts execution : "+url);
+				System.out.println("PLU course card starts execution : "+url);
 				String urlLinkStatus = this.checkURLStatus(url);
-				if(urlLinkStatus.equalsIgnoreCase("fail"))
+				if(urlLinkStatus.contains("fail"))
 				{
-					failedUrls.add(url);
+					failedUrls.add(url+urlLinkStatus);
 				}
 			}
 		
@@ -380,7 +380,7 @@ public class PLULocators
 			if(respCode > 200)
 			{
 				System.out.println("broken link"+addHosturl);
-				status = "fail";
+				status = "fail"+respCode;
 			}
 			else
 			{
