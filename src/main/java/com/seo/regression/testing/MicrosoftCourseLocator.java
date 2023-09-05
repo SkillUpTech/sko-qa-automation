@@ -118,7 +118,7 @@ public class MicrosoftCourseLocator
 				String urlLink = this.checkURLStatus(courseURL);
 				if(urlLink.contains("fail"))
 				{
-					processStatus.add(courseURL);
+					processStatus.add(courseURL+urlLink);
 				}
 				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript("window. open('"+urlLink+"');" );
 				String parentWindow = driver.getWindowHandle();
