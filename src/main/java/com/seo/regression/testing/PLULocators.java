@@ -165,9 +165,12 @@ public class PLULocators
 				
 				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
 				launchPgm.sendKeys(selectLinkOpeninNewTab); 
+				
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				for(String winHandle : driver.getWindowHandles()){
+				
+				for(String winHandle : driver.getWindowHandles())
+				{
 				    driver.switchTo().window(winHandle);
 				}
 				JavascriptExecutor js2 = (JavascriptExecutor) driver;

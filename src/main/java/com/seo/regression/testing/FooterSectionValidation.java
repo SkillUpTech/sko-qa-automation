@@ -62,7 +62,7 @@ public class FooterSectionValidation
 					verifyTermsofService();
 					break;
 				case "blog":
-					verifyBlog(row.get(1));
+					verifyBlog(row);
 					break;
 				case "popularCategories":
 					verifyPopularCategories(row);
@@ -197,7 +197,7 @@ public class FooterSectionValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(10).set(0, "termsOfservice - failed");
 		}
 	}
-	public void verifyBlog(String checkURL) throws InterruptedException
+	public void verifyBlog(ArrayList<String> checkURL) throws InterruptedException
 	{
 		String status = "failed";
 		if(!checkURL.contains("NA"))

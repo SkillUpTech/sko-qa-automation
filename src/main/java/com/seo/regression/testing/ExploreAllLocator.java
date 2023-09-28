@@ -374,6 +374,7 @@ public class ExploreAllLocator
 						{
 							for(int j = 0; j < listOfCourses.size(); j++)
 							{
+								//driver.findElements(By.cssSelector("div[class*='CourseSection_courseResult']>div[class*='row']>div a"))
 								String categoryCourseName = listOfCourses.get(j).getAttribute("href");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 								wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
