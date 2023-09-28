@@ -98,7 +98,7 @@ public class MicrosoftCourseLocator
 		}
 		return status;
 	}
-	public ArrayList<String> verifyMicrosoftScourses(ArrayList<String> courses)
+	public ArrayList<String> verifyMicrosoftScourses()
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
 		try
@@ -120,7 +120,8 @@ public class MicrosoftCourseLocator
 				{
 					processStatus.add(courseURL+urlLink);
 				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript("window. open('"+urlLink+"');" );
+				JavascriptExecutor js1 = (JavascriptExecutor) driver;
+				js1. executeScript("window. open('"+urlLink+"');" );
 				String parentWindow = driver.getWindowHandle();
 				Set<String> childWnidow = driver.getWindowHandles();
 				for(String windows : childWnidow)

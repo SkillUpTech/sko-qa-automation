@@ -156,10 +156,12 @@ public class RegressionTesting
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
 							
-							 case "BusinessPage":
-								 sheetStatus = new BusinessPageValidation(sheetData, driver).start(); 
+							 case "IBM":
+								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
 								 break;
-							 
+							 case "Fluideducation":
+								 sheetStatus = new FluidEducationValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
