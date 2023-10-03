@@ -108,7 +108,7 @@ public class ExploreAllLocator
 			js.executeScript("window.scrollBy(0, 800)", "");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			Thread.sleep(1000);
-			WebElement activeCategory = driver.findElement(By.cssSelector("div[class*='LearningCatalog_courseList'] button[class*='btn shadow-none LearningCatalog_activeButton']"));
+			WebElement activeCategory = driver.findElement(By.cssSelector("section#scrollToTop>div>div>div>div:nth-child(5) div[class*='CourseSection_topFilterItem']>p"));
 			String activeCategoryName = activeCategory.getText();
 			Thread.sleep(2000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
@@ -452,6 +452,8 @@ public class ExploreAllLocator
 					Thread.sleep(1000);
 					
 					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));

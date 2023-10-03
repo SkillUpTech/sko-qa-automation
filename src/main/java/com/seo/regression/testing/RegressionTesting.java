@@ -162,6 +162,12 @@ public class RegressionTesting
 							 case "Fluideducation":
 								 sheetStatus = new FluidEducationValidation(sheetData, driver).start(); 
 								 break;
+							 case "GLX":
+								 sheetStatus = new GLXValidation(sheetData, driver).start(); 
+								 break;
+							 case "FAQ":
+								 sheetStatus = new FAQValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
