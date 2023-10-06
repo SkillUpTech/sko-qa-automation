@@ -89,7 +89,7 @@ public class RegressionTesting
 						//Get Started
 						switch(sheetName)
 						{
-							case "Login":
+							case "LoginIcon":
 								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
 							break;
 							case "AboutCourse":
@@ -167,6 +167,15 @@ public class RegressionTesting
 								 break;
 							 case "FAQ":
 								 sheetStatus = new FAQValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFooterStagecourses":
+								 sheetStatus = new HeaderFooterInStagecoursesValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFooterErrorScreen":
+								 sheetStatus = new HeaderFooterInErrorScreenValidation(sheetData, driver).start(); 
+								 break;
+							 case "BlogPage":
+								 sheetStatus = new BlogPageValidation(sheetData, driver).start(); 
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");

@@ -36,34 +36,34 @@ public class FAQValidation
 					verifyFAQ();
 					break;
 				case "invalidfullname":
-					invalidfullname();
+					invalidfullname(row);
 					break;
 				case "EmptyFullname":
-					EmptyFullname();
+					EmptyFullname(row);
 					break;
 				case "validFullname":
-					validFullname();
+					validFullname(row);
 					break;
 				case "invalidEmail":
-					invalidEmail(); 
+					invalidEmail(row); 
 					  break;
 				case "EmptyEmail":
-					EmptyEmail(); 
+					EmptyEmail(row); 
 					  break;
 				case "validEmail":
-					validEmail(); 
+					validEmail(row); 
 					  break;
 				case "InvalidContact":
-					InvalidContact(); 
+					InvalidContact(row); 
 					  break;
 				case "EmptyContact":
-					EmptyContact(); 
+					EmptyContact(row); 
 					  break;
 				case "validContact":
-					validContact(); 
+					validContact(row); 
 					  break;
 				case "EmptyQuery":
-					EmptyQuery(); 
+					EmptyQuery(row); 
 					  break;
 			}
 		}
@@ -71,8 +71,8 @@ public class FAQValidation
 	}
 	public void login(String email, String pwd)
 	{
-		String status = faqLocator.loginProcess(email, pwd);
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.loginProcess(email, pwd);
+		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(0).set(0, "login - failed");
@@ -90,94 +90,284 @@ public class FAQValidation
 			}
 		}
 	}
-	public void invalidfullname()
+	public void invalidfullname(ArrayList<String> data)
 	{
-		String status = faqLocator.verifyInvalidFullname();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.verifyInvalidFullname(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(3).set(0, "invalidfullname - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(3).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(3).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(3).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(3).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void EmptyFullname()
+	public void EmptyFullname(ArrayList<String> data)
 	{
-		String status = faqLocator.EmptyFullname();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.EmptyFullname(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(4).set(0, "EmptyFullname - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(4).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(4).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(4).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(4).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void validFullname()
+	public void validFullname(ArrayList<String> data)
 	{
-		String status = faqLocator.validFullname();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.validFullname(data);
+		if(!status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(5).set(0, "validFullname - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(5).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(5).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(5).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(5).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void invalidEmail()
+	public void invalidEmail(ArrayList<String> data)
 	{
-		String status = faqLocator.invalidEmail();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.invalidEmail(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(6).set(0, "invalidEmail - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(6).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(6).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(6).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(6).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void EmptyEmail()
+	public void EmptyEmail(ArrayList<String> data)
 	{
-		String status = faqLocator.EmptyEmail();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.EmptyEmail(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(7).set(0, "EmptyEmail - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(7).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(7).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(7).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(7).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void validEmail()
+	public void validEmail(ArrayList<String> data)
 	{
-		String status = faqLocator.validEmail();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.validEmail(data);
+		if(!status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(8).set(0, "validEmail - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(8).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(8).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(8).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(8).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void EmptyContact()
+	public void EmptyContact(ArrayList<String> data)
 	{
-		String status = faqLocator.InvalidContact();
-		if(status.equalsIgnoreCase("fail"))
-		{
-			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(0, "InvalidContact - failed");
-		}
-	}
-	public void validContact()
-	{
-		String status = faqLocator.EmptyContact();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.InvalidContact(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(10).set(0, "EmptyContact - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(10).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(10).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(10).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(10).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void InvalidContact()
+	public void validContact(ArrayList<String> data)
 	{
-		String status = faqLocator.validContact();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.validContact(data);
+		if(!status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(11).set(0, "validContact - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(11).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(11).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(11).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(11).set(4, "Test - failed");
+				}
+			}
 		}
 	}
-	public void EmptyQuery()
+	public void InvalidContact(ArrayList<String> data)
 	{
-		String status = faqLocator.EmptyQuery();
-		if(status.equalsIgnoreCase("fail"))
+		ArrayList<String> status = faqLocator.InvalidContact(data);
+		if(status.contains("pass"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(0, "invalidfullname - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(4, "Test - failed");
+				}
+			}
+		}
+	}
+	public void EmptyQuery(ArrayList<String> data)
+	{
+		ArrayList<String> status = faqLocator.EmptyQuery(data);
+		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(12).set(0, "EmptyQuery - failed");
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(status.get(i).contains("name"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(12).set(1, "hema - failed");
+				}
+				if(status.get(i).contains("email"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(12).set(2, "hemamalini@gmail.com - failed");
+				}
+				if(status.get(i).contains("contact"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(12).set(3, "9876543210 - failed");
+				}
+				if(status.get(i).contains("query"))
+				{
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(12).set(4, "Test - failed");
+				}
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 public class FAQLocator
 {
@@ -20,12 +21,12 @@ public class FAQLocator
 		this.processLogin = new ProcessLogin(this.driver);
 	}
 	
-	public String loginProcess(String email, String pwd)
+	public ArrayList<String> loginProcess(String email, String pwd)
 	{
-		String status = "fail";
+		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			this.processLogin.checkValidCredentials(email, pwd);
+			status.addAll(this.processLogin.checkValidCredentials(email, pwd));
 			
 		}
 		catch(Exception e)
@@ -38,6 +39,7 @@ public class FAQLocator
 	public ArrayList<String> FAQProcess()
 	{
 		ArrayList<String> failedFAQ = new ArrayList<String>();
+		JavascriptExecutor js2 = (JavascriptExecutor) driver;
 		try
 		{
 			WebElement clickFAQ = driver.findElement(By.cssSelector("div[class*='Footer_FootMenuiNNr'] ul>li:nth-child(4)>a"));
@@ -45,7 +47,7 @@ public class FAQLocator
 			Thread.sleep(1000);
 			((JavascriptExecutor)driver).executeScript("window.scrollBy(0,-200)", "");
 			Thread.sleep(1000);
-			clickFAQ.click();
+			js2.executeScript("arguments[0].click()", clickFAQ);
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
@@ -113,53 +115,188 @@ public class FAQLocator
 		}
 		return failedFAQ;
 	}
-	
-	public String verifyInvalidFullname()
+	public ArrayList<String> verifyInvalidFullname(ArrayList<String> data)
 	{
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
+	}
+	 
+	public ArrayList<String> verifyFAQFormProcess(ArrayList<String> data)
+	{
+		ArrayList<String> datastatus = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			WebElement focusForm = driver.findElement(By.cssSelector("div[class='Form_formContainer__grqm6']"));
+			js.executeScript("arguments[0].scrollIntoView();", focusForm);
+			WebElement fullname = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='fullname']"));
+			fullname.clear();
+			if(!data.get(1).equalsIgnoreCase("empty"))
+			{
+				fullname.sendKeys(data.get(1));
+			}
+			else
+			{
+				fullname.sendKeys("");
+			}
+			WebElement email = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='email']"));
+			email.clear();
+			if(!data.get(2).equalsIgnoreCase("empty"))
+			{
+				email.sendKeys(data.get(2));
+			}
+			else
+			{
+				email.sendKeys("");
+			}
+			
+			  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
+			  Select countryName = new Select(country);
+			  countryName.selectByVisibleText("India");
+			 
+			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
+			contact.clear();
+			contact.sendKeys(data.get(3));
+			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='additionalinfo']"));
+			Select categoryName = new Select(category);
+			categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
+			WebElement queryMsg = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>textarea[name='message']"));
+			queryMsg.clear();
+			if(!data.get(4).equalsIgnoreCase("empty"))
+			{
+				queryMsg.sendKeys(data.get(4));
+			}
+			else
+			{
+				queryMsg.sendKeys("");
+			}
+			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView();", submit);
+			WebElement locateFooter = driver.findElement(By.cssSelector("footer#newsletter"));
+			js.executeScript("arguments[0].scrollIntoView();", locateFooter);
+			Thread.sleep(500);
+			js.executeScript("window.scrollBy(0,-500)");
+			Thread.sleep(500);
+			js.executeScript("arguments[0].click()", submit);
+			datastatus.addAll(this.errorMsg());
 			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return datastatus;
 	}
-	public String EmptyFullname()
+	public ArrayList<String> EmptyFullname(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String validFullname()
+	public ArrayList<String> validFullname(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String invalidEmail()
+	public ArrayList<String> invalidEmail(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String EmptyEmail()
+	public ArrayList<String> EmptyEmail(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String validEmail()
+	public ArrayList<String> validEmail(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String InvalidContact()
+	public ArrayList<String> InvalidContact(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String EmptyContact()
+	public ArrayList<String> EmptyContact(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String validContact()
+	public ArrayList<String> validContact(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
 	}
-	public String EmptyQuery()
+	public ArrayList<String> EmptyQuery(ArrayList<String> data)
 	{
-		return null;
+		ArrayList<String> datastatus = new ArrayList<String>();
+		datastatus.addAll(this.verifyFAQFormProcess(data));
+		return datastatus;
+	}
+	
+	public ArrayList<String> errorMsg()
+	{
+		ArrayList<String> status = new ArrayList<String>();
+		try
+		{
+			if(driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']")).size()>0)
+			{
+				WebElement errorMsgLocator = driver.findElement(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
+				if(errorMsgLocator.getText().contains("name"))
+				{
+					System.out.println("full name error");
+					status.add("name");
+				}
+				else if(errorMsgLocator.getText().contains("email"))
+				{
+					System.out.println("email error");
+					status.add("email");
+				}
+				else if(errorMsgLocator.getText().contains("contact"))
+				{
+					System.out.println("contact error");
+					status.add("contact");
+				}
+				else if(errorMsgLocator.getText().contains("category"))
+				{
+					System.out.println("category error");
+					status.add("category");
+				}
+				else if(errorMsgLocator.getText().contains("query"))
+				{
+					System.out.println("query error");
+					status.add("query");
+				}
+			}
+			else
+			{
+				status.add("pass");
+				/*
+				 * WebElement footer =
+				 * driver.findElement(By.cssSelector("div[class='Footer_footertopmenu__gu_Hf']")
+				 * ); JavascriptExecutor js = (JavascriptExecutor) driver;
+				 * js.executeScript("arguments[0].scrollIntoView();", footer);
+				 */
+				List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
+				if(checkSuccessMsg.size()>0)
+				{
+					System.out.println("success msg present");
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
 	}
 }
