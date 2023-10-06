@@ -320,7 +320,7 @@ public class FAQValidation
 		if(status.contains("pass"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(0, "invalidfullname - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FAQ").get(9).set(0, "InvalidContact - failed");
 			for(int i = 0; i < status.size(); i++)
 			{
 				if(status.get(i).contains("name"))
