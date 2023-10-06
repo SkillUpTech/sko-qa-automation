@@ -1,5 +1,6 @@
 package com.seo.regression.testing;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -158,9 +159,11 @@ public class FAQLocator
 			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
 			contact.clear();
 			contact.sendKeys(data.get(3));
+			
 			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='additionalinfo']"));
 			Select categoryName = new Select(category);
 			categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
+			
 			WebElement queryMsg = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>textarea[name='message']"));
 			queryMsg.clear();
 			if(!data.get(4).equalsIgnoreCase("empty"))
@@ -171,14 +174,16 @@ public class FAQLocator
 			{
 				queryMsg.sendKeys("");
 			}
-			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
-			js.executeScript("arguments[0].scrollIntoView();", submit);
+			
+			//js.executeScript("arguments[0].scrollIntoView();", submit);
 			WebElement locateFooter = driver.findElement(By.cssSelector("footer#newsletter"));
 			js.executeScript("arguments[0].scrollIntoView();", locateFooter);
 			Thread.sleep(500);
 			js.executeScript("window.scrollBy(0,-500)");
 			Thread.sleep(500);
+			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
 			js.executeScript("arguments[0].click()", submit);
+			
 			datastatus.addAll(this.errorMsg());
 			
 		}
@@ -248,8 +253,10 @@ public class FAQLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 			if(driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']")).size()>0)
 			{
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 				WebElement errorMsgLocator = driver.findElement(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
 				if(errorMsgLocator.getText().contains("name"))
 				{
@@ -279,7 +286,7 @@ public class FAQLocator
 			}
 			else
 			{
-				status.add("pass");
+				
 				/*
 				 * WebElement footer =
 				 * driver.findElement(By.cssSelector("div[class='Footer_footertopmenu__gu_Hf']")
@@ -290,6 +297,7 @@ public class FAQLocator
 				if(checkSuccessMsg.size()>0)
 				{
 					System.out.println("success msg present");
+					status.add("pass");
 				}
 			}
 		}
