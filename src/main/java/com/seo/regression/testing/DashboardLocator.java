@@ -27,15 +27,19 @@ public class DashboardLocator
 	{
 		String statusOfSliderScreen = "fail";
 		List<WebElement> sliderPage = driver.findElements(By.cssSelector("div[class='bannersliderhome_Mainslider__w62pu'] div[class='bannersliderhome_bannerSliderH__YF848 bannersliderhome_bannerSliderHDesktOP__LpvuC'] div[class='slick-slider homebannerslider slick-initialized'] div[class*='slick-slide']"));
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		for(int i = 0; i < sliderPage.size(); i++)
 		{
-			Thread.sleep(3000);
+		//	Thread.sleep(3000);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			String checkPage = sliderPage.get(i).getAttribute("aria-hidden");
-			Thread.sleep(1000);
+			//Thread.sleep(1000);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			if (checkPage.contains("false"))
 			{
-				Thread.sleep(1000);
+			//	Thread.sleep(1000);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				String getSliderURL = sliderPage.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
 				System.out.println(getSliderURL);
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
@@ -55,7 +59,7 @@ public class DashboardLocator
 		}
 		driver.get(OpenWebsite.setHost);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		return statusOfSliderScreen;
 	}
 	
@@ -170,7 +174,8 @@ public class DashboardLocator
 		List<WebElement> learningCatalogCourses = driver.findElements(By.cssSelector("section[class*='Courses_mainSection']>div>div:nth-child(2) div[class='slick-track']>div[class*='slick-slide'] a"));
 		for(int j = 0; j < learningCatalogCourses.size(); j++)
 		{
-			Thread.sleep(2000);
+		//	Thread.sleep(2000);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			System.out.println(" learning catalog courses size : " +learningCatalogCourses.size());
 			String checkCourse = learningCatalogCourses.get(j).getAttribute("href");
 			System.out.println(" learning catalog courses Name : " +checkCourse);
