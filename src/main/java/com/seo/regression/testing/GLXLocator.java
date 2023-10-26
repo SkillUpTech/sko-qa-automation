@@ -359,8 +359,7 @@ public class GLXLocator {
 					}
 				}
 							
-				WebElement programPagePrice = programPageLocator.findElement(By.cssSelector(" div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection']>p"));
-				
+				WebElement programPagePrice = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
 				if(!programPagePrice.isDisplayed())
 				{
 					processStatus.add(programPageName.concat(" program has no Price"));

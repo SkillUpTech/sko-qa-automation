@@ -24,6 +24,7 @@ public class ProcessLogin
 	public ProcessLogin(WebDriver driver) 
 	{
 		this.driver = driver;
+		
 	}
 	public String loginFunction(String userName, String passWord) throws InterruptedException
 	{

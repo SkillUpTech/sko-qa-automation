@@ -1,6 +1,8 @@
 
 package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -30,12 +32,12 @@ public class RegressionTesting
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
 	public static String ENV_TO_USE = "";
-	
+	String getEnvironment = "";
 	WebDriver driver;
 	
 	@BeforeTest
-	@Parameters("browser")
-	public void setup(String browserName) throws Exception
+	@Parameters({"browser","env"})
+	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");
 	    if (browserName.equalsIgnoreCase("firefox"))
@@ -45,6 +47,10 @@ public class RegressionTesting
 	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
+	    	if(env.equalsIgnoreCase("stage"))
+	    	{
+	    		getEnvironment = "stage-in";
+	    	}
 	    }
 	    else
 	    {
@@ -73,7 +79,11 @@ public class RegressionTesting
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			ArrayList<String> environment = master.get(1);// Environment row in excel
-			ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+			if(master.get(1).toString().contains(getEnvironment))
+			{
+				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+			}
+			//ENV_TO_USE = getEnvironment;
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
@@ -82,14 +92,14 @@ public class RegressionTesting
 				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
-					newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
+					//newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
 					try
 					{
 						String sheetStatus = "Pass";
 						//Get Started
 						switch(sheetName)
 						{
-							case "LoginIcon":
+							case "Login":
 								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
 							break;
 							case "AboutCourse":
@@ -198,7 +208,22 @@ public class RegressionTesting
 			endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 			duration = Utils.findDifference(startTime, endTime);
 			prepareConsolidatedSheet();
-			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "result.xlsx");
+			LocalDateTime currentDateTime = LocalDateTime.now();
+
+	        // Define a custom date and time format
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
+	        // Format the current date and time using the formatter
+	        String formattedDateTime = currentDateTime.format(formatter);
+	        
+			if(driver.getCurrentUrl().contains("stage"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(!"stage".contains(driver.getCurrentUrl()))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+			}
 		}
 	}
 	

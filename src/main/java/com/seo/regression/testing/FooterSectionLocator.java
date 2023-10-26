@@ -44,7 +44,7 @@ public class FooterSectionLocator
 			js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 			js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
-			Thread.sleep(2000);
+		//	Thread.sleep(2000);
 			js.executeScript("window.scrollBy(0, -300)", "");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
 			//String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
@@ -55,7 +55,7 @@ public class FooterSectionLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(120));
-			Thread.sleep(1000);
+		//	Thread.sleep(1000);
 			status = "pass";
 		}
 		catch(Exception e)
@@ -71,13 +71,13 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		WebElement clickTwitter = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(1) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickTwitter));
@@ -85,7 +85,7 @@ public class FooterSectionLocator
 		js.executeScript("arguments[0].click()", clickTwitter);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-		Thread.sleep(800);
+	//	Thread.sleep(800);
 		String parentWindow = driver.getWindowHandle();
 		Set<String> nextWindow = driver.getWindowHandles();
 		Iterator<String> iterator = nextWindow.iterator();
@@ -101,7 +101,7 @@ public class FooterSectionLocator
 					System.out.println("twitter window");
 					status = "success";
 					driver.close();
-					Thread.sleep(1000);
+				//	Thread.sleep(1000);
 					driver.switchTo().window(parentWindow);
 					if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 					{
@@ -119,11 +119,11 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		js.executeScript("window.scrollBy(0, -100)", "");
 		WebElement clickInstagram = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(4) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -132,7 +132,7 @@ public class FooterSectionLocator
 		js.executeScript("arguments[0].click()", clickInstagram);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		String parentWindow = driver.getWindowHandle();
 		Set<String> nextWindow = driver.getWindowHandles();
 		Iterator<String> iterator = nextWindow.iterator();
@@ -166,10 +166,10 @@ public class FooterSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -160)", "");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		WebElement clickFacebook = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(2) a"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickFacebook));
@@ -208,15 +208,15 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+		//Thread.sleep(1000);
 		WebElement clickLinkedIn = driver.findElement(By.cssSelector("ul[class*=' Footer_socialIconsSection'] li:nth-child(3) a"));
-		Thread.sleep(800);
+		//Thread.sleep(800);
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickLinkedIn));
 	//	clickLinkedIn.click();
@@ -256,14 +256,14 @@ public class FooterSectionLocator
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		WebElement clickContactUs = driver.findElement(By.cssSelector("div[class='Footer_ContActUsIn__ywIhS'] span img[alt='icon']"));
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-		Thread.sleep(800);
+	//	Thread.sleep(800);
 		js.executeScript("arguments[0].click()", clickContactUs);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -316,15 +316,15 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		List<WebElement> clickAboutSkillupOnline= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickAboutSkillupOnline.size(); i++)
 		{
@@ -333,7 +333,7 @@ public class FooterSectionLocator
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 				wait.until(ExpectedConditions.elementToBeClickable(clickAboutSkillupOnline.get(i)));
-				Thread.sleep(800);
+		//		Thread.sleep(800);
 				js.executeScript("arguments[0].click()", clickAboutSkillupOnline.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -419,20 +419,20 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		List<WebElement> clickFaq= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickFaq.size(); i++)
 		{
 			String getText = clickFaq.get(i).getText();
 			if(getText.equalsIgnoreCase("FAQs"))
 			{
-				Thread.sleep(1000);
+		//		Thread.sleep(1000);
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 				wait.until(ExpectedConditions.elementToBeClickable(clickFaq.get(i)));
 //				clickFaq.get(i).click();
@@ -472,29 +472,29 @@ public class FooterSectionLocator
 	{
 		String status = "failed";
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		List<WebElement> clickPrivacyPolicy= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickPrivacyPolicy.size(); i++)
 		{
 			String getText = clickPrivacyPolicy.get(i).getText();
 			if(getText.equalsIgnoreCase("Privacy Policy"))
 			{
-				Thread.sleep(500);
+		//		Thread.sleep(500);
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 				wait.until(ExpectedConditions.elementToBeClickable(clickPrivacyPolicy.get(i)));
 				js.executeScript("arguments[0].click()", clickPrivacyPolicy.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				Thread.sleep(1000);
+		//		Thread.sleep(1000);
 				String parentWindow = driver.getWindowHandle();
 				Set<String> nextWindow = driver.getWindowHandles();
 				Iterator<String> iterator = nextWindow.iterator();
@@ -529,13 +529,13 @@ public class FooterSectionLocator
 		String status = "failed";
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -100)", "");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		List<WebElement> clickTermsofService= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickTermsofService.size(); i++)
@@ -580,16 +580,16 @@ public class FooterSectionLocator
 	public String verifyBlog() throws InterruptedException
 	{
 		String status = "failed";
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-		Thread.sleep(1000);
+//		Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 		List<WebElement> clickBlog= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickBlog.size(); i++)
@@ -599,7 +599,7 @@ public class FooterSectionLocator
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 				wait.until(ExpectedConditions.elementToBeClickable(clickBlog.get(i)));
-				Thread.sleep(500);
+		//		Thread.sleep(500);
 				//clickBlog.get(i).click();
 				js.executeScript("arguments[0].click()", clickBlog.get(i));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -747,16 +747,19 @@ public class FooterSectionLocator
 		{
 			System.out.println("host is present");
 		}
-		Thread.sleep(3000);
+	//	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+//		Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-		Thread.sleep(1000);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+	//	Thread.sleep(1000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 		List<WebElement> popularCourses = driver.findElements(By.cssSelector("div[class*='Footer_PopularCourses'] ul li a"));
 		for(int i = 0; i < popularCourses.size(); i++)
@@ -848,16 +851,16 @@ public class FooterSectionLocator
 			}
 		}
 		
-		Thread.sleep(3000);
+//	/	Thread.sleep(3000);
 		((JavascriptExecutor) driver)
 	     .executeScript("window.scrollTo(0, document.body.scrollHeight)");
-		Thread.sleep(2000);
+	//	Thread.sleep(2000);
 		JavascriptExecutor js1 = (JavascriptExecutor) driver;
 		js1.executeScript("window.scrollBy(0, 500)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
-		Thread.sleep(1000);
+	//	Thread.sleep(1000);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 		List<WebElement> blogs = driver.findElements(By.cssSelector("div[class*='Footer_LatestBlogsRepT']"));
 		for(int i = 0; i < blogs.size(); i++)

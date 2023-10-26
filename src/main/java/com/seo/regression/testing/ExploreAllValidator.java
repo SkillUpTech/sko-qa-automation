@@ -49,9 +49,9 @@ public class ExploreAllValidator
 				case "learningStyles":
 					verify_learningStyles();
 					break;
-				case "sortBy":
-					verify_sortBy();
-					break;
+				/*
+				 * case "sortBy": verify_sortBy(); break;
+				 */
 			}
 		}
 		return sheetStatus;

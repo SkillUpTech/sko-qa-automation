@@ -18,7 +18,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chrome 116\\chromedriver-win64\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriverv118\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
@@ -42,8 +42,7 @@ public class OpenWebsite
 	{
 		if(host.equalsIgnoreCase("prod-in"))
 		{
-			String convertURL = "in";
-			setHost = "https://"+convertURL+".skillup.online";
+			setHost = "https://in.skillup.online";
 		}
 		else if(host.equalsIgnoreCase("stagecourses-in"))
 		{
@@ -51,8 +50,7 @@ public class OpenWebsite
 		}
 		else if(host.equalsIgnoreCase("stage-in"))
 		{
-			String converturl = "stage-in";
-			setHost = "https://"+converturl+".skillup.online";
+			setHost = "https://stage-in.skillup.online";
 		}
 		else if(host.equalsIgnoreCase("qa-in"))
 		{
