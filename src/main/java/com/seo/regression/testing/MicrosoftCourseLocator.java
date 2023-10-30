@@ -40,7 +40,7 @@ public class MicrosoftCourseLocator
 				String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
 				if(getLearningPartnerURL.contains("microsoft"))
 				{
-					String url = this.checkURLStatus(getLearningPartnerURL);
+					String url = this.checkCourseCode(getLearningPartnerURL);
 					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 					learningPartners.get(i).sendKeys(n);
 					if(url.equalsIgnoreCase("fail"))
@@ -71,36 +71,18 @@ public class MicrosoftCourseLocator
 		}
 		return processStatus;
 	}
-	public String checkURLStatus(String getURL)
-	{
-		String status = "fail";
-		String addHosturl = getURL;
-		HttpURLConnection huc = null;
-		int respCode = 200;
-		try
-		{
-			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-			huc.setRequestMethod("HEAD");
-			huc.connect();
-			respCode = huc.getResponseCode();
-			System.out.println("status code : "+respCode + " " +addHosturl);
-			if(respCode > 200)
-			{
-				System.out.println("broken link"+addHosturl);
-				status = "fail" + respCode;
-			}
-			else
-			{
-				System.out.println("un broken link"+addHosturl);
-				status = "pass";
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
+
+	/*
+	 * public String checkURLStatus(String getURL) { String status = "fail"; String
+	 * addHosturl = getURL; HttpURLConnection huc = null; int respCode = 200; try {
+	 * huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
+	 * huc.setRequestMethod("HEAD"); huc.connect(); respCode =
+	 * huc.getResponseCode(); System.out.println("status code : "+respCode + " "
+	 * +addHosturl); if(respCode > 200) {
+	 * System.out.println("broken link"+addHosturl); status = "fail" + respCode; }
+	 * else { System.out.println("un broken link"+addHosturl); status = "pass"; } }
+	 * catch(Exception e) { e.printStackTrace(); } return status; }
+	 */
 	public String checkCourseCode(String getURL)
 	{
 		String getstatus = "pass";

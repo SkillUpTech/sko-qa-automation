@@ -30,9 +30,9 @@ public class HeaderFooterInErrorScreenValidation {
 				  LoginIcon(); 
 				  break; 
 				
-			  case "FindOutMore": 
-				  FindOutMore();
-				  break;
+				/*
+				 * case "FindOutMore": FindOutMore(); break;
+				 */
 				  
 			  case "skillupIcon": 
 				  skillupIcon();

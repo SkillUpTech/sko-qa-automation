@@ -142,7 +142,7 @@ public class FooterSectionLocator
 			if(!parentWindow.equalsIgnoreCase(childWindow))
 			{
 				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("https://www.instagram.com/"))
+				if(driver.getCurrentUrl().contains("instagram"))
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("instagram window");
@@ -425,11 +425,14 @@ public class FooterSectionLocator
 	//	Thread.sleep(2000);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0, -200)", "");
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 	//	Thread.sleep(1000);
 		List<WebElement> clickFaq= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickFaq.size(); i++)
 		{
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			String getText = clickFaq.get(i).getText();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			if(getText.equalsIgnoreCase("FAQs"))
 			{
 		//		Thread.sleep(1000);
@@ -450,12 +453,14 @@ public class FooterSectionLocator
 						if(driver.getCurrentUrl().contains("faq"))
 						{
 							System.out.println("FAQ's window");
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
 							String subString = StringUtils.substringBefore(getURL, "online/");
 							subString = subString+"online";
 							driver.get(subString);
 							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 							{
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								status = "success";
 							}
 						}	
@@ -506,13 +511,16 @@ public class FooterSectionLocator
 						if(driver.getCurrentUrl().contains("privacy"))
 						{
 							System.out.println("Privacy Policy window");
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
 							String subString = StringUtils.substringBefore(getURL, "online/");
 							subString = subString+"online";
 							driver.get(subString);
 							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 							{
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								status = "success";
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							}
 						}	
 					}
@@ -541,6 +549,7 @@ public class FooterSectionLocator
 		for(int i = 0; i < clickTermsofService.size(); i++)
 		{
 			String getText = clickTermsofService.get(i).getText();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			if(getText.equalsIgnoreCase("Terms of Service"))
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
@@ -559,14 +568,19 @@ public class FooterSectionLocator
 					{
 						if(driver.getCurrentUrl().contains("tos"))
 						{
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							System.out.println("Terms of service window");
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							String getURL = driver.getCurrentUrl();//https://stage-in.skillup.online/
 							String subString = StringUtils.substringBefore(getURL, "online/");
 							subString = subString+"online";
 							driver.get(subString);
 							if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 							{
+								
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								status = "success";
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 							}
 						}	
 					}
@@ -594,6 +608,7 @@ public class FooterSectionLocator
 		List<WebElement> clickBlog= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu'] ul li a"));
 		for(int i = 0; i < clickBlog.size(); i++)
 		{
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			String getText = clickBlog.get(i).getText();
 			if(getText.equalsIgnoreCase("Blog"))
 			{
@@ -614,7 +629,9 @@ public class FooterSectionLocator
 					{
 						if(driver.getCurrentUrl().contains("blog"))
 						{
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							System.out.println("blog window");
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							status = "success";
 						}	
 					}
@@ -653,6 +670,7 @@ public class FooterSectionLocator
 			{
 				if(popularCategories.size() == 14)
 				{
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					String categoriesName = popularCategories.get(i).getText();
 					if(categoriesName.equalsIgnoreCase(data.get(i+1)))
 					{
