@@ -372,14 +372,14 @@ public class ExploreAllLocator
 					try
 					{
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResult']>div[class*='row']>div a"));
+						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
+
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 						if(listOfCourses.size()>0)
 						{
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							for(int j = 0; j < listOfCourses.size(); j++)
 							{
-								//driver.findElements(By.cssSelector("div[class*='CourseSection_courseResult']>div[class*='row']>div a"))
 								String categoryCourseName = listOfCourses.get(j).getAttribute("href");
 								categoryCourseName = listOfCourses.get(j).getAttribute("href");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
@@ -390,17 +390,17 @@ public class ExploreAllLocator
 								if(j == listOfCourses.size()-1)
 								{
 									JavascriptExecutor jse1 = (JavascriptExecutor) driver;
-									
-									
-									
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									List<WebElement> clickNextPage = driver.findElements(By.cssSelector("div[class='col-12 d-flex justify-content-center mt-5'] ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']"));
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+									List<WebElement> clickNextPage = driver.findElements(By.cssSelector("div[class*='content-center']>ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']"));
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 									if(clickNextPage.size()>0)
 									{
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 										System.out.println("next page is available");
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 									//	Thread.sleep(2000);
 										jse1.executeScript("window.scrollBy(0, 1700)","");
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 									//	Thread.sleep(3000);
 										wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='col-12 d-flex justify-content-center mt-5'] ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']")));
 										for(int l = 0; l < clickNextPage.size(); l++)

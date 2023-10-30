@@ -31,9 +31,9 @@ public class HeaderFooterInStagecoursesValidation
 			  case "LoginIcon": 
 				  LoginIcon(); 
 				  break; 
-			  case "FindOutMore": 
-				  FindOutMore(row.get(1)); 
-				  break; 
+				/*
+				 * case "FindOutMore": FindOutMore(row.get(1)); break;
+				 */
 			  case "skillupIcon": 
 				  skillupIcon(); 
 				  break; 
