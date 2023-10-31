@@ -45,6 +45,7 @@ public class FluidEducationLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("facebook verified");
 						driver.close();
 						break;
 					}
@@ -79,6 +80,7 @@ public class FluidEducationLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("instagram verified");
 						driver.close();
 						break;
 					}
@@ -113,6 +115,7 @@ public class FluidEducationLocator
 					if(driver.getCurrentUrl().contains("twitter"))
 					{
 						driver.switchTo().window(windows);
+						System.out.println("twitter verified");
 						status = "pass";
 						driver.close();
 						break;
@@ -196,7 +199,7 @@ public class FluidEducationLocator
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
 				String programCardName = ListOfProgram.get(i).findElement(By.cssSelector(" div[class='DiscountSection_ProgramHeading___MbKv']")).getText();
-				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramBadGE__GFvLE']>span[style]"));
+				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramBadGE__GFvLE']>img"));
 				
 				if(!programCardIcon.isDisplayed())
 				{
