@@ -199,7 +199,7 @@ public class GLXLocator {
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
 				String programCardName = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_ProgramHeading']")).getText();
-				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramBadGE']>span[style]"));
+				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramBadGE']>img"));
 				
 				if(!programCardIcon.isDisplayed())
 				{
