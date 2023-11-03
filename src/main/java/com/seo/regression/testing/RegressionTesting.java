@@ -126,6 +126,9 @@ public class RegressionTesting
 								sheetStatus = regressionGenericValidator.processSheetData();
 							}
 							break;
+							case "Dashboard":
+								sheetStatus = new DashboardValidation(sheetData, driver).start();
+								break;
 							case "URLValidation":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
 								break;
@@ -144,8 +147,8 @@ public class RegressionTesting
 							case"HeaderSection":
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
-							case"Dashboard":
-								sheetStatus = new DashboardValidator(sheetData, driver).start();
+							case"HomePage":
+								sheetStatus = new HomepageValidator(sheetData, driver).start();
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();

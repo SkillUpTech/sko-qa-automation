@@ -4,20 +4,20 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
-public class DashboardValidator 
+public class HomepageValidator 
 {
 	ArrayList<ArrayList<String>> sheetData;
 	WebDriver driver;
-	DashboardLocator dashboardLocator;
+	HomepageLocator homepageLocator;
 	String sheetStatus;
 	
-	public DashboardValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public HomepageValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
 		OpenWebsite.openSite(this.driver);
-		this.dashboardLocator = new DashboardLocator(this.driver);
-		System.out.println("dashboard process started");
+		this.homepageLocator = new HomepageLocator(this.driver);
+		System.out.println("Homepage process started");
 		sheetStatus = "Pass";
 	}
 
@@ -60,23 +60,23 @@ public class DashboardValidator
 	}
 
 	/*
-	 * public String openSite() throws InterruptedException { String dashboardURL =
-	 * OpenWebsite.openSite(driver); return dashboardURL; }
+	 * public String openSite() throws InterruptedException { String HomePageURL =
+	 * OpenWebsite.openSite(driver); return HomePageURL; }
 	 */
-	//String getDashboardURL = OpenWebsite.setHost;
+	//String getHomePageURL = OpenWebsite.setHost;
 	public void verifyLearningPartners(ArrayList<String> dataFromExcel)
 	{
 		if(!dataFromExcel.contains("NA"))
 		{
-			ArrayList<String> statusOfLearningPartners = dashboardLocator.checkLearningPartners(dataFromExcel);
+			ArrayList<String> statusOfLearningPartners = homepageLocator.checkLearningPartners(dataFromExcel);
 			for(int i = 0; i < statusOfLearningPartners.size(); i++)
 			{
 				if(dataFromExcel.contains(statusOfLearningPartners.get(i)))
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfLearningPartners.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(0).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(0).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).set(position, (cellValue + " - failed"));
 
 				}
 			}
@@ -86,11 +86,11 @@ public class DashboardValidator
 	{
 		if(!dataFromExcel.contains("NA"))
 		{
-			ArrayList<String> statusOfLearningPartners = dashboardLocator.checkLearningCatalog();
+			ArrayList<String> statusOfLearningPartners = homepageLocator.checkLearningCatalog();
 			if(statusOfLearningPartners.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(2).set(0, "learningCatalog - failed");
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(0, "learningCatalog - failed");
 			}
 		}
 	}
@@ -98,15 +98,15 @@ public class DashboardValidator
 	{
 		if(!dataFromExcel.contains("NA"))
 		{
-			ArrayList<String> statusOfHumanSkills = dashboardLocator.checkHumanSkills(dataFromExcel);
+			ArrayList<String> statusOfHumanSkills = homepageLocator.checkHumanSkills(dataFromExcel);
 			for(int i = 0; i < statusOfHumanSkills.size(); i++)
 			{
 				if(dataFromExcel.contains(statusOfHumanSkills.get(i)))
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfHumanSkills.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(1).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(1).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(position, (cellValue + " - failed"));
 
 				}
 			}
@@ -117,15 +117,15 @@ public class DashboardValidator
 	{
 		if(!dataFromExcel.contains("NA"))
 		{
-			ArrayList<String> statusOfTopTechCategories = dashboardLocator.checkTopTechCategories(dataFromExcel);
+			ArrayList<String> statusOfTopTechCategories = homepageLocator.checkTopTechCategories(dataFromExcel);
 			for(int i = 0; i < statusOfTopTechCategories.size(); i++)
 			{
 				if(dataFromExcel.contains(statusOfTopTechCategories.get(i)))
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfTopTechCategories.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(2).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(2).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(position, (cellValue + " - failed"));
 
 				}
 			}
