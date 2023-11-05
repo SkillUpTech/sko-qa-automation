@@ -13,11 +13,16 @@ import com.regression.utility.*;
 public class OpenWebsite
 {
 	static String setURL;
+<<<<<<< HEAD
 	public static WebDriver openDriver(String browserName) throws InterruptedException
+=======
+	public static WebDriver openDriver(String browserName)
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	{
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
+<<<<<<< HEAD
 			System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
 			ChromeOptions options = new ChromeOptions();
 			/*
@@ -33,6 +38,19 @@ public class OpenWebsite
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
 			System.setProperty("webdriver.gecko.driver","/usr/local/bin/geckodriver");
+=======
+			System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chromedriverv118\\chromedriver.exe");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			driver = new FirefoxDriver(); 
 			driver.manage().window().maximize();
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
@@ -46,8 +64,12 @@ public class OpenWebsite
 	{
 		if(host.equalsIgnoreCase("prod-in"))
 		{
+<<<<<<< HEAD
 			String convertURL = "in";
 			setHost = "https://"+convertURL+".skillup.online";
+=======
+			setHost = "https://in.skillup.online";
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 		else if(host.equalsIgnoreCase("stagecourses-in"))
 		{
@@ -55,8 +77,12 @@ public class OpenWebsite
 		}
 		else if(host.equalsIgnoreCase("stage-in"))
 		{
+<<<<<<< HEAD
 			String converturl = "stage-in";
 			setHost = "https://"+converturl+".skillup.online";
+=======
+			setHost = "https://stage-in.skillup.online";
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 		else if(host.equalsIgnoreCase("qa-in"))
 		{

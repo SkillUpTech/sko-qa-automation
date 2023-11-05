@@ -42,7 +42,11 @@ public class HeaderSectionValidation
 						checkBusiness();
 						break;
 					case "blog":
+<<<<<<< HEAD
 						checkBlog();
+=======
+						checkBlog(row);
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 						break;
 					case "categories":
 						checkCategories(row);
@@ -111,6 +115,7 @@ public class HeaderSectionValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(2).set(0, "business - failed");
 		}
 	}
+<<<<<<< HEAD
 	public void checkBlog() throws InterruptedException
 	{
 		String blogProcess = headerSectionLocator.checkBlog();
@@ -118,6 +123,18 @@ public class HeaderSectionValidation
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).set(0, "blog - failed");
+=======
+	public void checkBlog(ArrayList<String> data) throws InterruptedException
+	{
+		if(!data.contains("NA"))
+		{
+			String blogProcess = headerSectionLocator.checkBlog();
+			if(blogProcess.equalsIgnoreCase("fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).set(0, "blog - failed");
+			}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 	}
 	public void checkCategories(ArrayList<String> data)

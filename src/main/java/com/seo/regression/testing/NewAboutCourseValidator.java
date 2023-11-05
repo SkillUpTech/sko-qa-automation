@@ -31,6 +31,10 @@ public class NewAboutCourseValidator
 		this.ROWS = rows;
 		this.driver = driver;
 		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
+<<<<<<< HEAD
+=======
+		System.out.println("About course process started");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	}
 
 	public String processSheetData()

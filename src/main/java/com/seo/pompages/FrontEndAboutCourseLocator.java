@@ -34,7 +34,11 @@ public class FrontEndAboutCourseLocator
 	
 	public void openDriver()
 	{
+<<<<<<< HEAD
 		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+=======
+		System.setProperty("webdriver.chrome.driver", "D:\\DownloadFiles\\chromedriver_107 version\\chromedriver_win32\\chromedriver.exe");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));

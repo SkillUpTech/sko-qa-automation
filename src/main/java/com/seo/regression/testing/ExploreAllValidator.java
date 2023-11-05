@@ -49,9 +49,15 @@ public class ExploreAllValidator
 				case "learningStyles":
 					verify_learningStyles();
 					break;
+<<<<<<< HEAD
 				case "sortBy":
 					verify_sortBy();
 					break;
+=======
+				/*
+				 * case "sortBy": verify_sortBy(); break;
+				 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			}
 		}
 		return sheetStatus;
@@ -179,12 +185,20 @@ public class ExploreAllValidator
 			  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").
 			  get(6).set(1, "sortBy - failed");
 		  }
+<<<<<<< HEAD
 			 
 		if(getStatus.get(1).contains("high"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(7).set(1, "sortBy - failed");
 		}
+=======
+			if(getStatus.get(1).contains("high"))
+			{
+				sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(7).set(1, "sortBy - failed");
+			}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 	}
 }

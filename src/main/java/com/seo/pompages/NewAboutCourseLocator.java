@@ -55,7 +55,11 @@ public class NewAboutCourseLocator
 	}
 	public void openDriver()
 	{
+<<<<<<< HEAD
 		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+=======
+		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chrome 116\\chromedriver-win64\\chromedriver.exe");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -1019,6 +1023,7 @@ String addHosturl;
 			}
 			else
 			{
+<<<<<<< HEAD
 				List<WebElement> focus_StartsOn = driver.findElements(By.cssSelector("div[class='col-12 CourseDescription_breakContent__EUpfp '] div[class*='CourseDescription_durationAndPriceSection'] div[class='d-flex gap-2'] img[alt]"));
 				for(int i = 0; i < focus_StartsOn.size(); i++)
 				{
@@ -1048,6 +1053,42 @@ String addHosturl;
 					}
 				}
 			}
+=======
+				WebElement focus_StartsOn = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(1)"));
+				WebElement verifyStartsOnIcon = focus_StartsOn.findElement(By.cssSelector(">div>span"));
+				if(verifyStartsOnIcon.isDisplayed())
+				{
+					System.out.println("StartsOn icon is present");
+				}
+				else
+				{
+					checkStartsOnStatus = "fail";
+					System.out.println("StartsOn icon is not present");
+				}
+				WebElement StartsOnHeader = focus_StartsOn.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				if(StartsOnHeader.getText().equalsIgnoreCase("Starts On"))
+				{
+					System.out.println("StartsOn is present");
+				}
+				else
+				{
+					checkStartsOnStatus = "fail";
+					System.out.println("StartsOn is not present");
+				}
+				WebElement StartsOnContent = focus_StartsOn.findElement(By.cssSelector(" p[class]"));
+				String getStartsOnText = StartsOnContent.getText();
+				if(getStartsOnText.equalsIgnoreCase(startsOnFromExcel))
+				{
+					System.out.println("Starts On is correct");
+					checkStartsOnStatus = "pass";
+				}
+				else
+				{
+					System.out.println("Starts On is not correct");
+					checkStartsOnStatus = "fail";
+				}
+		}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 		catch(Exception e)
 		{
@@ -1067,6 +1108,7 @@ String addHosturl;
 			}
 			else
 			{
+<<<<<<< HEAD
 				List<WebElement> focus_Duration = driver.findElements(By.cssSelector("div[class='col-12 CourseDescription_breakContent__EUpfp '] div[class='CourseDescription_durationAndPriceSection__zodIu justify-content-start gap-5'] div[class='d-flex gap-2'] img[alt]"));
 				for(int i = 0; i < focus_Duration.size(); i++)
 				{
@@ -1098,6 +1140,39 @@ String addHosturl;
 						checkDurationStatus = "pass";
 						break;
 					}
+=======
+				WebElement focus_Duration = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(1)"));
+				WebElement checkDurationIcon = focus_Duration.findElement(By.cssSelector(" div>span"));
+				if(checkDurationIcon.isDisplayed())
+				{
+					System.out.println("Duration icon is present");
+				}
+				else
+				{
+					System.out.println("Duration icon is not present");
+					checkDurationStatus = "fail";
+				}
+				WebElement durationHeader = focus_Duration.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				if(durationHeader.getText().equalsIgnoreCase("Duration"))
+				{
+					System.out.println("Duration is present");
+				}
+				else
+				{
+					System.out.println("Duration is not present");
+				}
+				WebElement durationContent = focus_Duration.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>div"));
+				String getDurationText = durationContent.getText();
+				if(getDurationText.trim().equalsIgnoreCase(durationFromExcel.trim()))
+				{
+					System.out.println("Duration is correct");
+					checkDurationStatus = "pass";
+				}
+				else
+				{
+					System.out.println("Duration content is not correct");
+					checkDurationStatus = "fail";
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 				}
 			}
 		}
@@ -1119,6 +1194,7 @@ String addHosturl;
 			}
 			else
 			{
+<<<<<<< HEAD
 				List<WebElement> focus_Fee = driver.findElements(By.cssSelector("div[class='col-12 CourseDescription_breakContent__EUpfp '] div[class='CourseDescription_durationAndPriceSection__zodIu justify-content-start gap-5'] div[class='d-flex gap-2'] img[alt]"));
 				for(int i = 0; i < focus_Fee.size(); i++)
 				{
@@ -1149,6 +1225,40 @@ String addHosturl;
 						System.out.println("fee is correct");
 						checkPriceWOGSTStatus = "success";
 					}
+=======
+				WebElement focus_Fee = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(2)"));
+				WebElement FeeIcon = focus_Fee.findElement(By.cssSelector(" div>span"));
+				if(FeeIcon.isDisplayed())
+				{
+					System.out.println("Fee icon is present");
+				}
+				else
+				{
+					System.out.println("Fee icon is not present");
+					checkPriceWOGSTStatus = "fail";
+				}
+				WebElement FeeHeader = focus_Fee.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				if(FeeHeader.getText().equalsIgnoreCase("Fee"))
+				{
+					System.out.println("fee header is present");
+				}
+				else
+				{
+					System.out.println("fee header is not present");
+					checkPriceWOGSTStatus = "fail";
+				}
+				WebElement feeContent = focus_Fee.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>p[class]"));
+				String getStartsOnText = feeContent.getText();
+				if(getStartsOnText.trim().contains(flatPriceWithoutGSTFromExcel.trim()))
+				{
+					System.out.println("fee is correct");
+					checkPriceWOGSTStatus = "success";
+				}
+				else
+				{
+					System.out.println("fee is not correct");
+					checkPriceWOGSTStatus = "fail";
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 				}
 			}
 		}
@@ -1172,6 +1282,7 @@ String addHosturl;
 				}
 				else
 				{
+<<<<<<< HEAD
 					List<WebElement> listOfRows = driver.findElements(By.cssSelector("div[class='col-12 CourseDescription_breakContent__EUpfp'] div[class='d-flex gap-2']"));
 					for(int k = 0; k < listOfRows.size(); k++)
 					{
@@ -1188,24 +1299,50 @@ String addHosturl;
 						String getpriceUSDText = priceUSDText.getText();
 						String remove = "Duration";
 						getpriceUSDText = getpriceUSDText.replaceAll(remove, "").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
+=======
+					WebElement listOfRows = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(3)"));
+					WebElement priceUSDImage = listOfRows.findElement(By.cssSelector(" div>span"));
+					if(priceUSDImage.isDisplayed())
+					{
+						System.out.println("priceUSDImage image is available");
+						checkUSDStatus = "success";
+					}
+					else
+					{
+						System.out.println("priceUSDImage image is not available");
+						checkUSDStatus = "Fail";
+					}
+						WebElement priceUSDText = listOfRows.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']p[class]"));
+						String getpriceUSDText = priceUSDText.getText();
+						getpriceUSDText = getpriceUSDText.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 						String getpriceUSDFromExcel = priceUSDFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 						if(getpriceUSDText.equals(getpriceUSDFromExcel))
 						{
 							checkUSDStatus = "pass";
 							System.out.println("price from browser :"+getpriceUSDText);
 							System.out.println("price from excel :"+priceUSDFromExcel);
+<<<<<<< HEAD
 							break;
+=======
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 						}
 						else
 						{
 							checkUSDStatus = "fail";
 							System.out.println("price from browser :"+getpriceUSDText);
 							System.out.println("price from excel :"+priceUSDFromExcel);
+<<<<<<< HEAD
 							break;
 						}
 					}
 				}
 			}
+=======
+						}
+					}
+				}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			else
 			{
 				checkUSDStatus = "successIND";

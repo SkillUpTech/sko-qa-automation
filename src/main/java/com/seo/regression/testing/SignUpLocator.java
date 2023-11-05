@@ -19,7 +19,10 @@ public class SignUpLocator
 {
 	String url ;
 	WebDriver driver;
+<<<<<<< HEAD
 	OpenWebsite openWebsite;
+=======
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	
 	public SignUpLocator(WebDriver driver)
 	{
@@ -126,6 +129,15 @@ public class SignUpLocator
 	public ArrayList<Integer> checkFullName(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("FullName validation started");
+<<<<<<< HEAD
+=======
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -141,11 +153,19 @@ public class SignUpLocator
 				System.out.println("sign up page");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+<<<<<<< HEAD
 				this.signUpFunction(dataFromExcel);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(1000);
 			//	statusOfTestCase = this.checkValidationMessage();
+=======
+				//this.signUpFunction(dataFromExcel);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				Thread.sleep(1000);
+			statusOfTestCase = this.checkValidationMessage();
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 				System.out.println("Invalid FullName Validation process done");
 				Thread.sleep(1000);
 				driver.close();
@@ -155,10 +175,22 @@ public class SignUpLocator
 		Thread.sleep(1000);
 		return statusOfTestCase;
 	}
+<<<<<<< HEAD
 	
 	public ArrayList<Integer> checkEmail(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println(" Invalid Email validation started");
+=======
+	public ArrayList<Integer> checkEmail(ArrayList<String> dataFromExcel) throws InterruptedException
+	{
+		System.out.println(" Invalid Email validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -170,7 +202,11 @@ public class SignUpLocator
 			{
 				driver.switchTo().window(window);
 				System.out.println("sign up page");
+<<<<<<< HEAD
 			//	this.signUpFunction(dataFromExcel);
+=======
+				//this.signUpFunction(dataFromExcel);
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -186,6 +222,15 @@ public class SignUpLocator
 	public ArrayList<Integer> checkPassword(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid Password validation started");
+<<<<<<< HEAD
+=======
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -212,6 +257,15 @@ public class SignUpLocator
 	public ArrayList<Integer> checkMobileNumber(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid mobile validation started");
+<<<<<<< HEAD
+=======
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		String parentWindow = driver.getWindowHandle();
@@ -241,6 +295,15 @@ public class SignUpLocator
 		try
 		{
 			System.out.println("sign up validation started with valid data");
+<<<<<<< HEAD
+=======
+			OpenWebsite.openSite(driver);
+			/*
+			 * WebElement signupClick = driver.findElement(By.
+			 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+			 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+			 */
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			this.signUpPage();//click sign up icon
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();

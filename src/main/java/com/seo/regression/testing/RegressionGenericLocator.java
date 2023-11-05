@@ -47,7 +47,11 @@ public class RegressionGenericLocator {
 
 	public void openDriver()
 	{
+<<<<<<< HEAD
 		System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+=======
+		System.setProperty("webdriver.chrome.driver", "D:\\Doc\\chrome 116\\chromedriver-win64\\chromedriver.exe");
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -321,7 +325,11 @@ public class RegressionGenericLocator {
 					else 
 					{
 						WebElement closePopUp = driver
+<<<<<<< HEAD
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+=======
+								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])"));//(//button[@class='btn-close shadow-none'])[2]
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 						closePopUp.click();
 						freeConsultationStatus.add("pass");
 					}
@@ -1142,35 +1150,65 @@ public class RegressionGenericLocator {
 				clickShareLink.click();
 			}
 			Thread.sleep(2000);
+<<<<<<< HEAD
 			WebElement copyLink = driver
 					.findElement(By.cssSelector("button[class='btn shadow-none ShareCourse_copyButton___ztrR']"));
+=======
+			WebElement copyLink = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			String getLinkText = copyLink.getText();
 			copyLink.click();
 			List<WebElement> share = driver.findElements(By.cssSelector("a[class='ShareCourse_socialIcon__f7x_3']"));
 			for (int i = 0; i < share.size(); i++)
 			{
+<<<<<<< HEAD
 				if (share.get(i).getAttribute("href").contains(shareFromExcel)) {
+=======
+				if(share.get(i).getAttribute("href").contains(shareFromExcel))
+				{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					share.get(i).click();
 					String parentWindow = driver.getWindowHandle();
 					Set<String> allWindow = driver.getWindowHandles();
 					Iterator<String> itr = allWindow.iterator();
+<<<<<<< HEAD
 					while (itr.hasNext()) {
 						String childWindow = itr.next();
 						if (!parentWindow.equalsIgnoreCase(childWindow)) {
 							driver.switchTo().window(childWindow);
 							if (driver.getCurrentUrl().contains("twitter")) {
+=======
+					while (itr.hasNext())
+					{
+						String childWindow = itr.next();
+						if(!parentWindow.equalsIgnoreCase(childWindow))
+						{
+							driver.switchTo().window(childWindow);
+							if (driver.getCurrentUrl().contains("twitter"))
+							{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 								driver.switchTo().window(childWindow);
 								System.out.println("twitter screen");
 								driver.close();
 								driver.switchTo().window(parentWindow);
 							}
+<<<<<<< HEAD
 							if (driver.getCurrentUrl().equalsIgnoreCase("facebook")) {
+=======
+							if (driver.getCurrentUrl().equalsIgnoreCase("facebook"))
+							{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 								driver.switchTo().window(childWindow);
 								System.out.println("facebook screen");
 								driver.close();
 								driver.switchTo().window(parentWindow);
 							}
+<<<<<<< HEAD
 							if (driver.getCurrentUrl().equalsIgnoreCase("linked")) {
+=======
+							if (driver.getCurrentUrl().equalsIgnoreCase("linked"))
+							{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 								driver.switchTo().window(childWindow);
 								System.out.println("linkedIn Screen");
 								driver.close();
@@ -1180,7 +1218,11 @@ public class RegressionGenericLocator {
 					}
 				}
 			}
+<<<<<<< HEAD
 			driver.findElement(By.cssSelector("div#share-course button[class='btn-close shadow-none']")).click();
+=======
+			//driver.findElement(By.cssSelector("div#share-course button[class='btn-close shadow-none']")).click();
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1262,9 +1304,17 @@ public class RegressionGenericLocator {
 		}
 	}
 
+<<<<<<< HEAD
 	public ArrayList<String> subscribeLocator(ArrayList<String> subscribeFromExcel) {
 		ArrayList<String> checkSubscribeProcess = new ArrayList<String>();
 		try {
+=======
+	public ArrayList<String> subscribeLocator(ArrayList<String> subscribeFromExcel)
+	{
+		ArrayList<String> checkSubscribeProcess = new ArrayList<String>();
+		try
+		{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			String getValue = subscribeFromExcel.get(1);
 			String splitDetails[] = getValue.split("-split-");
 			String key = splitDetails[0];
@@ -1292,8 +1342,15 @@ public class RegressionGenericLocator {
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			js.executeScript("window.scrollBy(0,100)");
 			WebElement clickSubscribe = driver.findElement(By.xpath("(//button[contains(text(),'Subscribe')])[2]"));
+<<<<<<< HEAD
 			if (clickSubscribe.isDisplayed()) {
 				try {
+=======
+			if (clickSubscribe.isDisplayed())
+			{
+				try 
+				{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					js.executeScript("arguments[0].scrollIntoView()", clickSubscribe);
 					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
@@ -1301,16 +1358,32 @@ public class RegressionGenericLocator {
 					// clickSubscribe.click();
 					((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickSubscribe);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+<<<<<<< HEAD
 				} catch (Exception e) {
+=======
+				} 
+				catch (Exception e)
+				{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					e.printStackTrace();
 					checkSubscribeProcess.add("fail");
 				}
 				List<WebElement> checkValidationLocator = driver
 						.findElements(By.cssSelector("p[class='mt-2  NewsAndUpdates_inputMessage___Y1G_ mt-1']"));
+<<<<<<< HEAD
 				if (checkValidationLocator.size() > 0) {
 					System.out.println("validation message shown");
 					checkSubscribeProcess.add("fail");
 				} else {
+=======
+				if (checkValidationLocator.size() > 0)
+				{
+					System.out.println("validation message shown");
+					checkSubscribeProcess.add("fail");
+				} 
+				else
+				{
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					checkSubscribeProcess.add("pass");
 				}
 			}

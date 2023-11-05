@@ -1,7 +1,12 @@
 
 package com.seo.regression.testing;
 import java.text.SimpleDateFormat;
+<<<<<<< HEAD
 import java.time.Duration;
+=======
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -31,6 +36,7 @@ public class RegressionTesting
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
 	public static String ENV_TO_USE = "";
+<<<<<<< HEAD
 	String getEnvironment="";
 	WebDriver driver;
 	
@@ -46,6 +52,39 @@ public class RegressionTesting
 	    else if (browser.equalsIgnoreCase("Chrome"))
 	    {
 	    	driver = OpenWebsite.openDriver(browser);
+=======
+	String getEnvironment = "";
+	WebDriver driver;
+	
+	@BeforeTest
+	@Parameters({"browser","env"})
+	public void setup(String browserName, String env) throws Exception
+	{
+		System.out.println("welcome");
+	    if (browserName.equalsIgnoreCase("firefox"))
+	    {
+	    	driver = OpenWebsite.openDriver(browserName);
+	    }
+	    else if (browserName.equalsIgnoreCase("Chrome"))
+	    {
+	    	driver = OpenWebsite.openDriver(browserName);
+	    	if(env.equalsIgnoreCase("stage"))
+	    	{
+	    		getEnvironment = "stage";
+	    	}
+	    	else if(env.equalsIgnoreCase("stage-in"))
+	    	{
+	    		getEnvironment = "stage-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("prod-in"))
+	    	{
+	    		getEnvironment = "prod-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("prod"))
+	    	{
+	    		getEnvironment = "prod-in";
+	    	}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	    }
 	    else
 	    {
@@ -64,7 +103,11 @@ public class RegressionTesting
 	
 	public void startTesting()
 	{
+<<<<<<< HEAD
 		String excelPath = "/home/edx-root/Desktop/testing/TestData.xlsx";
+=======
+		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
@@ -73,6 +116,7 @@ public class RegressionTesting
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
+<<<<<<< HEAD
 			ArrayList<String> getEnvironment = master.get(1);// Environment row in excel
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			System.out.println("reading environment from jenkins");
@@ -86,6 +130,14 @@ public class RegressionTesting
 				  ENV_TO_USE = "prod-in";
 			  }
 			 
+=======
+			ArrayList<String> environment = master.get(1);// Environment row in excel
+			if(master.get(1).toString().contains(getEnvironment))
+			{
+				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
+			}
+			//ENV_TO_USE = getEnvironment;
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
@@ -94,7 +146,11 @@ public class RegressionTesting
 				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
+<<<<<<< HEAD
 					newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
+=======
+					//newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					try
 					{
 						String sheetStatus = "Pass";
@@ -116,6 +172,12 @@ public class RegressionTesting
 								sheetStatus = regressionGenericValidator.processSheetData();
 							}
 							break;
+<<<<<<< HEAD
+=======
+							case "Dashboard":
+								sheetStatus = new DashboardValidation(sheetData, driver).start();
+								break;
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 							case "URLValidation":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
 								break;
@@ -134,8 +196,13 @@ public class RegressionTesting
 							case"HeaderSection":
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
+<<<<<<< HEAD
 							case"Dashboard":
 								sheetStatus = new DashboardValidator(sheetData, driver).start();
+=======
+							case"HomePage":
+								sheetStatus = new HomepageValidator(sheetData, driver).start();
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();
@@ -168,10 +235,34 @@ public class RegressionTesting
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
 							
+<<<<<<< HEAD
 							 case "BusinessPage":
 								 sheetStatus = new BusinessPageValidation(sheetData, driver).start(); 
 								 break;
 							 
+=======
+							 case "IBM":
+								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "Fluideducation":
+								 sheetStatus = new FluidEducationValidation(sheetData, driver).start(); 
+								 break;
+							 case "GLX":
+								 sheetStatus = new GLXValidation(sheetData, driver).start(); 
+								 break;
+							 case "FAQ":
+								 sheetStatus = new FAQValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFooterStagecourses":
+								 sheetStatus = new HeaderFooterInStagecoursesValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFooterErrorScreen":
+								 sheetStatus = new HeaderFooterInErrorScreenValidation(sheetData, driver).start(); 
+								 break;
+							 case "BlogPage":
+								 sheetStatus = new BlogPageValidation(sheetData, driver).start(); 
+								 break;
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -193,7 +284,26 @@ public class RegressionTesting
 			endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 			duration = Utils.findDifference(startTime, endTime);
 			prepareConsolidatedSheet();
+<<<<<<< HEAD
 			ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "/home/edx-root/Desktop/testing/", "result.xlsx");
+=======
+			LocalDateTime currentDateTime = LocalDateTime.now();
+
+	        // Define a custom date and time format
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
+
+	        // Format the current date and time using the formatter
+	        String formattedDateTime = currentDateTime.format(formatter);
+	        
+			if(driver.getCurrentUrl().contains("stage"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(!"stage".contains(driver.getCurrentUrl()))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+			}
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		}
 	}
 	

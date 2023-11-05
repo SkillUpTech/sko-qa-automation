@@ -362,7 +362,11 @@ public class RegressionGenericValidator
 		markProcessFailed();
 	}
 	
+<<<<<<< HEAD
 	private void markProcessFailed()
+=======
+	public void markProcessFailed()
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	{
 		sheetStatus = "Fail";
 		if(null != TestRegressionGenericProcess.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP)
@@ -378,7 +382,11 @@ public class RegressionGenericValidator
 		}
 	}
 	
+<<<<<<< HEAD
 	private void markProcessIgnored()
+=======
+	public void markProcessIgnored()
+>>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	{
 		if(null != TestRegressionGenericProcess.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP)
 		{
