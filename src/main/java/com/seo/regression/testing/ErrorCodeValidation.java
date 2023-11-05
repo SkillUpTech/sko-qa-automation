@@ -18,10 +18,6 @@ public class ErrorCodeValidation
 	public ErrorCodeValidation(ArrayList<ArrayList<String>> sheetData,WebDriver driver)
 	{
 		this.driver = driver;
-<<<<<<< HEAD
-		OpenWebsite.openSite(driver);
-=======
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		this.sheetData = sheetData;
 		this.errorCodeLocator = new ErrorCodeLocator(driver);
 		System.out.println("error code validation process started");

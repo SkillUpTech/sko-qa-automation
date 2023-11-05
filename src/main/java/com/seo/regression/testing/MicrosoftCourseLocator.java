@@ -1,17 +1,11 @@
 package com.seo.regression.testing;
 
-<<<<<<< HEAD
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.sql.DriverAction;
-=======
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.DriverAction;
 import java.time.Duration;
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -46,11 +40,7 @@ public class MicrosoftCourseLocator
 				String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
 				if(getLearningPartnerURL.contains("microsoft"))
 				{
-<<<<<<< HEAD
-					String url = this.checkURLStatus(getLearningPartnerURL);
-=======
 					String url = this.checkCourseCode(getLearningPartnerURL);
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 					learningPartners.get(i).sendKeys(n);
 					if(url.equalsIgnoreCase("fail"))
@@ -81,39 +71,6 @@ public class MicrosoftCourseLocator
 		}
 		return processStatus;
 	}
-<<<<<<< HEAD
-	public String checkURLStatus(String getURL)
-	{
-		String status = "fail";
-		String addHosturl = getURL;
-		HttpURLConnection huc = null;
-		int respCode = 200;
-		try
-		{
-			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-			huc.setRequestMethod("HEAD");
-			huc.connect();
-			respCode = huc.getResponseCode();
-			System.out.println("status code : "+respCode + " " +addHosturl);
-			if(respCode > 200)
-			{
-				System.out.println("broken link"+addHosturl);
-				status = "fail";
-			}
-			else
-			{
-				System.out.println("un broken link"+addHosturl);
-				status = "pass";
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	public ArrayList<String> verifyMicrosoftScourses(ArrayList<String> courses)
-=======
 
 	/*
 	 * public String checkURLStatus(String getURL) { String status = "fail"; String
@@ -217,18 +174,12 @@ public class MicrosoftCourseLocator
 	
 	
 	public ArrayList<String> verifyMicrosoftScourses()
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
 		try
 		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 1100)", "");
-<<<<<<< HEAD
-			Thread.sleep(1000);
-			WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='ManageCardsLimit_showMoreSection'] button"));
-			js.executeScript("arguments[0].click()", clickShowMore);
-=======
 			//Thread.sleep(1000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='ManageCardsLimit_showMoreSection'] button"));
@@ -236,20 +187,10 @@ public class MicrosoftCourseLocator
 			{
 				js.executeScript("arguments[0].click()", clickShowMore);
 			}
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_cardRow'] div[class*='LearningCatalog_customCard']"));
 			for(int i = 0; i < listOfCourses.size(); i++)
 			{
 				String courseURL = listOfCourses.get(i).findElement(By.cssSelector(" div a[href]")).getAttribute("href");
-<<<<<<< HEAD
-				String urlLink = this.checkURLStatus(courseURL);
-				if(urlLink.equalsIgnoreCase("fail"))
-				{
-					processStatus.add(courseURL);
-				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
-						"window. open('"+urlLink+"');" );
-=======
 				String urlLink = this.checkCourseCode(courseURL);
 				if(urlLink.contains("fail"))
 				{
@@ -257,7 +198,6 @@ public class MicrosoftCourseLocator
 				}
 				JavascriptExecutor js1 = (JavascriptExecutor) driver;
 				js1. executeScript("window. open('"+urlLink+"');" );
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 				String parentWindow = driver.getWindowHandle();
 				Set<String> childWnidow = driver.getWindowHandles();
 				for(String windows : childWnidow)

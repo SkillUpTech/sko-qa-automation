@@ -41,11 +41,7 @@ public class LoginPageLinksValidation
 				case "SignUpLink":
 					SignUpLink();
 					break; 
-<<<<<<< HEAD
-							  case "TermOfServiceLink": TermOfServiceLink(); break; case
-=======
 				case "TermOfServiceLink": TermOfServiceLink(); break; case
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 								"PrivacyPolicyLink":
 									PrivacyPolicyLink();
 									break;

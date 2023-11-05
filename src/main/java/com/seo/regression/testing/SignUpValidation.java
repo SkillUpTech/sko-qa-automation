@@ -15,10 +15,6 @@ public class SignUpValidation
 	public SignUpValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
 		this.driver = driver;
-<<<<<<< HEAD
-		OpenWebsite.openSite(driver);
-=======
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 		this.sheetData = sheetData;
 		this.signUpLocator = new SignUpLocator(this.driver);
 		System.out.println("Sign up validation begins");

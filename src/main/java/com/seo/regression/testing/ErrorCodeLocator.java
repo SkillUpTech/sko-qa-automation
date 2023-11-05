@@ -1,10 +1,7 @@
 package com.seo.regression.testing;
 
-<<<<<<< HEAD
-=======
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,52 +21,6 @@ public class ErrorCodeLocator
 	
 	public ArrayList<String> checkCourseCode(ArrayList<String> codeFromExcel)
 	{
-<<<<<<< HEAD
-		String url;
-		int respCode = 200;
-		HttpURLConnection huc = null;
-		for(int i = 1; i < codeFromExcel.size(); i++)
-		{
-			String endURL = codeFromExcel.get(i);
-			url = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+endURL;
-				String addHosturl = url;
-				try
-				{
-					huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-					huc.setRequestMethod("HEAD");
-					huc.connect();
-					respCode = huc.getResponseCode();
-					System.out.println("status code : "+respCode + " " +addHosturl);
-					if(respCode > 200)
-					{
-						System.out.println("broken link"+addHosturl);
-						statusOfErrorCode.add(endURL);
-					}
-					else
-					{
-						System.out.println("un broken link"+addHosturl);
-						((JavascriptExecutor) driver).executeScript("window.open('"+addHosturl+"')");
-						ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-						for(String windows : w)
-						{
-							driver.switchTo().window(windows);
-							if(driver.getCurrentUrl().contains(endURL))
-							{
-								driver.switchTo().window(windows);
-								System.out.println("current url : "+driver.getCurrentUrl());
-								driver.close();
-							}
-						}
-						driver.switchTo().window(w.get(0));
-						statusOfErrorCode.add("Success");
-					}
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-=======
 		String url="";
 		int respCode = 200;
 		HttpURLConnection huc = null;
@@ -155,7 +106,6 @@ public class ErrorCodeLocator
 			}
 
 			  }
->>>>>>> bdd0f2cec4ad56528210943314c35d5174841808
 			
 		return statusOfErrorCode;
 	}
