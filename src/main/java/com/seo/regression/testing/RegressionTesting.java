@@ -61,7 +61,7 @@ public class RegressionTesting
 	    	}
 	    	else if(env.equalsIgnoreCase("prod"))
 	    	{
-	    		getEnvironment = "prod-in";
+	    		getEnvironment = "prod";
 	    	}
 	    }
 	    else
@@ -148,7 +148,7 @@ public class RegressionTesting
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
 							case"HomePage":
-								sheetStatus = new HomepageValidator(sheetData, driver).start();
+								sheetStatus = new HomePageValidator(sheetData, driver).start();
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();

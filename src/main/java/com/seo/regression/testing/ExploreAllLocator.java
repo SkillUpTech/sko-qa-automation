@@ -14,6 +14,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -380,8 +381,19 @@ public class ExploreAllLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							for(int j = 0; j < listOfCourses.size(); j++)
 							{
-								String categoryCourseName = listOfCourses.get(j).getAttribute("href");
-								categoryCourseName = listOfCourses.get(j).getAttribute("href");
+								String categoryCourseName;
+								try 
+								{
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+								    categoryCourseName = listOfCourses.get(j).getAttribute("href");
+								    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+								} 
+								catch(StaleElementReferenceException e)
+								{
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+									 categoryCourseName = listOfCourses.get(j).getAttribute("href");
+									 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+								}
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 								wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
@@ -542,8 +554,9 @@ public class ExploreAllLocator
 					
 					if(!level.isSelected())
 					{
-						level.click();
-					//	Thread.sleep(1000);
+						//jse3.executeScript("arguments[0].click()", level);
+						Actions actions = new Actions(driver);
+						actions.moveToElement(level).click().perform();
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 					System.out.println(level.getAttribute("id"));
@@ -675,7 +688,8 @@ public class ExploreAllLocator
 					
 					if(!level.isSelected())
 					{
-						level.click();
+						Actions actions = new Actions(driver);
+						actions.moveToElement(level).click().perform();
 						//Thread.sleep(1000);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));

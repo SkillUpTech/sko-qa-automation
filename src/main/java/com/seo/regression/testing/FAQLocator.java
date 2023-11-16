@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 
 public class FAQLocator
@@ -43,12 +44,20 @@ public class FAQLocator
 		JavascriptExecutor js2 = (JavascriptExecutor) driver;
 		try
 		{
-			WebElement clickFAQ = driver.findElement(By.cssSelector("div[class*='Footer_FootMenuiNNr'] ul>li:nth-child(4)>a"));
-			((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true)", clickFAQ);
+			WebElement focusFooterCompany = driver.findElement(By.xpath("//div[@class='Footer_FootMenuHeDinG__tseE0']//h2[contains(text(),'Company')]"));
+			((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true)", focusFooterCompany);
 			Thread.sleep(1000);
 			((JavascriptExecutor)driver).executeScript("window.scrollBy(0,-200)", "");
 			Thread.sleep(1000);
-			js2.executeScript("arguments[0].click()", clickFAQ);
+			List<WebElement> clickFAQ = driver.findElements(By.cssSelector("div[class*='Footer_FootMenuiNNr'] ul>li>a"));
+			for(int k = 0; k < clickFAQ.size(); k++)
+			{
+				if(clickFAQ.get(k).getText().contains("FAQ"))
+				{
+					clickFAQ.get(k).click();
+					break;
+				}
+			}
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
@@ -176,7 +185,7 @@ public class FAQLocator
 			}
 			
 			//js.executeScript("arguments[0].scrollIntoView();", submit);
-			WebElement locateFooter = driver.findElement(By.cssSelector("footer#newsletter"));
+			WebElement locateFooter = driver.findElement(By.cssSelector("footer#newsletter, div[class='Footer_footertopmenu__gu_Hf']"));
 			js.executeScript("arguments[0].scrollIntoView();", locateFooter);
 			Thread.sleep(500);
 			js.executeScript("window.scrollBy(0,-500)");

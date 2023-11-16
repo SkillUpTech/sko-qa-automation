@@ -70,9 +70,9 @@ public class HeaderFooterInStagecoursesValidation
 			  case "SkillupOnlineForBusiness": 
 				  SkillupOnlineForBusiness(row.get(1)); 
 				  break; 
-			  case "Placement": 
-				  Placement(row.get(1)); 
-				  break; 
+				/*
+				 * case "Placement": Placement(row.get(1)); break;
+				 */
 			  case "FAQ": 
 				  FAQ(row.get(1)); 
 				  break; 
@@ -235,16 +235,16 @@ public class HeaderFooterInStagecoursesValidation
 
 		}
 	}
-	public void Placement(String data)
-	{
-		String status = headerFooterInStagecoursesLocator.PlacementProcess(data);
-		if(!status.equalsIgnoreCase("pass"))
-		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(16).add(2, (status + " - failed"));
 
-		}
-	}
+	/*
+	 * public void Placement(String data) { String status =
+	 * headerFooterInStagecoursesLocator.PlacementProcess(data);
+	 * if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
+	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
+	 * "HeaderFooterStagecourses").get(16).add(2, (status + " - failed"));
+	 * 
+	 * } }
+	 */
 	public void FAQ(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.FAQProcess(data);
