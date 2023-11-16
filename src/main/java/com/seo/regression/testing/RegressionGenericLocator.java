@@ -228,8 +228,11 @@ public class RegressionGenericLocator {
 				((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickbutton);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement fullName = driver.findElement(By.cssSelector("input[name='fullname']"));
+				wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[name='fullname']")));
+				wait.until(ExpectedConditions.elementToBeClickable(fullName));
 				fullName.clear();
 				fullName.sendKeys(kv.get("name"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement email = driver.findElement(
 						By.cssSelector("div[class='GetConsultationForm_formContent__Q7Cwa'] input[name='email']"));
@@ -280,8 +283,11 @@ public class RegressionGenericLocator {
 									System.out.println("privacy policy window");
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									Thread.sleep(1000);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.switchTo().window(parentwindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 								}
 								else if (driver.getCurrentUrl().contains( "/tos/")) 
 								{
@@ -289,8 +295,11 @@ public class RegressionGenericLocator {
 									System.out.println("terms of service");
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									Thread.sleep(1000);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.close();
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									driver.switchTo().window(parentwindow);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 								}
 							}
 						}
@@ -313,16 +322,21 @@ public class RegressionGenericLocator {
 						freeConsultationStatus.add("Fail");
 						WebElement closePopUp = driver
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if (closePopUp.isDisplayed()) 
 						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 							closePopUp.click();
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						}
 					} 
 					else 
 					{
 						WebElement closePopUp = driver
 								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])"));//(//button[@class='btn-close shadow-none'])[2]
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						closePopUp.click();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						freeConsultationStatus.add("pass");
 					}
 				} 
@@ -1139,18 +1153,27 @@ public class RegressionGenericLocator {
 			wait.until(ExpectedConditions.elementToBeClickable(clickShareLink));
 			if (clickShareLink.isDisplayed()) {
 				Thread.sleep(2000);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 				clickShareLink.click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			}
 			Thread.sleep(2000);
 			WebElement copyLink = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
 			String getLinkText = copyLink.getText();
 			copyLink.click();
-			List<WebElement> share = driver.findElements(By.cssSelector("a[class='ShareCourse_socialIcon__f7x_3']"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+			List<WebElement> share = driver.findElements(By.cssSelector("a[class*='shareSocialMedia_socialIcon']"));
 			for (int i = 0; i < share.size(); i++)
 			{
-				if(share.get(i).getAttribute("href").contains(shareFromExcel))
+				if(share.get(i).isDisplayed())
 				{
-					share.get(i).click();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					if(!share.get(i).getAttribute("href").contains("mailto:?"))
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						share.get(i).click();
+					}
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					String parentWindow = driver.getWindowHandle();
 					Set<String> allWindow = driver.getWindowHandles();
 					Iterator<String> itr = allWindow.iterator();
@@ -1164,22 +1187,41 @@ public class RegressionGenericLocator {
 							{
 								driver.switchTo().window(childWindow);
 								System.out.println("twitter screen");
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.close();
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.switchTo().window(parentWindow);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("facebook"))
+							if (driver.getCurrentUrl().contains("facebook"))
 							{
 								driver.switchTo().window(childWindow);
 								System.out.println("facebook screen");
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.close();
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.switchTo().window(parentWindow);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							}
-							if (driver.getCurrentUrl().equalsIgnoreCase("linked"))
+							if (driver.getCurrentUrl().contains("linked"))
 							{
 								driver.switchTo().window(childWindow);
 								System.out.println("linkedIn Screen");
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.close();
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.switchTo().window(parentWindow);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							}
+							if (driver.getCurrentUrl().contains("whatsapp"))
+							{
+								driver.switchTo().window(childWindow);
+								System.out.println("linkedIn Screen");
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								driver.close();
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+								driver.switchTo().window(parentWindow);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							}
 						}
 					}
