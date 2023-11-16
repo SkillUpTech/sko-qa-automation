@@ -145,6 +145,7 @@ public class FAQLocator
 			if(!data.get(1).equalsIgnoreCase("empty"))
 			{
 				fullname.sendKeys(data.get(1));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			}
 			else
 			{
@@ -155,6 +156,7 @@ public class FAQLocator
 			if(!data.get(2).equalsIgnoreCase("empty"))
 			{
 				email.sendKeys(data.get(2));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			}
 			else
 			{
@@ -164,20 +166,21 @@ public class FAQLocator
 			  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
 			  Select countryName = new Select(country);
 			  countryName.selectByVisibleText("India");
-			 
+			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
 			contact.clear();
 			contact.sendKeys(data.get(3));
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='additionalinfo']"));
 			Select categoryName = new Select(category);
 			categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement queryMsg = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>textarea[name='message']"));
 			queryMsg.clear();
 			if(!data.get(4).equalsIgnoreCase("empty"))
 			{
 				queryMsg.sendKeys(data.get(4));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			}
 			else
 			{
@@ -192,9 +195,9 @@ public class FAQLocator
 			Thread.sleep(500);
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
 			js.executeScript("arguments[0].click()", submit);
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			datastatus.addAll(this.errorMsg());
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		}
 		catch(Exception e)
 		{
@@ -302,11 +305,15 @@ public class FAQLocator
 				 * ); JavascriptExecutor js = (JavascriptExecutor) driver;
 				 * js.executeScript("arguments[0].scrollIntoView();", footer);
 				 */
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 				if(checkSuccessMsg.size()>0)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 					System.out.println("success msg present");
 					status.add("pass");
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			}
 		}
@@ -314,6 +321,7 @@ public class FAQLocator
 		{
 			e.printStackTrace();
 		}
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 		return status;
 	}
 }
