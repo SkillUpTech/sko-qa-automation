@@ -36,6 +36,7 @@ public class RegressionGenericLocator {
 	String setLoginURL;
 	String courseCode;
 	String orderNumber = "";
+	String getEnrolledCourseName = "";
 	String amountWithTax;
 	String amountWithOutTax;
 	String checkPaymentProcess;
@@ -367,7 +368,7 @@ public class RegressionGenericLocator {
 			for (String window : allWindows)
 			{
 				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("/basket/") && driver.getCurrentUrl().contains("-in."))
+				if(driver.getCurrentUrl().contains("/basket/"))
 				{
 					driver.switchTo().window(window);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -682,7 +683,9 @@ public class RegressionGenericLocator {
 			  System.out.println("checkout page");
 			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+			
 			  WebElement getOrderDetails = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr td"));
+			  
 			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 			  System.out.println("order details : " + getOrderDetails.getText());
@@ -691,9 +694,15 @@ public class RegressionGenericLocator {
 			  double n = Double.parseDouble(amountOrderDetails);
 			  int v = (int) n;
 			  System.out.println("amount order details : " + amountOrderDetails.toString());
+			 
 			  WebElement getOrderNumber = driver.findElement(By.cssSelector("div[class*='order_info']:nth-child(2) div:nth-child(3) h4"));
+			 
 			  orderNumber = getOrderNumber.getText();
 			  System.out.println("OrderNumber: " + orderNumber);
+			  
+			  WebElement nameOfcourse = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr td>p"));
+			  getEnrolledCourseName = nameOfcourse.getText();
+			  System.out.println("Enrolled course name : "+getEnrolledCourseName);
 			  if(digit == v)
 			  {
 				checkOrderDetails = "pass";
