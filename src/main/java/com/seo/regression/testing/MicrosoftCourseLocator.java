@@ -160,7 +160,7 @@ public class MicrosoftCourseLocator
 				System.out.println("Done");
 				if(status>200)
 				{
-					getstatus = "fail" + respCode;
+					getstatus = "fail" + status;
 				}
 			    } 
 			catch (Exception e) 

@@ -30,7 +30,7 @@ public class DashboardValidation
 			switch(firstColumn)
 			{
 				case "url": 
-					  url(row.get(1)); 
+					  url(row); 
 					  break;
 				case "EnrollFlatPrice": 
 					  EnrollFlatPrice(row); 
@@ -38,14 +38,26 @@ public class DashboardValidation
 				case "continueOnDashboard":
 					continueOnDashboard();
 					break;
+				case "checkEnrolledCourse":
+					checkEnrolledCourse();
+					break;
+				case "checkEnrolledProgram":
+					checkEnrolledProgram();
+					break;
+				case "shareCourse":
+					shareCourseFromDashboard();
+					break;
+				case "checkSocialLink":
+					checkSocialLink();
+					break;
 			}
 		}
 		return sheetStatus;
 	}
 	
-	public void url(String url)
+	public void url(ArrayList<String> url)
 	{
-		String urlStatus = dashboardLocator.openSite(url);
+		ArrayList<String> urlStatus = dashboardLocator.openSite(url);
 		if(urlStatus.contains("fail"))
 		{
 			sheetStatus = "Fail";
@@ -103,6 +115,50 @@ public class DashboardValidation
 	
 	public void continueOnDashboard()
 	{
-		
+		String urlStatus = dashboardLocator.clickDashboard();
+		if(urlStatus.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(2).set(0, "continueOnDashboard - failed");
+		}
+	}
+	
+	public void checkEnrolledCourse()
+	{
+		String urlStatus = dashboardLocator.enrolledCourse();
+		if(urlStatus.contains("fail") || !urlStatus.contains("success"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(3).add(1, (urlStatus + "checkEnrolledCourse - failed"));
+		}
+	}
+	public void checkEnrolledProgram()
+	{
+		String urlStatus = dashboardLocator.enrolledProgram();
+		if(urlStatus.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(4).add(1, (urlStatus + "checkEnrolledCourse - failed"));
+		}
+	}
+
+	public void shareCourseFromDashboard()
+	{
+		String urlStatus = dashboardLocator.verfiyShareCourseFromDashboard();
+		if(urlStatus.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(4).set(0, "shareCourse - failed");
+		}
+	}
+	
+	public void checkSocialLink()
+	{
+		String urlStatus = dashboardLocator.checkSocialLink();
+		if(urlStatus.contains("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(4).set(0, "shareCourse - failed");
+		}
 	}
 }

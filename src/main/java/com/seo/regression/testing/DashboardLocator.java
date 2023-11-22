@@ -2,6 +2,7 @@ package com.seo.regression.testing;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -18,6 +19,7 @@ public class DashboardLocator
 	OpenWebsite openWebsite;
 	MicrosoftCourseLocator microsoftCourseLocator;
 	RegressionGenericLocator regressionGenericLocator;
+	String courseName = "";
 	public DashboardLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -25,27 +27,28 @@ public class DashboardLocator
 		this.regressionGenericLocator = new RegressionGenericLocator(this.driver);
 		PageFactory.initElements(driver, this);
 	}
-	
-	public String openSite(String url)
+	public ArrayList<String> openSite(ArrayList<String> urgetURLl)
 	{
-		String status = "";
+		ArrayList<String> status = new ArrayList<String>();
+		ArrayList<String> getURL = new ArrayList<String>();
 		try
 		{
-			String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+url;
-			status = microsoftCourseLocator.checkCourseCode(openPage);
-			if(status.contains("fail"))
+			for(int i = 0; i < getURL.size(); i++)
 			{
-				System.out.println("Facing issue on site");
+				String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+getURL.get(i);
+				status.add(microsoftCourseLocator.checkCourseCode(openPage));
+				if(status.contains("fail"))
+				{
+					System.out.println("Facing issue on site");
+				}
+				driver.get(openPage);
+				WebElement getTitle = driver.findElement(By.xpath("//h1"));
+				courseName = getTitle.getText();
+				System.out.println("course or  program  name : "+courseName);
 			}
-			else
-			{
-				
-			}
-			driver.get(openPage);
 		}
 		catch(Exception e)
 		{
-			status = "fail";
 			e.printStackTrace();
 		}
 		return status;
@@ -62,7 +65,10 @@ public class DashboardLocator
 			String getCurrentURL = driver.getCurrentUrl();
 			if(getCurrentURL.contains("in"))// india site
 			{
-				WebElement checkEnrollButton = driver.findElement(By.cssSelector("button[class*='CourseDescription_enrollNowBtn']"));
+				js.executeScript("window.scrollBy(0,700)");
+				WebElement checkEnrollButton = driver.findElement(By.xpath("//div[contains(@class,'FixedContentBar_buttonsContent')]/button[contains(text(),'Enroll Now')]"));
+				js.executeScript("arguments[0].scrollIntoView();", checkEnrollButton);
+				
 				if(checkEnrollButton.isDisplayed())
 				{
 					if(checkEnrollButton.getText().equalsIgnoreCase("Enroll Now"))
@@ -73,6 +79,14 @@ public class DashboardLocator
 						js.executeScript("arguments[0].click()", checkEnrollButton);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						WebElement EnrollLink = driver.findElement(By.xpath("//button[contains(@class,'CourseDescription_EnrollBtn')]"));
+						js.executeScript("arguments[0].scrollIntoView();", EnrollLink);
+						if(EnrollLink.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", EnrollLink);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						}
 					}
 				}
 				String parentWindow = driver.getWindowHandle();
@@ -80,7 +94,7 @@ public class DashboardLocator
 				for(String window : allWindows)
 				{
 					driver.switchTo().window(window);
-					if(driver.getCurrentUrl().contains("register?"))
+					if(driver.getCurrentUrl().contains("login?"))
 					{
 						driver.switchTo().window(window);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -120,5 +134,129 @@ public class DashboardLocator
 		}
 		return statusOfProcess;
 	
+	}
+	public String clickDashboard()
+	{
+		String status = "fail";
+		String parentWindow = "";
+		try
+		{
+			WebElement clickDashboard = driver.findElement(By.xpath("//a[contains(text(),'Continue to your Dashboard')]"));
+			if(clickDashboard.isDisplayed())
+			{
+				clickDashboard.click();
+				parentWindow = driver.getWindowHandle();
+				Set<String> windows = driver.getWindowHandles();
+				for(String window : windows)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().contains("dashboard"))
+					{
+						driver.switchTo().window(window);
+						System.out.println("Landed to Dashboard Page");
+						status = "success";
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	public String enrolledCourse()
+	{
+		String status = "fail";
+		String getOrderNumber = regressionGenericLocator.orderNumber;
+		String getEnrolledCourseOrProgramName = regressionGenericLocator.getEnrolledCourseName;
+		try
+		{
+			if(courseName.equalsIgnoreCase(getEnrolledCourseOrProgramName))
+			{
+				System.out.println("course enrolled for "+getEnrolledCourseOrProgramName);
+				status = "success";
+			}
+			else
+			{
+				status = courseName;
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			status = "fail";
+			status = courseName;
+		}
+		return status;
+	}
+	public String enrolledProgram()
+	{
+		String status = "fail";
+		try
+		{
+			
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return status;
+	}
+	public String verfiyShareCourseFromDashboard()
+	{
+		String status = "fail";
+		try
+		{
+			List<WebElement> shareIcons = driver.findElements(By.cssSelector("section[class*='dashboardCourseCards_cardContainer'] [class*='dashboardCourseCards_containerBottom'] div[href]>p"));
+			for(int i = 0; i < shareIcons.size(); i++)
+			{
+				if(i == 0)
+				{
+					shareIcons.get(i).click();
+					WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
+					clickCopy.click();
+					List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
+					for(int j = 0; j < socialLink.size(); j++)
+					{
+						if(socialLink.get(j).getAttribute("href").contains("whatsapp"))
+						{
+							socialLink.get(j).click();
+							String parentWindow = driver.getWindowHandle();
+							Set<String> windows = driver.getWindowHandles();
+							for(String window : windows)
+							{
+								driver.switchTo().window(window);
+								if(driver.getCurrentUrl().contains("whatsapp"))
+								{
+									
+								}
+							}
+						}
+					}
+					System.out.println("Share whtsapp ");
+					status = "success";
+					break;
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	public String checkSocialLink()
+	{
+		String status = "fail";
+		try
+		{
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
 	}
 }
