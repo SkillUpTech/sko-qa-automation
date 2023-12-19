@@ -194,11 +194,11 @@ public class GLXLocator {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();
-			//js.executeScript("arguments[0].scrollIntoView(true);", driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour']")));
 			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"));
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
 				String programCardName = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_ProgramHeading']")).getText();
+				js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
 				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramBadGE']>img"));
 				
 				if(!programCardIcon.isDisplayed())
@@ -229,7 +229,7 @@ public class GLXLocator {
 				}
 				else
 				{
-					cardData.add(programCardTitle.getText()); // getting ibm card title
+					cardData.add(programCardTitle.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim()); // getting ibm card title
 				}
 				
 				WebElement programCardLevel = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramList']>ul"));
@@ -299,7 +299,7 @@ public class GLXLocator {
 				WebElement programPageLocator = driver.findElement(By.cssSelector("section[class*='CourseDescription_mainSection']"));
 				
 				WebElement programNameLocator = programPageLocator.findElement(By.cssSelector(" h1"));
-				String programPageName = programPageLocator.findElement(By.cssSelector(" h1")).getText();
+				String programPageName = programPageLocator.findElement(By.cssSelector(" h1")).getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 				
 				WebElement programPageIcon = programPageLocator.findElement(By.cssSelector(" div[class='col d-flex align-items-center'] img[alt='course-icon']"));
 				
@@ -340,7 +340,7 @@ public class GLXLocator {
 				}
 				else
 				{
-					pageData.add(programPageLevels.getText().toLowerCase().replaceAll("\\s", "").replaceAll("[^a-zA-Z0-9]", " ").trim());// levels from program page
+					pageData.add(programPageLevels.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from program page
 				}
 				WebElement checkEnrollmentStatus = driver.findElement(By.cssSelector(" div[class*='CourseDescription_buttonsContent']"));
 				if(!checkEnrollmentStatus.isDisplayed())
@@ -377,7 +377,7 @@ public class GLXLocator {
 						{
 							build.append(matcher.group());
 						}
-						String result = build.toString();
+						String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 						pageData.add(result);
 					}
 					else
@@ -390,7 +390,7 @@ public class GLXLocator {
 						{
 							build.append(matcher.group());
 						}
-						String result = build.toString();
+						String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 						pageData.add(result);
 					}
 				}
@@ -463,14 +463,17 @@ public class GLXLocator {
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0, 400);");
-		Thread.sleep(1000);
+		//js.executeScript("window.scrollBy(0, 400);");
 		WebElement clickExploreAll = driver.findElement(By.cssSelector("div[class*='DiscountSection_ExploreOther']>a"));
+		js.executeScript("arguments[0].scrollIntoView();", clickExploreAll);
 		if(clickExploreAll.isDisplayed())
 		{
-			Actions actions = new Actions(driver);
+			//Actions actions = new Actions(driver);
 			WebElement clickExploreAll1 = driver.findElement(By.cssSelector("div[class*='DiscountSection_ExploreOther']>a"));
-			actions.keyDown(Keys.CONTROL).click(clickExploreAll1).keyUp(Keys.CONTROL).build().perform();
+			js.executeScript("arguments[0].scrollIntoView();", clickExploreAll1);
+			js.executeScript("window.scrollBy(0, -100);");
+			//actions.keyDown(Keys.CONTROL).click(clickExploreAll1).keyUp(Keys.CONTROL).build().perform();
+			clickExploreAll1.click();
 			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String windows : allWindows)

@@ -75,8 +75,10 @@ public class SearchPageLocator {
 					{
 						for(int j = 0; j < checkListOfCourse.size(); j++)
 						{
-							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(1)))
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							if(checkListOfCourse.get(j).getText().equalsIgnoreCase(dataFromExcel.get(i)))
 							{
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								System.out.println("Entered course available");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								checkListOfCourse.get(j).click();
@@ -132,10 +134,15 @@ public class SearchPageLocator {
 											for(String window1 : windows1)
 											{
 												driver.switchTo().window(window1);
-												if(driver.getCurrentUrl().contains("/courses/"))
+												Thread.sleep(3000);
+												if(driver.getCurrentUrl().contains("/courses/") && driver.getCurrentUrl().contains(RegressionTesting.ENV_TO_USE))
 												{
+													Thread.sleep(3000);
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													driver.switchTo().window(window1);
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													System.out.println("course is opened");
+													driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 													Thread.sleep(1000);
 													String courseURL = driver.getCurrentUrl();
 													System.out.println("course Link : "+courseURL);

@@ -194,10 +194,10 @@ public class FluidEducationLocator
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();
-			//js.executeScript("arguments[0].scrollIntoView(true);", driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour']")));
 			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"));
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
+				js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
 				String programCardName = ListOfProgram.get(i).findElement(By.cssSelector(" div[class='DiscountSection_ProgramHeading___MbKv']")).getText();
 				WebElement programCardIcon = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramBadGE__GFvLE']>img"));
 				
@@ -229,7 +229,7 @@ public class FluidEducationLocator
 				}
 				else
 				{
-					cardData.add(programCardTitle.getText()); // getting ibm card title
+					cardData.add(programCardTitle.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim()); // getting ibm card title
 				}
 				
 				WebElement programCardLevel = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class='DiscountSection_ProgramList__GgHCI']>ul"));
@@ -282,7 +282,7 @@ public class FluidEducationLocator
 					{
 						build.append(matcher.group());
 					}
-					String result = build.toString();
+					String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 					cardData.add(result);// card price
 				}
 				WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
@@ -329,7 +329,7 @@ public class FluidEducationLocator
 				}
 				else
 				{
-					pageData.add(programPageName);// title name from page
+					pageData.add(programPageName.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// title name from page
 				}
 				
 				WebElement programPageLevels = programPageLocator.findElement(By.cssSelector(" div[class*='CourseDescription_levelSection']"));
@@ -340,7 +340,7 @@ public class FluidEducationLocator
 				}
 				else
 				{
-					pageData.add(programPageLevels.getText().toLowerCase().replaceAll("\\s", "").replaceAll("[^a-zA-Z0-9]", " ").trim());// levels from program page
+					pageData.add(programPageLevels.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from program page
 				}
 				WebElement checkEnrollmentStatus = driver.findElement(By.cssSelector(" div[class*='CourseDescription_buttonsContent']"));
 				if(!checkEnrollmentStatus.isDisplayed())
@@ -376,7 +376,7 @@ public class FluidEducationLocator
 					{
 						build.append(matcher.group());
 					}
-					String result = build.toString();
+					String result = build.toString().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
 					pageData.add(result);
 				}
 				if(!cardData.equals(pageData))

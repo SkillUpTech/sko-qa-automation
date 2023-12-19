@@ -127,7 +127,7 @@ public class RegressionTesting
 							}
 							break;
 							case "Dashboard":
-								sheetStatus = new DashboardValidation(sheetData, driver).start();
+								sheetStatus = new DashboardValidation(driver, sheetName, sheetData).start();
 								break;
 							case "URLValidation":
 								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
@@ -231,11 +231,11 @@ public class RegressionTesting
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-			if(driver.getCurrentUrl().contains("stage"))
+			if(driver.getCurrentUrl().contains("stage")||driver.getCurrentUrl().contains("stage-in"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_result_" + formattedDateTime + ".xlsx");
 			}
-			else if(!"stage".contains(driver.getCurrentUrl()))
+			else if (!driver.getCurrentUrl().contains("stage"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
 			}

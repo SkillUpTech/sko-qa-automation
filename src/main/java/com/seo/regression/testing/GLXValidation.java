@@ -18,7 +18,7 @@ public class GLXValidation
 		this.driver = driver;
 		OpenWebsite.openSite(driver);
 		this.glxLocator = new GLXLocator(driver);
-		System.out.println("fluidEducation process started");
+		System.out.println("GLX process started");
 		//this.start();
 	}
 	

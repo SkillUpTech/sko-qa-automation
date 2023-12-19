@@ -163,10 +163,10 @@ public class FAQLocator
 				email.sendKeys("");
 			}
 			
-			  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
-			  Select countryName = new Select(country);
-			  countryName.selectByVisibleText("India");
-			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+		  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
+		  Select countryName = new Select(country);
+		  countryName.selectByVisibleText("India");
+		  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
 			contact.clear();
 			contact.sendKeys(data.get(3));
@@ -195,9 +195,9 @@ public class FAQLocator
 			Thread.sleep(500);
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
 			js.executeScript("arguments[0].click()", submit);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			datastatus.addAll(this.errorMsg());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		}
 		catch(Exception e)
 		{
@@ -265,10 +265,10 @@ public class FAQLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']")).size()>0)
 			{
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				WebElement errorMsgLocator = driver.findElement(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
 				if(errorMsgLocator.getText().contains("name"))
 				{
@@ -298,22 +298,15 @@ public class FAQLocator
 			}
 			else
 			{
-				
-				/*
-				 * WebElement footer =
-				 * driver.findElement(By.cssSelector("div[class='Footer_footertopmenu__gu_Hf']")
-				 * ); JavascriptExecutor js = (JavascriptExecutor) driver;
-				 * js.executeScript("arguments[0].scrollIntoView();", footer);
-				 */
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				if(checkSuccessMsg.size()>0)
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					System.out.println("success msg present");
 					status.add("pass");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				}
 			}
 		}
