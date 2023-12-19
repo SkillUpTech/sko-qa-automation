@@ -301,7 +301,7 @@ public class FluidEducationLocator
 				WebElement programNameLocator = programPageLocator.findElement(By.cssSelector(" h1"));
 				String programPageName = programPageLocator.findElement(By.cssSelector(" h1")).getText();
 				
-				WebElement programPageIcon = programPageLocator.findElement(By.cssSelector(" div[class='col d-flex align-items-center'] img[alt='course-icon']"));
+				WebElement programPageIcon = programPageLocator.findElement(By.cssSelector(" div[class='col d-flex align-items-center']>span>img[src*='image']"));
 				
 				if(!programPageIcon.isDisplayed())
 				{
