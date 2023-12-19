@@ -18,7 +18,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "C:\\Users\\Hemamalini\\Downloads\\chromedriver-win64\\chromedriverVersion119\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", "C:\\Users\\Hemamalini\\Downloads\\chromedriver-win64\\chromedriver_119.0.6045.200\\chromedriver.exe");
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
@@ -71,14 +71,14 @@ public class OpenWebsite
 		return setHost;
 	}
 	
-	public static String launchCourse(WebDriver driver, String urlFromExcel)
-	{
-		String setURL = setEnvironment(RegressionTesting.ENV_TO_USE)+urlFromExcel;
-		driver.get(setURL);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-		return setURL;
-	}
+	/*
+	 * public static String launchCourse(WebDriver driver, String urlFromExcel) {
+	 * String setURL = setEnvironment(RegressionTesting.ENV_TO_USE)+urlFromExcel;
+	 * driver.get(setURL);
+	 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70)); return
+	 * setURL; }
+	 */
 	public static String openSite(WebDriver driver)
 	{
 		String setURL;
