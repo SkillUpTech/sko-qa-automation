@@ -218,10 +218,14 @@ public class HeaderSectionLocator
 					if(driver.findElement(By.cssSelector("a#navbarDropdown")).getAttribute("aria-expanded").equalsIgnoreCase("false"))
 					{
 						clickCourseDropdown.click();
-					//	Thread.sleep(3000);
+						Thread.sleep(300);
 					}
 				}
+				JavascriptExecutor js = (JavascriptExecutor) driver;
+				WebElement categoryElement = selectCourse.get(i).findElement(By.cssSelector(" a"));
+				js.executeScript("arguments[0].scrollIntoView();", categoryElement);
 				String categoryName = selectCourse.get(i).findElement(By.cssSelector(" a")).getText();
+				
 				if(categoryName.equalsIgnoreCase(data.get(i+1)))
 				{
 					//driver.findElement(By.cssSelector("div[class=' Header_category__mr_e4']")).click();

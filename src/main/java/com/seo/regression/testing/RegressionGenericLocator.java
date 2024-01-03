@@ -74,6 +74,9 @@ public class RegressionGenericLocator {
 		} else if (host.equalsIgnoreCase("prod")) {
 			setHost = "https://skillup.online";
 		}
+		else if (host.equalsIgnoreCase("dev-in")) {
+			setHost = "https://" + host + ".skillup.online";
+		}
 		return setHost;
 	}
 

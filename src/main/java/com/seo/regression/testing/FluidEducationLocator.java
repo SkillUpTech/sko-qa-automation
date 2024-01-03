@@ -191,6 +191,7 @@ public class FluidEducationLocator
 		ArrayList<String> pageData = new ArrayList<String>();
 		try
 		{
+			System.out.println("FluidEducation Program card verification started");
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();

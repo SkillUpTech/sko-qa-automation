@@ -29,7 +29,7 @@ public class HeaderFooterInStagecoursesValidation
 			switch(firstColumn)
 			{
 			  case "LoginIcon": 
-				  LoginIcon(); 
+				  LoginIcon(row); 
 				  break; 
 				/*
 				 * case "FindOutMore": FindOutMore(row.get(1)); break;
@@ -92,13 +92,16 @@ public class HeaderFooterInStagecoursesValidation
 		return sheetStatus;
 	}
 	
-	public void LoginIcon()
+	public void LoginIcon(ArrayList<String> data)
 	{
-		String status = headerFooterInStagecoursesLocator.loginProcess();
-		if(status.equalsIgnoreCase("fail"))
+		if(!data.contains("NA"))
 		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
+			String status = headerFooterInStagecoursesLocator.loginProcess();
+			if(status.equalsIgnoreCase("fail"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
+			}
 		}
 	}
 	public void FindOutMore(String data)
