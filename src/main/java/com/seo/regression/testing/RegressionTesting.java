@@ -63,6 +63,10 @@ public class RegressionTesting
 	    	{
 	    		getEnvironment = "prod";
 	    	}
+	    	else if(env.equalsIgnoreCase("dev-in"))
+	    	{
+	    		getEnvironment = "dev-in";
+	    	}
 	    }
 	    else
 	    {
@@ -231,13 +235,24 @@ public class RegressionTesting
 	        // Format the current date and time using the formatter
 	        String formattedDateTime = currentDateTime.format(formatter);
 	        
-			if(driver.getCurrentUrl().contains("stage")||driver.getCurrentUrl().contains("stage-in"))
+			if (/*
+				 * driver.getCurrentUrl().contains("stage-in")||driver.getCurrentUrl().contains(
+				 * "stage-in")||
+				 */ENV_TO_USE.contains("stage-in"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "stage_result_" + formattedDateTime + ".xlsx");
 			}
-			else if (!driver.getCurrentUrl().contains("stage"))
+			else if (/* !driver.getCurrentUrl().contains("stage")|| */ENV_TO_USE.contains("stage"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prod_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev-in"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "dev_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}
