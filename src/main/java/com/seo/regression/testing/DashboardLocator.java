@@ -36,6 +36,7 @@ public class DashboardLocator
 			for(int i = 1; i < urgetURLl.size(); i++)
 			{
 				String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+urgetURLl.get(1);
+				
 				status.add(microsoftCourseLocator.checkCourseCode(openPage));
 				if(status.contains("fail"))
 				{
