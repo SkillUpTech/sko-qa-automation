@@ -184,7 +184,6 @@ public class RegressionTesting
 							case "LoginPageLinks":
 								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
 								break;
-							
 							 case "IBM":
 								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
 								 break;

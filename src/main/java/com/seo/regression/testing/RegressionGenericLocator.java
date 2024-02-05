@@ -382,39 +382,52 @@ public class RegressionGenericLocator {
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+					try
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+						WebElement checkoutAmount = driver.findElement(By.cssSelector("div[class='selected-plan'] span"));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+						if(checkoutAmount.isDisplayed())
+						{
+							String getCheckoutAmount = checkoutAmount.getText();
+							System.out.println("checkout Razorpay amount from Browser :" + getCheckoutAmount);
+							String val[] = getCheckoutAmount.split("\\.");
+							String editVal = val[0].replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").toString();
+							
+							int browserValue = Integer.parseInt(editVal);
+							
+							System.out.println("amountWithGST From Browser in Razorpay : " + browserValue);
+							if (browserValue == excelValue) 
+							{
+								System.out.println("both Razorpay amount and excel amount are same");
+								checkRazorpay = "razorpayPass";
+							} 
+							else 
+							{
+								System.out.println(" amount with GST from Excel : " + amountWithTax[1]);
+								checkRazorpay = "razorpayFail";
+							}
+						}
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+						if(!driver.getCurrentUrl().contains("-in."))
+						{
+							
+							WebElement clickPromoTab = driver.findElement(By.cssSelector("a#ui-collapse-729"));
+							clickPromoTab.click();
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							WebElement enterPromo = driver.findElement(By.cssSelector("input#id_code"));
+							enterPromo.sendKeys("");
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							WebElement clickApply = driver.findElement(By.cssSelector("button#apply-voucher-button"));
+							clickApply.click();
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+						}
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
 					
-					WebElement checkoutAmount = driver.findElement(By.cssSelector("div[class='selected-plan'] span"));
-					String getCheckoutAmount = checkoutAmount.getText();
-					System.out.println("checkout Razorpay amount from Browser :" + getCheckoutAmount);
-					String val[] = getCheckoutAmount.split("\\.");
-					String editVal = val[0].replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").toString();
-
-					int browserValue = Integer.parseInt(editVal);
-
-					System.out.println("amountWithGST From Browser in Razorpay : " + browserValue);
-					if (browserValue == excelValue) 
-					{
-						System.out.println("both Razorpay amount and excel amount are same");
-						checkRazorpay = "razorpayPass";
-					} 
-					else 
-					{
-						System.out.println(" amount with GST from Excel : " + amountWithTax[1]);
-						checkRazorpay = "razorpayFail";
-					}
-					if(!driver.getCurrentUrl().contains("-in."))
-					{
-						
-						WebElement clickPromoTab = driver.findElement(By.cssSelector("a#ui-collapse-729"));
-						clickPromoTab.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-						WebElement enterPromo = driver.findElement(By.cssSelector("input#id_code"));
-						enterPromo.sendKeys("");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-						WebElement clickApply = driver.findElement(By.cssSelector("button#apply-voucher-button"));
-						clickApply.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-					}
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript("window.scrollBy(0,200)");
 					Thread.sleep(400);
