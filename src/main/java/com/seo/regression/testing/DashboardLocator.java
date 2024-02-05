@@ -230,6 +230,7 @@ public class DashboardLocator
 						{
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(4));
 							System.out.println("Related Program is present : " + relatedPgm.get(0).getText());
+							relatedPgm.get(0).click();
 							status = "pass";
 							break;
 						}
@@ -239,6 +240,22 @@ public class DashboardLocator
 							System.out.println("Related Program is not present : " );
 							status = "pass";
 							break;
+						}
+					}
+				}
+				List<WebElement> checkAllRelatedPrograms = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section section[class*='dashboardCourseCards_containerBottom'] div[class*='dashboardCourseCards_bottomReletedPrograms']>p[class*='dashboardCourseCards_relatedProgramsLink']"));
+				for(int j = 0 ; j < checkAllRelatedPrograms.size();j++)
+				{
+					System.out.println("related programs are : "+checkAllRelatedPrograms.get(j));
+					checkAllRelatedPrograms.get(j).click();
+					if(driver.findElements(By.cssSelector("ul[class*='navigation_containerList']>li[class*='navigation_selected']")).size() > 0) {
+					    // Your code here
+						System.out.println("related programs available in program section");
+						String checkCourseSection = driver.findElement(By.cssSelector("ul[class*='navigation_containerList']>li")).getText();
+						if(checkCourseSection.equalsIgnoreCase("Courses"))
+						{
+							driver.findElement(By.xpath("//ul[contains(@class,'navigation_containerList')]//li[contains(text(),'Courses')]")).click();
+							status = "pass";
 						}
 					}
 				}
@@ -292,12 +309,132 @@ public class DashboardLocator
 		}
 		return status;
 	}
+	
+	public ArrayList<String> verfiySelfPacedCourse()
+	{
+		ArrayList<String> getStatus = new ArrayList<String>();
+		String courseName = "";
+		try
+		{
+			List<WebElement>  selfPacedLocator = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
+			for(int i = 0; i < selfPacedLocator.size(); i++)
+			{
+				String checkSelfPacedcourse = selfPacedLocator.get(i).findElement(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']")).getText();
+				if(checkSelfPacedcourse.contains("Self-paced"))
+				{
+					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size()>0)
+					{
+						courseName = selfPacedLocator.get(i).findElement(By.cssSelector(" p[class*='dashboardCourseCards_dataCourseTitle']")).getText();
+						System.out.println("self paced course has date details" + courseName);
+						getStatus.add(courseName);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return getStatus;
+	}
+	public ArrayList<String> verfiyVILTCourse()
+	{
+		ArrayList<String> getStatus = new ArrayList<String>();
+		String courseName = "";
+		try
+		{
+			List<WebElement>  selfPacedLocator = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
+			for(int i = 0; i < selfPacedLocator.size(); i++)
+			{
+				String checkSelfPacedcourse = selfPacedLocator.get(i).findElement(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']")).getText();
+				if(checkSelfPacedcourse.contains("vILT"))
+				{
+					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size() <= 0)
+					{
+						courseName = selfPacedLocator.get(i).findElement(By.cssSelector(" p[class*='dashboardCourseCards_dataCourseTitle']")).getText();
+						System.out.println("VILT course has date details" + courseName);
+						getStatus.add(courseName);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return getStatus;
+	}
+	
+	public ArrayList<String> checkBlendedCourse()
+	{
+		ArrayList<String> getStatus = new ArrayList<String>();
+		try
+		{
+			List<WebElement>  selfPacedLocator = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
+			for(int i = 0; i < selfPacedLocator.size(); i++)
+			{
+				String checkSelfPacedcourse = selfPacedLocator.get(i).findElement(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']")).getText();
+				if(checkSelfPacedcourse.contains("Blended"))
+				{
+					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size() <= 0)
+					{
+						courseName = selfPacedLocator.get(i).findElement(By.cssSelector(" p[class*='dashboardCourseCards_dataCourseTitle']")).getText();
+						System.out.println("Blended course has date details" + courseName);
+						getStatus.add(courseName);
+					}
+				}
+			}
+		
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return getStatus;
+	}
+	public ArrayList<String> verfiyPartnerIconRedirectionFromCourse()
+	{
+		ArrayList<String> getURLStatus = new ArrayList<String>();
+		try
+		{
+			List<WebElement> basicLocator = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id] a[class*='dashboardCourseCards_dataTagsDark']"));
+			for(int i = 0; i < basicLocator.size(); i++)
+			{
+				basicLocator.get(i).click();
+				String getPartnerURL = basicLocator.get(i).getAttribute("href");
+					String url = microsoftCourseLocator.checkCourseCode(getPartnerURL);
+					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+					basicLocator.get(i).sendKeys(n);
+					if(url.equalsIgnoreCase("fail"))
+					{
+						getURLStatus.add(getPartnerURL);
+					}
+					String parentWindow = driver.getWindowHandle();
+					Set<String> childWnidow = driver.getWindowHandles();
+					for(String windows : childWnidow)
+					{
+						driver.switchTo().window(windows);
+						if(driver.getCurrentUrl().contains("dashboard"))
+						{
+							driver.switchTo().window(windows);
+							System.out.println("dasboard page : "+driver.getCurrentUrl());
+							break;
+						}
+					}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return getURLStatus;
+	}
 	public String enrolledProgram()
 	{
 		String status = "fail";
 		try
 		{
-			
 			List<WebElement> programs = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
 			for(int i = 0; i < programs.size(); i++)
 			{
@@ -315,50 +452,111 @@ public class DashboardLocator
 		return status;
 	}
 
-	/*
-	 * public String verfiyShareCourseFromDashboard(String share) { String status =
-	 * "fail"; JavascriptExecutor js = (JavascriptExecutor) driver; try {
-	 * List<WebElement> checkcourseName = driver.findElements(By.cssSelector(
-	 * "section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
-	 * for(int j = 0; j < checkcourseName.size(); j++) {
-	 * if(checkcourseName.get(j).getAttribute("id").replaceAll("[^a-zA-Z0-9]",
-	 * " ").replaceAll("\\s", "").trim().equalsIgnoreCase(modifiedcourseName)) {
-	 * js.executeScript("window.scrollBy(0,200)"); WebElement shareIcons =
-	 * checkcourseName.get(j).findElement(By.
-	 * cssSelector(" [class*='dashboardCourseCards_containerBottom'] div[href]>p"));
-	 * shareIcons.click(); WebElement clickCopy = driver.findElement(By.
-	 * cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
-	 * clickCopy.click(); List<WebElement> socialLink =
-	 * driver.findElements(By.cssSelector(
-	 * "div[class*='shareSocialMedia_sociallist']>ul>li>a")); for(int k = 0; k <
-	 * socialLink.size(); k++) {
-	 * if(socialLink.get(k).getAttribute("href").contains("linkedin")) {
-	 * socialLink.get(k).click(); String parentWindow = driver.getWindowHandle();
-	 * Set<String> windows = driver.getWindowHandles(); for(String window : windows)
-	 * { driver.switchTo().window(window);
-	 * if(driver.getCurrentUrl().contains("linkedin")) { WebElement clickSharePost =
-	 * driver.findElement(By.cssSelector("button#ember13"));
-	 * if(clickSharePost.isDisplayed()) { clickSharePost.click(); String
-	 * parentWindow1 = driver.getWindowHandle(); Set<String> windows1 =
-	 * driver.getWindowHandles(); for(String window1 : windows1) {
-	 * driver.switchTo().window(window1);
-	 * if(driver.getCurrentUrl().contains("share-offsite")) {
-	 * driver.switchTo().window(window1); WebElement clickPost =
-	 * driver.findElement(By.cssSelector("button#ember53"));
-	 * if(clickPost.isDisplayed()) { clickPost.click(); WebElement checkSuccessMsg =
-	 * driver.findElement(By.
-	 * cssSelector("//h2[@class='inshare-success-state__success-msg t-light']"));
-	 * if(checkSuccessMsg.isDisplayed()) {
-	 * System.out.println("check shared post success or not : "+checkSuccessMsg.
-	 * getText()); driver.close(); } } } } } } }
-	 * driver.switchTo().window(parentWindow);
-	 * if(driver.getCurrentUrl().contains("dashboard")) { WebElement closePopup =
-	 * driver.findElement(By.
-	 * cssSelector("button[class*='btn-close shadow-none  shareSocialMedia_modalCloseBtn']"
-	 * )); closePopup.click(); } } } System.out.println("Shared linkedin "); status
-	 * = "success"; break; } } } catch(Exception e) { e.printStackTrace(); } return
-	 * status; }
-	 */
+	
+	  public ArrayList<String> verfiyShareCourseFromDashboard(ArrayList<String> share) 
+	  {
+		  ArrayList<String> status = new ArrayList<String>(); 
+		  JavascriptExecutor js = (JavascriptExecutor) driver; 
+		  try 
+		  {
+			  List<WebElement> checkcourseName = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
+			  for(int j = 0; j < checkcourseName.size(); j++)
+			  {
+				  if(checkcourseName.get(j).getAttribute("id").replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s", "").trim().equalsIgnoreCase(modifiedcourseName))
+				  {
+					  js.executeScript("window.scrollBy(0,200)");
+					  WebElement shareIcons = checkcourseName.get(j).findElement(By.cssSelector(" [class*='dashboardCourseCards_containerBottom'] div[href]>p"));
+					  shareIcons.click(); 
+					  WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
+					  clickCopy.click(); 
+					  String parentWindow = driver.getWindowHandle();
+					  List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
+					  for(int k = 0; k < socialLink.size(); k++) 
+					  {
+						  if(socialLink.get(k).getAttribute("href").contains(share.get(3)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("linkedin"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("Linked In page opened");
+									 status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(1)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("whatsapp"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("whatsapp page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(4)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("facebook"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("facebook page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(2)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("twitter"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("whatsapp page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+					  } 
+					  WebElement clickCloseFromPopup = driver.findElement(By.cssSelector("div[class='modal-dialog modal-dialog-centered'] button[class*='close']"));
+					  if(clickCloseFromPopup.isDisplayed())
+					  {
+						  clickCloseFromPopup.click();
+					  }
+				  }
+			  }
+		  }
+		  catch(Exception e)
+		  { 
+		  	e.printStackTrace(); 
+		  } 
+		  return status; 
+	}
+	 
 	public ArrayList<String> checkSocialLinkFromCourse(ArrayList<String> socialLinks)
 	{
 		ArrayList<String> status = new ArrayList<String>();
@@ -443,7 +641,7 @@ public class DashboardLocator
 						{
 							//clickProgram.get(i).click();
 							js.executeScript("arguments[0].click()", clickProgram.get(i));
-							System.out.println("program is available");
+							System.out.println("redirected to program section");
 							status = "pass";
 						}
 					}
@@ -476,41 +674,84 @@ public class DashboardLocator
 					}
 					WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
 					clickCopy.click();
-					
+					 String parentWindow = driver.getWindowHandle();
 					List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
 					for(int k = 0; k < socialLink.size(); k++)
 					{
-						for(int l = 1; l < share.size(); l++)
-						{
-							if(socialLink.get(k).getAttribute("href").contains("mailto:"))
-							{
-								System.out.println("microsoft mail not open ");
-							}
-						
-								if(socialLink.get(k).getAttribute("href").contains(share.get(l)))
-								{
-									socialLink.get(k).click();
-									String parentWindow = driver.getWindowHandle();
-									Set<String> listOfWindow = driver.getWindowHandles();
-									for(String window : listOfWindow)
-									{
-										driver.switchTo().window(window);
-										if(driver.getCurrentUrl().contains(share.get(l)))
-										{
-											driver.switchTo().window(window);
-											System.out.println("open social links : "+share.get(l));
-											status.add("pass");
-											driver.close();
-											break;
-										}
-									}
-									driver.switchTo().window(parentWindow);
-								}
-							}
-						}
+						 if(socialLink.get(k).getAttribute("href").contains(share.get(3)))
+						 {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("linkedin"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("Linked In page opened");
+									 status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(1)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("whatsapp"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("whatsapp page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(4)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("facebook"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("facebook page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+						  else if(socialLink.get(k).getAttribute("href").contains(share.get(2)))
+						  {
+							  socialLink.get(k).click(); 
+							  Set<String> windows = driver.getWindowHandles(); 
+							  for(String window : windows)
+							  { 
+								  driver.switchTo().window(window);
+								  if(driver.getCurrentUrl().contains("twitter"))
+								  { 
+									  driver.switchTo().window(window);
+									  System.out.println("whatsapp page opened");
+									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
+									  driver.close();
+								  }
+							  }
+							  driver.switchTo().window(parentWindow);
+						  }
+					}
 						WebElement closePopup = driver.findElement(By.cssSelector("button[class*='btn-close shadow-none  shareSocialMedia_modalCloseBtn']"));
-						closePopup.click();
-	
+						if(closePopup.isDisplayed())
+						{
+							closePopup.click();
+						}
 				}
 			}
 		}
@@ -522,6 +763,55 @@ public class DashboardLocator
 		return status;
 	}
 
+	
+	public ArrayList<String> checkCourseContentTabs()
+	{
+		ArrayList<String> getStatus = new ArrayList<String>();
+		try
+		{
+			 List<WebElement> checkcourseName = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
+			  for(int j = 0; j < checkcourseName.size(); j++)
+			  {
+				  if(checkcourseName.get(j).getAttribute("id").replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s", "").trim().equalsIgnoreCase(modifiedcourseName))
+				  {
+					System.out.println("enrolled program is available and Let see course view tabs");
+					String parentWindow = driver.getCurrentUrl();
+					checkcourseName.get(j).click();
+					Set<String> allWindows = driver.getWindowHandles();
+					for(String windows : allWindows)
+					{
+						driver.switchTo().window(windows);
+						if(driver.getCurrentUrl().contains("skillsnetwork"))
+						{
+							driver.switchTo().window(windows);
+							System.out.println("Course view page displayed");
+							List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation a[href]"));
+							for(int i = 0; i < courseViewTabs.size(); i++)
+							{
+								if(courseViewTabs.get(i).isDisplayed())
+								{
+									courseViewTabs.get(i).click();
+									getStatus.add(microsoftCourseLocator.checkCourseCode(courseViewTabs.get(i).getAttribute("href")));
+									System.out.println("course view tab page url : "+courseViewTabs.get(i).getAttribute("href"));
+								}
+								driver.navigate().forward();
+							}
+							WebElement clickDropDown = driver.findElement(By.cssSelector("dropdown-toggle btn btn-outline-primary"));
+							if(clickDropDown.isDisplayed())
+							{
+								clickDropDown.click();
+							}
+						}
+					}
+				 }
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return getStatus;
+	}
 	public ArrayList<String> verifyIncludeCoursesFromProgram(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();

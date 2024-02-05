@@ -161,7 +161,7 @@ public class MicrosoftCourseLocator
 				System.out.println("Done");
 				if(status>200)
 				{
-					getstatus = "fail" + status;
+					getstatus = addHosturl+"fail" + status;
 				}
 			    } 
 			catch (Exception e) 
