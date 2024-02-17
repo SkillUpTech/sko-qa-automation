@@ -25,17 +25,24 @@ public class EditProfileValidation {
 		for (int i = 0; i < this.sheetData.size(); i++) {
 			ArrayList<String> row = this.sheetData.get(i);
 			String firstColumn = row.get(0);
-			switch (firstColumn) {
+			switch (firstColumn)
+			{
+			
 			case "login":
 				verifyLogin(row);
 				break;
+				
 			case "ProfileIcon":
 				verifyProfileIcon();
 				break;
 			
-			  case "contacts_updateIcon": verifyUpdateIcon(); break; case
-			  "contacts_submitWithoutData": verifySubmitWithoutDataForMobile(); break; case
-			  "contacts_submitInvalidData_mobile":
+			case "contacts_updateIcon": 
+				verifyUpdateIcon(); 
+				break; 
+			case "contacts_submitWithoutData": 
+				verifySubmitWithoutDataForMobile(); 
+				break;
+			case "contacts_submitInvalidData_mobile":
 			  verifySubmitInvalidDataForMobile(row.get(1)); break; case
 			  "contacts_cancelIcon": verifyCancelIcon(); break; case
 			  "contacts_Alert_close": verifyContactsAlertClose(); break; case
@@ -86,12 +93,12 @@ public class EditProfileValidation {
 			  "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
 			  break;
 			 
-							  case "Education_updateIcon": Education_updateIcon(); break; case
-							  "Education_cancelIcon": Education_cancelIcon(); break; case
-							  "Education_Alert_close": Education_Alert_close(); break; case
-							  "Education_submitValidData": Education_submitValidData(row); break; case
-							  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
-							  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
+			  case "Education_updateIcon": Education_updateIcon(); break; case
+			  "Education_cancelIcon": Education_cancelIcon(); break; case
+			  "Education_Alert_close": Education_Alert_close(); break; case
+			  "Education_submitValidData": Education_submitValidData(row); break; case
+			  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
+			  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
 							 
 			  
 			 

@@ -407,8 +407,54 @@ public class RegressionGenericLocator {
 								System.out.println(" amount with GST from Excel : " + amountWithTax[1]);
 								checkRazorpay = "razorpayFail";
 							}
+							try
+							{
+								JavascriptExecutor js = (JavascriptExecutor) driver;
+								js.executeScript("window.scrollBy(0,200)");
+								Thread.sleep(400);
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
+								WebElement completePayment = driver
+										.findElement(By.cssSelector("div[class='payment-buttons']>button[id='razorpay']"));
+								//completePayment.click();
+								js.executeScript("arguments[0].click()", completePayment);
+								checkRazorpay = "razorpayPass";
+							}
+							catch(Exception e)
+							{
+								e.printStackTrace();
+								checkRazorpay = "razorpayFail";
+							}
+							
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+						}
+						else
+						{
+							System.out.println("amount not shown in Razorpay screen");
+							try
+							{
+								JavascriptExecutor js = (JavascriptExecutor) driver;
+								js.executeScript("window.scrollBy(0,200)");
+								Thread.sleep(400);
+								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
+								WebElement completePayment = driver
+										.findElement(By.cssSelector("div[class='payment-buttons']>button[id='razorpay']"));
+								//completePayment.click();
+								js.executeScript("arguments[0].click()", completePayment);
+								checkRazorpay = "razorpayPass";
+							}
+							catch(Exception e)
+							{
+								e.printStackTrace();
+								checkRazorpay = "razorpayFail";
+							}
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
 						}
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+						
 						if(!driver.getCurrentUrl().contains("-in."))
 						{
 							
@@ -427,33 +473,13 @@ public class RegressionGenericLocator {
 					{
 						e.printStackTrace();
 					}
-					
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("window.scrollBy(0,200)");
-					Thread.sleep(400);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
-					try
-					{
-						WebElement completePayment = driver
-								.findElement(By.xpath("//button[@id='razorpay' or @id='stripecheckout']"));
-						//completePayment.click();
-						js.executeScript("arguments[0].click()", completePayment);
-						checkRazorpay = "razorpayPass";
-					}
-					catch(Exception e)
-					{
-						e.printStackTrace();
-						checkRazorpay = "razorpayFail";
-					}
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			checkRazorpay = "razorpayFail";
 		}
+		
 		return checkRazorpay;
 	}
 

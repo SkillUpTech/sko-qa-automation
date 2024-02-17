@@ -13,11 +13,11 @@ public class ContactUsValidation
 	String sheetStatus = "Pass";
 	public ContactUsValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
-		OpenWebsite.openSite(driver);
 		this.sheetData = sheetData;
 		this.driver = driver;
+		OpenWebsite.openSite(driver);
 		this.contactUSLocator = new ContactUSLocator(driver);
-		
+		System.out.println("contact Us Form Process started");
 		//this.start();
 	}
 	
@@ -41,8 +41,8 @@ public class ContactUsValidation
 				case"WithoutData":
 					WithoutData(row);
 					break;
-				case "WithoutContactAbout":
-					WithoutContactAbout(row);
+				case "WithoutEnquiry":
+					WithoutEnquiry(row);
 					break;
 				case"WithoutFullname":
 					WithoutFullname(row);
@@ -232,7 +232,7 @@ public class ContactUsValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ContactUSForm").get(3).set(0, "WithoutData - failed");
 			}
 		}
-	public void WithoutContactAbout(ArrayList<String> dataFromExcel) throws InterruptedException
+	public void WithoutEnquiry(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		if(!dataFromExcel.contains("NA"))

@@ -26,11 +26,16 @@ public class ContactUSLocator
 	public ArrayList<String> clickContactUs()
 	{
 		ArrayList<String> statusOfFunction = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			WebElement contactUs = driver.findElement(By.cssSelector("div[class='Header_headerRight__RJT1X'] ul[class='list-unstyled navbar-nav nav Header_navLinks__aS6_P'] li:nth-child(2) a"));
-			contactUs.click();
-			statusOfFunction.add("success");
+			js.executeScript("arguments[0].scrollIntoView();", contactUs);
+			if(contactUs.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", contactUs);
+				statusOfFunction.add("success");
+			}
 		}
 		catch(Exception e)
 		{
@@ -45,7 +50,7 @@ public class ContactUSLocator
 		try
 		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("window.scrollBy(0,300)", "");
+			js.executeScript("window.scrollBy(0,100)", "");
 			WebElement contactAboutLocator = driver.findElement(By.cssSelector("select[name='enquirytype']"));
 			Select selectContact = new Select(contactAboutLocator);
 			if(!dataFromExcel.get(1).equalsIgnoreCase("empty"))
@@ -65,7 +70,7 @@ public class ContactUSLocator
 			{
 				enterFullname.sendKeys("");
 			}
-			WebElement enterEmail = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12']:nth-child(4) input[name='email']"));
+			WebElement enterEmail = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_phnNumLeft']:nth-child(2)>input"));
 			if(!dataFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
 				enterEmail.sendKeys(dataFromExcel.get(3));
@@ -75,7 +80,7 @@ public class ContactUSLocator
 				enterEmail.sendKeys("");
 			}
 			
-			WebElement countryLocator = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12']:nth-child(5) select[name='country']"));
+			WebElement countryLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(3)>select[name='country']"));
 			Select selectCountry = new Select(countryLocator);
 			if(!dataFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -86,7 +91,7 @@ public class ContactUSLocator
 				selectCountry.selectByVisibleText("India");
 			}
 			
-			WebElement mblLocator = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12']:nth-child(6) input[name='contactnumber']"));
+			WebElement mblLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(4) input[name='contactnumber']"));
 			if(!dataFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
 				mblLocator.sendKeys(dataFromExcel.get(5));
@@ -95,7 +100,7 @@ public class ContactUSLocator
 			{
 				mblLocator.sendKeys("");
 			}
-			WebElement orgLocator = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12']:nth-child(7) input[name='organization']"));
+			WebElement orgLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(5) input[name='organization']"));
 			if(!dataFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
 				orgLocator.sendKeys(dataFromExcel.get(6));
@@ -107,7 +112,7 @@ public class ContactUSLocator
 			
 			js.executeScript("window.scrollBy(0,900)", "");
 			Thread.sleep(2000);
-			WebElement jobTitleLocator = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12']:nth-child(8) input[name='jobtitle']"));
+			WebElement jobTitleLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(6) input[name='jobtitle']"));
 			if(!dataFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
 				jobTitleLocator.sendKeys(dataFromExcel.get(7));
@@ -117,7 +122,7 @@ public class ContactUSLocator
 				jobTitleLocator.sendKeys("");
 			}
 			
-			List<WebElement> selectSkills = driver.findElements(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-md-6 ContactForm_CheckboxMain__HvP5j'] input[name='skills']"));
+			List<WebElement> selectSkills = driver.findElements(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(8) div[class*='col-md-6 contactform_CheckboxMain']>input[name='skills']"));
 			if(!dataFromExcel.get(8).equalsIgnoreCase("empty"))
 			{
 				String getData[] = dataFromExcel.get(8).split("_");
@@ -158,7 +163,7 @@ public class ContactUSLocator
 				 */
 			}
 			js.executeScript("window.scrollBy(0,300)", "");
-			WebElement subject = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12 col-md-12'] input[name='subject']"));
+			WebElement subject = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(9)>input[name='subject']"));
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
 				subject.sendKeys(dataFromExcel.get(9));
@@ -167,7 +172,7 @@ public class ContactUSLocator
 			{
 				subject.sendKeys("");
 			}
-			WebElement message = driver.findElement(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12'] textarea[name='message']"));
+			WebElement message = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(10)>textarea#message"));
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
 				message.sendKeys(dataFromExcel.get(10));
@@ -191,15 +196,21 @@ public class ContactUSLocator
 	{
 		
 		ArrayList<String> statusOfFunction = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			List<WebElement> links = driver.findElements(By.cssSelector("section[class='ContactForm_mainContent__zj_tL'] div[class*='col-12']:nth-child(13) a"));
+			List<WebElement> links = driver.findElements(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_bySharing__PW8_Y']>a"));
 			for(int i = 0; i < links.size(); i++)
 			{
 				//links.get(i).click();
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("arguments[0].click()", links.get(i));
-				Thread.sleep(2000);
+				
+				js.executeScript("arguments[0].scrollIntoView();", links.get(i));
+				if(links.get(i).isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", links.get(i));
+					statusOfFunction.add("success");
+					Thread.sleep(2000);
+				}
 				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
 				for(String window : windows)
@@ -211,7 +222,9 @@ public class ContactUSLocator
 						System.out.println("privacy policy window");
 						statusOfFunction.add("success");
 						driver.close();
+						Thread.sleep(2000);
 						driver.switchTo().window(parentWindow);
+						Thread.sleep(2000);
 					}
 					if(driver.getCurrentUrl().contains("tos"))
 					{
@@ -219,7 +232,9 @@ public class ContactUSLocator
 						System.out.println("terms of service window");
 						statusOfFunction.add("success");
 						driver.close();
+						Thread.sleep(2000);
 						driver.switchTo().window(parentWindow);
+						Thread.sleep(2000);
 					}
 				}
 			}
@@ -265,6 +280,7 @@ public class ContactUSLocator
 					System.out.println("Please select atleast 1 skills.");
 					nameOfError.add("skills");
 				}
+				
 			}
 		}
 		catch(Exception e)
@@ -277,8 +293,21 @@ public class ContactUSLocator
 	public void clickSubmit()
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebElement clickSubmit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
-		js.executeScript("arguments[0].click()", clickSubmit);
+		try
+		{
+			
+			WebElement clickSubmit = driver.findElement(By.xpath("//button[contains(text(),'Submit')]"));
+			js.executeScript("arguments[0].scrollIntoView();", clickSubmit);
+			if(clickSubmit.isDisplayed())
+			{
+				
+				js.executeScript("arguments[0].click()", clickSubmit);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	public ArrayList<String> checkInvalidFullname(ArrayList<String> dataFromExcel)
 	{
@@ -291,6 +320,13 @@ public class ContactUSLocator
 			 statusOfInvalidFullname.addAll(this.termsAndService());
 			this.clickSubmit();
 			statusOfInvalidFullname.addAll(this.validationMessage());
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
+			
 			url = driver.getCurrentUrl();
 		}
 		catch(Exception e)
@@ -322,6 +358,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(2));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -373,6 +416,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -385,7 +435,7 @@ public class ContactUSLocator
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
-			System.out.println("without ContactAbout validation");
+			System.out.println("without enquiry validation");
 			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
@@ -398,6 +448,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -424,6 +481,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -449,6 +513,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -474,6 +545,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 
 		}
 		catch(Exception e)
@@ -500,6 +578,13 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
+			driver.switchTo().window(w.get(1));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidFullname.add("Failed");
+			}
 		}
 		catch(Exception e)
 		{
@@ -524,16 +609,19 @@ public class ContactUSLocator
 			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
 			/* statusOfInvalidFullname = */this.termsAndService();
 			this.clickSubmit();
-			WebElement verifySuccessMsg = driver.findElement(By.xpath("//h2[contains(text(),'Thank you for reaching out to us. We’ll be in touch shortly.')]"));
+			driver.switchTo().window(w.get(1));
+			Thread.sleep(1000);
+			statusOfInvalidFullname = this.validationMessage();
+			WebElement verifySuccessMsg = driver.findElement(By.cssSelector(".modal-footer button"));
 			if(verifySuccessMsg.isDisplayed())
 			{
 				System.out.println("success Msg : "+verifySuccessMsg.getText());
 			}
-			statusOfInvalidFullname = this.validationMessage();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			statusOfInvalidFullname.add("Failed");
 		}
 		return statusOfInvalidFullname;
 	}
