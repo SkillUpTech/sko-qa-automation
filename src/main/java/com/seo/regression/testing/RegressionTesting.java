@@ -152,7 +152,7 @@ public class RegressionTesting
 								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
 								break;
 							case"HomePage":
-								sheetStatus = new HomePageValidator(sheetData, driver).start();
+								sheetStatus = new HomePageValidator(driver, sheetName, sheetData).start();
 								break;
 							case "ContactInfo":
 								sheetStatus = new ContactInfoValidation(sheetData, driver).start();

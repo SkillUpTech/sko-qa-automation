@@ -6,16 +6,18 @@ import org.openqa.selenium.WebDriver;
 
 public class HomePageValidator 
 {
+	private String SHEET_NAME;
 	ArrayList<ArrayList<String>> sheetData;
 	WebDriver driver;
 	HomepageLocator homepageLocator;
 	String sheetStatus;
 	
-	public HomePageValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public HomePageValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
-		this.sheetData = sheetData;
 		this.driver = driver;
 		OpenWebsite.openSite(this.driver);
+		this.SHEET_NAME = sheetName; 
+		this.sheetData = sheetData;
 		this.homepageLocator = new HomepageLocator(this.driver);
 		System.out.println("Homepage process started");
 		sheetStatus = "Pass";
@@ -42,6 +44,9 @@ public class HomePageValidator
 			String firstColumn = row.get(0);
 			switch(firstColumn)
 			{
+			case "Banner":
+				verifyBanner(row);
+				break;
 			case"learningPartners":
 				verifyLearningPartners(row);
 				break;
@@ -64,6 +69,24 @@ public class HomePageValidator
 	 * OpenWebsite.openSite(driver); return HomePageURL; }
 	 */
 	//String getHomePageURL = OpenWebsite.setHost;
+	
+	public void verifyBanner(ArrayList<String> dataFromExcel) throws InterruptedException
+	{
+		ArrayList<String> status = homepageLocator.checkSliderLink(dataFromExcel);
+		{
+			for(int i = 0; i < status.size(); i++)
+			{
+				if(dataFromExcel.contains(status.get(i)))
+				{
+					sheetStatus = "Fail";
+					int position = dataFromExcel.indexOf(status.get(i));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).set(position, (cellValue + " - failed"));
+
+				}
+			}
+		}
+	}
 	public void verifyLearningPartners(ArrayList<String> dataFromExcel)
 	{
 		if(!dataFromExcel.contains("NA"))
@@ -75,8 +98,8 @@ public class HomePageValidator
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfLearningPartners.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(position, (cellValue + " - failed"));
 
 				}
 			}
@@ -105,8 +128,8 @@ public class HomePageValidator
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfHumanSkills.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(position, (cellValue + " - failed"));
 
 				}
 			}
@@ -124,8 +147,8 @@ public class HomePageValidator
 				{
 					sheetStatus = "Fail";
 					int position = dataFromExcel.indexOf(statusOfTopTechCategories.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(position, (cellValue + " - failed"));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).set(position, (cellValue + " - failed"));
 
 				}
 			}

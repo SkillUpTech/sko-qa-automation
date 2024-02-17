@@ -23,43 +23,66 @@ public class HomepageLocator
 	{
 		this.driver = driver;
 	}
-	public String checkSliderLink(String dataFromExcel) throws InterruptedException
+	public ArrayList<String> checkSliderLink(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-		String statusOfSliderScreen = "fail";
-		List<WebElement> sliderPage = driver.findElements(By.cssSelector("div[class='bannersliderhome_Mainslider__w62pu'] div[class='bannersliderhome_bannerSliderH__YF848 bannersliderhome_bannerSliderHDesktOP__LpvuC'] div[class='slick-slider homebannerslider slick-initialized'] div[class*='slick-slide']"));
-		//Thread.sleep(2000);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		for(int i = 0; i < sliderPage.size(); i++)
+		ArrayList<String> statusOfSliderScreen = new ArrayList<String>();
+		try
 		{
-		//	Thread.sleep(3000);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			String checkPage = sliderPage.get(i).getAttribute("aria-hidden");
-			//Thread.sleep(1000);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			if (checkPage.contains("false"))
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost))
 			{
-			//	Thread.sleep(1000);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				String getSliderURL = sliderPage.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
-				System.out.println(getSliderURL);
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-				wait.until(ExpectedConditions.elementToBeClickable(sliderPage.get(i).findElement(By.cssSelector(" img"))));
-				sliderPage.get(i).click();
-				if(!driver.getCurrentUrl().equals(OpenWebsite.setHost))
-				{
-					statusOfSliderScreen = "pass";
-					break;
-				}
-				else
-				{
-					statusOfSliderScreen = "fail";
-					break;
-				}
+				JavascriptExecutor jse = (JavascriptExecutor)driver;
+				jse.executeScript("window.open()");
+				ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+				driver.switchTo().window(tabs.get(1));
+				OpenWebsite.openSite(driver);
 			}
+			else
+			{
+				System.out.println("host is present");
+			}
+			ArrayList<String> getURL = new ArrayList<String>();
+				List<WebElement> clickSlide = driver.findElements(By.cssSelector("div[class='bannersliderhome_bannerSliderH__YF848 bannersliderhome_bannerSliderHDesktOP__LpvuC'] div[class='slick-list']>div[class='slick-track']>div"));
+				//String slideTitle = clickSlide.findElement(By.cssSelector(" h2")).getText();
+				//System.out.println("slider titlte : "+slideTitle);
+				for(int i = 0; i < clickSlide.size(); i++)
+				{
+					WebElement checkVisibleSlide = driver.findElement(By.cssSelector(" div[class='slick-slide slick-active slick-current']"));
+					if(checkVisibleSlide.isDisplayed())
+					{
+						String getSliderButtonURL = clickSlide.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
+						System.out.println("verify slider URL : "+getSliderButtonURL);
+						getURL.add(getSliderButtonURL);
+					}
+				}
+				/*
+				 * String newTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
+				 * clickSlide.sendKeys(newTab); String parent = driver.getWindowHandle();
+				 * Set<String> windows = driver.getWindowHandles(); for(String window : windows)
+				 * { driver.switchTo().window(window); if(!parent.equals(window)) {
+				 * driver.switchTo().window(window);
+				 * System.out.println("url of page :"+driver.getCurrentUrl()); driver.close(); }
+				 * } driver.switchTo().window(parent);
+				 */
+				for(int j = 0; j < getURL.size(); j++)
+				{
+					
+					String urlLinkStatus = this.checkURLStatus(getURL.get(j));
+					if(urlLinkStatus.equalsIgnoreCase("fail"))
+					{
+						statusOfSliderScreen.add(getURL.get(j));
+					}
+					else
+					{
+						statusOfSliderScreen.add("pass");
+					}	
+				}
+			
 		}
-		driver.get(OpenWebsite.setHost);
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-	//	Thread.sleep(1000);
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return statusOfSliderScreen;
 	}
 	
