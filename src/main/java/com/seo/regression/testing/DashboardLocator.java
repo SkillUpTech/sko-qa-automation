@@ -951,94 +951,107 @@ public class DashboardLocator
 				 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 				
 				 String DashboardScreen = driver.getCurrentUrl(); // Dashboard page
+				 
 				 for(int j = 0; j < checkcourseName.size(); j++)
 				 {
-					 js.executeScript("arguments[0].scrollIntoView();", checkcourseName.get(j));
+					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					 
+					 WebElement CourseBaseLocator  = checkcourseName.get(j);
+					// js.executeScript("arguments[0].scrollIntoView();", CourseBaseLocator);
 					 
 					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					  if(j == 1)
+					  List<WebElement> clickSkillupPartner = CourseBaseLocator.findElements(By.cssSelector(" a[class*='dashboardCourseCards_dataTagsDark'], div[class*='dashboardCourseCards_dataTagsDark']"));
 					  {
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-						System.out.println("enrolled course displayed"); 
-						System.out.println("enrolled program is available and Let see course view tabs");
-						
-						
-						
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-							WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-							
-							WebElement clickCourse = checkcourseName.get(j).findElement(By.cssSelector(" a[class*='dashboardCourseCards_spanLink']"));
-							
-							js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-							
-							
-							if(clickCourse.isDisplayed())
-							{
-								String courseContentOnTab = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-								  
-								js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-								
-								wait.until(ExpectedConditions.elementToBeClickable(clickCourse));
-								  
-								clickCourse.sendKeys(courseContentOnTab);
-							}
-								
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-								  
-							
-								
-								Set<String> allWindows = driver.getWindowHandles();
-								
-								for(String windows : allWindows)
-								{
+						  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+						  for(int l = 0; l < clickSkillupPartner.size(); l++)
+						  {
+							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+							  if(clickSkillupPartner.get(l).getText().contains("SkillUp Online"))
+							  {
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-
-									driver.switchTo().window(windows);
-									  
-									 if(driver.getCurrentUrl().contains("/courses/")) // verifying course content page
-									 {
-										 driver.switchTo().window(windows);
-										 System.out.println("Course Content view tab Page");
-										 List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation nav[class='nav flex-nowrap nav-underline-tabs']>a, div#content li[class*='nav-item']>a"));
-										 for(int i = 0; i < courseViewTabs.size(); i++)
-										 {
-											 String courseContentScreen = driver.getWindowHandle();//parent screen of course sontent page
-											 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-											 
-											 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
-											
-											 String courseContentTabsURL = courseViewTabs.get(i).getAttribute("href");
-
-											 if(courseViewTabs.get(i).isDisplayed())
-											 {
-												 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-												 
-												 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
-												 
+									System.out.println("enrolled course displayed"); 
+									System.out.println("enrolled program is available and Let see course view tabs");
+									
+									
+									
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+										WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 										
-												 String contentOnNewPage = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-												 
-												 courseViewTabs.get(i).sendKeys(contentOnNewPage);
-											 }
-											 
-											 Set<String> allTabsWindows = driver.getWindowHandles(); 
-											 for(String tabs : allTabsWindows)
-											 {
-												 driver.switchTo().window(tabs);
-												 if(!courseContentScreen.equals(tabs))
+										WebElement clickCourse = CourseBaseLocator.findElement(By.cssSelector(" a[class*='dashboardCourseCards_spanLink']"));
+										
+										js.executeScript("arguments[0].scrollIntoView();", clickCourse);
+										
+										 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+										if(clickCourse.isDisplayed())
+										{
+											String courseContentOnTab = Keys.chord(Keys.CONTROL, Keys.ENTER); 
+											  
+											js.executeScript("arguments[0].scrollIntoView();", clickCourse);
+											
+											wait.until(ExpectedConditions.elementToBeClickable(clickCourse));
+											  
+											clickCourse.sendKeys(courseContentOnTab);
+										}
+											
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+											  
+										
+											
+											Set<String> allWindows = driver.getWindowHandles();
+											
+											for(String windows : allWindows)
+											{
+												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+
+												driver.switchTo().window(windows);
+												  
+												 if(driver.getCurrentUrl().contains("/courses/")) // verifying course content page
 												 {
-													 driver.switchTo().window(tabs);
-													 System.out.println("course content url : "+driver.getCurrentUrl());
-													 driver.close();
-													// driver.switchTo().window(courseContentScreen);
+													 driver.switchTo().window(windows);
+													 System.out.println("Course Content view tab Page");
+													 List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation nav[class='nav flex-nowrap nav-underline-tabs']>a, div#content li[class*='nav-item']>a"));
+													 for(int i = 0; i < courseViewTabs.size(); i++)
+													 {
+														 String courseContentScreen = driver.getWindowHandle();//parent screen of course sontent page
+														 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+														 
+														 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
+														
+														 String courseContentTabsURL = courseViewTabs.get(i).getAttribute("href");
+
+														 if(courseViewTabs.get(i).isDisplayed())
+														 {
+															 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+															 
+															 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
+															 
+													
+															 String contentOnNewPage = Keys.chord(Keys.CONTROL, Keys.ENTER); 
+															 
+															 courseViewTabs.get(i).sendKeys(contentOnNewPage);
+														 }
+														 
+														 Set<String> allTabsWindows = driver.getWindowHandles(); 
+														 for(String tabs : allTabsWindows)
+														 {
+															 driver.switchTo().window(tabs);
+															 if(!courseContentScreen.equals(tabs))
+															 {
+																 driver.switchTo().window(tabs);
+																 System.out.println("course content url : "+driver.getCurrentUrl());
+																 driver.close();
+																// driver.switchTo().window(courseContentScreen);
+															 }
+														 }
+														 driver.switchTo().window(courseContentScreen);
+													   }	 
 												 }
-											 }
-											 driver.switchTo().window(courseContentScreen);
-										   }	 
-									 }
-								}
-								break;
-							}
+											}
+											break;
+										}
+						  }
+					  }
+					break;
 						}
 					  }
 			catch(Exception e)
@@ -1083,7 +1096,6 @@ public class DashboardLocator
 	public ArrayList<String> verifyIncludeCoursesFromProgram(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		String checkProgram = "fail";
 		try
 		{
 			String parentWindow = driver.getWindowHandle();
