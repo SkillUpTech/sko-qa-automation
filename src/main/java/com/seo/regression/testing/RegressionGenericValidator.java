@@ -37,7 +37,7 @@ public class RegressionGenericValidator
 	public String processSheetData()
 	{
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
-	//	regressionGenericLocator.openDriver();
+		regressionGenericLocator.openDriver();
 
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{

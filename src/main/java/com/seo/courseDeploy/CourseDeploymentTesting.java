@@ -86,7 +86,7 @@ public class CourseDeploymentTesting
 						switch(sheetName)
 						{
 							case "Login":
-								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
+								sheetStatus = new RegressionTestLogin(driver,  sheetData).start();
 							break;
 							default:
 								System.out.println("Not class found to work with the sheet");
