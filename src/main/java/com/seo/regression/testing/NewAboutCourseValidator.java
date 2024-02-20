@@ -59,9 +59,9 @@ public class NewAboutCourseValidator
 			case "environment":
 				environment(row.get(1));
 				break;
-			case "courseCode":
-				courseCode(row.get(1));
-				break;
+			/*
+			 * case "courseCode": courseCode(row.get(1)); break;
+			 */
 			case "courseTitle":
 				courseTitle(row.get(1));
 				break;
