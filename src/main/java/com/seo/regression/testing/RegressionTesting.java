@@ -205,6 +205,9 @@ public class RegressionTesting
 							 case "BlogPage":
 								 sheetStatus = new BlogPageValidation(sheetData, driver).start(); 
 								 break;
+							 case "InviteOnlyCourse":
+								 sheetStatus = new InviteOnlyValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

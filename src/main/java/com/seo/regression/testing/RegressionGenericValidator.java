@@ -58,9 +58,9 @@ public class RegressionGenericValidator
 		{
 			switch (process) 
 			{
-			case "courseCode":
-				courseCode(row.get(1));
-				break;
+			/*
+			 * case "courseCode": courseCode(row.get(1)); break;
+			 */
 			case "getFreeConsultation":
 				getFreeConsultation(row);
 				break;

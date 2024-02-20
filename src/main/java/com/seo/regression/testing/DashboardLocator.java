@@ -954,34 +954,34 @@ public class DashboardLocator
 				 
 				 for(int j = 0; j < checkcourseName.size(); j++)
 				 {
-					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					 
 					 WebElement CourseBaseLocator  = checkcourseName.get(j);
 					// js.executeScript("arguments[0].scrollIntoView();", CourseBaseLocator);
 					 
-					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					  List<WebElement> clickSkillupPartner = CourseBaseLocator.findElements(By.cssSelector(" a[class*='dashboardCourseCards_dataTagsDark'], div[class*='dashboardCourseCards_dataTagsDark']"));
 					  {
-						  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+						  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 						  for(int l = 0; l < clickSkillupPartner.size(); l++)
 						  {
-							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							  if(clickSkillupPartner.get(l).getText().contains("SkillUp Online"))
 							  {
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 									System.out.println("enrolled course displayed"); 
 									System.out.println("enrolled program is available and Let see course view tabs");
 									
 									
 									
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-										WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+										WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
 										
 										WebElement clickCourse = CourseBaseLocator.findElement(By.cssSelector(" a[class*='dashboardCourseCards_spanLink']"));
 										
 										js.executeScript("arguments[0].scrollIntoView();", clickCourse);
 										
-										 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+										 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 										if(clickCourse.isDisplayed())
 										{
 											String courseContentOnTab = Keys.chord(Keys.CONTROL, Keys.ENTER); 
@@ -993,7 +993,7 @@ public class DashboardLocator
 											clickCourse.sendKeys(courseContentOnTab);
 										}
 											
-											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 											  
 										
 											
@@ -1001,7 +1001,7 @@ public class DashboardLocator
 											
 											for(String windows : allWindows)
 											{
-												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 
 												driver.switchTo().window(windows);
 												  
@@ -1053,6 +1053,7 @@ public class DashboardLocator
 					  }
 					break;
 						}
+				 driver.switchTo().window(DashboardScreen);
 					  }
 			catch(Exception e)
 			{
