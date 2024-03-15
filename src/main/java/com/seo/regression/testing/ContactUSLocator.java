@@ -47,11 +47,12 @@ public class ContactUSLocator
 	public ArrayList<String> contactUsFunction(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> statusOfFunction = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,100)", "");
 			WebElement contactAboutLocator = driver.findElement(By.cssSelector("select[name='enquirytype']"));
+			js.executeScript("arguments[0].scrollIntoView();", contactAboutLocator);
 			Select selectContact = new Select(contactAboutLocator);
 			if(!dataFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
@@ -62,8 +63,10 @@ public class ContactUSLocator
 				selectContact.selectByVisibleText("Business Enquiry");
 			}
 			WebElement enterFullname = driver.findElement(By.cssSelector("input[name='fullname']"));
+			js.executeScript("arguments[0].scrollIntoView();", enterFullname);
 			if(!dataFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
+				enterFullname.clear();
 				enterFullname.sendKeys(dataFromExcel.get(2));
 			}
 			else
@@ -71,8 +74,10 @@ public class ContactUSLocator
 				enterFullname.sendKeys("");
 			}
 			WebElement enterEmail = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_phnNumLeft']:nth-child(2)>input"));
+			js.executeScript("arguments[0].scrollIntoView();", enterEmail);
 			if(!dataFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
+				enterEmail.clear();
 				enterEmail.sendKeys(dataFromExcel.get(3));
 			}
 			else
@@ -81,6 +86,7 @@ public class ContactUSLocator
 			}
 			
 			WebElement countryLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(3)>select[name='country']"));
+			js.executeScript("arguments[0].scrollIntoView();", countryLocator);
 			Select selectCountry = new Select(countryLocator);
 			if(!dataFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -92,8 +98,10 @@ public class ContactUSLocator
 			}
 			
 			WebElement mblLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(4) input[name='contactnumber']"));
+			js.executeScript("arguments[0].scrollIntoView();", mblLocator);
 			if(!dataFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
+				mblLocator.clear();
 				mblLocator.sendKeys(dataFromExcel.get(5));
 			}
 			else
@@ -101,8 +109,10 @@ public class ContactUSLocator
 				mblLocator.sendKeys("");
 			}
 			WebElement orgLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(5) input[name='organization']"));
+			js.executeScript("arguments[0].scrollIntoView();", orgLocator);
 			if(!dataFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
+				orgLocator.clear();
 				orgLocator.sendKeys(dataFromExcel.get(6));
 			}
 			else
@@ -113,8 +123,10 @@ public class ContactUSLocator
 			js.executeScript("window.scrollBy(0,900)", "");
 			Thread.sleep(2000);
 			WebElement jobTitleLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(6) input[name='jobtitle']"));
+			js.executeScript("arguments[0].scrollIntoView();", jobTitleLocator);
 			if(!dataFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
+				jobTitleLocator.clear();
 				jobTitleLocator.sendKeys(dataFromExcel.get(7));
 			}
 			else
@@ -130,6 +142,7 @@ public class ContactUSLocator
 				{
 					for(int i = 0; i < selectSkills.size(); i++)
 					{
+						js.executeScript("arguments[0].scrollIntoView();", selectSkills.get(i));
 						String skillFromBrowser = selectSkills.get(i).getAttribute("id");
 						if(skillFromExcel.equalsIgnoreCase(skillFromBrowser))
 						{
@@ -148,24 +161,13 @@ public class ContactUSLocator
 			else
 			{
 				System.out.println("skill not selected");
-				/*
-				 * String getData[] =
-				 * {"Artificial Intelligence","Blockchain","Cloud Computing"}; for(String
-				 * skillFromExcel : getData) { for(int i = 0; i < selectSkills.size(); i++) {
-				 * String skillFromBrowser = selectSkills.get(i).getAttribute("id");
-				 * if(skillFromExcel.equalsIgnoreCase(skillFromBrowser)) {
-				 * System.out.println("skill to be select : "+skillFromBrowser); WebDriverWait
-				 * wait = new WebDriverWait(driver, Duration.ofSeconds(60));
-				 * wait.until(ExpectedConditions.elementToBeClickable(selectSkills.get(i)));
-				 * //selectSkills.get(i).click(); js.executeScript("arguments[0].click()",
-				 * selectSkills.get(i)); Thread.sleep(1000);
-				 * if(!selectSkills.get(i).isEnabled()) { selectSkills.get(i).click(); } } } }
-				 */
 			}
 			js.executeScript("window.scrollBy(0,300)", "");
 			WebElement subject = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(9)>input[name='subject']"));
+			js.executeScript("arguments[0].scrollIntoView();", subject);
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
+				subject.clear();
 				subject.sendKeys(dataFromExcel.get(9));
 			}
 			else
@@ -173,8 +175,10 @@ public class ContactUSLocator
 				subject.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(10)>textarea#message"));
+			js.executeScript("arguments[0].scrollIntoView();", message);
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
+				message.clear();
 				message.sendKeys(dataFromExcel.get(10));
 			}
 			else
@@ -202,7 +206,6 @@ public class ContactUSLocator
 			List<WebElement> links = driver.findElements(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_bySharing__PW8_Y']>a"));
 			for(int i = 0; i < links.size(); i++)
 			{
-				//links.get(i).click();
 				
 				js.executeScript("arguments[0].scrollIntoView();", links.get(i));
 				if(links.get(i).isDisplayed())
@@ -250,11 +253,13 @@ public class ContactUSLocator
 	public ArrayList<String> validationMessage()
 	{
 		ArrayList<String> nameOfError = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			List<WebElement> getErrorMessage = driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']"));//p[class='ContactForm_Selectup__nCwVP ContactForm_Hint__2QivB'],
 			for(int i = 0; i < getErrorMessage.size(); i++)
 			{
+				js.executeScript("arguments[0].scrollIntoView();", getErrorMessage.get(i));
 				if(getErrorMessage.get(i).getText().contains("value")||getErrorMessage.get(i).getText().contains("choose"))
 				{
 					System.out.println("Please select value displayed for contacting us");

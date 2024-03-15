@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class HomePageValidator 
 {
@@ -15,7 +17,7 @@ public class HomePageValidator
 	public HomePageValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.driver = driver;
-		OpenWebsite.openSite(this.driver);
+		
 		this.SHEET_NAME = sheetName; 
 		this.sheetData = sheetData;
 		this.homepageLocator = new HomepageLocator(this.driver);
@@ -37,6 +39,9 @@ public class HomePageValidator
 	}
 	public String start() throws InterruptedException
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		this.homePage(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -54,21 +59,43 @@ public class HomePageValidator
 				verifyLearningCatalog(row.get(1));
 				break;
 			case"humanSkills":
-				verifyHumanSkills(row);
+				verifyHumanSkills();
 				break;
 			case"topTechCategories":
 				verifyTopTechCategories(row);
 				break;
 			}
 		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
 		return sheetStatus;
 	}
 
-	/*
-	 * public String openSite() throws InterruptedException { String HomePageURL =
-	 * OpenWebsite.openSite(driver); return HomePageURL; }
-	 */
-	//String getHomePageURL = OpenWebsite.setHost;
 	
 	public void verifyBanner(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
@@ -76,12 +103,10 @@ public class HomePageValidator
 		{
 			for(int i = 0; i < status.size(); i++)
 			{
-				if(dataFromExcel.contains(status.get(i)))
+				if(status.size()>0)
 				{
 					sheetStatus = "Fail";
-					int position = dataFromExcel.indexOf(status.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).set(position, (cellValue + " - failed"));
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(0).add(i+1, (status.get(i) + "Banner - failed"));
 
 				}
 			}
@@ -113,27 +138,21 @@ public class HomePageValidator
 			if(statusOfLearningPartners.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(0, "learningCatalog - failed");
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(0, "learningCatalog - failed");
 			}
 		}
 	}
-	public void verifyHumanSkills(ArrayList<String> dataFromExcel)
+	public void verifyHumanSkills()
 	{
-		if(!dataFromExcel.contains("NA"))
-		{
-			ArrayList<String> statusOfHumanSkills = homepageLocator.checkHumanSkills(dataFromExcel);
+			ArrayList<String> statusOfHumanSkills = homepageLocator.checkHumanSkills();
 			for(int i = 0; i < statusOfHumanSkills.size(); i++)
 			{
-				if(dataFromExcel.contains(statusOfHumanSkills.get(i)))
+				if(statusOfHumanSkills.size()>0)
 				{
 					sheetStatus = "Fail";
-					int position = dataFromExcel.indexOf(statusOfHumanSkills.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).set(position, (cellValue + " - failed"));
-
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).add(i+1, (statusOfHumanSkills.get(i) + "Banner - failed"));
 				}
 			}
-		}
 	}
 	
 	public void verifyTopTechCategories(ArrayList<String> dataFromExcel)

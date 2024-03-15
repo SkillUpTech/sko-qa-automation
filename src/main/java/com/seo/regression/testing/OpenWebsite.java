@@ -72,20 +72,15 @@ public class OpenWebsite
 		{
 			setHost = "https://"+host+".skillup.online";
 		}
+		else if(host.equalsIgnoreCase("dev"))
+		{
+			setHost = "https://"+host+".skillup.online";
+		}
 		return setHost;
 	}
 	
-	/*
-	 * public static String launchCourse(WebDriver driver, String urlFromExcel) {
-	 * String setURL = setEnvironment(RegressionTesting.ENV_TO_USE)+urlFromExcel;
-	 * driver.get(setURL);
-	 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70)); return
-	 * setURL; }
-	 */
 	public static String openSite(WebDriver driver)
 	{
-		String setURL;
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));

@@ -882,6 +882,7 @@ public class EditProfileLocator
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
+							Thread.sleep(2000);
 							js.executeScript("arguments[0].click()", clickGoBackFromAlert);
 							Thread.sleep(2000);
 						}
@@ -899,6 +900,7 @@ public class EditProfileLocator
 							Thread.sleep(2000);
 							driver.switchTo().window(window);
 							System.out.println("AreasOfInterest_Alert_Back Button process done");
+							Thread.sleep(2000);
 						}
 					}
 					}

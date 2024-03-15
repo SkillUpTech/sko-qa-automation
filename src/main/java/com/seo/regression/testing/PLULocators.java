@@ -114,7 +114,6 @@ public class PLULocators
 				}
 			}
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			//Thread.sleep(3000);
 			System.out.println("tech pgms card validation started");
 			ArrayList<String> statusOfPgmCard = new ArrayList<String>();
 			
@@ -123,8 +122,11 @@ public class PLULocators
 			{
 				ArrayList<String> failCase = new ArrayList<String>();
 				boolean testingStatus=true;
+				
 				WebElement eachPgmsFromCard = pgms.get(i);
+				
 				String getPgmName = eachPgmsFromCard.getAttribute("href");
+				
 				WebElement pgmIconFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='row TechPrograms_cardContent__f0QGv']>div[class='col-12 gy-2'] img[src*='images']"));
 				if(pgmIconFromCard.isDisplayed())
 				{
@@ -135,7 +137,7 @@ public class PLULocators
 					failCase.add("issue in program icon in "+getPgmName+"");
 					testingStatus = false;
 				}
-				//WebElement pluFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='row TechPrograms_cardContent__f0QGv']>div[class='col-12 gy-2'] div[class*='TechPrograms_plu'] p"));
+				
 				WebElement pluPgmNameFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-2']:nth-child(2) h3"));
 				if(pluPgmNameFromCard.isDisplayed())
 				{
@@ -146,11 +148,15 @@ public class PLULocators
 					failCase.add("issue in pgm name in "+getPgmName+"");
 					testingStatus = false;
 				}
+				
 				WebElement plulevelFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-2']:nth-child(2) p[class='TechPrograms_mentoredBe__1oodQ']"));
 				String getTextFromPLULevel = plulevelFromCard.getText();
+				
 				WebElement pluAmountFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-4'] div[class='row TechPrograms_cardFooterContent__gtt1W']>div:nth-child(2)>p"));
+				
 				WebElement pluEnrollmentStatusFromCard = pgms.get(i).findElement(By.cssSelector(" div[class='col-12 gy-4'] div[class='row TechPrograms_cardFooterContent__gtt1W']>div:nth-child(2)>div>p"));
 				String enrollStatusFromCard = pluEnrollmentStatusFromCard.getText();
+				
 				if(enrollStatusFromCard.equals("ENROLLMENT OPEN"))
 				{
 					enrollProcessStatus = "open";
@@ -160,6 +166,7 @@ public class PLULocators
 					enrollProcessStatus = "close";
 					
 				}
+				
 				WebElement launchPgm = pgms.get(i).findElement(By.cssSelector(" a"));
 				
 				String parentwindow = driver.getWindowHandle();
@@ -172,120 +179,150 @@ public class PLULocators
 				
 				for(String winHandle : driver.getWindowHandles())
 				{
-				    driver.switchTo().window(winHandle);
-				}
-				JavascriptExecutor js2 = (JavascriptExecutor) driver;
-				String enrollProcessFromPgm = "";
-				String programName = driver.findElement(By.xpath("//h1")).getText();
-				WebElement IconFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col d-flex align-items-center']:nth-child(1)>span"));
-				if(IconFromProgram.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in program icon in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement titleFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col-12 CourseDescription_courseText__7vJLl'] h1"));
-				if(titleFromProgram.isDisplayed())
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in title in "+programName+"");
-					testingStatus = false;
-				}
-				js2.executeScript("window.scrollBy(0,300)", "");
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
-				WebElement level1FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(1)"));
-				if(getTextFromPLULevel.contains(level1FromProgram.getText()))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 1 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement level2FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(2)"));
-				String level2 = level2FromProgram.getText().toLowerCase();
+					driver.switchTo().window(winHandle);
+					
+					if(driver.getCurrentUrl().contains(launchPgm.getAttribute("href")))
+					{	
+						driver.switchTo().window(winHandle);
 						
-				if(getTextFromPLULevel.toLowerCase().contains(level2))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 2 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement level3FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(3)"));
-				if(getTextFromPLULevel.toLowerCase().contains(level3FromProgram.getText().toLowerCase()))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("level 3 not same in "+programName+"");
-					testingStatus = false;
-				}
-				WebElement amountFromPgm = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
-
-				if(!amountFromPgm.getText().equals("null"))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("amount is null in "+programName+"");
-					testingStatus = false;
-				}
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				int size = driver.findElements(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']")).size();
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				if(size>0)
-				{
-					WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']"));
-					if(enrollStatus.getText().equals("Enroll Now"))
-					{
-						enrollProcessFromPgm = "open";
+						JavascriptExecutor js2 = (JavascriptExecutor) driver;
+						
+						String enrollProcessFromPgm = "";
+						
+						String programName = driver.findElement(By.xpath("//h1")).getText();
+						
+						WebElement IconFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col d-flex align-items-center']:nth-child(1)>span"));
+					
+						if(IconFromProgram.isDisplayed())
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("issue in program icon in "+programName+"");
+							testingStatus = false;
+						}
+						
+						WebElement titleFromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center']>div[class='col-12 CourseDescription_courseText__7vJLl'] h1"));
+						
+						if(titleFromProgram.isDisplayed())
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("issue in title in "+programName+"");
+							testingStatus = false;
+						}
+						
+						js2.executeScript("window.scrollBy(0,300)", "");
+						
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						
+						WebElement level1FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(1)"));
+						
+						if(getTextFromPLULevel.contains(level1FromProgram.getText()))
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("level 1 not same in "+programName+"");
+							testingStatus = false;
+						}
+						
+						WebElement level2FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(2)"));
+						
+						String level2 = level2FromProgram.getText().toLowerCase();
+					
+						if(getTextFromPLULevel.toLowerCase().contains(level2))
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("level 2 not same in "+programName+"");
+							testingStatus = false;
+						}
+						
+						WebElement level3FromProgram = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='CourseDescription_levelSection__BiiUm']>[class*='uppercase CourseDescription_pluTheme']:nth-child(3)"));
+						
+						if(getTextFromPLULevel.toLowerCase().contains(level3FromProgram.getText().toLowerCase()))
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("level 3 not same in "+programName+"");
+							testingStatus = false;
+						}
+						
+						WebElement amountFromPgm = driver.findElement(By.xpath("//section[@class='CourseDescription_mainSection__WrO9h']//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[@class='d-flex gap-2']//div[@class='CourseDescription_courseAboutTextSection__8_6ac']//h2[contains(text(),'Fee')]/following-sibling::p"));
+						
+						if(!amountFromPgm.getText().equals("null"))
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("amount is null in "+programName+"");
+							testingStatus = false;
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						
+						int size = driver.findElements(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']")).size();
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						
+						if(size>0)
+						{
+							WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] button[class*='CourseDescription_enrollNowBtnPLU']"));
+							if(enrollStatus.getText().equals("Enroll Now"))
+							{
+								enrollProcessFromPgm = "open";
+							}
+						}
+						else
+						{
+							WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] h6"));
+							if(enrollStatus.getText().equals("Enrollment is Closed"))
+							{
+								enrollProcessFromPgm = "close";
+							}
+						}
+						
+						if(enrollProcessStatus.equalsIgnoreCase(enrollProcessFromPgm))
+						{
+							statusOfPgmCard.add("pass");
+						}
+						else
+						{
+							failCase.add("issue in enrollstatus, its not match in "+programName+"");
+							testingStatus = false;
+						}
+						
+						driver.close();
+						
+						driver.switchTo().window(parentwindow);
 					}
+					
+					driver.switchTo().window(parentwindow);
 				}
-				else
-				{
-					WebElement enrollStatus = driver.findElement(By.cssSelector("section[class='CourseDescription_mainSection__WrO9h'] div[class='row align-items-center'] div[class='col-12'] h6"));
-					if(enrollStatus.getText().equals("Enrollment is Closed"))
-					{
-						enrollProcessFromPgm = "close";
-					}
-				}
+						
+					
 				
-				if(enrollProcessStatus.equalsIgnoreCase(enrollProcessFromPgm))
-				{
-					statusOfPgmCard.add("pass");
-				}
-				else
-				{
-					failCase.add("issue in enrollstatus, its not match in "+programName+"");
-					testingStatus = false;
-				}
-				driver.close();
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
-				driver.switchTo().window(parentwindow);
+				
 				System.out.println("tech program card verification done for "+getPgmName);
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//Thread.sleep(1000);
 				if(testingStatus == false)
 				{
 					overallFail.addAll(failCase);
 				}
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			}
+				driver.switchTo().window(parentwindow);
+				}
 			overallFail.addAll(failedUrls);
 		}
 		catch(Exception e)

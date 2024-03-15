@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class ContactUsValidation
 {
@@ -15,14 +17,15 @@ public class ContactUsValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		this.contactUSLocator = new ContactUSLocator(driver);
 		System.out.println("contact Us Form Process started");
-		//this.start();
 	}
 	
 	public String start() throws InterruptedException
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -59,6 +62,33 @@ public class ContactUsValidation
 				case"ValidData":
 					ValidData(row);
 					break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
 			}
 		}
 		return sheetStatus;

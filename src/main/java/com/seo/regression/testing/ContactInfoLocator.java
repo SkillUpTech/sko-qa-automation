@@ -38,13 +38,13 @@ public class ContactInfoLocator
 			js.executeScript("arguments[0].scrollIntoView(true);", focusContact);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			WebElement selectIndividual = driver.findElement(By.cssSelector("input#individual"));
-			//js.executeScript("arguments[0].scrollIntoView(true);", selectIndividual);
+			js.executeScript("arguments[0].scrollIntoView(true);", selectIndividual);
 			if(selectIndividual.isDisplayed())
 			{
 				if(!selectIndividual.isEnabled())
 				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
-					selectIndividual.click();
+					js.executeScript("arguments[0].click()", selectIndividual);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
@@ -52,6 +52,7 @@ public class ContactInfoLocator
 				}
 			}
 			WebElement checkIndividualContent = driver.findElement(By.cssSelector("div[class*='ContactForm_leftContent']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", checkIndividualContent);
 			checkIndividualContent.getText();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -61,6 +62,7 @@ public class ContactInfoLocator
 			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			WebElement fullName = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='fullname']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
 				fullName.sendKeys(getValuesFromExcel.get(1));
@@ -70,6 +72,7 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='email']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", email);
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 			wait.until(ExpectedConditions.visibilityOf(email));
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
@@ -81,6 +84,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] select[name='country']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
@@ -91,6 +95,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue(getValuesFromExcel.get(3));
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='contactnumber']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
 				mobileNumber.sendKeys(getValuesFromExcel.get(4));
@@ -100,6 +105,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement currentStatus = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] select[name='userpersona']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", currentStatus);
 			Select selectCurrentStatus = new Select(currentStatus);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
@@ -115,6 +121,7 @@ public class ContactInfoLocator
 			for(int i = 0; i < skills.size(); i++)
 			{
 				WebElement skill = skills.get(i);
+				js.executeScript("arguments[0].scrollIntoView(true);", skill);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(90));
@@ -160,6 +167,7 @@ public class ContactInfoLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			js.executeScript("window.scrollBy(0,-200)", "");
 			WebElement selectAcademic = driver.findElement(By.cssSelector("input#academic"));
+			js.executeScript("arguments[0].scrollIntoView(true);", selectAcademic);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			if(selectAcademic.isDisplayed())
 			{
@@ -180,14 +188,15 @@ public class ContactInfoLocator
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			}
 			WebElement checkAcademicContent = driver.findElement(By.cssSelector("div[class='ContactForm_leftContent__VlhaM']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", checkAcademicContent);
 			checkAcademicContent.getText();
 			if(checkAcademicContent.getText().contains("academic institutions"))
 			{
 				System.out.println("Academic Information");
 			}
 			js.executeScript("window.scrollBy(0, 300)", "");
-		//	WebElement focusContactInfo = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12']"));
 			WebElement fullName = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='fullname']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
 				fullName.sendKeys(getValuesFromExcel.get(1));
@@ -197,6 +206,7 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='email']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", email);
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
 				email.sendKeys(getValuesFromExcel.get(2));
@@ -206,6 +216,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] select[name='country']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
@@ -216,6 +227,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue(getValuesFromExcel.get(3));
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='contactnumber']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
 				mobileNumber.sendKeys(getValuesFromExcel.get(4));
@@ -225,6 +237,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement academicUniversity = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='university']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", academicUniversity);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
 				academicUniversity.sendKeys(getValuesFromExcel.get(5));
@@ -234,6 +247,7 @@ public class ContactInfoLocator
 				academicUniversity.sendKeys("");
 			}
 			WebElement jobTitle = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='jobtitle']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", jobTitle);
 			if(!getValuesFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
 				jobTitle.sendKeys(getValuesFromExcel.get(6));
@@ -243,6 +257,7 @@ public class ContactInfoLocator
 				jobTitle.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] textarea#message"));
+			js.executeScript("arguments[0].scrollIntoView(true);", message);
 			if(!getValuesFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
 				message.sendKeys(getValuesFromExcel.get(7));
@@ -280,6 +295,7 @@ public class ContactInfoLocator
 				}
 			}
 			WebElement checkBusinessContent = driver.findElement(By.cssSelector("div[class='ContactForm_leftContent__VlhaM']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", checkBusinessContent);
 			checkBusinessContent.getText();
 			if(checkBusinessContent.getText().contains("businesses"))
 			{
@@ -288,7 +304,9 @@ public class ContactInfoLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			WebElement focusContactInfo = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", focusContactInfo);
 			WebElement fullName = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='fullname']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
 				fullName.sendKeys(getValuesFromExcel.get(1));
@@ -298,6 +316,7 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='email']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", email);
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
 				email.sendKeys(getValuesFromExcel.get(2));
@@ -307,6 +326,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] select[name='country']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
@@ -317,6 +337,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue("");
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='contactnumber']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
 				mobileNumber.sendKeys(getValuesFromExcel.get(4));
@@ -326,6 +347,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement organization = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='organization']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", organization);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
 				organization.sendKeys(getValuesFromExcel.get(5));
@@ -336,6 +358,7 @@ public class ContactInfoLocator
 			}
 			js.executeScript("window.scrollBy(0, 500)", "");
 			WebElement jobTitle = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='jobtitle']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", jobTitle);
 			if(!getValuesFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
 				jobTitle.sendKeys(getValuesFromExcel.get(6));
@@ -345,6 +368,7 @@ public class ContactInfoLocator
 				jobTitle.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] textarea#message"));
+			js.executeScript("arguments[0].scrollIntoView(true);", message);
 			if(!getValuesFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
 				message.sendKeys(getValuesFromExcel.get(7));
@@ -365,6 +389,7 @@ public class ContactInfoLocator
 	public ArrayList<String> businessValidation()
 	{
 		ArrayList<String> statusOfFunctionality = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			int errorsSize = driver.findElements(By.cssSelector("p[class*='text-danger']")).size();
@@ -374,6 +399,7 @@ public class ContactInfoLocator
 				{
 					for(int i = 0; i < getErrorText.size(); i++)
 					{
+						js.executeScript("arguments[0].scrollIntoView(true);", getErrorText.get(i));
 						if(getErrorText.get(i).getText().contains("full name"))
 						{
 							statusOfFunctionality.add("full name");
@@ -413,6 +439,7 @@ public class ContactInfoLocator
 	public ArrayList<String> individualValidation()
 	{
 		ArrayList<String> statusOfFunctionality = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			int errorsSize = driver.findElements(By.cssSelector("p[class*='text-danger']")).size();
@@ -422,6 +449,7 @@ public class ContactInfoLocator
 				{
 					for(int i = 0; i < getErrorText.size(); i++)
 					{
+						js.executeScript("arguments[0].scrollIntoView(true);", getErrorText.get(i));
 						if(getErrorText.get(i).getText().contains("full name"))
 						{
 							statusOfFunctionality.add("full name");
@@ -464,6 +492,7 @@ public class ContactInfoLocator
 	public ArrayList<String> acedamicValidation()
 	{
 		ArrayList<String> statusOfFunctionality = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			int errorsSize = driver.findElements(By.cssSelector("p[class*='text-danger']")).size();
@@ -473,6 +502,7 @@ public class ContactInfoLocator
 				{
 				for(int i = 0; i < getErrorText.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView(true);", getErrorText.get(i));
 					if(getErrorText.get(i).getText().contains("full name"))
 					{
 						statusOfFunctionality.add("full name");
@@ -520,6 +550,7 @@ public class ContactInfoLocator
 			js.executeScript("window.scrollBy(0, 100)", "");
 			for(int i = 0; i < agreeDetails.size(); i++)
 			{
+				js.executeScript("arguments[0].scrollIntoView(true);", agreeDetails.get(i));
 				String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 				agreeDetails.get(i).sendKeys(n);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -564,14 +595,15 @@ public class ContactInfoLocator
 	{
 		ArrayList<String> invalidNameStatus = new ArrayList<String>();
 		ArrayList<String> validationMsg = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			System.out.println("Individual_InvalidName process started");
 			invalidNameStatus.add(this.individualFunction(dataFromExcel));
 			invalidNameStatus.add(this.agreePolicyTerms());
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,200)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			if(submit.isDisplayed())
 			{
@@ -604,18 +636,22 @@ public class ContactInfoLocator
 		ArrayList<String> validationMsg = new ArrayList<String>();
 		try
 		{
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
-			driver.close();
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+			{
+				driver.switchTo().window(w.get(0));
+				driver.close();
+			}
 			System.out.println("Individual_InvalidEmail process started");
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Individual_InvalidEmail.add(this.individualFunction(dataFromExcel));
 			Individual_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -644,19 +680,21 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_InvalidMobile process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Individual_InvalidMobile.add(this.individualFunction(dataFromExcel));
 			Individual_InvalidMobile.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -686,18 +724,21 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_Without Skill process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Individual_WithoutSkill.add(this.individualFunction(dataFromExcel));
 			Individual_WithoutSkill.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -729,19 +770,21 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_Without Data process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Individual_WithoutData.add(this.individualFunction(dataFromExcel));
 			Individual_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-		//	js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -770,11 +813,12 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Individual_ valid data process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			if(w.size()>2)
 			{
 				driver.switchTo().window(w.get(0));
+				if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 				{
 					driver.close();
 				}
@@ -785,17 +829,20 @@ public class ContactInfoLocator
 			else
 			{
 				driver.switchTo().window(w.get(0));
+				if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 				{
+					driver.switchTo().window(w.get(0));
 					driver.close();
 				}
 				driver.switchTo().window(w.get(1));
 			}
+			driver.navigate().refresh();
 			Individual_ValidData.add(this.individualFunction(dataFromExcel));
 			Individual_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
-			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -828,13 +875,16 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidName process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			Academic_InvalidName.add(this.academicFunction(dataFromExcel));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
@@ -843,6 +893,7 @@ public class ContactInfoLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -872,19 +923,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidEmail process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_InvalidEmail.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 		//	js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -913,19 +968,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_InvalidMobile process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_InvalidMobile.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidMobile.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 		//	js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -954,19 +1013,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_Invalid institution process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_InvalidInstitution.add(this.academicFunction(dataFromExcel));
 			Academic_InvalidInstitution.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -995,19 +1058,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_without job process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));			
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_WithoutJob.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutJob.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1037,13 +1104,16 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic without message process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_WithoutMessage.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutMessage.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1051,6 +1121,7 @@ public class ContactInfoLocator
 			js.executeScript("window.scrollBy(0,300)");
 			//WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -1084,19 +1155,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_without data process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_WithoutData.add(this.academicFunction(dataFromExcel));
 			Academic_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1125,13 +1200,16 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Academic_valid data process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Academic_ValidData.add(this.academicFunction(dataFromExcel));
 			Academic_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1139,6 +1217,7 @@ public class ContactInfoLocator
 			js.executeScript("window.scrollBy(0,300)");
 			
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -1171,19 +1250,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidName process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_InvalidName.add(this.businessFunction(dataFromExcel));
 			Business_InvalidName.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1213,19 +1296,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidEmail process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_InvalidEmail.add(this.businessFunction(dataFromExcel));
 			Business_InvalidEmail.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1254,19 +1341,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_InvalidMobile process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_InvalidMobile.add(this.businessFunction(dataFromExcel));
 			Business_InvalidMobile.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -1298,19 +1389,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_Without Organization process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));	
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_WithoutOrganization.add(this.businessFunction(dataFromExcel));
 			Business_WithoutOrganization.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -1340,19 +1435,23 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_without job process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_WithoutJob.add(this.businessFunction(dataFromExcel));
 			Business_WithoutJob.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			//js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1383,14 +1482,16 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_without message process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+			//((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
-			
+			driver.navigate().refresh();
 			Business_WithoutMessage.add(this.businessFunction(dataFromExcel));
 			Business_WithoutMessage.add(this.agreePolicyTerms());
 			
@@ -1398,6 +1499,7 @@ public class ContactInfoLocator
 			js.executeScript("window.scrollBy(0,300)");
 			
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
@@ -1435,20 +1537,24 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_Without data process started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_WithoutData.add(this.businessFunction(dataFromExcel));
 			Business_WithoutData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
@@ -1477,18 +1583,22 @@ public class ContactInfoLocator
 		try
 		{
 			System.out.println("Business_valid data process is started");
-			((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
+		//	((JavascriptExecutor) driver).executeScript("window.open('"+OpenWebsite.openSite(driver)+"')");
 			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
 			driver.switchTo().window(w.get(0));
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 			{
+				driver.switchTo().window(w.get(0));
 				driver.close();
 			}
 			driver.switchTo().window(w.get(1));
+			driver.navigate().refresh();
 			Business_ValidData.add(this.businessFunction(dataFromExcel));
 			Business_ValidData.add(this.agreePolicyTerms());
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,300)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			if(submit.isDisplayed())
 			{
 				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));

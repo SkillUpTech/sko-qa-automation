@@ -173,7 +173,7 @@ public class NewAboutCourseValidator
 		{
 			String checkEnvironment = newAboutCourseLocators.setEnvironment(environmentFromExcel);
 			getMetaHost = newAboutCourseLocators.setMetaHostURL();
-			getImageHost = newAboutCourseLocators.setImageEndpoint(environmentFromExcel);
+		//	getImageHost = newAboutCourseLocators.setImageEndpoint(environmentFromExcel);
 		}
 		catch(Exception e)
 		{

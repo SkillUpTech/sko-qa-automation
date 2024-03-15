@@ -1,7 +1,10 @@
 package com.seo.regression.testing;
 
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -11,6 +14,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -34,19 +39,31 @@ public class DashboardLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			for(int i = 1; i < urgetURLl.size(); i++)
+			String parent  = driver.getWindowHandle();
+			Set<String> windows = driver.getWindowHandles();
+			for(String window : windows)
 			{
-				String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+urgetURLl.get(1);
-				
-				status.add(microsoftCourseLocator.checkCourseCode(openPage));
-				if(status.contains("fail"))
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 				{
-					System.out.println("Facing issue on site");
+					driver.switchTo().window(window);
+					for(int i = 1; i < urgetURLl.size(); i++)
+					{
+						String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+urgetURLl.get(1);
+						
+						status.add(microsoftCourseLocator.checkCourseCode(openPage));
+						if(status.contains("fail"))
+						{
+							System.out.println("Facing issue on site");
+						}
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(openPage);
+						WebElement getTitle = driver.findElement(By.xpath("//h1"));
+						courseName = getTitle.getText().replaceAll("[-+.^:,]","").replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
+						System.out.println("course or  program  name : "+courseName);
+					}
+					
 				}
-				driver.get(openPage);
-				WebElement getTitle = driver.findElement(By.xpath("//h1"));
-				courseName = getTitle.getText().replaceAll("[-+.^:,]","").replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
-				System.out.println("course or  program  name : "+courseName);
 			}
 		}
 		catch(Exception e)
@@ -86,7 +103,7 @@ public class DashboardLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						wait.until(ExpectedConditions.elementToBeClickable(checkEnrollButton));
 						js.executeScript("arguments[0].click()", checkEnrollButton);
-						Thread.sleep(400);
+						Thread.sleep(1000);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						String parentWindow = driver.getWindowHandle();
@@ -113,6 +130,7 @@ public class DashboardLocator
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				statusOfProcess.add(regressionGenericLocator.loginProcess(enrollDataFromExcel.get(1)));
+				Thread.sleep(1000);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(500);
@@ -151,35 +169,57 @@ public class DashboardLocator
 		String status = "fail";
 		String parentWindow = "";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		if(data.contains("yes"))
-		{
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			js.executeScript("window.scrollBy(0,400)");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			WebElement clickDashboard = driver.findElement(By.xpath("//a[contains(text(),'Continue to your Dashboard')]"));
-			js.executeScript("arguments[0].scrollIntoView();", clickDashboard);
-			if(clickDashboard.isDisplayed())
+			if(data.contains("Yes"))
+			{
+			try
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-				js.executeScript("arguments[0].click()", clickDashboard);
+				js.executeScript("window.scrollBy(0,400)");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-				parentWindow = driver.getWindowHandle();
-				Set<String> windows = driver.getWindowHandles();
-				for(String window : windows)
+				WebElement clickDashboard = driver.findElement(By.xpath("//a[contains(text(),'Continue to your Dashboard')]"));
+				js.executeScript("arguments[0].scrollIntoView();", clickDashboard);
+				Thread.sleep(1000);
+				if(clickDashboard.isDisplayed())
 				{
-					driver.switchTo().window(window);
-					if(driver.getCurrentUrl().contains("dashboard"))
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					js.executeScript("arguments[0].click()", clickDashboard);
+					Thread.sleep(1000);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					parentWindow = driver.getWindowHandle();
+					Set<String> windows = driver.getWindowHandles();
+					for(String window : windows)
 					{
 						driver.switchTo().window(window);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-						js.executeScript("window.scrollBy(0,200)");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-						System.out.println("Landed to Dashboard Page");
-						status = "success";
+						if(driver.getCurrentUrl().contains("dashboard"))
+						{
+							driver.switchTo().window(window);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							js.executeScript("window.scrollBy(0,200)");
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							System.out.println("Landed to Dashboard Page");
+							status = "success";
+							Thread.sleep(1000);
+						}
 					}
 				}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+				
+			}
+			else
+			{
+				driver.get("https://stage-in.skillup.online/");
+				WebElement login = driver.findElement(By.cssSelector("li[class*='Header_loginBtn']>a"));
+				 String n = Keys.chord(Keys.CONTROL, Keys.ENTER); 
+				 login.sendKeys(n);
+				regressionGenericLocator.loginProcess("hemamalini@skillup.tech-split-Test@123");
+				status = "pass";
 			}
 		}
 		catch(Exception e)
@@ -187,17 +227,6 @@ public class DashboardLocator
 			e.printStackTrace();
 		}
 		
-			
-		}
-		else
-		{
-			driver.get("https://stage-in.skillup.online/");
-			WebElement login = driver.findElement(By.cssSelector("li[class*='Header_loginBtn']>a"));
-			 String n = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-			 login.sendKeys(n);
-			regressionGenericLocator.loginProcess("hemamalini@skillup.tech-split-Test@123");
-			status = "pass";
-		}
 		return status;
 	}
 	String getEnrolledCourseOrProgramName = "";
@@ -295,34 +324,6 @@ public class DashboardLocator
 						}
 					}
 				}
-				/*
-				 * List<WebElement> allCourses = driver.findElements(By.
-				 * cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id] p[class*='dashboardCourseCards_relatedProgramsLink']"
-				 * )); System.out.println("Related programs count : "+allCourses.size());
-				 * for(int k = 0; k < allCourses.size(); k++) {
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * js.executeScript("arguments[0].scrollIntoView();", allCourses.get(k));
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * if(allCourses.get(k).isDisplayed()) {
-				 * js.executeScript("arguments[0].click()", allCourses.get(k)); List<WebElement>
-				 * courseSectionLocator = driver.findElements(By.cssSelector(
-				 * "ul[class*='navigation_containerList']>li[class*='navigation_selected']"));
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40)); for(int j
-				 * = 0; j < courseSectionLocator.size(); j++) {
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * if(courseSectionLocator.get(j).getText().contains("Programs")) {
-				 * js.executeScript("arguments[0].click()", courseSectionLocator.get(j));
-				 * System.out.println("Redirected to program section");
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * List<WebElement> courseSectionLocator1 =
-				 * driver.findElements(By.cssSelector("ul[class*='navigation_containerList']>li"
-				 * )); for(int l = 0; l < courseSectionLocator1.size(); l++) {
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * if(courseSectionLocator1.get(l).getText().contains("Courses")) {
-				 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 * js.executeScript("arguments[0].click()", courseSectionLocator1.get(l));
-				 * System.out.println("Redirected to course section"); break; } } } } } }
-				 */
 				
 			}
 			catch(Exception e)
@@ -451,7 +452,6 @@ public class DashboardLocator
 			{
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				String getPartnerURL = basicLocator.get(i).getAttribute("href");
-				//js.executeScript("arguments[0].click()", basicLocator.get(i));
 					String url = microsoftCourseLocator.checkCourseCode(getPartnerURL);
 					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 					basicLocator.get(i).sendKeys(n);
@@ -469,7 +469,7 @@ public class DashboardLocator
 							driver.switchTo().window(windows);
 							System.out.println("dasboard page : "+driver.getCurrentUrl());
 						}
-						else if(!driver.getCurrentUrl().contains("dashboard"))
+						else if(!driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 						{
 							driver.close();
 						}
@@ -736,8 +736,12 @@ public class DashboardLocator
 						clickShareIcon.click();
 					}
 					WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
-					clickCopy.click();
-					 String parentWindow = driver.getWindowHandle();
+					if(clickCopy.isDisplayed())
+					{
+						
+						clickCopy.click();
+					}
+					String parentWindow = driver.getWindowHandle();
 					List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
 					for(int k = 0; k < socialLink.size(); k++)
 					{
@@ -832,284 +836,157 @@ public class DashboardLocator
 		ArrayList<String> getStatus = new ArrayList<String>();
 		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		if(!data.contains("Yes"))
-		{
+		
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
+		
+		
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+			String parent = driver.getWindowHandle();
 			
-			 List<WebElement> checkcourseName = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
-			 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+			Set<String> windows = driver.getWindowHandles();
 			
-			 for(int j = 0; j < checkcourseName.size(); j++)
-			 {
-				 js.executeScript("arguments[0].scrollIntoView();", checkcourseName.get(j));
-				 
-				 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				 
-				  if(checkcourseName.get(j).getAttribute("id").replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s", "").trim().equalsIgnoreCase(modifiedcourseName))
-				  {
+			for(String win : windows)
+			{
+				driver.switchTo().window(win);
+				
+				if(driver.getCurrentUrl().contains("dashboard"))
+				{
+					driver.switchTo().window(win); //dashboard page landed
 
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-						System.out.println("enrolled course displayed"); 
-						System.out.println("enrolled program is available and Let see course view tabs");
-						
-						
-						
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-							WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
-							
-							WebElement clickCourse = checkcourseName.get(j).findElement(By.cssSelector(" a[class*='dashboardCourseCards_spanLink']"));
-							
-							js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-							
-							
-							if(clickCourse.isDisplayed())
-							{
-								String courseContentOnTab = Keys.chord(Keys.CONTROL, Keys.ENTER); 
+						 
+						 List<WebElement> clickSkillupPartner = driver.findElements(By.xpath("//*[contains(@class,'dashboardCourseCards_dataTagsDark')]"));
+						  {
+							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							  
+							  for(int l = 0; l < clickSkillupPartner.size(); l++)
+							  {
+								  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 								  
-								js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-								
-								wait.until(ExpectedConditions.elementToBeClickable(clickCourse));
-								  
-								clickCourse.sendKeys(courseContentOnTab);
-							}
-								
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-								  
-							
-								
-								Set<String> allWindows = driver.getWindowHandles();
-								
-								for(String windows : allWindows)
-								{
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-
-									driver.switchTo().window(windows);
+								  if(clickSkillupPartner.get(l).getText().contains("SkillUp Online") || clickSkillupPartner.get(l).getText().contains("Microsoft"))
+								  {
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 									  
-									 if(driver.getCurrentUrl().contains("/courses/")) // verifying course content page
-									 {
-										 driver.switchTo().window(windows);
-										 System.out.println("Course Content view tab Page");
-										 List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation nav[class='nav flex-nowrap nav-underline-tabs']>a, div#content li[class*='nav-item']>a"));
-										 for(int i = 0; i < courseViewTabs.size(); i++)
-										 {
-											 String courseContentScreen = driver.getWindowHandle();//parent screen of course sontent page
-											 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-											 
-											 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
+									  int getCourseCount = l+1;
+									  
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+									  
+									  WebElement clickCourse = clickSkillupPartner.get(l).findElement(By.xpath("//section[contains(@class,'dashboardCourseCards_cardContainer')]["+getCourseCount+"]/a"));
+									  
+									  js.executeScript("arguments[0].scrollIntoView();", clickCourse);	
+									  
+									  String courseContentWindow = driver.getWindowHandle();
+									  
+									  if(clickCourse.isDisplayed())
+									  {
+										  
+											js.executeScript("arguments[0].scrollIntoView();", clickCourse);
 											
-											 String courseContentTabsURL = courseViewTabs.get(i).getAttribute("href");
-
-											 if(courseViewTabs.get(i).isDisplayed())
-											 {
-												 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-												 
-												 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
-												 
-										
-												 String contentOnNewPage = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-												 
-												 courseViewTabs.get(i).sendKeys(contentOnNewPage);
-											 }
+											wait.until(ExpectedConditions.elementToBeClickable(clickCourse));
+											
+											 ((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", clickCourse.getAttribute("href"));
+											
+											
 											 
-											 Set<String> allTabsWindows = driver.getWindowHandles(); 
-											 for(String tabs : allTabsWindows)
-											 {
-												 driver.switchTo().window(tabs);
-												 if(!courseContentScreen.equals(tabs))
-												 {
-													 driver.switchTo().window(tabs);
-													 System.out.println("course content url : "+driver.getCurrentUrl());
-													 driver.close();
-													// driver.switchTo().window(courseContentScreen);
-												 }
-											 }
-											 driver.switchTo().window(courseContentScreen);
-										   }	 
-									 }
-								}
-								break;
-							
-				  }
-			 }
-		}
+											 Set<String> windowHandles = driver.getWindowHandles();
+											 
+										        for (String windowHandle : windowHandles)
+										        {
+										            if (!windowHandle.equals(win))
+										            {
+										                driver.switchTo().window(windowHandle);
+										                
+										                if(driver.getCurrentUrl().contains("/course/"))
+														{
+															
+															driver.switchTo().window(windowHandle);
+															
+															System.out.println("Course Content view tab Page");
+															
+															List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation nav[class='nav flex-nowrap nav-underline-tabs']>a, div#content li[class*='nav-item']>a"));
+															
+															for(int i = 1; i < courseViewTabs.size(); i++)
+															{
+																driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+																
+																js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
+																
+																if(courseViewTabs.get(i).isDisplayed())
+																 {
+																	 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+																	 
+																	 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
+																	 
+																	 String contentOnNewPage = Keys.chord(Keys.CONTROL, Keys.ENTER); 
+																	 
+																	 courseViewTabs.get(i).sendKeys(contentOnNewPage);
+																	 
+																	 String courseContentTabs = driver.getWindowHandle();
+																	 
+																		Set<String> allTabs = driver.getWindowHandles();
+																		
+																		for(String tab : allTabs)
+																		{
+																			
+																			driver.switchTo().window(tab);
+																			
+																			if(!driver.getCurrentUrl().contains("/course/") && !tab.equals(win) && !driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+																			{
+																				driver.switchTo().window(tab);
+																				
+																				System.out.println("course content page : "+driver.getCurrentUrl());
+																				
+																				driver.close();
+																			}
+																			driver.switchTo().window(courseContentTabs);
+																		}
+																  }
+																
+																if(i == (courseViewTabs.size()-1))
+																{
+																	break;
+																}
+															}
+															driver.close();
+															}
+										            }
+										            driver.switchTo().window(courseContentWindow);
+										        }
+											
+											}
+									  
+										
+									  }  
+										
+								  driver.switchTo().window(parent);
+								  }
+							  }
+					 }
+				}
+			
+			
+		}	
+			
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 		
-		}
-		else
-		{
-			try
-			{
-
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				
-				 List<WebElement> checkcourseName = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
-				 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				
-				 String DashboardScreen = driver.getCurrentUrl(); // Dashboard page
-				 
-				 for(int j = 0; j < checkcourseName.size(); j++)
-				 {
-					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-					 
-					 WebElement CourseBaseLocator  = checkcourseName.get(j);
-					// js.executeScript("arguments[0].scrollIntoView();", CourseBaseLocator);
-					 
-					 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-					  List<WebElement> clickSkillupPartner = CourseBaseLocator.findElements(By.cssSelector(" a[class*='dashboardCourseCards_dataTagsDark'], div[class*='dashboardCourseCards_dataTagsDark']"));
-					  {
-						  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-						  for(int l = 0; l < clickSkillupPartner.size(); l++)
-						  {
-							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-							  if(clickSkillupPartner.get(l).getText().contains("SkillUp Online"))
-							  {
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-									System.out.println("enrolled course displayed"); 
-									System.out.println("enrolled program is available and Let see course view tabs");
-									
-									
-									
-										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-										WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
-										
-										WebElement clickCourse = CourseBaseLocator.findElement(By.cssSelector(" a[class*='dashboardCourseCards_spanLink']"));
-										
-										js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-										
-										 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-										if(clickCourse.isDisplayed())
-										{
-											String courseContentOnTab = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-											  
-											js.executeScript("arguments[0].scrollIntoView();", clickCourse);
-											
-											wait.until(ExpectedConditions.elementToBeClickable(clickCourse));
-											  
-											clickCourse.sendKeys(courseContentOnTab);
-										}
-											
-											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-											  
-										
-											
-											Set<String> allWindows = driver.getWindowHandles();
-											
-											for(String windows : allWindows)
-											{
-												driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-
-												driver.switchTo().window(windows);
-												  
-												 if(driver.getCurrentUrl().contains("/courses/")) // verifying course content page
-												 {
-													 driver.switchTo().window(windows);
-													 System.out.println("Course Content view tab Page");
-													 List<WebElement> courseViewTabs= driver.findElements(By.cssSelector("div#courseTabsNavigation nav[class='nav flex-nowrap nav-underline-tabs']>a, div#content li[class*='nav-item']>a"));
-													 for(int i = 0; i < courseViewTabs.size(); i++)
-													 {
-														 String courseContentScreen = driver.getWindowHandle();//parent screen of course sontent page
-														 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-														 
-														 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
-														
-														 String courseContentTabsURL = courseViewTabs.get(i).getAttribute("href");
-
-														 if(courseViewTabs.get(i).isDisplayed())
-														 {
-															 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-															 
-															 js.executeScript("arguments[0].scrollIntoView();", courseViewTabs.get(i));
-															 
-													
-															 String contentOnNewPage = Keys.chord(Keys.CONTROL, Keys.ENTER); 
-															 
-															 courseViewTabs.get(i).sendKeys(contentOnNewPage);
-														 }
-														 
-														 Set<String> allTabsWindows = driver.getWindowHandles(); 
-														 for(String tabs : allTabsWindows)
-														 {
-															 driver.switchTo().window(tabs);
-															 if(!courseContentScreen.equals(tabs))
-															 {
-																 driver.switchTo().window(tabs);
-																 System.out.println("course content url : "+driver.getCurrentUrl());
-																 driver.close();
-																// driver.switchTo().window(courseContentScreen);
-															 }
-														 }
-														 driver.switchTo().window(courseContentScreen);
-													   }	 
-												 }
-											}
-											break;
-										}
-						  }
-					  }
-					break;
-						}
-				 driver.switchTo().window(DashboardScreen);
-					  }
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		WebElement clickDropDown = driver.findElement(By.cssSelector("button[class='dropdown-toggle btn btn-outline-primary'], div[class='navbar-right NAVRiGhT'] li[class='SigNUP'] img[class='dPaRoW']"));
-		js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-		
-		if(clickDropDown.isDisplayed())
-		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-			js.executeScript("arguments[0].click()", clickDropDown);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-			List<WebElement> dropDownData = driver.findElements(By.cssSelector("div[class='dropdown-menu-right dropdown-menu show']>a, ul[class='dropdown-menu Primary02_Blue']>li>a"));
-			for(int k = 0 ; k < dropDownData.size(); k++)
-			{
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-				if(dropDownData.get(k).getText().contains("Dashboard"))
-				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					js.executeScript("arguments[0].click()", dropDownData.get(k));
-					System.out.println("Landed to dashboard");
-					/*
-					 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					 * driver.findElement(By.
-					 * cssSelector("button[class='dropdown-toggle btn btn-outline-primary'], li[class*='Header_SigNUP'] img[alt='icon']"
-					 * )).click(); List<WebElement> logout = driver.findElements(By.
-					 * cssSelector("ul[class='dropdown-menu Header_Primary02_Blue__bffoz show']>li>a"
-					 * )); for(int i = 0; i < logout.size(); i++) {
-					 * if(logout.get(i).getText().contains("Sign Out")) { logout.get(i).click();
-					 * System.out.println("logout is done"); } }
-					 */
-					break;
-				}
-			}
-		}
 		return getStatus;
 	}
 	public ArrayList<String> verifyIncludeCoursesFromProgram(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-			if(driver.getCurrentUrl().contains("dashboard"))
-			{
-				JavascriptExecutor js = (JavascriptExecutor) driver;
+
 				js.executeScript("window.scrollBy(0,-300)");
 				WebElement clickProgram = driver.findElement(By.cssSelector("ul[class*='navigation_containerList']>li[class='navigation_selected__Kzs2R']"));
 				if(!clickProgram.getText().contains("Programs"))
 				{
 					WebElement clickProgramSection = driver.findElement(By.xpath("//li[contains(text(),'Programs')]"));
-					clickProgramSection.click();
-
+					js.executeScript("arguments[0].click()", clickProgramSection);
 					System.out.println("program section is available");
 					List<WebElement> programs = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
 					for(int j = 0; j < programs.size(); j++)
@@ -1140,7 +1017,7 @@ public class DashboardLocator
 											for(String windows : allWindows)
 											{
 												driver.switchTo().window(windows);
-												if(driver.getCurrentUrl().contains("/course/"))
+												if(driver.getCurrentUrl().contains("/course/") && !driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 												{
 													driver.switchTo().window(windows);
 													System.out.println("opened course : "+driver.getCurrentUrl());
@@ -1217,12 +1094,40 @@ public class DashboardLocator
 							}
 							
 						}
-					}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			status.add("fail");
+		}
+		WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+		js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+		if(clickDropdown.isDisplayed())
+		{
+			js.executeScript("arguments[0].click()", clickDropdown);
+			
+			WebElement clickSignout = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header']>li:nth-child(5)>a"));
+			if(clickSignout.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", clickSignout);
+			}
+		}
+		String dashboardPage = driver.getWindowHandle();
+		Set<String> allTabs = driver.getWindowHandles();
+		for(String tab : allTabs)
+		{
+			driver.switchTo().window(tab);
+			if(driver.getCurrentUrl().contains("dasboard"))
+			{
+				driver.switchTo().window(tab);
+				driver.close();
+				driver.switchTo().window(tab);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(tab);
+				}
+			}
+			driver.switchTo().window(dashboardPage);
 		}
 		return status;
 	}

@@ -1,9 +1,11 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 import org.testng.annotations.Test;
 
 public class RegressionTestLogin
@@ -13,9 +15,9 @@ public class RegressionTestLogin
 	ArrayList<ArrayList<String>> sheetData = null;
 	ProcessLogin processLogin;
 	String sheetStatus = "Pass";
-	
 	public RegressionTestLogin(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws Exception
 	{		
+		
 		 	this.sheetData = sheetData;
 		 	this.driver= driver;
 			this.processLogin = new ProcessLogin(this.driver);
@@ -25,6 +27,9 @@ public class RegressionTestLogin
 	
 	public String start() throws InterruptedException
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -44,6 +49,28 @@ public class RegressionTestLogin
 					ValidCredentials();
 					break;
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+			
 		}
 		return sheetStatus;
 	}

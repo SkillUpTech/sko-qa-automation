@@ -660,6 +660,22 @@ public class GLXLocator {
 		{
 			e.printStackTrace();
 		}
+		driver.close();
+		Set<String> allScreen = driver.getWindowHandles();
+		 for (String handle : allScreen) 
+		 {
+			 driver.switchTo().window(handle);
+	            if(handle.equals(driver.getWindowHandle()))
+	            {
+	                driver.switchTo().window(handle);
+	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+	                {
+	                	 driver.switchTo().window(handle);
+	                	 break;
+	                }
+	            }
+	            driver.switchTo().window(handle);
+	      }
 		return processStatus;
 		
 	}
