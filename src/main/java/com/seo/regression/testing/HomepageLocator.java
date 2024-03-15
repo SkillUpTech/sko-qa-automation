@@ -19,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class HomepageLocator
 {
 	WebDriver driver;
+	
 	public HomepageLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -28,7 +29,7 @@ public class HomepageLocator
 		ArrayList<String> statusOfSliderScreen = new ArrayList<String>();
 		try
 		{
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost))
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
 			{
 				JavascriptExecutor jse = (JavascriptExecutor)driver;
 				jse.executeScript("window.open()");
@@ -42,8 +43,6 @@ public class HomepageLocator
 			}
 			ArrayList<String> getURL = new ArrayList<String>();
 				List<WebElement> clickSlide = driver.findElements(By.cssSelector("div[class='bannersliderhome_bannerSliderH__YF848 bannersliderhome_bannerSliderHDesktOP__LpvuC'] div[class='slick-list']>div[class='slick-track']>div"));
-				//String slideTitle = clickSlide.findElement(By.cssSelector(" h2")).getText();
-				//System.out.println("slider titlte : "+slideTitle);
 				for(int i = 0; i < clickSlide.size(); i++)
 				{
 					WebElement checkVisibleSlide = driver.findElement(By.cssSelector(" div[class='slick-slide slick-active slick-current']"));
@@ -54,27 +53,13 @@ public class HomepageLocator
 						getURL.add(getSliderButtonURL);
 					}
 				}
-				/*
-				 * String newTab = Keys.chord(Keys.CONTROL, Keys.ENTER);
-				 * clickSlide.sendKeys(newTab); String parent = driver.getWindowHandle();
-				 * Set<String> windows = driver.getWindowHandles(); for(String window : windows)
-				 * { driver.switchTo().window(window); if(!parent.equals(window)) {
-				 * driver.switchTo().window(window);
-				 * System.out.println("url of page :"+driver.getCurrentUrl()); driver.close(); }
-				 * } driver.switchTo().window(parent);
-				 */
 				for(int j = 0; j < getURL.size(); j++)
 				{
-					
 					String urlLinkStatus = this.checkURLStatus(getURL.get(j));
-					if(urlLinkStatus.equalsIgnoreCase("fail"))
+					if(urlLinkStatus.contains("fail"))
 					{
-						statusOfSliderScreen.add(getURL.get(j));
+						statusOfSliderScreen.add(getURL.get(j)+urlLinkStatus);
 					}
-					else
-					{
-						statusOfSliderScreen.add("pass");
-					}	
 				}
 			
 		}
@@ -103,15 +88,11 @@ public class HomepageLocator
 				{
 					System.out.println("broken link : "+addHosturl);
 					System.out.println("response code : "+respCode);
-					status = "fail";
+					status = "fail" + respCode;
 				}
 				else
 				{
 					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					/*
-					 * JavascriptExecutor js = (JavascriptExecutor) driver; js. executeScript(
-					 * "window. open('"+addHosturl+"');" );
-					 */
 					status = "success";
 				}
 			}
@@ -128,7 +109,7 @@ public class HomepageLocator
 		try
 		{
 			System.out.println("learning Partners process started");
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost))
+			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
 			{
 				JavascriptExecutor jse = (JavascriptExecutor)driver;
 				jse.executeScript("window.open()");
@@ -151,9 +132,9 @@ public class HomepageLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					String urlLinkStatus = this.checkURLStatus(partnerURL);
-					if(urlLinkStatus.equalsIgnoreCase("fail"))
+					if(urlLinkStatus.contains("fail"))
 					{
-						verifyPocess.add(partnerList.get(i).getText());
+						verifyPocess.add(partnerList.get(i).getText()+urlLinkStatus);
 					}
 					else
 					{
@@ -167,7 +148,8 @@ public class HomepageLocator
 					Set<String> childWindows = driver.getWindowHandles();
 					for(String windows : childWindows)
 					{
-						if(!parentWindow.equalsIgnoreCase(windows))
+						driver.switchTo().window(windows);
+						if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 						{
 							driver.switchTo().window(windows);
 							driver.close();
@@ -197,7 +179,6 @@ public class HomepageLocator
 		List<WebElement> learningCatalogCourses = driver.findElements(By.cssSelector("section[class*='Courses_mainSection']>div>div:nth-child(2) div[class='slick-track']>div[class*='slick-slide'] a"));
 		for(int j = 0; j < learningCatalogCourses.size(); j++)
 		{
-		//	Thread.sleep(2000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			System.out.println(" learning catalog courses size : " +learningCatalogCourses.size());
 			String checkCourse = learningCatalogCourses.get(j).getAttribute("href");
@@ -211,7 +192,7 @@ public class HomepageLocator
 			for(String windows : childWindow)
 			{
 				driver.switchTo().window(windows);
-				if(!(parentWindow.equalsIgnoreCase(windows)))
+				if(!(parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/")))
 				{
 					driver.switchTo().window(windows);
 					System.out.println("learning catalog course link :"+j+" "+driver.getCurrentUrl());
@@ -223,24 +204,20 @@ public class HomepageLocator
 		return verifyPocess;
 	}
 	
-	public ArrayList<String> checkHumanSkills(ArrayList<String> dataFromExcel)
+	public ArrayList<String> checkHumanSkills()
 	{
 		System.out.println("human skill process started");
 		ArrayList<String> verifyProcess = new ArrayList<String>();
 		List<WebElement> humanSkillsCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_browserCard']"));
 		for(int i = 0; i < humanSkillsCourses.size(); i++)
 		{
-			if(dataFromExcel.get(i+1).equalsIgnoreCase(humanSkillsCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_courseHeading'] p")).getText()))
+			if(humanSkillsCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_RegularcardLinks'] a")).isDisplayed())
 			{
-				String courseLink = humanSkillsCourses.get(i).findElement(By.cssSelector("div[class*='RegularCourseCard_RegularcardLinks'] a")).getAttribute("href");
+				String courseLink = humanSkillsCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_RegularcardLinks'] a")).getAttribute("href");
 				String urlStatus = this.checkURLStatus(courseLink);
-				if(urlStatus.equalsIgnoreCase("fail"))
+				if(urlStatus.contains("fail"))
 				{
-					verifyProcess.add(dataFromExcel.get(i+1));
-				}
-				else
-				{
-					verifyProcess.add("pass");	
+					verifyProcess.add(courseLink + urlStatus);
 				}
 				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
 						"window. open('"+courseLink+"');" );
@@ -249,7 +226,7 @@ public class HomepageLocator
 				for(String windows : childWindow)
 				{
 					driver.switchTo().window(windows);
-					if(!parentWindow.equalsIgnoreCase(windows))
+					if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 					{
 						driver.switchTo().window(windows);
 						System.out.println("Human skill course : "+courseLink);
@@ -273,9 +250,9 @@ public class HomepageLocator
 			{
 				String getCourseLink = topTechCategories.get(i).getAttribute("href");
 				String urlLink = this.checkURLStatus(getCourseLink);
-				if(urlLink.equalsIgnoreCase("fail"))
+				if(urlLink.contains("fail"))
 				{
-					verifyPocess.add(data.get(i+1));
+					verifyPocess.add(data.get(i+1)+urlLink);
 				}
 				else
 				{
@@ -288,7 +265,7 @@ public class HomepageLocator
 				for(String windows : childWindow)
 				{
 					driver.switchTo().window(windows);
-					if(!(parentWindow.equalsIgnoreCase(windows)))
+					if(!(parentWindow.equalsIgnoreCase(windows)) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 					{
 						driver.switchTo().window(windows);
 						System.out.println("Top Categories course : "+i+" "+driver.getCurrentUrl());

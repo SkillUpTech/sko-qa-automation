@@ -57,10 +57,12 @@ public class MicrosoftCourseLocator
 							driver.switchTo().window(windows);
 							System.out.println("microsoft page : "+driver.getCurrentUrl());
 							processStatus.add("pass");
+							driver.close();
 							break;
 						}
+						driver.switchTo().window(parentWindow);
 					}
-					break;
+					driver.switchTo().window(parentWindow);
 				}
 			}
 		}
@@ -72,17 +74,6 @@ public class MicrosoftCourseLocator
 		return processStatus;
 	}
 
-	/*
-	 * public String checkURLStatus(String getURL) { String status = "fail"; String
-	 * addHosturl = getURL; HttpURLConnection huc = null; int respCode = 200; try {
-	 * huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-	 * huc.setRequestMethod("HEAD"); huc.connect(); respCode =
-	 * huc.getResponseCode(); System.out.println("status code : "+respCode + " "
-	 * +addHosturl); if(respCode > 200) {
-	 * System.out.println("broken link"+addHosturl); status = "fail" + respCode; }
-	 * else { System.out.println("un broken link"+addHosturl); status = "pass"; } }
-	 * catch(Exception e) { e.printStackTrace(); } return status; }
-	 */
 	public String checkCourseCode(String getURL)
 	{
 		int status = 0;
@@ -153,16 +144,17 @@ public class MicrosoftCourseLocator
 				String inputLine;
 				StringBuffer html = new StringBuffer();
 
-				while ((inputLine = in.readLine()) != null) {
-					html.append(inputLine);
-				}
-				in.close();
-
-				System.out.println("Done");
-				if(status>200)
-				{
-					getstatus = addHosturl+"fail" + status;
-				}
+					while ((inputLine = in.readLine()) != null) 
+					{
+						html.append(inputLine);
+					}
+					in.close();
+	
+					System.out.println("Done");
+					if(status>200)
+					{
+						getstatus = addHosturl+"fail" + status;
+					}
 			    } 
 			catch (Exception e) 
 			{
@@ -194,12 +186,13 @@ public class MicrosoftCourseLocator
 			{
 				String courseURL = listOfCourses.get(i).findElement(By.cssSelector(" div a[href]")).getAttribute("href");
 				String urlLink = this.checkCourseCode(courseURL);
+				
 				if(urlLink.contains("fail"))
 				{
-					processStatus.add(courseURL+urlLink);
+					processStatus.add(courseURL);
 				}
 				JavascriptExecutor js1 = (JavascriptExecutor) driver;
-				js1. executeScript("window. open('"+urlLink+"');" );
+				js1. executeScript("window. open('"+courseURL+"');" );
 				String parentWindow = driver.getWindowHandle();
 				Set<String> childWnidow = driver.getWindowHandles();
 				for(String windows : childWnidow)
@@ -208,11 +201,57 @@ public class MicrosoftCourseLocator
 					if(!parentWindow.equalsIgnoreCase(windows))
 					{
 						driver.switchTo().window(windows);
-						driver.close();
+						if(driver.getCurrentUrl().contains(courseURL) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+						{
+							driver.switchTo().window(windows);
+							String checkCourseTab = driver.getTitle();
+							if(checkCourseTab.contains("undefined"))
+							{
+								processStatus.add(courseURL+" undefined word on tab");
+							}
+							else if(checkCourseTab.contains("null"))
+							{
+								processStatus.add(courseURL+" null word on tab");
+							}
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+							if(driver.findElements(By.cssSelector("div[class='error-content'] p")).size()>0)
+							{
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+								if(driver.findElement(By.cssSelector("div[class='error-content'] p")).getText().equalsIgnoreCase("404"))
+								{
+									processStatus.add(courseURL+" 404 ERROR");
+								}
+							}
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+							if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							{
+								driver.switchTo().window(windows);
+								driver.close();
+								driver.switchTo().window(parentWindow);
+								break;
+							}
+						}
 						driver.switchTo().window(parentWindow);
 					}
+					driver.switchTo().window(parentWindow);
 				}
 			}
+			driver.close();
+			Set<String> allScreen = driver.getWindowHandles();
+			 for (String handle : allScreen) 
+			 {
+				 driver.switchTo().window(handle);
+		            if(handle.equals(driver.getWindowHandle()))
+		            {
+		                driver.switchTo().window(handle);
+		                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+		                {
+		                	 driver.switchTo().window(handle);
+		                	 break;
+		                }
+		            }
+		            driver.switchTo().window(handle);
+		      }
 		}
 		catch(Exception e)
 		{

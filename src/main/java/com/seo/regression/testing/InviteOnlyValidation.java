@@ -1,8 +1,10 @@
 package com.seo.regression.testing;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class InviteOnlyValidation 
 {
@@ -15,13 +17,14 @@ public class InviteOnlyValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		this.inviteOnlyLocator = new InviteOnlyLocator(driver);
 		System.out.println("Invite only process started");
-		//this.start();
 	}
 	public String start() throws InterruptedException
 	{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -41,14 +44,35 @@ public class InviteOnlyValidation
 					checkInviteOnly_Courses(row);
 					break;
 				case "checkEnrollmentDateIsExpired_Courses":
-					checkEnrollmentDateIsExpired_Courses(row);
+					checkEnrollmentDateIsExpiredFuturedCurrent_Courses(row);
 					break;
-				case "checkEnrollmentDateIsFuture_Courses":
-					checkEnrollmentDateIsFuture_Courses(row); 
-					  break;
-				case "checkEnrollmentDateIsCurrent_Courses":
-					checkEnrollmentDateIsCurrent_Courses(row); 
-					  break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
 			}
 		}
 		return sheetStatus;
@@ -67,8 +91,8 @@ public class InviteOnlyValidation
 					{
 						sheetStatus = "Fail";
 						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).set(position, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(0).get(position);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(0).set(position, (cellValue + " - failed"));
 
 					}
 				}
@@ -89,8 +113,8 @@ public class InviteOnlyValidation
 					{
 						sheetStatus = "Fail";
 						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).set(position, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(1).get(position);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(1).set(position, (cellValue + " - failed"));
 
 					}
 				}
@@ -100,27 +124,75 @@ public class InviteOnlyValidation
 	
 	public void checkProgram_Courses(ArrayList<String> data)
 	{
-		
+		if(!data.contains("NA"))
+		{
+			ArrayList<String> getStatus = inviteOnlyLocator.checkProgram_Courses(data);
+			if(getStatus.size()>0)
+			{
+				for(int i = 0; i < getStatus.size(); i++)
+				{
+					if(data.contains(getStatus.get(i)))
+					{
+						sheetStatus = "Fail";
+						int position = data.indexOf(getStatus.get(i));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).get(position);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).set(position, (cellValue + " - failed"));
+
+					}
+				}
+			}
+		}
 	}
 	
 	public void checkInviteOnly_Courses(ArrayList<String> data)
 	{
+		if(!data.contains("NA"))
+		{
+			ArrayList<String> getStatus = inviteOnlyLocator.checkInviteOnly_Courses(data);
+			if(getStatus.size()>0)
+			{
+				for(int i = 0; i < getStatus.size(); i++)
+				{
+					if(data.contains(getStatus.get(i)))
+					{
+						sheetStatus = "Fail";
+						int position = data.indexOf(getStatus.get(i));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(3).get(position);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(3).set(position, (cellValue + " - failed"));
+
+					}
+				}
+			}
+		}
+	
 		
 	}
 	
-	public void checkEnrollmentDateIsExpired_Courses(ArrayList<String> data)
+	public void checkEnrollmentDateIsExpiredFuturedCurrent_Courses(ArrayList<String> data)
 	{
+		if(!data.contains("NA"))
+		{
+			ArrayList<String> getStatus = inviteOnlyLocator.checkEnrollmentDateIsExpiredFuturedCurrent_Courses(data);
+			if(getStatus.size()>0)
+			{
+				for(int i = 0; i < getStatus.size(); i++)
+				{
+					if(data.contains(getStatus.get(i)))
+					{
+						sheetStatus = "Fail";
+						int position = data.indexOf(getStatus.get(i));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(4).get(position);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(4).set(position, (cellValue + " - failed"));
+
+					}
+				}
+			}
+		}
+	
+		
+	
 		
 	}
 	
-	public void checkEnrollmentDateIsFuture_Courses(ArrayList<String> data)
-	{
-		
-	}
-	
-	public void checkEnrollmentDateIsCurrent_Courses(ArrayList<String> data)
-	{
-		
-	}
 	
 }

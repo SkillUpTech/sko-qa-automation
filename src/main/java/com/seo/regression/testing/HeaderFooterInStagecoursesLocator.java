@@ -65,11 +65,20 @@ public class HeaderFooterInStagecoursesLocator
 		String status = "fail";
 		try
 		{
-			clickLoginIcon.click();
-			if(driver.getCurrentUrl().contains("stagecourses"))
+			String parentWindow = driver.getWindowHandle();
+			String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); //Keys.chord(Keys.CONTROL,Keys.RETURN)
+			clickLoginIcon.sendKeys(selectLinkOpeninNewTab);
+			Set<String> windows = driver.getWindowHandles();
+			for(String window : windows)
 			{
-				status = "pass";
-				System.out.println("stagecourses site opened");
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("stagecourses"))
+				{
+					driver.switchTo().window(window);
+					status = "pass";
+					System.out.println("stagecourses site opened");
+				}
+				driver.switchTo().window(window);
 			}
 		}
 		catch(Exception e)
@@ -616,7 +625,7 @@ public class HeaderFooterInStagecoursesLocator
 		{
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("SkillUp"))
+				if(clickCompanyFooterIcons.get(i).getText().contains("SkillUp Online for Business"))
 				{
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
@@ -842,6 +851,29 @@ public class HeaderFooterInStagecoursesLocator
 			}
 		
 			}
+			
+			driver.close();
+			Set<String> allScreen = driver.getWindowHandles();
+			 for (String handle : allScreen) 
+			 {
+				 driver.switchTo().window(handle);
+		            if(handle.equals(driver.getWindowHandle()))
+		            {
+		                driver.switchTo().window(handle);
+		                if(driver.getCurrentUrl().contains("about"))
+		                {
+		                	 driver.switchTo().window(handle);
+		                	driver.close();
+		                	
+		                }
+		                else if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+		                {
+		                	 driver.switchTo().window(handle);
+		                	 break;
+		                }
+		            }
+		            driver.switchTo().window(handle);
+		      }
 		}
 		catch(Exception e)
 		{

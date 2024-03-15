@@ -41,7 +41,7 @@ public class FAQLocator
 	public ArrayList<String> FAQProcess()
 	{
 		ArrayList<String> failedFAQ = new ArrayList<String>();
-		JavascriptExecutor js2 = (JavascriptExecutor) driver;
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			WebElement focusFooterCompany = driver.findElement(By.xpath("//div[@class='Footer_FootMenuHeDinG__tseE0']//h2[contains(text(),'Company')]"));
@@ -52,9 +52,10 @@ public class FAQLocator
 			List<WebElement> clickFAQ = driver.findElements(By.cssSelector("div[class*='Footer_FootMenuiNNr'] ul>li>a"));
 			for(int k = 0; k < clickFAQ.size(); k++)
 			{
+				js.executeScript("arguments[0].scrollIntoView();", clickFAQ.get(k));
 				if(clickFAQ.get(k).getText().contains("FAQ"))
 				{
-					clickFAQ.get(k).click();
+					js.executeScript("arguments[0].click()", clickFAQ.get(k));
 					break;
 				}
 			}
@@ -70,12 +71,13 @@ public class FAQLocator
 					List<WebElement> faqLocator = driver.findElements(By.cssSelector("div[class*='container-fluid Card_containerInner'] div[class='row gx-3 gy-2'] div[class*='undefined']"));
 					for(int i = 0; i < faqLocator.size(); i++)
 					{
+						js.executeScript("arguments[0].scrollIntoView();", faqLocator.get(i));
 						String faqHeading = faqLocator.get(i).findElement(By.cssSelector(" h2")).getText();
 						
 						WebElement faqLink = faqLocator.get(i).findElement(By.cssSelector(" a:not([href])"));
+						js.executeScript("arguments[0].scrollIntoView();", faqLink);
 						if(faqLink.isDisplayed())
 						{
-							JavascriptExecutor js = (JavascriptExecutor) driver;
 							js.executeScript("arguments[0].click()", faqLink);
 						}
 						List<WebElement> faqVerification = driver.findElements(By.cssSelector("div[class*='container-fluid Accordion_containerInner']>div>div[class='col-lg-7 col-12']>div[class='col-12']"));
@@ -95,9 +97,7 @@ public class FAQLocator
 								List<WebElement> checkFaq =faqVerification.get(j).findElements(By.cssSelector(" div>div[class='border-0 my-1 accordion-item']>h2>button"));
 								for(int k = 0; k < checkFaq.size(); k++)
 								{
-									JavascriptExecutor js = (JavascriptExecutor) driver;
 									js.executeScript("arguments[0].click()", checkFaq.get(k));
-									//checkFaq.get(k).click();
 									if(faqVerification.get(j).findElement(By.cssSelector(" div[class='accordion-collapse collapse show']")).isDisplayed())
 									{
 										JavascriptExecutor js1 = (JavascriptExecutor) driver;
@@ -138,9 +138,10 @@ public class FAQLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			WebElement focusForm = driver.findElement(By.cssSelector("div[class='Form_formContainer__grqm6']"));
+			WebElement focusForm = driver.findElement(By.cssSelector("div[class*='Form_formContainer']"));
 			js.executeScript("arguments[0].scrollIntoView();", focusForm);
 			WebElement fullname = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='fullname']"));
+			js.executeScript("arguments[0].scrollIntoView();", fullname);
 			fullname.clear();
 			if(!data.get(1).equalsIgnoreCase("empty"))
 			{
@@ -152,6 +153,7 @@ public class FAQLocator
 				fullname.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='email']"));
+			js.executeScript("arguments[0].scrollIntoView();", email);
 			email.clear();
 			if(!data.get(2).equalsIgnoreCase("empty"))
 			{
@@ -164,18 +166,22 @@ public class FAQLocator
 			}
 			
 		  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
+		  js.executeScript("arguments[0].scrollIntoView();", country);
 		  Select countryName = new Select(country);
 		  countryName.selectByVisibleText("India");
 		  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
+			 js.executeScript("arguments[0].scrollIntoView();", contact);
 			contact.clear();
 			contact.sendKeys(data.get(3));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='additionalinfo']"));
+			 js.executeScript("arguments[0].scrollIntoView();", category);
 			Select categoryName = new Select(category);
 			categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement queryMsg = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>textarea[name='message']"));
+			js.executeScript("arguments[0].scrollIntoView();", queryMsg);
 			queryMsg.clear();
 			if(!data.get(4).equalsIgnoreCase("empty"))
 			{
@@ -194,7 +200,11 @@ public class FAQLocator
 			js.executeScript("window.scrollBy(0,-500)");
 			Thread.sleep(500);
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
-			js.executeScript("arguments[0].click()", submit);
+			js.executeScript("arguments[0].scrollIntoView();", submit);
+			if(submit.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", submit);
+			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			datastatus.addAll(this.errorMsg());
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -203,6 +213,22 @@ public class FAQLocator
 		{
 			e.printStackTrace();
 		}
+		driver.close();
+		Set<String> allScreen = driver.getWindowHandles();
+		 for (String handle : allScreen) 
+		 {
+			 driver.switchTo().window(handle);
+	            if(handle.equals(driver.getWindowHandle()))
+	            {
+	                driver.switchTo().window(handle);
+	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+	                {
+	                	 driver.switchTo().window(handle);
+	                	 break;
+	                }
+	            }
+	            driver.switchTo().window(handle);
+	      }
 		return datastatus;
 	}
 	public ArrayList<String> EmptyFullname(ArrayList<String> data)
@@ -264,12 +290,13 @@ public class FAQLocator
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
-		{
+		{JavascriptExecutor js = (JavascriptExecutor) driver;
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']")).size()>0)
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				WebElement errorMsgLocator = driver.findElement(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
+				js.executeScript("arguments[0].scrollIntoView();", errorMsgLocator);
 				if(errorMsgLocator.getText().contains("name"))
 				{
 					System.out.println("full name error");

@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -128,7 +130,7 @@ public class InviteOnlyLocator {
 			{
 				
 				String urlStatus=this.checkCourseCode(data.get(i));
-				if(!urlStatus.equalsIgnoreCase("fail"))
+				if(!urlStatus.equalsIgnoreCase("200")||urlStatus.equalsIgnoreCase("308"))
 				{
 					System.out.println("status code for "+data.get(i)+"  : " + urlStatus);
 				}
@@ -177,6 +179,16 @@ public class InviteOnlyLocator {
 				                		if(driver.getCurrentUrl().contains("/courses/"))
 				                		{
 				                			driver.switchTo().window(handle);
+				                			if(newTabTitle.contains("null"))
+					                		{
+					                			System.out.println("tab ststus is : "+newTabTitle);
+					                			status.add(data.get(i));
+					                		}
+					                		if(newTabTitle.contains("undefined"))
+					                		{
+					                			System.out.println("tab ststus is : "+newTabTitle);
+					                			status.add(data.get(i));
+					                		}
 				                			driver.close();
 				                			break;
 				                		}
@@ -197,4 +209,226 @@ public class InviteOnlyLocator {
 		}
 		return status;
 	}
+
+public ArrayList<String> checkProgram_Courses(ArrayList<String> data)
+{
+	ArrayList<String> status = new ArrayList<String>();
+	try
+	{
+		for(int k = 1; k < data.size(); k++)
+		{
+			String URLStatus = this.checkCourseCode(data.get(k));
+			if(URLStatus.contains("200") || URLStatus.contains("308"))
+			{
+				String originalHandle = driver.getWindowHandle();
+				
+				((JavascriptExecutor)driver).executeScript("window.open()");
+				
+				for (String handle : driver.getWindowHandles())
+				{
+					driver.switchTo().window(handle);
+					if(!handle.equals(originalHandle))
+					{
+						driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+						driver.switchTo().window(handle);
+						driver.get(OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE));
+						driver.get(driver.getCurrentUrl()+data.get(k));
+						String newTabTitle = driver.getTitle();
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+						if(driver.findElements(By.cssSelector("div[class='PageNotFound_textSection__3ecIh']")).size()>0)
+						{
+							System.out.println("404 error : "+data.get(k));
+							status.add(data.get(k));
+							driver.close();
+							break;
+						}
+						else
+						{
+							WebElement progrmaOnCourse = driver.findElement(By.cssSelector("div[class*='CourseDescription_warningBox'] div[class*='CourseDescription_warningBoxText']"));
+							List<WebElement> listOfPrograms = progrmaOnCourse.findElements(By.cssSelector(" ul>li>a"));
+							if(listOfPrograms.size()>0)
+							{
+								
+								for(int i = 0; i < listOfPrograms.size(); i++)
+								{
+									String programLinkonCourse = listOfPrograms.get(i).getAttribute("href");
+									System.out.println("Progrma link is : "+programLinkonCourse);
+									String replace[] = programLinkonCourse.split("online", 2);
+									System.out.println(replace[1]);
+									String statusOfURL = this.checkCourseCode(replace[1]);
+									
+									if(statusOfURL.equalsIgnoreCase("200")||statusOfURL.equalsIgnoreCase("200"))
+									{
+										System.out.println("Program link status from courses : "+statusOfURL);
+									}
+									else
+									{
+										System.out.println("Program link status from courses : "+statusOfURL);
+										status.add(data.get(k));
+										driver.close();
+										break;
+									}
+									if(newTabTitle.equalsIgnoreCase("null"))
+									{
+										System.out.println("tab ststus is : "+newTabTitle);
+										status.add(data.get(k));
+										driver.close();
+									}
+									if(newTabTitle.equalsIgnoreCase("undefined"))
+									{
+										System.out.println("tab ststus is : "+newTabTitle);
+										status.add(data.get(k));
+										driver.close();
+									}
+								}
+							}
+							else
+							{
+								System.out.println("program not available on this link : "+data.get(k));
+							}
+							break;
+						}
+					}
+				}
+				driver.switchTo().window(originalHandle);
+			}
+			else
+			{
+				System.out.println(" url status : "+URLStatus);
+				status.add(data.get(k));
+			}
+		}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	
+	return status;
+}
+
+public ArrayList<String> checkInviteOnly_Courses(ArrayList<String> data)
+{
+	ArrayList<String> status = new ArrayList<String>();
+	try
+	{
+		for(int k = 1; k < data.size(); k++)
+		{
+			String originalHandle = driver.getWindowHandle();
+			
+			((JavascriptExecutor)driver).executeScript("window.open()");
+			
+			for (String handle : driver.getWindowHandles())
+			{
+				driver.switchTo().window(handle);
+				if(!handle.equals(originalHandle))
+				{
+					driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+					driver.switchTo().window(handle);
+					driver.get(OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE));
+					driver.get(driver.getCurrentUrl()+data.get(k));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+					if(driver.findElements(By.cssSelector("div[class='PageNotFound_textSection__3ecIh']")).size()>0)
+					{
+						System.out.println("404 error : "+data.get(k));
+						status.add(data.get(k));
+						break;
+					}
+					else
+					{
+                		if(driver.getCurrentUrl().contains("/courses/"))
+                		{
+                			driver.switchTo().window(handle);
+                			WebElement checkSelfpaced = driver.findElement(By.cssSelector("div[class*='CourseDescription_levelSection']>h2"));
+    	                	if(checkSelfpaced.getText().contains("Self-Paced")||checkSelfpaced.getText().contains("vILT"))
+    	                	{
+	                			System.out.println("It is selfpaced of vILT course");
+	                			driver.close();
+    	                	}
+	                	}
+	                	else
+	                	{
+	                		status.add(data.get(k));
+	                		break;
+	                	}
+					}
+				}
+			}
+			driver.switchTo().window(originalHandle);
+		}
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return status;
+}
+
+public ArrayList<String> checkEnrollmentDateIsExpiredFuturedCurrent_Courses(ArrayList<String> data)
+{
+	ArrayList<String> status = new ArrayList<String>();
+	try
+	{
+
+		for(int k = 1; k < data.size(); k++)
+		{
+			String originalHandle = driver.getWindowHandle();
+			
+			((JavascriptExecutor)driver).executeScript("window.open()");
+			
+			for (String handle : driver.getWindowHandles())
+			{
+				driver.switchTo().window(handle);
+				if(!handle.equals(originalHandle))
+				{
+					driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+					driver.switchTo().window(handle);
+					driver.get(OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE));
+					driver.get(driver.getCurrentUrl()+data.get(k));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+					if(driver.findElements(By.cssSelector("div[class='PageNotFound_textSection__3ecIh']")).size()>0)
+					{
+						System.out.println("404 error : "+data.get(k));
+						status.add(data.get(k));
+						break;
+					}
+					else
+					{
+                		if(driver.getCurrentUrl().contains("/courses/"))
+                		{
+                			driver.switchTo().window(handle);
+                			WebElement checkEnrollmentStatus = driver.findElement(By.cssSelector("div[class*='CourseDescription_buttonsContent']>h6"));
+        					if(checkEnrollmentStatus.isDisplayed())
+        					{
+        						if(checkEnrollmentStatus.getText().contains("Enrollment is Closed"))
+        						{
+        							System.out.println("enrollment closed");
+        							driver.close();
+        						}
+        						else if(driver.findElement(By.cssSelector("button[class*='CourseDescription_enrollNowBtn']")).getText().contains("Enroll Now"))
+        						{
+        							System.out.println("enrollment currently open");
+        							driver.close();
+        						}
+        						else if(driver.findElement(By.cssSelector("button[class*='CourseDescription_enrollNowBtn']")).getText().contains("Start Now"))
+        						{
+        							System.out.println("enrollment is on Startnow status");
+        							driver.close();
+        						}
+    	                	}
+	                	}
+					}
+				}
+			}
+			driver.switchTo().window(originalHandle);
+		}
+	
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	return status;
+}
+
 }

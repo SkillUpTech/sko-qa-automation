@@ -1,19 +1,16 @@
 package com.seo.regression.testing;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -223,10 +220,24 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("Invalid Email Process started");
-			System.out.println(driver);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			InvalidUsername.add(this.loginFunction(uName, pwd));
+			String parentWindow = driver.getWindowHandle();
+			String checkURLEnvironment = OpenWebsite.setURL+"/";
+			Set<String> allWindow = driver.getWindowHandles();
+			for(String window : allWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(checkURLEnvironment))
+				{
+					driver.switchTo().window(window);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.navigate().to(checkURLEnvironment);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					InvalidUsername.add(this.loginFunction(uName, pwd));
+					driver.close();
+				}
+				driver.switchTo().window(parentWindow);
+			}
 		}
 		catch(Exception e)
 		{
@@ -240,10 +251,24 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("Invalid password Process started");
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			InvalidPassword.add(this.loginFunction(uName, pwd));
-			Thread.sleep(500);
+			String parentWindow = driver.getWindowHandle();
+			String checkURLEnvironment = OpenWebsite.setURL+"/";
+			Set<String> allWindow = driver.getWindowHandles();
+			for(String window : allWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(checkURLEnvironment))
+				{
+					driver.switchTo().window(window);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.navigate().to(checkURLEnvironment);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					InvalidPassword.add(this.loginFunction(uName, pwd));
+					driver.close();
+				}
+				driver.switchTo().window(parentWindow);
+			}
 		}
 		catch(Exception e)
 		{
@@ -258,10 +283,24 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("InvalidEmail and Password process started");
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			InvalidUserNameAndPassword.add(this.loginFunction(uName, pwd));
-			Thread.sleep(500);
+			String parentWindow = driver.getWindowHandle();
+			String checkURLEnvironment = OpenWebsite.setURL+"/";
+			Set<String> allWindow = driver.getWindowHandles();
+			for(String window : allWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(checkURLEnvironment))
+				{
+					driver.switchTo().window(window);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.navigate().to(checkURLEnvironment);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					InvalidUserNameAndPassword.add(this.loginFunction(uName, pwd));
+					driver.close();
+				}
+				driver.switchTo().window(parentWindow);
+			}
 		}
 		catch(Exception e)
 		{
@@ -275,10 +314,24 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("valid data process started");
-			OpenWebsite.openSite(driver);		
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-			ValidCredentials.add(this.loginFunction(uName, pwd));
-			Thread.sleep(500);
+			String parentWindow = driver.getWindowHandle();
+			String checkURLEnvironment = OpenWebsite.setURL+"/";
+			Set<String> allWindow = driver.getWindowHandles();
+			for(String window : allWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(checkURLEnvironment))
+				{
+					driver.switchTo().window(window);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.navigate().to(checkURLEnvironment);
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+					ValidCredentials.add(this.loginFunction(uName, pwd));
+					driver.close();
+				}
+				driver.switchTo().window(parentWindow);
+			}
 		}
 		catch(Exception e)
 		{
