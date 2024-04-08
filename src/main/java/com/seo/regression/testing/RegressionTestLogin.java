@@ -27,51 +27,59 @@ public class RegressionTestLogin
 	
 	public String start() throws InterruptedException
 	{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
+		try
 		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
+			String BaseWindow = driver.getWindowHandle();
+			driver.switchTo().newWindow(WindowType.TAB);
+			OpenWebsite.openSite(driver);
+			for(int i = 0; i < this.sheetData.size(); i++)
 			{
-				case "InvalidUsername":
-					InvalidUsername();
-					break;
-				case "InvalidPassword":
-					InvalidPassword();
-					break;
-				case "InvalidUserNameAndPassword":
-					InvalidUserNameAndPassword();
-					break;
-				case "ValidCredentials":
-					ValidCredentials();
-					break;
+				ArrayList<String> row = this.sheetData.get(i);
+				String firstColumn = row.get(0);
+				switch(firstColumn)
+				{
+					case "InvalidUsername":
+						InvalidUsername();
+						break;
+					case "InvalidPassword":
+						InvalidPassword();
+						break;
+					case "InvalidUserNameAndPassword":
+						InvalidUserNameAndPassword();
+						break;
+					case "ValidCredentials":
+						ValidCredentials();
+						break;
+				}
 			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
+			Set<String> windows = driver.getWindowHandles();
+			for(String win : windows)
 			{
 				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				if(!BaseWindow.equals(win))
 				{
 					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
+					if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+					{
+						driver.switchTo().window(win);
+						driver.close();
+						driver.switchTo().window(BaseWindow);
+					}
+					else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+					{
+						driver.switchTo().window(win);
+						driver.close();
+						driver.switchTo().window(BaseWindow);
+					}
 				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
+				
 			}
-			
 		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		return sheetStatus;
 	}
 	

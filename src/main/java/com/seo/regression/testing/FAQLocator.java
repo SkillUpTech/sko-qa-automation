@@ -7,10 +7,13 @@ import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class FAQLocator
 {
@@ -28,7 +31,40 @@ public class FAQLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			status.addAll(this.processLogin.checkValidCredentials(email, pwd));
+			WebElement clickLogin = driver.findElement(By.cssSelector("ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li[class='Header_loginBtn__3Xv3A'] a"));
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+			wait.until(ExpectedConditions.elementToBeClickable(clickLogin));
+			if(clickLogin.isDisplayed())
+			{
+				String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+				clickLogin.sendKeys(n);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+			}
+			String parentWindow = driver.getWindowHandle();
+			Set<String> nextWindow = driver.getWindowHandles();
+			for(String window : nextWindow)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("login?"))
+				{
+					driver.switchTo().window(window);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+					Thread.sleep(2000);
+					JavascriptExecutor js = (JavascriptExecutor)driver;
+					js.executeScript("window.scrollBy(0, 200)", "");
+					Thread.sleep(2000);
+					WebElement userNameElement = driver.findElement(By.cssSelector("input#email"));
+					userNameElement.clear();
+					userNameElement.sendKeys(email);
+					WebElement passwordElement = driver.findElement(By.cssSelector("input#password"));
+					passwordElement.clear();
+					passwordElement.sendKeys(pwd);
+					js.executeScript("window.scrollBy(0, 100)", "");
+					WebElement clickSubmit = driver.findElement(By.cssSelector("input[value='Log In']"));
+					clickSubmit.click();
+				}
+			}		
+				
 			
 		}
 		catch(Exception e)
@@ -129,6 +165,7 @@ public class FAQLocator
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid full name process done");
 		return datastatus;
 	}
 	 
@@ -136,11 +173,14 @@ public class FAQLocator
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
 			WebElement focusForm = driver.findElement(By.cssSelector("div[class*='Form_formContainer']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(focusForm));
 			js.executeScript("arguments[0].scrollIntoView();", focusForm);
 			WebElement fullname = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='fullname']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(fullname));
 			js.executeScript("arguments[0].scrollIntoView();", fullname);
 			fullname.clear();
 			if(!data.get(1).equalsIgnoreCase("empty"))
@@ -153,6 +193,7 @@ public class FAQLocator
 				fullname.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>input[name='email']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(email));
 			js.executeScript("arguments[0].scrollIntoView();", email);
 			email.clear();
 			if(!data.get(2).equalsIgnoreCase("empty"))
@@ -165,22 +206,35 @@ public class FAQLocator
 				email.sendKeys("");
 			}
 			
-		  WebElement country = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12 ']>select[name='country']"));
+		  WebElement country = driver.findElement(By.cssSelector("div[class*='col-12 ']>select[name='country']"));
+		  wait.until(ExpectedConditions.visibilityOfAllElements(country));
 		  js.executeScript("arguments[0].scrollIntoView();", country);
 		  Select countryName = new Select(country);
 		  countryName.selectByVisibleText("India");
 		  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement contact = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12'] input[name='contactnumber']"));
-			 js.executeScript("arguments[0].scrollIntoView();", contact);
+			 wait.until(ExpectedConditions.visibilityOfAllElements(contact));
+			js.executeScript("arguments[0].scrollIntoView();", contact);
 			contact.clear();
 			contact.sendKeys(data.get(3));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='additionalinfo']"));
-			 js.executeScript("arguments[0].scrollIntoView();", category);
+			WebElement category = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>select[name='userpersona'],[name='additionalinfo']"));
+			 wait.until(ExpectedConditions.visibilityOfAllElements(category));
+			js.executeScript("arguments[0].scrollIntoView();", category);
 			Select categoryName = new Select(category);
-			categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
+			try
+			{
+				categoryName.selectByVisibleText("Invoices, refunds, & how to pay");
+				System.out.println("Option selected successfully!");
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				System.out.println("Option not found: " + e.getMessage());
+			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement queryMsg = driver.findElement(By.cssSelector("form>div[class='row gy-3']>div[class*='col-12']>textarea[name='message']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(queryMsg));
 			js.executeScript("arguments[0].scrollIntoView();", queryMsg);
 			queryMsg.clear();
 			if(!data.get(4).equalsIgnoreCase("empty"))
@@ -193,13 +247,14 @@ public class FAQLocator
 				queryMsg.sendKeys("");
 			}
 			
-			//js.executeScript("arguments[0].scrollIntoView();", submit);
 			WebElement locateFooter = driver.findElement(By.cssSelector("footer#newsletter, div[class='Footer_footertopmenu__gu_Hf']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(locateFooter));
 			js.executeScript("arguments[0].scrollIntoView();", locateFooter);
 			Thread.sleep(500);
 			js.executeScript("window.scrollBy(0,-500)");
 			Thread.sleep(500);
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12']>button[type='submit']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(submit));
 			js.executeScript("arguments[0].scrollIntoView();", submit);
 			if(submit.isDisplayed())
 			{
@@ -213,76 +268,84 @@ public class FAQLocator
 		{
 			e.printStackTrace();
 		}
-		driver.close();
-		Set<String> allScreen = driver.getWindowHandles();
-		 for (String handle : allScreen) 
-		 {
-			 driver.switchTo().window(handle);
-	            if(handle.equals(driver.getWindowHandle()))
-	            {
-	                driver.switchTo().window(handle);
-	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-	                {
-	                	 driver.switchTo().window(handle);
-	                	 break;
-	                }
-	            }
-	            driver.switchTo().window(handle);
-	      }
+		
 		return datastatus;
 	}
 	public ArrayList<String> EmptyFullname(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Empty Fullname process done");
 		return datastatus;
 	}
 	public ArrayList<String> validFullname(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid valid Fullname process done");
 		return datastatus;
 	}
 	public ArrayList<String> invalidEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Invalid Fullname process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Empty mail process done");
 		return datastatus;
 	}
 	public ArrayList<String> validEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Empty valid Email process done");
 		return datastatus;
 	}
 	public ArrayList<String> InvalidContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Invalid contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Empty contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> validContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid valid contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyQuery(ArrayList<String> data)
 	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
+		System.out.println("Invalid Empty query process done");
+		
+		  WebElement dropdownIcon =
+		  driver.findElement(By.cssSelector("li[class*='Header_SigNUP']>a"));
+		  js.executeScript("arguments[0].scrollIntoView();", dropdownIcon);
+		  if(dropdownIcon.isDisplayed()) { js.executeScript("arguments[0].click()",
+		  dropdownIcon); WebElement clickSignOut = driver.findElement(By.
+		  cssSelector("ul[class*='dropdown-menu Header']>li:nth-child(5)>a"));
+		  js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
+		  if(clickSignOut.isDisplayed()) { js.executeScript("arguments[0].click()",
+		  clickSignOut); } }
+		 
+		
+		
 		return datastatus;
 	}
 	
@@ -290,12 +353,14 @@ public class FAQLocator
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
-		{JavascriptExecutor js = (JavascriptExecutor) driver;
+		{
+			JavascriptExecutor js = (JavascriptExecutor) driver;
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']")).size()>0)
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				WebElement errorMsgLocator = driver.findElement(By.cssSelector("p[class='text-danger mb-0 mt-2']"));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				js.executeScript("arguments[0].scrollIntoView();", errorMsgLocator);
 				if(errorMsgLocator.getText().contains("name"))
 				{
@@ -323,18 +388,19 @@ public class FAQLocator
 					status.add("query");
 				}
 			}
-			else
+			else if(driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2")).size()>0)
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
+				/*List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				if(checkSuccessMsg.size()>0)
-				{
+				{*/
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					Thread.sleep(1000);
 					System.out.println("success msg present");
 					status.add("pass");
+					Thread.sleep(1000);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				}
 			}
 		}
 		catch(Exception e)
@@ -342,6 +408,7 @@ public class FAQLocator
 			e.printStackTrace();
 		}
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+		System.out.println("status of process : "+status);
 		return status;
 	}
 }

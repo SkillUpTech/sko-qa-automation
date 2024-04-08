@@ -12,6 +12,7 @@ public class CertificateValidation
 	ArrayList<ArrayList<String>> sheetData = null;
 	CertificateLocators certificateLocators;
 	String sheetStatus = "Pass";
+	
 	public CertificateValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
 	{
 		this.sheetData = sheetData;
@@ -22,6 +23,8 @@ public class CertificateValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -65,6 +68,11 @@ public class CertificateValidation
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

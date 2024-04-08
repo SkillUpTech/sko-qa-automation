@@ -116,7 +116,7 @@ public class RegressionGenericValidator
 				enrollment(row);
 				break;
 			case "chekProfileSection":
-				chekProfileSection();
+				chekProfileSection(row);
 				break;
 			default:
 				markCellAsHeader();
@@ -391,8 +391,10 @@ public class RegressionGenericValidator
 		}
 	}
 	
-	private void chekProfileSection()
+	private void chekProfileSection(ArrayList<String> data)
 	{
+		if(!data.contains("NA"))
+		{
 			ArrayList<String> checkProgram = regressionGenericLocator.programLocator();
 			if(checkProgram.contains("fail"))
 			{
@@ -403,6 +405,7 @@ public class RegressionGenericValidator
 			{
 				markProcessIgnored();
 			}
+		}
 	}
 	
 	private void markColumnFailed(int columnIndex)

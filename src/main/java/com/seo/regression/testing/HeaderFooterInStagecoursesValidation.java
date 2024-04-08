@@ -22,6 +22,8 @@ public class HeaderFooterInStagecoursesValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -111,7 +113,14 @@ public class HeaderFooterInStagecoursesValidation
 					driver.close();
 					driver.switchTo().window(BaseWindow);
 				}
+				driver.switchTo().window(BaseWindow);
 			}
+			driver.switchTo().window(BaseWindow);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

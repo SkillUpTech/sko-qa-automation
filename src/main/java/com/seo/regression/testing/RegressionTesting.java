@@ -72,6 +72,14 @@ public class RegressionTesting
 	    	{
 	    		getEnvironment = "dev";
 	    	}
+	    	else if(env.equalsIgnoreCase("qa-in"))
+	    	{
+	    		getEnvironment = "qa-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("qa"))
+	    	{
+	    		getEnvironment = "qa";
+	    	}
 	    }
 	    else
 	    {
@@ -118,6 +126,7 @@ public class RegressionTesting
 						String sheetStatus = "Pass";
 						switch(sheetName)
 						{
+							
 							case "Login":
 								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
 							break;
@@ -229,6 +238,12 @@ public class RegressionTesting
 							 case "ViewCertificate":
 								 sheetStatus = new CertificateValidation(sheetData, driver).start(); 
 								 break;
+							 case "PlacementPage":
+								 sheetStatus = new PlacementPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFeature":
+								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -271,7 +286,7 @@ public class RegressionTesting
 			}
 			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_India_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev-in"))
 			{
@@ -284,6 +299,10 @@ public class RegressionTesting
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "Dev_US_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}

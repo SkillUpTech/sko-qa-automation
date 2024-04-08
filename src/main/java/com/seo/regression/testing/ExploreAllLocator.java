@@ -721,8 +721,8 @@ public class ExploreAllLocator
 					}
 					js.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
-					
-					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
+					//section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])
+					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector(" div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
 					js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
 					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
 					js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
@@ -796,7 +796,7 @@ public class ExploreAllLocator
 					
 					if(!level.isSelected())
 					{
-						level.click();
+						js.executeScript("arguments[0].click()", level);
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 					System.out.println(level.getAttribute("id"));

@@ -31,13 +31,16 @@ public class ContactInfoLocator
 	public String individualFunction(ArrayList<String> getValuesFromExcel) throws InterruptedException
 	{
 		String status = "pass";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
 			WebElement focusContact = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer']"));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
+			wait.until(ExpectedConditions.visibilityOfAllElements(focusContact));
 			js.executeScript("arguments[0].scrollIntoView(true);", focusContact);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			WebElement selectIndividual = driver.findElement(By.cssSelector("input#individual"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(selectIndividual));
 			js.executeScript("arguments[0].scrollIntoView(true);", selectIndividual);
 			if(selectIndividual.isDisplayed())
 			{
@@ -52,6 +55,7 @@ public class ContactInfoLocator
 				}
 			}
 			WebElement checkIndividualContent = driver.findElement(By.cssSelector("div[class*='ContactForm_leftContent']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(checkIndividualContent));
 			js.executeScript("arguments[0].scrollIntoView(true);", checkIndividualContent);
 			checkIndividualContent.getText();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
@@ -62,6 +66,7 @@ public class ContactInfoLocator
 			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			WebElement fullName = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='fullname']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(fullName));
 			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
@@ -72,8 +77,8 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='email']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(email));
 			js.executeScript("arguments[0].scrollIntoView(true);", email);
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 			wait.until(ExpectedConditions.visibilityOf(email));
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
@@ -84,6 +89,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] select[name='country']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(country));
 			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
@@ -95,6 +101,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue(getValuesFromExcel.get(3));
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] input[name='contactnumber']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(mobileNumber));
 			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -105,6 +112,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement currentStatus = driver.findElement(By.cssSelector("div[class*='ContactForm_formContainer'] form div[class*='col-12'] select[name='userpersona']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(currentStatus));
 			js.executeScript("arguments[0].scrollIntoView(true);", currentStatus);
 			Select selectCurrentStatus = new Select(currentStatus);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
@@ -121,6 +129,7 @@ public class ContactInfoLocator
 			for(int i = 0; i < skills.size(); i++)
 			{
 				WebElement skill = skills.get(i);
+				wait.until(ExpectedConditions.visibilityOfAllElements(skill));
 				js.executeScript("arguments[0].scrollIntoView(true);", skill);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -158,15 +167,18 @@ public class ContactInfoLocator
 	public String academicFunction(ArrayList<String> getValuesFromExcel) throws InterruptedException
 	{
 		String status = "pass";
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			WebElement focusContact = driver.findElement(By.cssSelector("section#go-to-contact div[class='ContactForm_formContainer__5ygOx'] div[class='ContactForm_radioSection__sNxR8 mt-3']"));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
+			wait.until(ExpectedConditions.visibilityOfAllElements(focusContact));
 			js.executeScript("arguments[0].scrollIntoView(true);", focusContact);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			js.executeScript("window.scrollBy(0,-200)", "");
 			WebElement selectAcademic = driver.findElement(By.cssSelector("input#academic"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(selectAcademic));
 			js.executeScript("arguments[0].scrollIntoView(true);", selectAcademic);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 			if(selectAcademic.isDisplayed())
@@ -188,6 +200,7 @@ public class ContactInfoLocator
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			}
 			WebElement checkAcademicContent = driver.findElement(By.cssSelector("div[class='ContactForm_leftContent__VlhaM']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(checkAcademicContent));
 			js.executeScript("arguments[0].scrollIntoView(true);", checkAcademicContent);
 			checkAcademicContent.getText();
 			if(checkAcademicContent.getText().contains("academic institutions"))
@@ -196,6 +209,7 @@ public class ContactInfoLocator
 			}
 			js.executeScript("window.scrollBy(0, 300)", "");
 			WebElement fullName = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='fullname']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(fullName));
 			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
@@ -206,6 +220,7 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='email']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(email));
 			js.executeScript("arguments[0].scrollIntoView(true);", email);
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
@@ -216,6 +231,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] select[name='country']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(country));
 			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
@@ -227,6 +243,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue(getValuesFromExcel.get(3));
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='contactnumber']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(mobileNumber));
 			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -237,6 +254,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement academicUniversity = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='university']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(academicUniversity));
 			js.executeScript("arguments[0].scrollIntoView(true);", academicUniversity);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
@@ -247,6 +265,7 @@ public class ContactInfoLocator
 				academicUniversity.sendKeys("");
 			}
 			WebElement jobTitle = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='jobtitle']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(jobTitle));
 			js.executeScript("arguments[0].scrollIntoView(true);", jobTitle);
 			if(!getValuesFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
@@ -257,6 +276,7 @@ public class ContactInfoLocator
 				jobTitle.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] textarea#message"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(message));
 			js.executeScript("arguments[0].scrollIntoView(true);", message);
 			if(!getValuesFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
@@ -277,12 +297,15 @@ public class ContactInfoLocator
 	public String businessFunction(ArrayList<String> getValuesFromExcel) throws InterruptedException
 	{
 		String status = "pass";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			WebElement focusContact = driver.findElement(By.cssSelector("section#go-to-contact div[class='ContactForm_formContainer__5ygOx']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(focusContact));
 			js.executeScript("arguments[0].scrollIntoView(true);", focusContact);
 			WebElement selectBusiness = driver.findElement(By.cssSelector("input#corporate"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(selectBusiness));
 			js.executeScript("arguments[0].scrollIntoView(true);", selectBusiness);
 			js.executeScript("window.scrollBy(0, -200)", "");
 			if(selectBusiness.isDisplayed())
@@ -295,6 +318,7 @@ public class ContactInfoLocator
 				}
 			}
 			WebElement checkBusinessContent = driver.findElement(By.cssSelector("div[class='ContactForm_leftContent__VlhaM']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(checkBusinessContent));
 			js.executeScript("arguments[0].scrollIntoView(true);", checkBusinessContent);
 			checkBusinessContent.getText();
 			if(checkBusinessContent.getText().contains("businesses"))
@@ -304,8 +328,10 @@ public class ContactInfoLocator
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			WebElement focusContactInfo = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(focusContactInfo));
 			js.executeScript("arguments[0].scrollIntoView(true);", focusContactInfo);
 			WebElement fullName = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='fullname']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(fullName));
 			js.executeScript("arguments[0].scrollIntoView(true);", fullName);
 			if(!getValuesFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
@@ -316,6 +342,7 @@ public class ContactInfoLocator
 				fullName.sendKeys("");
 			}
 			WebElement email = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='email']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(email));
 			js.executeScript("arguments[0].scrollIntoView(true);", email);
 			if(!getValuesFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
@@ -326,6 +353,7 @@ public class ContactInfoLocator
 				email.sendKeys("");
 			}
 			WebElement country = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] select[name='country']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(country));
 			js.executeScript("arguments[0].scrollIntoView(true);", country);
 			Select selectCountry = new Select(country);
 			if(!getValuesFromExcel.get(3).equalsIgnoreCase("empty"))
@@ -337,6 +365,7 @@ public class ContactInfoLocator
 				selectCountry.selectByValue("");
 			}
 			WebElement mobileNumber = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='contactnumber']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(mobileNumber));
 			js.executeScript("arguments[0].scrollIntoView(true);", mobileNumber);
 			if(!getValuesFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -347,6 +376,7 @@ public class ContactInfoLocator
 				mobileNumber.sendKeys("");
 			}
 			WebElement organization = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='organization']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(organization));
 			js.executeScript("arguments[0].scrollIntoView(true);", organization);
 			if(!getValuesFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
@@ -358,6 +388,7 @@ public class ContactInfoLocator
 			}
 			js.executeScript("window.scrollBy(0, 500)", "");
 			WebElement jobTitle = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] input[name='jobtitle']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(jobTitle));
 			js.executeScript("arguments[0].scrollIntoView(true);", jobTitle);
 			if(!getValuesFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
@@ -368,6 +399,7 @@ public class ContactInfoLocator
 				jobTitle.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='ContactForm_formContainer__5ygOx'] form div[class*='col-12'] textarea#message"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(message));
 			js.executeScript("arguments[0].scrollIntoView(true);", message);
 			if(!getValuesFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
@@ -596,6 +628,7 @@ public class ContactInfoLocator
 		ArrayList<String> invalidNameStatus = new ArrayList<String>();
 		ArrayList<String> validationMsg = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
 			System.out.println("Individual_InvalidName process started");
@@ -603,11 +636,11 @@ public class ContactInfoLocator
 			invalidNameStatus.add(this.agreePolicyTerms());
 			js.executeScript("window.scrollBy(0,200)");
 			WebElement submit = driver.findElement(By.cssSelector("div[class='col-12'] button[type='submit']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(submit));
 			js.executeScript("arguments[0].scrollIntoView(true);", submit);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			if(submit.isDisplayed())
 			{
-				WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 				wait.until(ExpectedConditions.elementToBeClickable(submit));
 				((JavascriptExecutor)driver).executeScript("arguments[0].click();", submit);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));

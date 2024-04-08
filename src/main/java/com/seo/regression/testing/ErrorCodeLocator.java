@@ -136,6 +136,7 @@ public class ErrorCodeLocator
 								URL url = new URL(redirectedURL);
 
 					            // Remove the hostname
+								
 					            String path = url.getPath();
 					            String modifiedUrl = path;
 								System.out.println("Redirected URL : "+redirectedURL);

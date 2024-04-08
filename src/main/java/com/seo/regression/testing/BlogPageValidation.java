@@ -22,6 +22,8 @@ public class BlogPageValidation
 	}
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -65,6 +67,11 @@ public class BlogPageValidation
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

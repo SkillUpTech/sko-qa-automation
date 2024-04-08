@@ -352,6 +352,7 @@ public class FooterSectionLocator
 		List<WebElement> clickBusiness= driver.findElements(By.cssSelector("div[class*='Footer_FootMenu']>ul>li>a"));
 		for(int i = 0; i < clickBusiness.size(); i++)
 		{
+			js.executeScript("arguments[0].scrollIntoView();", clickBusiness.get(i));
 			String getText = clickBusiness.get(i).getText();
 			if(getText.contains("Business"))
 			{

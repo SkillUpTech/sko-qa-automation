@@ -9,12 +9,16 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MicrosoftCourseLocator 
 {
@@ -47,7 +51,6 @@ public class MicrosoftCourseLocator
 					{
 						processStatus.add("fail");
 					}
-					String parentWindow = driver.getWindowHandle();
 					Set<String> childWnidow = driver.getWindowHandles();
 					for(String windows : childWnidow)
 					{
@@ -57,12 +60,10 @@ public class MicrosoftCourseLocator
 							driver.switchTo().window(windows);
 							System.out.println("microsoft page : "+driver.getCurrentUrl());
 							processStatus.add("pass");
-							driver.close();
 							break;
 						}
-						driver.switchTo().window(parentWindow);
 					}
-					driver.switchTo().window(parentWindow);
+					break;
 				}
 			}
 		}
@@ -170,65 +171,137 @@ public class MicrosoftCourseLocator
 	public ArrayList<String> verifyMicrosoftScourses()
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
+		ArrayList<String> courseProcessStatus = new ArrayList<String>();
+		ArrayList<String> pageProcessStatus = new ArrayList<String>();
+		ArrayList<String> courseCardData = new ArrayList<String>();
+		String statusOfURL = "pass";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		String enrollmentStatusOncard = "";
+		String courseCardStartsDate = "";
 		try
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 1100)", "");
-			//Thread.sleep(1000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='ManageCardsLimit_showMoreSection'] button"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(clickShowMore));
+			js.executeScript("arguments[0].scrollIntoView();", clickShowMore);
 			while(clickShowMore.isDisplayed() != clickShowMore.getText().equalsIgnoreCase("Show less"))
 			{
 				js.executeScript("arguments[0].click()", clickShowMore);
 			}
-			List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_cardRow'] div[class*='LearningCatalog_customCard']"));
+			List<WebElement> listOfCourses = driver.findElements(By.xpath("//div[contains(@class,'container-fluid Courses_containerInner')]/div[@class='row'][2]/div[3]//div[@class='col-lg-3 col-md-4 col-sm-6 col-12']"));
 			for(int i = 0; i < listOfCourses.size(); i++)
 			{
-				String courseURL = listOfCourses.get(i).findElement(By.cssSelector(" div a[href]")).getAttribute("href");
+				js.executeScript("arguments[0].scrollIntoView();", listOfCourses.get(i));
+				
+				String courseURL = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class, 'RegularCourseCard_RegularcardLinks')]/a")).getAttribute("href");
+				
 				String urlLink = this.checkCourseCode(courseURL);
 				
 				if(urlLink.contains("fail"))
 				{
+					statusOfURL = "fail";
 					processStatus.add(courseURL);
 				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver;
-				js1. executeScript("window. open('"+courseURL+"');" );
-				String parentWindow = driver.getWindowHandle();
-				Set<String> childWnidow = driver.getWindowHandles();
-				for(String windows : childWnidow)
+				if(!statusOfURL.equalsIgnoreCase("fail"))
 				{
-					driver.switchTo().window(windows);
-					if(!parentWindow.equalsIgnoreCase(windows))
+				
+				WebElement imageOnCards = listOfCourses.get(i).findElement(By.xpath(".//img[@alt='Course Banner']"));
+				js.executeScript("arguments[0].scrollIntoView();", imageOnCards);
+				
+				WebElement iconOnCards = listOfCourses.get(i).findElement(By.xpath(".//img[@alt='icon']"));
+				js.executeScript("arguments[0].scrollIntoView();", iconOnCards);
+				
+				WebElement courseCards = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseType')]//p"));
+				js.executeScript("arguments[0].scrollIntoView();", courseCards);
+				
+				WebElement nameOnCards = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseHeading')]/p"));
+				js.executeScript("arguments[0].scrollIntoView();", nameOnCards);
+				
+				String courseCardName = nameOnCards.getText();
+				
+				WebElement levelsOnCards = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul"));
+				js.executeScript("arguments[0].scrollIntoView();", levelsOnCards);
+				
+				WebElement partnerOnCards = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseCompany')]"));
+				js.executeScript("arguments[0].scrollIntoView();", partnerOnCards);
+				
+				List<WebElement> enrollStatusOnCards = listOfCourses.get(i).findElements(By.xpath(".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2"));
+				if(enrollStatusOnCards.size()==1)
+				{
+					
+					if(enrollStatusOnCards.get(0).getText().contains("Course starts on"))
+					{
+						enrollmentStatusOncard = "Open";
+					}
+					else if(enrollStatusOnCards.get(0).getText().contains("Coming Soon"))
+					{
+						enrollmentStatusOncard = "Close";
+					}
+					
+				}
+				else
+				{
+					System.out.println("no enrollment status");
+				}
+				
+				WebElement courseCardPrice = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_priceRight')]/p"));
+				
+				js.executeScript("arguments[0].scrollIntoView();", courseCardPrice);
+				
+				if(!courseCardPrice.isDisplayed())
+				{
+					courseProcessStatus.add(courseCardName.concat(" courseCardPrice not present from course card"));
+				}
+				else
+				{
+					String val = courseCardPrice.getText();
+					Pattern pattern = Pattern.compile("\\d+");
+					Matcher matcher = pattern.matcher(val);
+					StringBuilder build = new StringBuilder();
+					while(matcher.find())
+					{
+						build.append(matcher.group());
+					}
+					String result = build.toString();
+					courseCardData.add(result);// card price
+				}
+					js. executeScript("window. open('"+courseURL+"');" );
+					String parentWindow = driver.getWindowHandle();
+					Set<String> childWnidow = driver.getWindowHandles();
+					for(String windows : childWnidow)
 					{
 						driver.switchTo().window(windows);
-						if(driver.getCurrentUrl().contains(courseURL) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+						if(!parentWindow.equalsIgnoreCase(windows))
 						{
 							driver.switchTo().window(windows);
-							String checkCourseTab = driver.getTitle();
-							if(checkCourseTab.contains("undefined"))
-							{
-								processStatus.add(courseURL+" undefined word on tab");
-							}
-							else if(checkCourseTab.contains("null"))
-							{
-								processStatus.add(courseURL+" null word on tab");
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-							if(driver.findElements(By.cssSelector("div[class='error-content'] p")).size()>0)
-							{
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-								if(driver.findElement(By.cssSelector("div[class='error-content'] p")).getText().equalsIgnoreCase("404"))
-								{
-									processStatus.add(courseURL+" 404 ERROR");
-								}
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
-							if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							if(driver.getCurrentUrl().contains(courseURL))
 							{
 								driver.switchTo().window(windows);
+								String checkCourseTab = driver.getTitle();
+								if(checkCourseTab.contains("undefined"))
+								{
+									processStatus.add(courseURL+" undefined word on tab");
+								}
+								else if(checkCourseTab.contains("null"))
+								{
+									processStatus.add(courseURL+" null word on tab");
+								}
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+								if(driver.findElements(By.cssSelector("div[class='error-content'] p")).size()>0)
+								{
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
+									if(driver.findElement(By.cssSelector("div[class='error-content'] p")).getText().equalsIgnoreCase("404"))
+									{
+										processStatus.add(courseURL+" 404 ERROR");
+									}
+								}
+								
+								
 								driver.close();
 								driver.switchTo().window(parentWindow);
-								break;
+								
 							}
 						}
 						driver.switchTo().window(parentWindow);
@@ -236,22 +309,6 @@ public class MicrosoftCourseLocator
 					driver.switchTo().window(parentWindow);
 				}
 			}
-			driver.close();
-			Set<String> allScreen = driver.getWindowHandles();
-			 for (String handle : allScreen) 
-			 {
-				 driver.switchTo().window(handle);
-		            if(handle.equals(driver.getWindowHandle()))
-		            {
-		                driver.switchTo().window(handle);
-		                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-		                {
-		                	 driver.switchTo().window(handle);
-		                	 break;
-		                }
-		            }
-		            driver.switchTo().window(handle);
-		      }
 		}
 		catch(Exception e)
 		{

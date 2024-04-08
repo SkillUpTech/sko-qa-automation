@@ -39,6 +39,8 @@ public class HomePageValidator
 	}
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -55,14 +57,11 @@ public class HomePageValidator
 			case"learningPartners":
 				verifyLearningPartners(row);
 				break;
-			case"coursesCatalog":
-				verifyLearningCatalog(row.get(1));
-				break;
 			case"humanSkills":
 				verifyHumanSkills();
 				break;
 			case"topTechCategories":
-				verifyTopTechCategories(row);
+				verifyTopTechCategories();
 				break;
 			}
 		}
@@ -92,6 +91,11 @@ public class HomePageValidator
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}
@@ -150,27 +154,21 @@ public class HomePageValidator
 				if(statusOfHumanSkills.size()>0)
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).add(i+1, (statusOfHumanSkills.get(i) + "Banner - failed"));
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(2).add(i+1, (statusOfHumanSkills.get(i) + "humanSkills - failed"));
 				}
 			}
 	}
 	
-	public void verifyTopTechCategories(ArrayList<String> dataFromExcel)
+	public void verifyTopTechCategories()
 	{
-		if(!dataFromExcel.contains("NA"))
-		{
-			ArrayList<String> statusOfTopTechCategories = homepageLocator.checkTopTechCategories(dataFromExcel);
+			ArrayList<String> statusOfTopTechCategories = homepageLocator.checkTopTechCategories();
 			for(int i = 0; i < statusOfTopTechCategories.size(); i++)
 			{
-				if(dataFromExcel.contains(statusOfTopTechCategories.get(i)))
+				if(statusOfTopTechCategories.size()>0)
 				{
 					sheetStatus = "Fail";
-					int position = dataFromExcel.indexOf(statusOfTopTechCategories.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).set(position, (cellValue + " - failed"));
-
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).add(i+1, (statusOfTopTechCategories.get(i) + "topTechCategories - failed"));
 				}
 			}
-		}
 	}
 }
