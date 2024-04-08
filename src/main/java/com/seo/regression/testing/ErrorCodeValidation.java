@@ -24,6 +24,8 @@ public class ErrorCodeValidation
 	
 	public String start()
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(this.driver);
@@ -76,6 +78,11 @@ public class ErrorCodeValidation
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

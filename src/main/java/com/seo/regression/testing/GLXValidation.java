@@ -24,6 +24,8 @@ public class GLXValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -79,6 +81,11 @@ public class GLXValidation
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

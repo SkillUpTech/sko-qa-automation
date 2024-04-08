@@ -21,6 +21,9 @@ public class HeaderFooterInErrorScreenValidation {
 	}
 	public String start() throws InterruptedException
 	{
+		try
+		{
+			
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -119,6 +122,11 @@ public class HeaderFooterInErrorScreenValidation {
 				}
 			}
 		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return sheetStatus;
 	}
 	public void LoginIcon(ArrayList<String> data)
@@ -129,7 +137,7 @@ public class HeaderFooterInErrorScreenValidation {
 			if(status.equalsIgnoreCase("fail"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(1).add(1, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(1).set(0, "LoginIcon - failed");
 			}
 		}
 	}
@@ -140,19 +148,18 @@ public class HeaderFooterInErrorScreenValidation {
 		  if(!status.equalsIgnoreCase("pass"))
 		  { 
 			  sheetStatus="Fail";
-			  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(2).add(1, (status + " - failed"));
+			  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(2).set(0, "FindOutMore - failed");
 		  } 
 	   } 
 	  
 	  public void skillupIcon() 
 	  { 
-		  String status =
-	  headerFooterInErrorScreenLocator.skillupIconProcess();
-	  if(status.equalsIgnoreCase("fail")) {
-	  
-	  sheetStatus="Fail";
-	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(3).add(1, (status + " - failed"));
+		  String status = headerFooterInErrorScreenLocator.skillupIconProcess();
+	  if(status.equalsIgnoreCase("fail"))
+	  {
+	  	  sheetStatus="Fail";
+		  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
+		  "HeaderFooterErrorScreen").get(3).set(0, "skillupIcon - failed");
 	  
 	  } } public void AboutSkillupOnline() { String status =
 	  headerFooterInErrorScreenLocator.AboutSkillupOnlineProcess();
@@ -160,7 +167,7 @@ public class HeaderFooterInErrorScreenValidation {
 	  
 	  sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(4).add(1, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(4).set(0, "AboutSkillupOnline - failed");
 	  
 	  } } 
 	  public void ContactUs() 
@@ -170,7 +177,7 @@ public class HeaderFooterInErrorScreenValidation {
 	  
 	  sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(5).add(1, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(5).set(0, "ContactUs - failed");
 	  
 	  } } 
 	  public void Blog()
@@ -180,13 +187,14 @@ public class HeaderFooterInErrorScreenValidation {
 	  
 	  sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(6).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(6).set(0, "Blog - failed");
 	  
 	  } } public void twitter() throws InterruptedException { String status =
 	  headerFooterInErrorScreenLocator.twitterProcess();
-	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
+	  if(!status.equalsIgnoreCase("pass")) 
+	  { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(13).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(13).set(0, "twitter - failed");
 	  
 	  }
 	  
@@ -194,73 +202,73 @@ public class HeaderFooterInErrorScreenValidation {
 	  headerFooterInErrorScreenLocator.facebookProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(14).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(14).set(0, "facebook - failed");
 	  
 	  } } public void linkedIn() { String status =
 	  headerFooterInErrorScreenLocator.linkedInProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(15).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(15).set(0, "linkedIn - failed");
 	  
 	  } } public void instagram() { String status =
 	  headerFooterInErrorScreenLocator.instagramProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(16).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(16).set(0, "instagram - failed");
 	  
 	  } } public void youtube() { String status =
 	  headerFooterInErrorScreenLocator.youtubeProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(17).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(17).set(0, "youtube - failed");
 	  
 	  } } public void contactUSFooter() { String status =
 	  headerFooterInErrorScreenLocator.contactUSProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(18).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(18).set(0, "contactUSFooter - failed");
 	  
 	  } } public void AboutSkillupOnlineFooter() { String status =
 	  headerFooterInErrorScreenLocator.AboutSkillupOnlineFooterProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(19).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(19).set(0, "AboutSkillupOnlineFooter - failed");
 	  
 	  } } public void SkillupOnlineForBusiness() { String status =
 	  headerFooterInErrorScreenLocator.SkillupOnlineForBusinessProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(20).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(20).set(0, "SkillupOnlineForBusiness - failed");
 	  
 	  } } public void Placement() { String status =
 	  headerFooterInErrorScreenLocator.PlacementProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(21).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(21).set(0, "Placement - failed");
 	  
 	  } } public void FAQ() { String status =
 	  headerFooterInErrorScreenLocator.FAQProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(22).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(22).set(0, "FAQ - failed");
 	  
 	  } } public void PrivacyPolicy() { String status =
 	  headerFooterInErrorScreenLocator.PrivacyPolicyProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(23).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(23).set(0, "PrivacyPolicy - failed");
 	  
 	  } } public void TermsOfService() { String status =
 	  headerFooterInErrorScreenLocator.TermsOfServiceProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(24).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(24).set(0, "TermsOfService - failed");
 	  
 	  } } public void BlogFooter() { String status =
 	  headerFooterInErrorScreenLocator.BlogFooterProcess();
 	  if(!status.equalsIgnoreCase("pass")) { sheetStatus="Fail";
 	  RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-	  "HeaderFooterErrorScreen").get(25).add(2, (status + " - failed"));
+	  "HeaderFooterErrorScreen").get(25).set(0, "BlogFooter - failed");
 	  
 	  } } public void Categories() {
 	  

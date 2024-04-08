@@ -2733,6 +2733,41 @@ public class EditProfileLocator
 						 * "pass";
 						 * System.out.println("personal details_Alert_back Button process done"); }
 						 */
+						WebElement clickCancelButton = driver.findElement(By.cssSelector("div[class*='Education_skipButonDesk'] button[class='Education_skipButton__AN_lA']"));
+						js.executeScript("arguments[0].scrollIntoView();", clickCancelButton);
+						if(clickCancelButton.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickCancelButton);
+						}
+						/*
+						 * WebElement againClickGoBackFromAlert =
+						 * driver.findElement(By.xpath("//button[contains(text(),' like to go back')]"))
+						 * ; js.executeScript("arguments[0].scrollIntoView();",
+						 * againClickGoBackFromAlert); againClickGoBackFromAlert.click();
+						 */
+						WebElement clickContinue = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+						js.executeScript("arguments[0].scrollIntoView();", clickContinue);
+						if(clickCancelButton.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickContinue);
+						}
+						driver.switchTo().window(window);
+						if(driver.getCurrentUrl().contains("/u/"))
+						{
+							driver.switchTo().window(window);
+							WebElement clickDropdown = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));
+							js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+							if(clickDropdown.isDisplayed())
+							{
+								js.executeScript("arguments[0].click()", clickDropdown);
+								WebElement signout = driver.findElement(By.cssSelector("ul[class='dropdown-menu Primary02_Blue']>li:nth-child(5)>a"));
+								if(signout.isDisplayed())
+								{
+									js.executeScript("arguments[0].click()", signout);
+								}
+							}
+						}
+								
 					}
 					}
 				}

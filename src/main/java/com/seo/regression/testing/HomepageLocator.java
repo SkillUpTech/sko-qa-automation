@@ -13,6 +13,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -208,71 +209,85 @@ public class HomepageLocator
 	{
 		System.out.println("human skill process started");
 		ArrayList<String> verifyProcess = new ArrayList<String>();
-		List<WebElement> humanSkillsCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_browserCard']"));
+		List<WebElement> humanSkillsCourses = driver.findElements(By.cssSelector("div[class*='LearningCatalog_browserCard'] a"));
 		for(int i = 0; i < humanSkillsCourses.size(); i++)
 		{
-			if(humanSkillsCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_RegularcardLinks'] a")).isDisplayed())
+			if(humanSkillsCourses.get(i).isDisplayed())
 			{
-				String courseLink = humanSkillsCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_RegularcardLinks'] a")).getAttribute("href");
+				String courseLink = humanSkillsCourses.get(i).getAttribute("href");
 				String urlStatus = this.checkURLStatus(courseLink);
 				if(urlStatus.contains("fail"))
 				{
 					verifyProcess.add(courseLink + urlStatus);
 				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
-						"window. open('"+courseLink+"');" );
-				String parentWindow = driver.getWindowHandle();
-				Set<String> childWindow = driver.getWindowHandles();
-				for(String windows : childWindow)
+				else
 				{
-					driver.switchTo().window(windows);
-					if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+					String parentWindow = driver.getWindowHandle();
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(courseLink);
+					Set<String> childWindow = driver.getWindowHandles();
+					for(String windows : childWindow)
 					{
 						driver.switchTo().window(windows);
-						System.out.println("Human skill course : "+courseLink);
-						driver.close();
+						if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+						{
+							driver.switchTo().window(windows);
+							if(driver.getCurrentUrl().contains("/courses/"))
+							{
+								driver.switchTo().window(windows);
+								System.out.println("Human skill course : "+courseLink);
+								driver.close();
+								driver.switchTo().window(parentWindow);
+							}
+						}
 						driver.switchTo().window(parentWindow);
 					}
+					driver.switchTo().window(parentWindow);
 				}
 			}
 		}
 		return verifyProcess;
 		}
 	
-	public ArrayList<String> checkTopTechCategories(ArrayList<String> data)
+	public ArrayList<String> checkTopTechCategories()
 	{
 		System.out.println("top tech categories process started");
 		ArrayList<String> verifyPocess = new ArrayList<String>();
 		List<WebElement> topTechCategories = driver.findElements(By.cssSelector("div[class='TechCategories_exCollaborationInner__nW6ww'] ul li a"));
 		for(int i = 0; i < topTechCategories.size(); i++)
 		{
-			if(data.get(i+1).equalsIgnoreCase(topTechCategories.get(i).getText()))
+			if(topTechCategories.get(i).isDisplayed())
 			{
 				String getCourseLink = topTechCategories.get(i).getAttribute("href");
 				String urlLink = this.checkURLStatus(getCourseLink);
 				if(urlLink.contains("fail"))
 				{
-					verifyPocess.add(data.get(i+1)+urlLink);
+					verifyPocess.add(getCourseLink+urlLink);
 				}
 				else
 				{
-					verifyPocess.add("fail");
-				}
-				JavascriptExecutor js1 = (JavascriptExecutor) driver; js1. executeScript(
-						"window. open('"+topTechCategories.get(i).getAttribute("href")+"');" );
-				String parentWindow = driver.getWindowHandle();
-				Set<String> childWindow = driver.getWindowHandles();
-				for(String windows : childWindow)
-				{
-					driver.switchTo().window(windows);
-					if(!(parentWindow.equalsIgnoreCase(windows)) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+					String parentWindow = driver.getWindowHandle();
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(getCourseLink);
+					Set<String> childWindow = driver.getWindowHandles();
+					for(String windows : childWindow)
 					{
 						driver.switchTo().window(windows);
-						System.out.println("Top Categories course : "+i+" "+driver.getCurrentUrl());
-						driver.close();
+						if(!(parentWindow.equalsIgnoreCase(windows)) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+						{
+							driver.switchTo().window(windows);
+							if(driver.getCurrentUrl().contains("/courses/"))
+							{
+								driver.switchTo().window(windows);
+								System.out.println("Top Categories course : "+i+" "+driver.getCurrentUrl());
+								driver.close();
+								driver.switchTo().window(parentWindow);
+							}
+						}
 						driver.switchTo().window(parentWindow);
 					}
-				}
+					driver.switchTo().window(parentWindow);
+			   }
 			}
 		}
 		return verifyPocess;

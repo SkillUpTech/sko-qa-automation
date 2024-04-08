@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.openqa.selenium.WebDriver;
@@ -45,18 +46,35 @@ public class AboutProgramValidation
 			String process = currentRow.get(0);
 			sheetStatus = executeProcess(process, currentRow);
 		}
-	//	aboutProgramLocator.getDriver().quit();
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
-		if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
 		{
-			driver.close();
-			driver.switchTo().window(BaseWindow);
-		}
-		else
-		{
-			driver.switchTo().window(BaseWindow);
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
 		}
 		return sheetStatus;
 	}

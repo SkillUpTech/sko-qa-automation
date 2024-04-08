@@ -53,37 +53,47 @@ public class HeaderSectionLocator
 
 	public String checkContactUs() throws InterruptedException 
 	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		String status = "fail";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickContactUs = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a"));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-		String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-		clickContactUs.sendKeys(n);
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		for(String window : nextWindow)
+		try
 		{
-			driver.switchTo().window(window);
-			if(driver.getCurrentUrl().contains("contact/"))
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+			WebElement clickContactUs = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a"));
+			js.executeScript("arguments[0].scrollIntoView();", clickContactUs);
+			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
+			wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
+			String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+			clickContactUs.sendKeys(n);
+			String parentWindow = driver.getWindowHandle();
+			Set<String> nextWindow = driver.getWindowHandles();
+			for(String window : nextWindow)
 			{
 				driver.switchTo().window(window);
-				System.out.println("contact window");
-				status = "pass";
-				driver.close();
-				status = "success";
-				break;
+				if(driver.getCurrentUrl().contains("contact/"))
+				{
+					driver.switchTo().window(window);
+					System.out.println("contact window");
+					status = "pass";
+					driver.close();
+					status = "success";
+					break;
+				}
+				else if(driver.getCurrentUrl().contains("data"))
+				{
+					driver.close();
+				}
 			}
-			else if(driver.getCurrentUrl().contains("data"))
+			driver.switchTo().window(parentWindow);
+			if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
 			{
-				driver.close();
+				status = "success";
 			}
 		}
-		driver.switchTo().window(parentWindow);
-		if(driver.getCurrentUrl().equalsIgnoreCase(getDriverDetails()))
+		catch(Exception e)
 		{
-			status = "success";
+			e.printStackTrace();
 		}
+		
 		return status;
 	}
 

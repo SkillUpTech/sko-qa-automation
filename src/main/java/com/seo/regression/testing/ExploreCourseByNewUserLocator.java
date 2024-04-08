@@ -7,9 +7,12 @@ import java.util.Set;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ExploreCourseByNewUserLocator
 {
@@ -26,6 +29,7 @@ public class ExploreCourseByNewUserLocator
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> statusOfTestCase = new ArrayList<String>();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 			{
 			
@@ -81,8 +85,17 @@ public class ExploreCourseByNewUserLocator
 										System.out.println("Dashboard screen");
 										
 										WebElement clicExploreCourse = driver.findElement(By.xpath("//button[contains(text(),'Explore our catalog!')]"));
+										wait.until(ExpectedConditions.visibilityOfAllElements(clicExploreCourse));
 										js.executeScript("arguments[0].scrollIntoView();", clicExploreCourse);
 										
+										try
+										{
+											driver.findElement(By.xpath("//button[contains(text(),'Explore our catalog!')]"));
+										}
+										catch(StaleElementReferenceException e)
+										{
+											driver.findElement(By.xpath("//button[contains(text(),'Explore our catalog!')]"));
+										}
 										if(clicExploreCourse.isDisplayed())
 										{
 											js.executeScript("arguments[0].click()", clicExploreCourse);

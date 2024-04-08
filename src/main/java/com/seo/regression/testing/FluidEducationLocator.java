@@ -606,7 +606,6 @@ public class FluidEducationLocator
 								{
 									if(pageData.size()>6)
 									{
-										ArrayList<String> checkEnroll = new ArrayList<String>();
 										for(int m = 0; m < pageData.size(); m++)
 										{
 											if(!cardData.get(j).equals(pageData.get(4)))
@@ -667,22 +666,6 @@ public class FluidEducationLocator
 		{
 			e.printStackTrace();
 		}
-		driver.close();
-		Set<String> allScreen = driver.getWindowHandles();
-		 for (String handle : allScreen) 
-		 {
-			 driver.switchTo().window(handle);
-	            if(handle.equals(driver.getWindowHandle()))
-	            {
-	                driver.switchTo().window(handle);
-	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-	                {
-	                	 driver.switchTo().window(handle);
-	                	 break;
-	                }
-	            }
-	            driver.switchTo().window(handle);
-	      }
 		return processStatus;
 		
 	}

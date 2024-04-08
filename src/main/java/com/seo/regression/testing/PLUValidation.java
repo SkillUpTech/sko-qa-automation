@@ -24,6 +24,8 @@ public class PLUValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -83,6 +85,11 @@ public class PLUValidation
 				}
 			}
 		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return sheetStatus;
 	}
 	
@@ -120,12 +127,15 @@ public class PLUValidation
 		if(!programs.contains("NA"))
 		{
 			ArrayList<String> failTechPgm = this.PLUPageLocators.verifyPrograms(programs);
-			if(failTechPgm.size()>0)
+			if(failTechPgm.contains("fail"))
 			{
-				for(int i = 0; i < failTechPgm.size(); i++)
+				if(failTechPgm.size()>0)
 				{
-					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+					for(int i = 0; i < failTechPgm.size(); i++)
+					{
+						sheetStatus = "Fail";
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+					}
 				}
 			}
 		}

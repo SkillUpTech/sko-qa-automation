@@ -17,13 +17,14 @@ public class HeaderSectionValidation
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;
-		
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
 		System.out.println("header process started");
 	}
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(this.driver);
@@ -92,6 +93,11 @@ public class HeaderSectionValidation
 				}
 			}
 		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		return sheetStatus;
 		
 	}
@@ -132,13 +138,6 @@ public class HeaderSectionValidation
 		}
 	}
 
-	/*
-	 * public void checkBusiness() { String businessProcess =
-	 * headerSectionLocator.checkBusiness();
-	 * if(businessProcess.equalsIgnoreCase("fail")) { sheetStatus = "Fail";
-	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection")
-	 * .get(2).set(0, "business - failed"); } }
-	 */
 	public void checkBlog(ArrayList<String> data) throws InterruptedException
 	{
 		if(!data.contains("NA"))

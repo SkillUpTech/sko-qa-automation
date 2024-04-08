@@ -983,6 +983,7 @@ public class DashboardLocator
 
 				js.executeScript("window.scrollBy(0,-300)");
 				WebElement clickProgram = driver.findElement(By.cssSelector("ul[class*='navigation_containerList']>li[class='navigation_selected__Kzs2R']"));
+				js.executeScript("arguments[0].scrollIntoView();", clickProgram);
 				if(!clickProgram.getText().contains("Programs"))
 				{
 					WebElement clickProgramSection = driver.findElement(By.xpath("//li[contains(text(),'Programs')]"));

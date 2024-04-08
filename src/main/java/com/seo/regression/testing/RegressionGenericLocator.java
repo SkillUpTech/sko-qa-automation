@@ -56,7 +56,7 @@ public class RegressionGenericLocator
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver121\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe");
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -1471,7 +1471,6 @@ public class RegressionGenericLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			Thread.sleep(1000);	
 			String getInitialsOnDropDown = driver.findElement(By.cssSelector("li[class='SigNUP'] span[class='NOLoginDSKTXT']")).getText();
 			System.out.println("Initial on DropDown : "+getInitialsOnDropDown);
 			WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));

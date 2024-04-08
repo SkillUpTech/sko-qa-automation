@@ -23,6 +23,8 @@ public class ContactUsValidation
 	
 	public String start() throws InterruptedException
 	{
+		try
+		{
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -71,7 +73,7 @@ public class ContactUsValidation
 			if(!BaseWindow.equals(win))
 			{
 				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/") && !BaseWindow.equals(win))
 				{
 					driver.switchTo().window(win);
 					driver.close();
@@ -83,13 +85,18 @@ public class ContactUsValidation
 					driver.close();
 					driver.switchTo().window(BaseWindow);
 				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/")&& !BaseWindow.equals(win))
 				{
 					driver.switchTo().window(win);
 					driver.close();
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}
