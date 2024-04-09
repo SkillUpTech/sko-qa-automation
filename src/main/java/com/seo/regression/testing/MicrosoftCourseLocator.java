@@ -283,21 +283,27 @@ public class MicrosoftCourseLocator
 				{
 					courseCardData.add("noPartner");
 				}
+				boolean checkVILTCourse = false;
 				
 				List<WebElement> enrollStatusOnCards = listOfCourses.get(i).findElements(By.xpath(".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2"));
 				if(enrollStatusOnCards.size()==1)
 				{
-					
 					if(enrollStatusOnCards.get(0).getText().contains("Course starts on"))
 					{
-						enrollmentStatusOncard = "Close";
+						enrollmentStatusOncard = "Open";
+						courseCardData.add(enrollmentStatusOncard);
 						
+						checkVILTCourse = true;
+						
+						WebElement courseStartsOn = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_priceLeft')]/p"));
+						courseCardData.add(courseStartsOn.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
 					}
 					else if(enrollStatusOnCards.get(0).getText().contains("Coming Soon"))
 					{
 						enrollmentStatusOncard = "Close";
+						courseCardData.add(enrollmentStatusOncard);
+						checkVILTCourse = false;
 					}
-					courseCardData.add(enrollmentStatusOncard);
 				}
 				else if(listOfCourses.get(i).findElements(By.xpath(".//div[contains(@class,'RegularCourseCard_priceLeft')]/p")).size()>0)
 				{
@@ -312,7 +318,10 @@ public class MicrosoftCourseLocator
 					System.out.println("noEnrollmentStatus");
 					courseCardData.add("noEnrollStatus");
 				}
-				
+				if(checkVILTCourse == false)
+				{
+					courseCardData.add("noStartDate");
+				}
 				WebElement courseCardPrice = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_priceRight')]/p"));
 				
 				js.executeScript("arguments[0].scrollIntoView();", courseCardPrice);
@@ -432,6 +441,7 @@ public class MicrosoftCourseLocator
 								{
 									pageProcessStatus.add("noPartner");
 								}
+								
 								WebElement pageEnrollStatus = coursePageBaseLocator.findElement(By.cssSelector(" div[class*='CourseDescription_buttonsContent'] h6, button[class*='CourseDescription_enrollNowBtn']"));
 								if(pageEnrollStatus.isDisplayed())
 								{
@@ -445,14 +455,33 @@ public class MicrosoftCourseLocator
 									}
 									else if(pageEnrollStatus.getText().contains("Go to the program"))
 									{
-										
+										pageProcessStatus.add("Open");
 									}
 								}
 								else
 								{
 									pageProcessStatus.add("noEnrollStatus");
 								}
-								
+								if(checkVILTCourse == true)
+								{
+									List<WebElement> pageStartDate = coursePageBaseLocator.findElements(By.cssSelector(" div[class='d-flex gap-2']:nth-child(1) p"));
+									if(pageStartDate.size()>0)
+									{
+										js.executeScript("arguments[0].scrollIntoView();", pageStartDate.get(0));
+										if(pageStartDate.get(0).isDisplayed())
+										{
+											pageProcessStatus.add(pageStartDate.get(0).getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
+										}
+									}
+									else
+									{
+										pageProcessStatus.add("noStartDate");
+									}
+								}
+								else
+								{
+									pageProcessStatus.add("noStartDate");
+								}
 								List<WebElement> pagePrice = coursePageBaseLocator.findElements(By.cssSelector(" div[class*='d-flex gap-2']:nth-child(3) p, div[class*='d-flex gap-2']:nth-child(2) p"));
 								if(pagePrice.size()>0)
 								{
@@ -502,49 +531,56 @@ public class MicrosoftCourseLocator
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("Program or course Icon mismatch "+processStatus);
+												processStatus.add("Program or course Icon mismatch "+courseURL);
 											}
 										}
 										if(j == 1)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("course type mismatch in "+processStatus);
+												processStatus.add("course type mismatch in "+courseURL);
 											}
 										}
 										if(j == 2)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("course Name mismatch in "+processStatus);
+												processStatus.add("course Name mismatch in "+courseURL);
 											}
 										}
 										if(j == 3)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("level mismatch in "+processStatus);
+												processStatus.add("level mismatch in "+courseURL);
 											}
 										}
 										if(j == 4)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("partner mismatch in "+processStatus);
+												processStatus.add("partner mismatch in "+courseURL);
 											}
 										}
 										if(j == 5)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("Enroll status mismatch in "+processStatus);
+												processStatus.add("Enroll status mismatch in "+courseURL);
 											}
 										}
 										if(j == 6)
 										{
 											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
 											{
-												processStatus.add("Price mismatch in "+processStatus);
+												processStatus.add("start date mismatch in "+courseURL);
+											}
+										}
+										if(j == 7)
+										{
+											if(!courseProcessStatus.get(j).equals(pageProcessStatus.get(j)))
+											{
+												processStatus.add("Price mismatch in "+courseURL);
 											}
 										}
 									}
@@ -564,7 +600,6 @@ public class MicrosoftCourseLocator
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			processStatus.add("MicrosoftScourses");
 		}
 		return processStatus;
 	}
