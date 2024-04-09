@@ -19,7 +19,6 @@ public class FluidEducationValidation
 		this.driver = driver;
 		this.fluidEducationLocator = new FluidEducationLocator(driver);
 		System.out.println("fluidEducation process started");
-		//this.start();
 	}
 	
 	public String start() throws InterruptedException

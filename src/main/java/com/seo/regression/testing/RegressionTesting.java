@@ -244,6 +244,9 @@ public class RegressionTesting
 							 case "HeaderFeature":
 								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
 								 break;
+							 case "ReimbursedProcess":
+								 sheetStatus = new ReimbursedValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
