@@ -231,6 +231,74 @@ public class DashboardLocator
 	}
 	String getEnrolledCourseOrProgramName = "";
 	String modifiedcourseName = "";//.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim()
+	
+	public String courseSearchFeature(String data)
+	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String status = "";
+		try
+		{
+			WebElement focusSearchField = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] form#searchForm input#contentSearch"));
+			if(focusSearchField.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", focusSearchField);
+				focusSearchField.sendKeys(data);
+				WebElement clickSearch = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] form#searchForm button#btnCheck"));
+				if(clickSearch.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", clickSearch);
+					WebElement clickCourseCard = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_RegularcardLinks']>a"));
+					if(clickCourseCard.isDisplayed())
+					{
+						String courseURL = clickCourseCard.getAttribute("href");
+						String parentWindow = driver.getWindowHandle();
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(courseURL);
+						Set<String> nextWindow = driver.getWindowHandles();
+						for(String window : nextWindow)
+						{
+							driver.switchTo().window(window);
+							if(driver.getCurrentUrl().contains(courseURL))
+							{
+								driver.switchTo().window(window);
+								
+								if(driver.getCurrentUrl().contains(OpenWebsite.setHost))
+								{
+									status = "pass";
+									driver.close();
+									driver.switchTo().window(parentWindow);
+									break;
+								}
+							}
+							driver.switchTo().window(window);
+						}
+						driver.switchTo().window(parentWindow);
+					}
+					WebElement clickDropDown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+					if(clickDropDown.isDisplayed())
+					{
+						js.executeScript("arguments[0].click()", clickDropDown);
+						WebElement clickDashboard = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary']>li:nth-child(2)>a"));
+						if(clickDashboard.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickDashboard);
+							if(driver.getCurrentUrl().contains("dashboard"))
+							{
+								System.out.println("dashboard page");
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	
 	public String enrolledCourse()
 	{
 		String status = "fail";
