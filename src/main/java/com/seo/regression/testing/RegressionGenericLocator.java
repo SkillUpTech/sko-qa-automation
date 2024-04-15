@@ -56,7 +56,7 @@ public class RegressionGenericLocator
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");

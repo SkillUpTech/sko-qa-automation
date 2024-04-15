@@ -115,10 +115,6 @@ public class DashboardLocator
 							{
 								driver.switchTo().window(window);
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-								/*
-								 * WebElement clickLoginIcon =
-								 * driver.findElement(By.cssSelector("li#signinlink")); clickLoginIcon.click();
-								 */
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								break;
