@@ -71,7 +71,7 @@ public class HeaderFooterInStagecoursesLocator
 			for(String window : windows)
 			{
 				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("login?"))
+				if(driver.getCurrentUrl().contains("login"))
 				{
 					driver.switchTo().window(window);
 					status = "pass";
@@ -141,7 +141,7 @@ public class HeaderFooterInStagecoursesLocator
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("login?"))
+					if(driver.getCurrentUrl().contains("login"))
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
@@ -163,6 +163,7 @@ public class HeaderFooterInStagecoursesLocator
 		String status = "fail";
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickAboutSkillupIcon.isDisplayed())
 			{
@@ -175,9 +176,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("about"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" About skillup icon verified on header is pass");
@@ -207,6 +208,7 @@ public class HeaderFooterInStagecoursesLocator
 		String status = "fail";
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickContactUSIcon.isDisplayed())
 			{
@@ -219,9 +221,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" contact icon verified on header is pass");
@@ -252,6 +254,7 @@ public class HeaderFooterInStagecoursesLocator
 		String status = "fail";
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickBlogIcon.isDisplayed())
 			{
@@ -264,9 +267,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("blog"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" Blog icon verified on header is pass");
@@ -520,6 +523,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickContactUSFooter.isDisplayed())
 			{
@@ -532,9 +536,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" contact icon verified on footer is pass");
@@ -566,6 +570,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -580,9 +585,9 @@ public class HeaderFooterInStagecoursesLocator
 						if(driver.getCurrentUrl().contains("about"))
 						{
 							driver.switchTo().window(windows);
-							String hostURL[] = driver.getCurrentUrl().split("online/");
-							String getCurrentURLAfterHost = hostURL[1];
-							if(data.equals(getCurrentURLAfterHost))
+							String hostURL[] = driver.getCurrentUrl().split("\\?utm");
+							String getCurrentURLAfterHost = hostURL[0];
+							if(stageSiteURL.equals(getCurrentURLAfterHost))
 							{
 								status = "pass";
 								System.out.println(" About Skillup icon verified on footer is pass");
@@ -616,6 +621,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -630,9 +636,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("enterprise"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" business icon verified on footer is pass");
@@ -665,6 +671,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -679,9 +686,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("faq"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" FAQ icon verified on footer is pass");
@@ -714,6 +721,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -728,9 +736,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("privacy"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" Privacy icon verified on footer is pass");
@@ -762,6 +770,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -776,9 +785,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("tos"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" Terms of Service icon verified on footer is pass");
@@ -810,6 +819,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -824,9 +834,9 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("blog"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
+						String getCurrentURLAfterHost = hostURL[0];
+						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
 							System.out.println(" Blog icon verified on footer is pass");
