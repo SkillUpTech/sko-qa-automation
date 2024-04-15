@@ -1103,7 +1103,7 @@ String addHosturl;
 				}
 				WebElement feeContent = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2) div[class*='CourseDescription_courseAboutTextSection'] p, div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection'] p"));
 				String getStartsOnText = feeContent.getText();
-				if(getStartsOnText.trim().contains(flatPriceWithoutGSTFromExcel.trim()))
+				if(getStartsOnText.replaceAll("[^\\d]", "").trim().contains(flatPriceWithoutGSTFromExcel.replaceAll("[^\\d]", "").trim()))
 				{
 					System.out.println("fee is correct");
 					checkPriceWOGSTStatus = "success";
