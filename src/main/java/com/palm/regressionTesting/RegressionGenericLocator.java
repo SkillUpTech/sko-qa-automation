@@ -19,6 +19,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.Color;
@@ -55,7 +56,7 @@ public class RegressionGenericLocator
 
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver121\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");
@@ -127,28 +128,23 @@ public class RegressionGenericLocator
 				System.out.println("un broken link");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-				driver.get(addHosturl);
-				CourseCodeStatus = "true";
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				/*
-				 * List<WebElement> checkCourseCode = driver.findElements(By.cssSelector(
-				 * "div[class='CourseDescription_buttonsContent__qPhJg '] button[class*='enrollNowBtn']"
-				 * )); List<WebElement> checkCourseContent =
-				 * driver.findElements(By.cssSelector("div>h1")); if (checkCourseCode.size() > 0
-				 * && code.contains(":")) { getCourseID =
-				 * checkCourseCode.get(0).getAttribute("href"); } else
-				 * if(checkCourseContent.size() > 0) { getCourseID =
-				 * checkCourseContent.get(0).getText().replace("/courses/", ""); getCourseID =
-				 * getCourseID.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim(); }
-				 * courseIDFromBrowser = getCourseID;
-				 * System.out.println("course ID from Browser : " + courseIDFromBrowser);
-				 * System.out.println("courseIDFrom Excel: " + code);
-				 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700)); if
-				 * (courseIDFromBrowser.toLowerCase().contains(code.replace("/courses/",
-				 * "").replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim())) {
-				 * CourseCodeStatus = "true"; }
-				 */
+				String parentWindow = driver.getWindowHandle();
+				Set<String> allWindow = driver.getWindowHandles();
+				for(String window : allWindow)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+					{
+						driver.switchTo().window(window);
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(addHosturl);
+						CourseCodeStatus = "true";
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+						break;
+					}
+					driver.switchTo().window(parentWindow);
+				}
 			}
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
 		} 
@@ -1159,14 +1155,7 @@ public class RegressionGenericLocator
 			{
 				System.out.println("US Enroll Process");
 			}
-			Thread.sleep(1000);	
-			WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));
-			clickDropdownIcon.click();
-			Thread.sleep(2000);
-			WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
-			JavascriptExecutor js3 = (JavascriptExecutor) driver;
-			js3.executeScript("arguments[0].click()", clickSignOut);
-			Thread.sleep(2000);
+			
 		} 
 		catch (Exception e) 
 		{
@@ -1475,5 +1464,114 @@ public class RegressionGenericLocator
 			e.printStackTrace();
 		}
 		return checkSubscribeProcess;
+	}
+	
+	public ArrayList<String> programLocator()
+	{
+		ArrayList<String> status = new ArrayList<String>();
+		try
+		{
+			String getInitialsOnDropDown = driver.findElement(By.cssSelector("li[class='SigNUP'] span[class='NOLoginDSKTXT']")).getText();
+			System.out.println("Initial on DropDown : "+getInitialsOnDropDown);
+			WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));
+			if(clickDropdownIcon.isDisplayed())
+			{
+				clickDropdownIcon.click();
+				status.add("pass");
+			}
+			
+			WebElement clickDashboard = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary']>li:nth-child(2)>a"));
+			if(clickDashboard.isDisplayed())
+			{
+				clickDashboard.click();
+				
+				String parentWindow = driver.getWindowHandle();
+				Set<String> windows = driver.getWindowHandles();
+				for(String window : windows)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().contains("dashboard"))
+					{
+						driver.switchTo().window(window);
+						System.out.println("dashboard page");
+						status.add("pass");
+					}
+				}
+			}
+			
+			WebElement clickDropdownIcon2 = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+			if(clickDropdownIcon2.isDisplayed())
+			{
+				clickDropdownIcon2.click();
+				status.add("pass");
+			}
+			
+			
+			WebElement clickProfile = driver.findElement(By.cssSelector("ul[class*='dropdown-menu']>li:nth-child(3)>a"));
+			if(clickProfile.isDisplayed())
+			{
+				clickProfile.click();
+				
+				String parentWindow = driver.getWindowHandle();
+				Set<String> windows = driver.getWindowHandles();
+				for(String window : windows)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().contains("/u/"))
+					{
+						driver.switchTo().window(window);
+						System.out.println("profile page");
+						status.add("pass");
+					}
+				}
+			}
+			
+			WebElement clickDropdownIcon3 = driver.findElement(By.cssSelector("li[class='SigNUP'] img[class='dPaRoW']"));
+			if(clickDropdownIcon3.isDisplayed())
+			{
+				clickDropdownIcon3.click();
+				status.add("pass");
+			}
+			
+			WebElement clickAccount = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary']>li:nth-child(4)>a"));
+			if(clickAccount.isDisplayed())
+			{
+				clickAccount.click();
+				
+				String parentWindow = driver.getWindowHandle();
+				Set<String> windows = driver.getWindowHandles();
+				for(String window : windows)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().contains("settings"))
+					{
+						driver.switchTo().window(window);
+						System.out.println("dashboard page");
+						status.add("pass");
+					}
+				}
+			}
+			WebElement clickDropdownIcon4 = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[class='dPaRoW']"));
+			if(clickDropdownIcon4.isDisplayed())
+			{
+				clickDropdownIcon4.click();
+				status.add("pass");
+			}
+			Thread.sleep(2000);
+			WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
+			JavascriptExecutor js3 = (JavascriptExecutor) driver;
+			if(clickSignOut.isDisplayed())
+			{
+				js3.executeScript("arguments[0].click()", clickSignOut);
+				status.add("pass");
+			}
+			Thread.sleep(2000);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			status.add("Fail");
+		}
+		return status;
 	}
 }

@@ -50,7 +50,7 @@ public class AboutProgramLocator {
 	}
 	public void openDriver()
 	{
-		System.setProperty("webdriver.chrome.driver", "D:\\chromedriver121\\chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
 		options.addArguments("--disable notifications");

@@ -2,8 +2,10 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WindowType;
 
 public class EditProfileValidation {
 	ArrayList<ArrayList<String>> sheetData = null;
@@ -11,10 +13,11 @@ public class EditProfileValidation {
 	EditProfileLocator editProfileLocator;
 	String sheetStatus = "Pass";
 
-	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) {
+	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	{
+		
 		this.sheetData = sheetData;
 		this.driver = driver;
-		OpenWebsite.openSite(driver);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		this.editProfileLocator = new EditProfileLocator(driver);
 		System.out.println("Edit profile Process started");
@@ -22,6 +25,11 @@ public class EditProfileValidation {
 
 	public String start() throws InterruptedException 
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for (int i = 0; i < this.sheetData.size(); i++) {
 			ArrayList<String> row = this.sheetData.get(i);
 			String firstColumn = row.get(0);
@@ -103,6 +111,38 @@ public class EditProfileValidation {
 			  
 			 
 			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

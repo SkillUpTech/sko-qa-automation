@@ -71,7 +71,6 @@ public class ProcessLogin
 					{
 						loginStatus = "Failed";
 					}
-					
 				  else 
 				  { 
 					  loginStatus= this.checkUserAfterLoggedIn(); 

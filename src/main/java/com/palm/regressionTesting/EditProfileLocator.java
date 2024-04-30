@@ -23,13 +23,15 @@ public class EditProfileLocator
 	public ArrayList<String> checkLogin(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			WebElement clickLogin = driver.findElement(By.cssSelector("li[class*='Header_loginBtn'] a"));
+			js.executeScript("arguments[0].scrollIntoView();", clickLogin);
 			if(clickLogin.isDisplayed())
 			{
 				Thread.sleep(2000);
-				clickLogin.click();
+				js.executeScript("arguments[0].click()", clickLogin);
 				Thread.sleep(2000);
 			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
@@ -43,14 +45,17 @@ public class EditProfileLocator
 					driver.switchTo().window(window);
 					Thread.sleep(3000);
 					WebElement uname = driver.findElement(By.cssSelector("input#email"));
+					js.executeScript("arguments[0].scrollIntoView();", uname);
 					uname.sendKeys(data.get(1));
 					WebElement pwd = driver.findElement(By.cssSelector("input#password"));
+					js.executeScript("arguments[0].scrollIntoView();", pwd);
 					pwd.sendKeys(data.get(2));
 					WebElement submit = driver.findElement(By.cssSelector("input#login_in"));
+					js.executeScript("arguments[0].scrollIntoView();", submit);
 					if(submit.isDisplayed())
 					{
 						Thread.sleep(2000);
-						submit.click();
+						js.executeScript("arguments[0].click()", submit);
 						Thread.sleep(2000);
 						status.add("pass");
 						String parentWindow1 = driver.getWindowHandle();
@@ -67,7 +72,7 @@ public class EditProfileLocator
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(200));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 								status.add("pass");
-								System.out.println("dashboard page");//dashboard page (1)
+								System.out.println("dashboard page");
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
 							}
@@ -99,6 +104,7 @@ public class EditProfileLocator
 				{
 					driver.switchTo().window(window);
 					WebElement clickDropDown = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons']>li:nth-child(2) img[alt='icon']"));
+					js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
 					if(clickDropDown.isDisplayed())
 					{
 						Thread.sleep(2000);
@@ -108,6 +114,7 @@ public class EditProfileLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
 					WebElement clickProfile = driver.findElement(By.cssSelector("ul[class*='dropdown-menu']>li:nth-child(3)>a"));
+					js.executeScript("arguments[0].scrollIntoView();", clickProfile);
 					if(clickProfile.isDisplayed())
 					{
 						Thread.sleep(2000);
@@ -119,7 +126,7 @@ public class EditProfileLocator
 					driver.switchTo().window(window);
 					if(driver.getCurrentUrl().contains("/u/"))
 					{
-						driver.switchTo().window(window);//profile page(1)
+						driver.switchTo().window(window);
 						Thread.sleep(2000);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
@@ -153,15 +160,15 @@ public class EditProfileLocator
 				{
 					Thread.sleep(2000);
 					WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='ProfileContent_main'] div[class='EditUpdateButton'] a button"));
-					//String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); 
-					//clickUpdateFromContacts.sendKeys(selectLinkOpeninNewTab); //new tab for update screen opened
-					//System.out.println("new tab");
-					if(clickUpdateFromContacts.isDisplayed())
-					{
-						Thread.sleep(2000);
-						js.executeScript("arguments[0].click()", clickUpdateFromContacts);
-						Thread.sleep(2000);
-					}
+					js.executeScript("arguments[0].scrollIntoView();", clickUpdateFromContacts);
+					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); 
+					clickUpdateFromContacts.sendKeys(selectLinkOpeninNewTab); 
+					System.out.println("new tab");
+					/*
+					 * if(clickUpdateFromContacts.isDisplayed()) { Thread.sleep(2000);
+					 * js.executeScript("arguments[0].click()", clickUpdateFromContacts);
+					 * Thread.sleep(2000); }
+					 */
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					Set<String> allWindows1 = driver.getWindowHandles();
@@ -174,7 +181,7 @@ public class EditProfileLocator
 						Thread.sleep(3000);
 						if(driver.getCurrentUrl().contains("update/"))
 						{
-							driver.switchTo().window(window1);//(2)
+							driver.switchTo().window(window1);
 							Thread.sleep(2000);
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
@@ -327,11 +334,12 @@ public class EditProfileLocator
 						if(driver.getCurrentUrl().contains("/update/"))
 						{
 							
-							driver.switchTo().window(win);//pop up
+							driver.switchTo().window(win);
 							Thread.sleep(2000);
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							WebElement getTextFromAlert = driver.findElement(By.cssSelector("div[class='modal-body']"));
+							js.executeScript("arguments[0].scrollIntoView();", clickCancel);
 							System.out.println(getTextFromAlert.getText());
 						}
 					}
@@ -882,6 +890,7 @@ public class EditProfileLocator
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
+							Thread.sleep(2000);
 							js.executeScript("arguments[0].click()", clickGoBackFromAlert);
 							Thread.sleep(2000);
 						}
@@ -899,6 +908,7 @@ public class EditProfileLocator
 							Thread.sleep(2000);
 							driver.switchTo().window(window);
 							System.out.println("AreasOfInterest_Alert_Back Button process done");
+							Thread.sleep(2000);
 						}
 					}
 					}
@@ -980,7 +990,7 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(3000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -1105,7 +1115,7 @@ public class EditProfileLocator
 						{
 							driver.switchTo().window(win);
 							Thread.sleep(3000);
-							WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
+							WebElement getTextFromAlert = driver.findElement(By.xpath("p[contains(text(),'Are you sure to cancel the updates?')]"));
 							System.out.println(getTextFromAlert.getText());
 							Thread.sleep(3000);
 							System.out.println("Alert from work experience");
@@ -1327,7 +1337,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(2000);
-						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//button[contains(text(),' like to go back')]"));
+						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("button[contains(text(),' like to go back')]"));
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
@@ -1340,15 +1350,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(2000);
-						/*
-						 * driver.switchTo().window(window); if(driver.getCurrentUrl().contains("/u/"))
-						 * { driver.switchTo().window(window);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-						 * System.out.println("Profile page"); Thread.sleep(3000); status = "pass";
-						 * driver.switchTo().window(window);
-						 * System.out.println("current work_Alert_goBackButton process done"); }
-						 */
+						
 					}
 					}
 				}
@@ -1366,7 +1368,7 @@ public class EditProfileLocator
 				js.executeScript("arguments[0].click()", clickCancel);
 				Thread.sleep(2000);
 			}
-			WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+			WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 			js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 			if(clickYesFromAlert.isDisplayed())
 			{
@@ -1443,7 +1445,7 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(3000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -1540,7 +1542,7 @@ public class EditProfileLocator
 				{
 					driver.switchTo().window(window);
 					js.executeScript("window.scrollBy(0, 400)","");
-					Thread.sleep(2000);//
+					Thread.sleep(2000);
 					WebElement clickCancel = driver.findElement(By.cssSelector("div[class*='Workexperience_skipButonDesk']>button[class*='Workexperience_skipButton']"));
 					js.executeScript("arguments[0].scrollIntoView();", clickCancel);
 					if(clickCancel.isDisplayed())
@@ -1559,7 +1561,7 @@ public class EditProfileLocator
 						{
 							driver.switchTo().window(win);
 							Thread.sleep(3000);
-							WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
+							WebElement getTextFromAlert = driver.findElement(By.xpath("p[contains(text(),'Are you sure to cancel the updates?')]"));
 							System.out.println(getTextFromAlert.getText());
 							System.out.println("Alert from work experience");
 							System.out.println("WorkExperience cancelIcon process done");
@@ -1776,7 +1778,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(3000);
-						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//button[contains(text(),'like to go back')]"));
+						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("button[contains(text(),'like to go back')]"));
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
@@ -1802,7 +1804,7 @@ public class EditProfileLocator
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 								Thread.sleep(3000);
-								WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+								WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 								js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 								if(clickYesFromAlert.isDisplayed())
 								{
@@ -1853,7 +1855,7 @@ public class EditProfileLocator
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					Thread.sleep(3000);
 					JavascriptExecutor jse1 = (JavascriptExecutor) driver;
-					jse1.executeScript("window.scrollBy(0, -100)","");//
+					jse1.executeScript("window.scrollBy(0, -100)","");
 					
 					WebElement clickUpdateFromAreaOfInterest = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(4) div[class='EditUpdate'] a"));
 					js.executeScript("arguments[0].scrollIntoView();", clickUpdateFromAreaOfInterest);
@@ -1897,7 +1899,7 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(3000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -1951,7 +1953,7 @@ public class EditProfileLocator
 					js.executeScript("arguments[0].scrollIntoView();", updateIcon);
 					if(updateIcon.isDisplayed())
 					{
-						//js.executeScript("window.scrollBy(0, 100)","");
+						js.executeScript("window.scrollBy(0, 100)","");
 						Thread.sleep(3000);
 						js.executeScript("arguments[0].click()", updateIcon);
 						System.out.println("update icon clicked from personal Details section");
@@ -2021,7 +2023,7 @@ public class EditProfileLocator
 						{
 							driver.switchTo().window(win);
 							Thread.sleep(3000);
-							WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
+							WebElement getTextFromAlert = driver.findElement(By.xpath("p[contains(text(),'Are you sure to cancel the updates?')]"));
 							js.executeScript("arguments[0].scrollIntoView();", getTextFromAlert);
 							System.out.println(getTextFromAlert.getText());
 							status = "pass";
@@ -2233,7 +2235,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(3000);
-						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//button[contains(text(),'like to go back')]"));
+						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("button[contains(text(),'like to go back')]"));
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
@@ -2243,21 +2245,6 @@ public class EditProfileLocator
 							status = "pass";
 							Thread.sleep(3000);
 						}
-						/*
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-						 * Thread.sleep(3000); driver.switchTo().window(window);
-						 * if(driver.getCurrentUrl().contains("/u/")) {
-						 * driver.switchTo().window(window);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-						 * jse1.executeScript("window.scrollBy(0, 500)","");
-						 * System.out.println("Profile page"); Thread.sleep(3000);
-						 * 
-						 * driver.switchTo().window(window);
-						 * 
-						 * }
-						 */
 					}
 					}
 				}
@@ -2277,50 +2264,6 @@ public class EditProfileLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			/*Set<String> allWindows1 = driver.getWindowHandles();
-			for(String window : allWindows1)
-			{
-				driver.switchTo().window(window);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				Thread.sleep(3000);
-				if(driver.getCurrentUrl().contains("aboutyouUpdate/"))
-				{
-					driver.switchTo().window(window);
-					WebElement clickCancel = driver.findElement(By.cssSelector("div[class*='Aboutyou_skipButonDesk'] button[class*='Aboutyou_skipButton']"));
-					
-					if(clickCancel.isDisplayed())
-					{
-						
-						jse1.executeScript("arguments[0].click()", clickCancel);
-					}
-				}
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-			Thread.sleep(3000);
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("/u/"))
-				{
-					driver.switchTo().window(window);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					Thread.sleep(3000);
-					
-					jse1.executeScript("window.scrollBy(0, 500)","");
-					Thread.sleep(3000);
-					WebElement clickUpdateFromAreaOfInterest = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(5) div[class='EditUpdate'] a"));
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-				if(clickUpdateFromAreaOfInterest.isDisplayed())
-				{
-					
-					js.executeScript("arguments[0].click()", clickUpdateFromAreaOfInterest);
-				}
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					Thread.sleep(3000);*/
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
 			{
@@ -2371,7 +2314,7 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(3000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							if(clickYesFromAlert.isDisplayed())
 							{
@@ -2428,7 +2371,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(3000);
-						WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+						WebElement clickYesFromAlert = driver.findElement(By.xpath("a[contains(text(),'Yes, continue')]"));
 						js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 						if(clickYesFromAlert.isDisplayed())
 						{
@@ -2523,7 +2466,7 @@ public class EditProfileLocator
 						{
 							driver.switchTo().window(win);
 							Thread.sleep(3000);
-							WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
+							WebElement getTextFromAlert = driver.findElement(By.xpath("p[contains(text(),'Are you sure to cancel the updates?')]"));
 							System.out.println(getTextFromAlert.getText());
 							status = "pass";
 							System.out.println("Alert from personal detail");
@@ -2708,7 +2651,7 @@ public class EditProfileLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(3000);
-						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//button[contains(text(),' like to go back')]"));
+						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("button[contains(text(),' like to go back')]"));
 						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
 						if(clickGoBackFromAlert.isDisplayed())
 						{
@@ -2721,16 +2664,35 @@ public class EditProfileLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(3000);
 						System.out.println("personal details_Alert_back Button process done");
-						/*
-						 * driver.switchTo().window(window); if(driver.getCurrentUrl().contains("/u/"))
-						 * { driver.switchTo().window(window);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-						 * System.out.println("Profile page");
-						 * js.executeScript("window.scrollBy(0, 600)",""); Thread.sleep(3000); status =
-						 * "pass";
-						 * System.out.println("personal details_Alert_back Button process done"); }
-						 */
+						WebElement clickCancelButton = driver.findElement(By.cssSelector("div[class*='Education_skipButonDesk'] button[class='Education_skipButton__AN_lA']"));
+						js.executeScript("arguments[0].scrollIntoView();", clickCancelButton);
+						if(clickCancelButton.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickCancelButton);
+						}
+						WebElement clickContinue = driver.findElement(By.xpath("a[contains(text(),'Yes, continue')]"));
+						js.executeScript("arguments[0].scrollIntoView();", clickContinue);
+						if(clickCancelButton.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickContinue);
+						}
+						driver.switchTo().window(window);
+						if(driver.getCurrentUrl().contains("/u/"))
+						{
+							driver.switchTo().window(window);
+							WebElement clickDropdown = driver.findElement(By.cssSelector("li[class='SigNUP']>a"));
+							js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+							if(clickDropdown.isDisplayed())
+							{
+								js.executeScript("arguments[0].click()", clickDropdown);
+								WebElement signout = driver.findElement(By.cssSelector("ul[class='dropdown-menu Primary02_Blue']>li:nth-child(5)>a"));
+								if(signout.isDisplayed())
+								{
+									js.executeScript("arguments[0].click()", signout);
+								}
+							}
+						}
+								
 					}
 					}
 				}
@@ -2808,7 +2770,7 @@ public class EditProfileLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(3000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//a[contains(text(),'Yes, continue')]"));
+							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 							Thread.sleep(1000);
 							if(clickYesFromAlert.isDisplayed())

@@ -18,7 +18,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", "D:\\chromedriver121\\chromedriver.exe");
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
@@ -72,12 +72,15 @@ public class OpenWebsite
 		{
 			setHost = "https://"+host+".skillup.online";
 		}
+		else if(host.equalsIgnoreCase("dev"))
+		{
+			setHost = "https://"+host+".skillup.online";
+		}
 		return setHost;
 	}
 	
 	public static String openSite(WebDriver driver)
 	{
-		
 		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));

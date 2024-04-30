@@ -14,6 +14,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -38,19 +39,31 @@ public class DashboardLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			for(int i = 1; i < urgetURLl.size(); i++)
+			String parent  = driver.getWindowHandle();
+			Set<String> windows = driver.getWindowHandles();
+			for(String window : windows)
 			{
-				String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+urgetURLl.get(1);
-				
-				status.add(microsoftCourseLocator.checkCourseCode(openPage));
-				if(status.contains("fail"))
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 				{
-					System.out.println("Facing issue on site");
+					driver.switchTo().window(window);
+					for(int i = 1; i < urgetURLl.size(); i++)
+					{
+						String openPage = OpenWebsite.setEnvironment(RegressionTesting.ENV_TO_USE)+urgetURLl.get(1);
+						
+						status.add(microsoftCourseLocator.checkCourseCode(openPage));
+						if(status.contains("fail"))
+						{
+							System.out.println("Facing issue on site");
+						}
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(openPage);
+						WebElement getTitle = driver.findElement(By.xpath("//h1"));
+						courseName = getTitle.getText().replaceAll("[-+.^:,]","").replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
+						System.out.println("course or  program  name : "+courseName);
+					}
+					
 				}
-				driver.get(openPage);
-				WebElement getTitle = driver.findElement(By.xpath("//h1"));
-				courseName = getTitle.getText().replaceAll("[-+.^:,]","").replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim();
-				System.out.println("course or  program  name : "+courseName);
 			}
 		}
 		catch(Exception e)
@@ -102,10 +115,6 @@ public class DashboardLocator
 							{
 								driver.switchTo().window(window);
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-								/*
-								 * WebElement clickLoginIcon =
-								 * driver.findElement(By.cssSelector("li#signinlink")); clickLoginIcon.click();
-								 */
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								break;
@@ -218,6 +227,74 @@ public class DashboardLocator
 	}
 	String getEnrolledCourseOrProgramName = "";
 	String modifiedcourseName = "";//.replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim()
+	
+	public String courseSearchFeature(String data)
+	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String status = "";
+		try
+		{
+			WebElement focusSearchField = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] form#searchForm input#contentSearch"));
+			if(focusSearchField.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", focusSearchField);
+				focusSearchField.sendKeys(data);
+				WebElement clickSearch = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] form#searchForm button#btnCheck"));
+				if(clickSearch.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", clickSearch);
+					WebElement clickCourseCard = driver.findElement(By.cssSelector("div[class*='RegularCourseCard_RegularcardLinks']>a"));
+					if(clickCourseCard.isDisplayed())
+					{
+						String courseURL = clickCourseCard.getAttribute("href");
+						String parentWindow = driver.getWindowHandle();
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(courseURL);
+						Set<String> nextWindow = driver.getWindowHandles();
+						for(String window : nextWindow)
+						{
+							driver.switchTo().window(window);
+							if(driver.getCurrentUrl().contains(courseURL))
+							{
+								driver.switchTo().window(window);
+								
+								if(driver.getCurrentUrl().contains(OpenWebsite.setHost))
+								{
+									status = "pass";
+									driver.close();
+									driver.switchTo().window(parentWindow);
+									break;
+								}
+							}
+							driver.switchTo().window(window);
+						}
+						driver.switchTo().window(parentWindow);
+					}
+					WebElement clickDropDown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+					if(clickDropDown.isDisplayed())
+					{
+						js.executeScript("arguments[0].click()", clickDropDown);
+						WebElement clickDashboard = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary']>li:nth-child(2)>a"));
+						if(clickDashboard.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", clickDashboard);
+							if(driver.getCurrentUrl().contains("dashboard"))
+							{
+								System.out.println("dashboard page");
+							}
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
+	
 	public String enrolledCourse()
 	{
 		String status = "fail";
@@ -456,7 +533,7 @@ public class DashboardLocator
 							driver.switchTo().window(windows);
 							System.out.println("dasboard page : "+driver.getCurrentUrl());
 						}
-						else if(!driver.getCurrentUrl().contains("dashboard"))
+						else if(!driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 						{
 							driver.close();
 						}
@@ -723,7 +800,11 @@ public class DashboardLocator
 						clickShareIcon.click();
 					}
 					WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
-					clickCopy.click();
+					if(clickCopy.isDisplayed())
+					{
+						
+						clickCopy.click();
+					}
 					String parentWindow = driver.getWindowHandle();
 					List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
 					for(int k = 0; k < socialLink.size(); k++)
@@ -913,7 +994,7 @@ public class DashboardLocator
 																			
 																			driver.switchTo().window(tab);
 																			
-																			if(!driver.getCurrentUrl().contains("/course/") && !tab.equals(win))
+																			if(!driver.getCurrentUrl().contains("/course/") && !tab.equals(win) && !driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 																			{
 																				driver.switchTo().window(tab);
 																				
@@ -946,6 +1027,8 @@ public class DashboardLocator
 							  }
 					 }
 				}
+			
+			
 		}	
 			
 		catch(Exception e)
@@ -958,17 +1041,17 @@ public class DashboardLocator
 	public ArrayList<String> verifyIncludeCoursesFromProgram(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 
-				JavascriptExecutor js = (JavascriptExecutor) driver;
 				js.executeScript("window.scrollBy(0,-300)");
 				WebElement clickProgram = driver.findElement(By.cssSelector("ul[class*='navigation_containerList']>li[class='navigation_selected__Kzs2R']"));
+				js.executeScript("arguments[0].scrollIntoView();", clickProgram);
 				if(!clickProgram.getText().contains("Programs"))
 				{
 					WebElement clickProgramSection = driver.findElement(By.xpath("//li[contains(text(),'Programs')]"));
-					clickProgramSection.click();
-
+					js.executeScript("arguments[0].click()", clickProgramSection);
 					System.out.println("program section is available");
 					List<WebElement> programs = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id]"));
 					for(int j = 0; j < programs.size(); j++)
@@ -999,7 +1082,7 @@ public class DashboardLocator
 											for(String windows : allWindows)
 											{
 												driver.switchTo().window(windows);
-												if(driver.getCurrentUrl().contains("/course/"))
+												if(driver.getCurrentUrl().contains("/course/") && !driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
 												{
 													driver.switchTo().window(windows);
 													System.out.println("opened course : "+driver.getCurrentUrl());
@@ -1081,6 +1164,35 @@ public class DashboardLocator
 		{
 			e.printStackTrace();
 			status.add("fail");
+		}
+		WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+		js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+		if(clickDropdown.isDisplayed())
+		{
+			js.executeScript("arguments[0].click()", clickDropdown);
+			
+			WebElement clickSignout = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header']>li:nth-child(5)>a"));
+			if(clickSignout.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", clickSignout);
+			}
+		}
+		String dashboardPage = driver.getWindowHandle();
+		Set<String> allTabs = driver.getWindowHandles();
+		for(String tab : allTabs)
+		{
+			driver.switchTo().window(tab);
+			if(driver.getCurrentUrl().contains("dasboard"))
+			{
+				driver.switchTo().window(tab);
+				driver.close();
+				driver.switchTo().window(tab);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(tab);
+				}
+			}
+			driver.switchTo().window(dashboardPage);
 		}
 		return status;
 	}

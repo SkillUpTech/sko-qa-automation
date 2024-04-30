@@ -1570,7 +1570,7 @@ public class RegressionGenericLocator
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status.add("fail");
+			status.add("Fail");
 		}
 		return status;
 	}

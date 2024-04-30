@@ -450,7 +450,7 @@ public class IBMPageLocator
 					courseCardData.add(courseCardLevel.getText().toLowerCase());// levels from card 
 				}
 				
-				WebElement courseCardEnrollmentStatus = ListOfCourses.get(i).findElement(By.cssSelector(" div[class='col-8 RegularCourseCard_priceLeft__FV2Dl'] p"));
+				WebElement courseCardEnrollmentStatus = ListOfCourses.get(i).findElement(By.cssSelector(" div[class*='RegularCourseCard_priceLeft'] p"));
 				
 				js.executeScript("arguments[0].scrollIntoView();", courseCardEnrollmentStatus);
 				

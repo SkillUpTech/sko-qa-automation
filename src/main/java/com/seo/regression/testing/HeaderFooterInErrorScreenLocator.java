@@ -403,7 +403,9 @@ public class HeaderFooterInErrorScreenLocator
 						driver.switchTo().window(parentWindow);
 						break;
 					}
+					driver.switchTo().window(windows);
 				}
+				driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

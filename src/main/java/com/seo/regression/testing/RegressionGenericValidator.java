@@ -395,17 +395,17 @@ public class RegressionGenericValidator
 	
 	private void chekProfileSection(ArrayList<String> data)
 	{
-		if(!data.contains("NA"))
+		if(data.contains("NA"))
+		{
+			markProcessIgnored();
+		}
+		else
 		{
 			ArrayList<String> checkProgram = regressionGenericLocator.programLocator();
 			if(checkProgram.contains("fail"))
 			{
 				sheetStatus = "Fail";
 				markProcessFailed();
-			}
-			else
-			{
-				markProcessIgnored();
 			}
 		}
 	}

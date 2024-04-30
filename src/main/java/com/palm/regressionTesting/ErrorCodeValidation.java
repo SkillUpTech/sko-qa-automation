@@ -1,31 +1,34 @@
 package com.palm.regressionTesting;
 
-import java.net.URL;
-import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Set;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 
 public class ErrorCodeValidation
 {
-	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
+	ArrayList<ArrayList<String>> sheetData = null;
 	ErrorCodeLocator errorCodeLocator;
 	String sheetStatus = "Pass";
 	
-	public ErrorCodeValidation(ArrayList<ArrayList<String>> sheetData,WebDriver driver)
+	public ErrorCodeValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
 	{
-		this.driver = driver;
 		this.sheetData = sheetData;
-		OpenWebsite.openSite(driver);
-		this.errorCodeLocator = new ErrorCodeLocator(driver);
+		this.driver = driver;
+		
+		this.errorCodeLocator = new ErrorCodeLocator(this.driver);
 		System.out.println("error code validation process started");
 	}
 	
 	public String start()
 	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(this.driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -39,6 +42,47 @@ public class ErrorCodeValidation
 					urlRedirection(row, i);
 				break;
 			}
+		}
+		if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+		{
+			driver.close();
+			driver.switchTo().window(BaseWindow);
+		}
+		else
+		{
+			driver.switchTo().window(BaseWindow);
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 		return sheetStatus;
 	}

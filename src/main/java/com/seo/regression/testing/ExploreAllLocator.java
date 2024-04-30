@@ -427,6 +427,7 @@ public class ExploreAllLocator
 										wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='col-12 d-flex justify-content-center mt-5'] ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']")));
 										for(int l = 0; l < clickNextPage.size(); l++)
 										{
+											js.executeScript("arguments[0].scrollIntoView(true);", clickNextPage.get(l));
 											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 											while(!clickNextPage.get(l).isDisplayed())
 											{
