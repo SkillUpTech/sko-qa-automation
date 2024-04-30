@@ -1,5 +1,6 @@
 package com.seo.regression.testing;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -96,6 +97,7 @@ public class ApplyCouponLocator
 					driver.switchTo().window(window);
 				for(int k = 1; k < data.size(); k++)
 				{
+					String[] couponvalue = data.get(k).split("_");
 					WebElement clickPromoLink = driver.findElement(By.cssSelector("a[id*='ui-collapse']"));
 					js.executeScript("arguments[0].scrollIntoView();", clickPromoLink);
 					if(clickPromoLink.isDisplayed())
@@ -108,35 +110,48 @@ public class ApplyCouponLocator
 					js.executeScript("arguments[0].scrollIntoView();", enterCode);
 					if(enterCode.isDisplayed())
 					{
-						enterCode.sendKeys(data.get(k));
+						enterCode.sendKeys(couponvalue[0]);
 					}	
-					
-					
 					WebElement submitApply = driver.findElement(By.cssSelector("button#apply-voucher-button"));
 					js.executeScript("arguments[0].scrollIntoView();", submitApply);
 					if(submitApply.isDisplayed())
 					{
 						js.executeScript("arguments[0].click()", submitApply);
-					}
-					ArrayList<String> statusOfAmount = new ArrayList<String>();		
-					List<WebElement> checkAppliedCoupon = driver.findElements(By.xpath("//div[@class='selected-plan']/*"));
-					for(int j = 0; j < checkAppliedCoupon.size(); j++)
-					{
-						js.executeScript("arguments[0].scrollIntoView();", checkAppliedCoupon.get(j));
-						if(checkAppliedCoupon.get(j).isDisplayed())
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if(driver.findElements(By.cssSelector("div[class='alertinner wicon']")).size()>0)
 						{
-							String getContent = checkAppliedCoupon.get(j).getAttribute("textContent");
-							statusOfAmount.add(getContent);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							String getCoupon = driver.findElement(By.cssSelector("div[class='alertinner wicon']")).getText();
+							result = getCoupon;
+							System.out.println(result);
+							
+						}
+						else
+						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							ArrayList<String> statusOfAmount = new ArrayList<String>();		
+							List<WebElement> checkAppliedCoupon = driver.findElements(By.xpath("//div[@class='selected-plan']/*"));
+							for(int j = 0; j < checkAppliedCoupon.size(); j++)
+							{
+								js.executeScript("arguments[0].scrollIntoView();", checkAppliedCoupon.get(j));
+								if(checkAppliedCoupon.get(j).isDisplayed())
+								{
+									String getContent = checkAppliedCoupon.get(j).getAttribute("textContent");
+									statusOfAmount.add(getContent);
+								}
+							}
+							result = String.join(", ", statusOfAmount);
+							System.out.println(result);
+							WebElement clickCloseIcon = driver.findElement(By.xpath("//button[@class='remove-voucher']/img"));
+							js.executeScript("arguments[0].scrollIntoView();", clickCloseIcon);
+							if(clickCloseIcon.isDisplayed())
+							{
+								js.executeScript("arguments[0].click()", clickCloseIcon);
+							}
 						}
 					}
-					result = String.join(", ", statusOfAmount);
-					System.out.println(result);
-					WebElement clickCloseIcon = driver.findElement(By.xpath("//button[@class='remove-voucher']/img"));
-					js.executeScript("arguments[0].scrollIntoView();", clickCloseIcon);
-					if(clickCloseIcon.isDisplayed())
-					{
-						js.executeScript("arguments[0].click()", clickCloseIcon);
-					}
+					
+					
 				}
 			}
 				driver.switchTo().window(window);

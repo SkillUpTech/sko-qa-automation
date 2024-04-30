@@ -31,10 +31,11 @@ public class RegressionTesting
 	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
+	AboutProgramValidation aboutProgramValidation;
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	
+	public static String  driverPath = "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -66,6 +67,18 @@ public class RegressionTesting
 	    	else if(env.equalsIgnoreCase("dev-in"))
 	    	{
 	    		getEnvironment = "dev-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("dev"))
+	    	{
+	    		getEnvironment = "dev";
+	    	}
+	    	else if(env.equalsIgnoreCase("qa-in"))
+	    	{
+	    		getEnvironment = "qa-in";
+	    	}
+	    	else if(env.equalsIgnoreCase("qa"))
+	    	{
+	    		getEnvironment = "qa";
 	    	}
 	    }
 	    else
@@ -99,6 +112,7 @@ public class RegressionTesting
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ENV_TO_USE = getEnvironment;
+			OpenWebsite.openSite(driver);
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
@@ -107,13 +121,12 @@ public class RegressionTesting
 				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
-					//newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
 					try
 					{
 						String sheetStatus = "Pass";
-						//Get Started
 						switch(sheetName)
 						{
+							
 							case "Login":
 								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
 							break;
@@ -121,6 +134,12 @@ public class RegressionTesting
 							{
 								newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
 								sheetStatus = newAboutCourseValidator.processSheetData();
+							}
+							break;
+							case "AboutProgram":
+							{
+								aboutProgramValidation = new AboutProgramValidation(driver, sheetName, sheetData);
+								sheetStatus = aboutProgramValidation.processSheetData();
 							}
 							break;
 							case "GenericProcess":
@@ -137,6 +156,9 @@ public class RegressionTesting
 								break;
 							case"SignUp":
 								sheetStatus = new SignUpValidation(sheetData, driver).start();
+								break;
+							case"AddUser":
+								sheetStatus = new AddUserValidation(sheetData, driver).start();
 								break;
 							case"Login if mail id not verified":
 								sheetStatus = new CheckLoginValidation(sheetData, driver).start();
@@ -207,6 +229,27 @@ public class RegressionTesting
 							 case "InviteOnlyCourse":
 								 sheetStatus = new InviteOnlyValidation(sheetData, driver).start(); 
 								 break;
+							 case "SignUpPageLinks":
+								 sheetStatus = new SignUpPageLinksValidation(sheetData, driver).start(); 
+								 break;
+							 case "ExploreCourseByNewUser":
+								 sheetStatus = new ExploreCourseByNewUserValidation(sheetData, driver).start(); 
+								 break;
+							 case "ViewCertificate":
+								 sheetStatus = new CertificateValidation(sheetData, driver).start(); 
+								 break;
+							 case "PlacementPage":
+								 sheetStatus = new PlacementPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "HeaderFeature":
+								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
+								 break;
+							 case "ReimbursedProcess":
+								 sheetStatus = new ReimbursedValidation(sheetData, driver).start(); 
+								 break;
+							 case "ApplyCoupon":
+								 sheetStatus = new ApplyCouponValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -249,15 +292,23 @@ public class RegressionTesting
 			}
 			else if (/* !driver.getCurrentUrl().contains("qa-in")|| */ENV_TO_USE.contains("qa-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_India_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev-in"))
 			{
-				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "dev_result_" + formattedDateTime + ".xlsx");
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "dev_India_result_" + formattedDateTime + ".xlsx");
 			}
 			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("prod-in"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodIndia_result_" + formattedDateTime + ".xlsx");
+			}
+			else if (/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("dev"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "Dev_US_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
 		}
 	}

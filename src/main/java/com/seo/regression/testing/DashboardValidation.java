@@ -32,8 +32,6 @@ public class DashboardValidation
 	{
 		try
 		{
-			
-		
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -57,12 +55,12 @@ public class DashboardValidation
 					  break;
 					  
 				case "courseSearchFeature":
-					courseSearchFeature(row.get(1));
+					  courseSearchFeature(row.get(1));
 					  break;
 					  
 				case "checkEnrolledCourse":
 					  checkEnrolledCourse(row.get(1));
-					 break;
+					  break;
 					
 				case "shareCourse": 
 					shareCourseFromDashboard(row); 
@@ -303,12 +301,12 @@ public class DashboardValidation
 		if(!data.contains("No"))
 		{
 			ArrayList<String> urlStatus = dashboardLocator.verfiySelfPacedCourse();
-			if(urlStatus.contains("fail"))
+			if(urlStatus.size()>0)
 			{
 				for(int i = 0; i < urlStatus.size(); i++)
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(8).add(i+1, urlStatus.get(i)+ "checkSelfPacedCourse - failed");
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(8).add(i+1, (urlStatus.get(i)+ "checkSelfPacedCourse - failed"));
 				}
 			}
 		}
@@ -320,12 +318,12 @@ public class DashboardValidation
 		{
 			
 			ArrayList<String> urlStatus = dashboardLocator.verfiyVILTCourse();
-			if(urlStatus.size()>= 0)
+			if(urlStatus.size()> 0)
 			{
 				for(int i = 0; i < urlStatus.size(); i++)
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(9).add(i+1, urlStatus.get(i) + "verfiyVILTCourse - failed");
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(9).add(i+1, (urlStatus.get(i) + "verfiyVILTCourse - failed"));
 				}
 			}
 		}
@@ -343,7 +341,7 @@ public class DashboardValidation
 					for(int i = 0; i < urlStatus.size(); i++)
 					{
 						sheetStatus = "Fail";
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(10).add(i+1,urlStatus.get(i)+ "checkPartnerIconRedirectionFromCourse - failed");
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(10).add(i+1, (urlStatus.get(i)+ "checkPartnerIconRedirectionFromCourse - failed"));
 					}
 				}
 			}
@@ -354,14 +352,16 @@ public class DashboardValidation
 	{
 		if(!data.contains("No"))
 		{
-			
 			ArrayList<String> tabStatus = dashboardLocator.checkCourseContentTabs(data);
 			if(tabStatus.size()>= 0)
 			{
-				for(int i = 0; i < tabStatus.size(); i++)
+				if(tabStatus.contains("fail"))
 				{
-					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(11).add(i+1,tabStatus.get(i)+ "checkCourseContentTabs - failed");
+					for(int i = 0; i < tabStatus.size(); i++)
+					{
+						sheetStatus = "Fail";
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(11).add(i+1, (tabStatus.get(i)+ "checkCourseContentTabs - failed"));
+					}
 				}
 			}
 		}

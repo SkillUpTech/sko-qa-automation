@@ -250,6 +250,15 @@ public class RegressionTesting
 							 case "ApplyCoupon":
 								 sheetStatus = new ApplyCouponValidation(sheetData, driver).start(); 
 								 break;
+							 case "IBMSkillBuildPage":
+								 sheetStatus = new IBMSkillBuildPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "CheckVILTSelfPacedCourse":
+								 sheetStatus = new CourseLevelValidation(sheetData, driver).start(); 
+								 break;
+							 case "AccountPage":
+								 sheetStatus = new AccountPageValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

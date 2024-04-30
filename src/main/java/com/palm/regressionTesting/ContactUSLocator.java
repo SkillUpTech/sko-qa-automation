@@ -4,11 +4,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,7 +35,21 @@ public class ContactUSLocator
 			js.executeScript("arguments[0].scrollIntoView();", contactUs);
 			if(contactUs.isDisplayed())
 			{
-				js.executeScript("arguments[0].click()", contactUs);
+				String contactUSURL = contactUs.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(contactUSURL);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+				Set<String> windows = driver.getWindowHandles();
+				for(String window : windows)
+				{
+					driver.switchTo().window(window);
+					if(driver.getCurrentUrl().contains("contact"))
+					{
+						driver.switchTo().window(window);
+						break;
+					}
+					driver.switchTo().window(window);
+				}
 				statusOfFunction.add("success");
 			}
 		}
@@ -47,11 +63,14 @@ public class ContactUSLocator
 	public ArrayList<String> contactUsFunction(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> statusOfFunction = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0,100)", "");
 			WebElement contactAboutLocator = driver.findElement(By.cssSelector("select[name='enquirytype']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(contactAboutLocator));
+			js.executeScript("arguments[0].scrollIntoView();", contactAboutLocator);
 			Select selectContact = new Select(contactAboutLocator);
 			if(!dataFromExcel.get(1).equalsIgnoreCase("empty"))
 			{
@@ -62,8 +81,11 @@ public class ContactUSLocator
 				selectContact.selectByVisibleText("Business Enquiry");
 			}
 			WebElement enterFullname = driver.findElement(By.cssSelector("input[name='fullname']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(enterFullname));
+			js.executeScript("arguments[0].scrollIntoView();", enterFullname);
 			if(!dataFromExcel.get(2).equalsIgnoreCase("empty"))
 			{
+				enterFullname.clear();
 				enterFullname.sendKeys(dataFromExcel.get(2));
 			}
 			else
@@ -71,8 +93,11 @@ public class ContactUSLocator
 				enterFullname.sendKeys("");
 			}
 			WebElement enterEmail = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_phnNumLeft']:nth-child(2)>input"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(enterEmail));
+			js.executeScript("arguments[0].scrollIntoView();", enterEmail);
 			if(!dataFromExcel.get(3).equalsIgnoreCase("empty"))
 			{
+				enterEmail.clear();
 				enterEmail.sendKeys(dataFromExcel.get(3));
 			}
 			else
@@ -81,6 +106,8 @@ public class ContactUSLocator
 			}
 			
 			WebElement countryLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(3)>select[name='country']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(countryLocator));
+			js.executeScript("arguments[0].scrollIntoView();", countryLocator);
 			Select selectCountry = new Select(countryLocator);
 			if(!dataFromExcel.get(4).equalsIgnoreCase("empty"))
 			{
@@ -92,8 +119,11 @@ public class ContactUSLocator
 			}
 			
 			WebElement mblLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(4) input[name='contactnumber']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(mblLocator));
+			js.executeScript("arguments[0].scrollIntoView();", mblLocator);
 			if(!dataFromExcel.get(5).equalsIgnoreCase("empty"))
 			{
+				mblLocator.clear();
 				mblLocator.sendKeys(dataFromExcel.get(5));
 			}
 			else
@@ -101,8 +131,11 @@ public class ContactUSLocator
 				mblLocator.sendKeys("");
 			}
 			WebElement orgLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(5) input[name='organization']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(orgLocator));
+			js.executeScript("arguments[0].scrollIntoView();", orgLocator);
 			if(!dataFromExcel.get(6).equalsIgnoreCase("empty"))
 			{
+				orgLocator.clear();
 				orgLocator.sendKeys(dataFromExcel.get(6));
 			}
 			else
@@ -111,10 +144,12 @@ public class ContactUSLocator
 			}
 			
 			js.executeScript("window.scrollBy(0,900)", "");
-			Thread.sleep(2000);
 			WebElement jobTitleLocator = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(6) input[name='jobtitle']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(jobTitleLocator));
+			js.executeScript("arguments[0].scrollIntoView();", jobTitleLocator);
 			if(!dataFromExcel.get(7).equalsIgnoreCase("empty"))
 			{
+				jobTitleLocator.clear();
 				jobTitleLocator.sendKeys(dataFromExcel.get(7));
 			}
 			else
@@ -130,11 +165,11 @@ public class ContactUSLocator
 				{
 					for(int i = 0; i < selectSkills.size(); i++)
 					{
+						js.executeScript("arguments[0].scrollIntoView();", selectSkills.get(i));
 						String skillFromBrowser = selectSkills.get(i).getAttribute("id");
 						if(skillFromExcel.equalsIgnoreCase(skillFromBrowser))
 						{
 							System.out.println("skill to be select : "+skillFromBrowser);
-							WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 							wait.until(ExpectedConditions.elementToBeClickable(selectSkills.get(i)));
 							js.executeScript("arguments[0].click()", selectSkills.get(i));
 							if(!selectSkills.get(i).isEnabled())
@@ -148,24 +183,14 @@ public class ContactUSLocator
 			else
 			{
 				System.out.println("skill not selected");
-				/*
-				 * String getData[] =
-				 * {"Artificial Intelligence","Blockchain","Cloud Computing"}; for(String
-				 * skillFromExcel : getData) { for(int i = 0; i < selectSkills.size(); i++) {
-				 * String skillFromBrowser = selectSkills.get(i).getAttribute("id");
-				 * if(skillFromExcel.equalsIgnoreCase(skillFromBrowser)) {
-				 * System.out.println("skill to be select : "+skillFromBrowser); WebDriverWait
-				 * wait = new WebDriverWait(driver, Duration.ofSeconds(60));
-				 * wait.until(ExpectedConditions.elementToBeClickable(selectSkills.get(i)));
-				 * //selectSkills.get(i).click(); js.executeScript("arguments[0].click()",
-				 * selectSkills.get(i)); Thread.sleep(1000);
-				 * if(!selectSkills.get(i).isEnabled()) { selectSkills.get(i).click(); } } } }
-				 */
 			}
 			js.executeScript("window.scrollBy(0,300)", "");
 			WebElement subject = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(9)>input[name='subject']"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(subject));
+			js.executeScript("arguments[0].scrollIntoView();", subject);
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
+				subject.clear();
 				subject.sendKeys(dataFromExcel.get(9));
 			}
 			else
@@ -173,8 +198,11 @@ public class ContactUSLocator
 				subject.sendKeys("");
 			}
 			WebElement message = driver.findElement(By.cssSelector("div[class='undefined'] div[class*='contactform_phnNumLeft']:nth-child(10)>textarea#message"));
+			wait.until(ExpectedConditions.visibilityOfAllElements(message));
+			js.executeScript("arguments[0].scrollIntoView();", message);
 			if(!dataFromExcel.get(9).equalsIgnoreCase("empty"))
 			{
+				message.clear();
 				message.sendKeys(dataFromExcel.get(10));
 			}
 			else
@@ -202,14 +230,13 @@ public class ContactUSLocator
 			List<WebElement> links = driver.findElements(By.cssSelector("div[class='undefined'] div[class*='col-12 contactform_bySharing__PW8_Y']>a"));
 			for(int i = 0; i < links.size(); i++)
 			{
-				//links.get(i).click();
 				
 				js.executeScript("arguments[0].scrollIntoView();", links.get(i));
 				if(links.get(i).isDisplayed())
 				{
 					js.executeScript("arguments[0].click()", links.get(i));
 					statusOfFunction.add("success");
-					Thread.sleep(2000);
+					//Thread.sleep(2000);
 				}
 				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
@@ -222,9 +249,9 @@ public class ContactUSLocator
 						System.out.println("privacy policy window");
 						statusOfFunction.add("success");
 						driver.close();
-						Thread.sleep(2000);
+						//Thread.sleep(2000);
 						driver.switchTo().window(parentWindow);
-						Thread.sleep(2000);
+						//Thread.sleep(2000);
 					}
 					if(driver.getCurrentUrl().contains("tos"))
 					{
@@ -232,9 +259,9 @@ public class ContactUSLocator
 						System.out.println("terms of service window");
 						statusOfFunction.add("success");
 						driver.close();
-						Thread.sleep(2000);
+						//Thread.sleep(2000);
 						driver.switchTo().window(parentWindow);
-						Thread.sleep(2000);
+						//Thread.sleep(2000);
 					}
 				}
 			}
@@ -250,38 +277,46 @@ public class ContactUSLocator
 	public ArrayList<String> validationMessage()
 	{
 		ArrayList<String> nameOfError = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			List<WebElement> getErrorMessage = driver.findElements(By.cssSelector("p[class='text-danger mb-0 mt-2']"));//p[class='ContactForm_Selectup__nCwVP ContactForm_Hint__2QivB'],
-			for(int i = 0; i < getErrorMessage.size(); i++)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(getErrorMessage.size()>0)
 			{
-				if(getErrorMessage.get(i).getText().contains("value")||getErrorMessage.get(i).getText().contains("choose"))
+				for(int i = 0; i < getErrorMessage.size(); i++)
 				{
-					System.out.println("Please select value displayed for contacting us");
-					nameOfError.add("value");
+					js.executeScript("arguments[0].scrollIntoView();", getErrorMessage.get(i));
+					if(getErrorMessage.get(i).getText().contains("value")||getErrorMessage.get(i).getText().contains("choose"))
+					{
+						System.out.println("Please select value displayed for contacting us");
+						nameOfError.add("value");
+					}
+					if(getErrorMessage.get(i).getText().contains("full name"))
+					{
+						System.out.println("Please enter your full name.");
+						nameOfError.add("full name");
+					}
+					if(getErrorMessage.get(i).getText().contains("email"))
+					{
+						System.out.println("Please enter an email address.");
+						nameOfError.add("email");
+					}
+					if(getErrorMessage.get(i).getText().contains("contact"))
+					{
+						System.out.println("Please enter contact number.");
+						nameOfError.add("contact");
+					}
+					if(getErrorMessage.get(i).getText().contains("skills"))
+					{
+						System.out.println("Please select atleast 1 skills.");
+						nameOfError.add("skills");
+					}
+					
 				}
-				if(getErrorMessage.get(i).getText().contains("full name"))
-				{
-					System.out.println("Please enter your full name.");
-					nameOfError.add("full name");
-				}
-				if(getErrorMessage.get(i).getText().contains("email"))
-				{
-					System.out.println("Please enter an email address.");
-					nameOfError.add("email");
-				}
-				if(getErrorMessage.get(i).getText().contains("contact"))
-				{
-					System.out.println("Please enter contact number.");
-					nameOfError.add("contact");
-				}
-				if(getErrorMessage.get(i).getText().contains("skills"))
-				{
-					System.out.println("Please select atleast 1 skills.");
-					nameOfError.add("skills");
-				}
-				
 			}
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 		}
 		catch(Exception e)
 		{
@@ -290,6 +325,7 @@ public class ContactUSLocator
 		
 		return nameOfError;
 	}
+	
 	public void clickSubmit()
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -309,25 +345,40 @@ public class ContactUSLocator
 			e.printStackTrace();
 		}
 	}
+	
 	public ArrayList<String> checkInvalidFullname(ArrayList<String> dataFromExcel)
 	{
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
-			System.out.println("Invalid fullname validation");
-			 statusOfInvalidFullname.addAll(this.clickContactUs());
-			 statusOfInvalidFullname.addAll(this.contactUsFunction(dataFromExcel));
+			String HomePage = driver.getWindowHandle();
+			System.out.println("Invalid fullname validation process started");
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
 			 statusOfInvalidFullname.addAll(this.termsAndService());
 			this.clickSubmit();
 			statusOfInvalidFullname.addAll(this.validationMessage());
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.size()>0)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifySuccessbutton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifySuccessbutton.size()>0)
 			{
 				System.out.println("success Msg : ");
 				statusOfInvalidFullname.add("Failed");
 			}
-			
-			url = driver.getCurrentUrl();
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
+			}
 		}
 		catch(Exception e)
 		{
@@ -337,91 +388,116 @@ public class ContactUSLocator
 	}
 	public ArrayList<String> checkInvalidEmail(ArrayList<String> dataFromExcel)
 	{
-		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
+		ArrayList<String> statusOfInvalidEmail = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("Invalid email validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			if(driver.getCurrentUrl().contains("data"))
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(2));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
-			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(2));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			statusOfInvalidEmail = this.validationMessage();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(verifySuccessMsg.size()>0)
 			{
 				System.out.println("success Msg : ");
-				statusOfInvalidFullname.add("Failed");
+				statusOfInvalidEmail.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return statusOfInvalidFullname;
+		return statusOfInvalidEmail;
 	}
 	public ArrayList<String> checkInvalidMobile(ArrayList<String> dataFromExcel)
 	{
-		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
+		ArrayList<String> statusOfInvalidMobile = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("Invalid mobile validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(1));
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
-			statusOfInvalidFullname = this.validationMessage();
+			statusOfInvalidMobile = this.validationMessage();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifySuccessMsg.size()>0)
+			{
+				System.out.println("success Msg : ");
+				statusOfInvalidMobile.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return statusOfInvalidFullname;
+		return statusOfInvalidMobile;
 	}
 	public ArrayList<String> checkWithoutData(ArrayList<String> dataFromExcel)
 	{
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("without Data validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(verifySuccessMsg.size()>0)
 			{
 				System.out.println("success Msg : ");
 				statusOfInvalidFullname.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
@@ -432,93 +508,122 @@ public class ContactUSLocator
 	}
 	public ArrayList<String> checkWithoutContactAbout(ArrayList<String> dataFromExcel)
 	{
-		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
+		ArrayList<String> statusOfContactAbout = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("without enquiry validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
-			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
+			statusOfContactAbout = this.validationMessage();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 			if(verifySuccessMsg.size()>0)
 			{
 				System.out.println("success Msg : ");
-				statusOfInvalidFullname.add("Failed");
+				statusOfContactAbout.add("Failed");
 			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
+			}
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return statusOfInvalidFullname;
+		return statusOfContactAbout;
 	}
 	public ArrayList<String> checkWithoutFullname(ArrayList<String> dataFromExcel)
 	{
-		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		ArrayList<String> statusOfWithoutFullname = new ArrayList<String>();
 		try
 		{
-
+			String HomePage = driver.getWindowHandle();
 			System.out.println("without Fullname validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
-			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.size()>0)
+			statusOfWithoutFullname = this.validationMessage();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifyContinueButton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifyContinueButton.size()>0)
 			{
-				System.out.println("success Msg : ");
-				statusOfInvalidFullname.add("Failed");
+				System.out.println("success Msg pop up: ");
+				js.executeScript("arguments[0].click()", verifyContinueButton);
+				statusOfWithoutFullname.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return statusOfInvalidFullname;
+		return statusOfWithoutFullname;
 	}
 	public ArrayList<String> checkWithoutEmail(ArrayList<String> dataFromExcel)
 	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
 			System.out.println("without email validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			String HomePage = driver.getWindowHandle();
+			this.clickContactUs();
+			this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.size()>0)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifyContinueButton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifyContinueButton.size()>0)
 			{
-				System.out.println("success Msg : ");
-				statusOfInvalidFullname.add("Failed");
+				System.out.println("success Msg pop up: ");
+				WebElement clickButton = driver.findElement(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+				js.executeScript("arguments[0].click()", clickButton);
+					statusOfInvalidFullname.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
@@ -529,30 +634,40 @@ public class ContactUSLocator
 	}
 	public ArrayList<String> checkWithoutMobile(ArrayList<String> dataFromExcel)
 	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("without mobile validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.size()>0)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifyContinueButton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifyContinueButton.size()>0)
 			{
-				System.out.println("success Msg : ");
+				System.out.println("success Msg pop up: ");
+				WebElement clickButton = driver.findElement(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+				js.executeScript("arguments[0].click()", clickButton);
 				statusOfInvalidFullname.add("Failed");
 			}
-
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
+			}
 		}
 		catch(Exception e)
 		{
@@ -562,28 +677,39 @@ public class ContactUSLocator
 	}
 	public ArrayList<String> checkWithoutSkills(ArrayList<String> dataFromExcel)
 	{
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("without skills validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
 			statusOfInvalidFullname = this.validationMessage();
-			driver.switchTo().window(w.get(1));
-			List<WebElement> verifySuccessMsg = driver.findElements(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.size()>0)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifyContinueButton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifyContinueButton.size()>0)
 			{
-				System.out.println("success Msg : ");
+				System.out.println("success Msg pop up: ");
+				WebElement clickButton = driver.findElement(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+				js.executeScript("arguments[0].click()", clickButton);
 				statusOfInvalidFullname.add("Failed");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
@@ -594,35 +720,46 @@ public class ContactUSLocator
 	}
 	public ArrayList<String> checkValidData(ArrayList<String> dataFromExcel)
 	{
-		ArrayList<String> statusOfInvalidFullname = new ArrayList<String>();
+		ArrayList<String> statusOfValidData = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			String HomePage = driver.getWindowHandle();
 			System.out.println("valid data validation");
-			((JavascriptExecutor) driver).executeScript("window.open('"+url+"')");
-			ArrayList<String> w = new ArrayList<String>(driver.getWindowHandles());
-			driver.switchTo().window(w.get(0));
-			{
-				driver.close();
-			}
-			driver.switchTo().window(w.get(1));
-			/* statusOfInvalidFullname = */this.clickContactUs();
-			/* statusOfInvalidFullname = */ this.contactUsFunction(dataFromExcel);
-			/* statusOfInvalidFullname = */this.termsAndService();
+			this.clickContactUs();
+			 this.contactUsFunction(dataFromExcel);
+			this.termsAndService();
 			this.clickSubmit();
-			driver.switchTo().window(w.get(1));
-			Thread.sleep(1000);
-			statusOfInvalidFullname = this.validationMessage();
-			WebElement verifySuccessMsg = driver.findElement(By.cssSelector(".modal-footer button"));
-			if(verifySuccessMsg.isDisplayed())
+			statusOfValidData = this.validationMessage();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			List<WebElement> verifyContinueButton = driver.findElements(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(verifyContinueButton.size()>0)
 			{
-				System.out.println("success Msg : "+verifySuccessMsg.getText());
+					System.out.println("success Msg pop up: ");
+					WebElement clickButton = driver.findElement(By.cssSelector("div[class*='contactform_ModalFooter']>button"));
+					js.executeScript("arguments[0].click()", clickButton);
+					statusOfValidData.add("success");
+			}
+			Set<String> allScreen = driver.getWindowHandles();
+			for(String window : allScreen)
+			{
+				driver.switchTo().window(window);
+				if(driver.getCurrentUrl().contains("contact"))
+				{
+					driver.switchTo().window(window);
+					driver.close();
+					driver.switchTo().window(HomePage);
+					break;
+				}
+				driver.switchTo().window(HomePage);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			statusOfInvalidFullname.add("Failed");
+			statusOfValidData.add("Failed");
 		}
-		return statusOfInvalidFullname;
+		return statusOfValidData;
 	}
 }
