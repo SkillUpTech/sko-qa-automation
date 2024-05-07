@@ -384,12 +384,13 @@ public class ExploreAllLocator
 					{
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 						String categoryCourseName = null;
+						if(driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a")).size()>0)
+						{
 						List<WebElement> listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
 						listOfCourses = driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_courseResult'] div[class*='RegularCourseCard_RegularcardLinks']>a"));
 						
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-						if(listOfCourses.size()>0)
-						{
+						
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 							for(int j = 0; j < listOfCourses.size(); j++)
 							{
@@ -415,16 +416,17 @@ public class ExploreAllLocator
 								if(j == listOfCourses.size()-1)
 								{
 									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-									List<WebElement> clickNextPage = driver.findElements(By.cssSelector("div[class*='content-center']>ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']"));
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-									if(clickNextPage.size()>0)
+									if(driver.findElements(By.cssSelector("div[class*='content-center']>ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']")).size()>0)
 									{
+										List<WebElement> clickNextPage = driver.findElements(By.cssSelector("div[class*='content-center']>ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']"));
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+									
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 										System.out.println("next page is available");
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 										js.executeScript("window.scrollBy(0, 1700)","");
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-										wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='col-12 d-flex justify-content-center mt-5'] ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']")));
+									//	wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='col-12 d-flex justify-content-center mt-5'] ul[class='pagination justify-content-center'] li[class='page-item false'] a[aria-label*='Page']")));
 										for(int l = 0; l < clickNextPage.size(); l++)
 										{
 											js.executeScript("arguments[0].scrollIntoView(true);", clickNextPage.get(l));
@@ -473,23 +475,24 @@ public class ExploreAllLocator
 					}
 					js.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
-					
-					WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-					js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
-					js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					if(click_ClearAll.isDisplayed())
+					if(driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])")).size()>0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
-						wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
-						js.executeScript("arguments[0].click()", click_ClearAll);
+						WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
+						js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+						WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+						js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						if(click_ClearAll.isDisplayed())
+						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+							wait.until(ExpectedConditions.elementToBeClickable(click_ClearAll));
+							js.executeScript("arguments[0].click()", click_ClearAll);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						}
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				}

@@ -129,23 +129,24 @@ public class HeaderFeatureLocators
 						datastatus.add("About skillup online icon not present");
 					}
 					
-					List<WebElement> checkContactUs = driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(2)>a"));
-					wait.until(ExpectedConditions.visibilityOfAllElements(checkContactUs.get(0)));
-					js.executeScript("arguments[0].scrollIntoView();", checkContactUs.get(0));
-					if(checkContactUs.size()>0)
+					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(2)>a")).size()>0)
 					{
+					
+						WebElement checkContactUs = driver.findElement(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(2)>a"));
+						wait.until(ExpectedConditions.visibilityOfAllElements(checkContactUs));
+						js.executeScript("arguments[0].scrollIntoView();", checkContactUs);
 						System.out.println("Contact Us icon is present");
 					}
-					else
-					{
-						datastatus.add("Contact Us icon not present");
+						else
+						{
+							datastatus.add("Contact Us icon not present");
 					}
-					
-					List<WebElement> checkBlog = driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(3)>a"));
-					wait.until(ExpectedConditions.visibilityOfAllElements(checkBlog.get(0)));
-					js.executeScript("arguments[0].scrollIntoView();", checkBlog.get(0));
-					if(checkBlog.size()>0)
+					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(3)>a")).size()>0)
 					{
+					WebElement checkBlog = driver.findElement(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navLinks']>li:nth-child(3)>a"));
+					wait.until(ExpectedConditions.visibilityOfAllElements(checkBlog));
+					js.executeScript("arguments[0].scrollIntoView();", checkBlog);
+					
 						System.out.println("Blog icon is present");
 					}
 					else
@@ -153,23 +154,21 @@ public class HeaderFeatureLocators
 						datastatus.add("Blog icon not present");
 					}
 					
-					List<WebElement> checkLogin = driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(2)>a"));
-					wait.until(ExpectedConditions.visibilityOfAllElements(checkLogin.get(0)));
-					js.executeScript("arguments[0].scrollIntoView();", checkLogin.get(0));
-					if(checkLogin.size()>0)
+					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(2)>a")).size()>0)
 					{
+						WebElement checkLogin = driver.findElement(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(2)>a"));
+						js.executeScript("arguments[0].scrollIntoView();", checkLogin);
 						System.out.println("Login icon is present");
 					}
 					else
 					{
 						datastatus.add("Login icon not present");
 					}
-					
-					List<WebElement> checkSignUp = driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(3)>a"));
-					wait.until(ExpectedConditions.visibilityOfAllElements(checkSignUp.get(0)));
-					js.executeScript("arguments[0].scrollIntoView();", checkSignUp.get(0));
-					if(checkSignUp.size()>0)
+					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(3)>a")).size()>0)
 					{
+					WebElement checkSignUp = driver.findElement(By.cssSelector("div[class*='Header_headerRight']>ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li:nth-child(3)>a"));
+					wait.until(ExpectedConditions.visibilityOfAllElements(checkSignUp));
+					js.executeScript("arguments[0].scrollIntoView();", checkSignUp);
 						System.out.println("Sign up icon is present");
 					}
 					else

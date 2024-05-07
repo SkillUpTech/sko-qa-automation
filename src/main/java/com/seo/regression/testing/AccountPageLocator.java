@@ -2,6 +2,7 @@ package com.seo.regression.testing;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -48,9 +49,6 @@ public class AccountPageLocator
 						js.executeScript("arguments[0].click()", clickLogin);
 					}
 					
-					if(driver.getCurrentUrl().contains("login"))
-					{
-						driver.switchTo().window(window);
 						
 						if(driver.getCurrentUrl().contains("login?"))
 						{
@@ -73,10 +71,12 @@ public class AccountPageLocator
 							if(clickSubmit.isDisplayed())
 							{
 								js.executeScript("arguments[0].click()", clickSubmit);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							}
-							
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							driver.switchTo().window(window);
-							
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+							Thread.sleep(2000);
 							if(driver.getCurrentUrl().contains("dashboard"))
 							{
 								driver.switchTo().window(window);
@@ -163,7 +163,7 @@ public class AccountPageLocator
 										}
 										driver.switchTo().window(orderPage);
 									}
-									driver.switchTo().window(orderPage);	
+												driver.switchTo().window(orderPage);	
 									
 												WebElement invoiceDetailPage = driver.findElement(By.cssSelector("div[class='account-settings-section-body ordersTabSections-section-body'] div[class*='SKILLUP-105634'] span[class*='u-field-order-link']>a[href*='invoice']"));
 												js.executeScript("arguments[0].scrollIntoView();", invoiceDetailPage);
@@ -185,17 +185,34 @@ public class AccountPageLocator
 												   }
 													driver.switchTo().window(orderPage);
 											   }
-											
-											
+												Set<String> allPage = driver.getWindowHandles();
+												for(String page : allPage)
+												{
+												driver.switchTo().window(page);
+												if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
+												{
+													driver.switchTo().window(page);
+													driver.navigate().refresh();
+													WebElement initialTextOnHomePage = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] span[class*='Header_NOLoginDSKTXT']"));
+													js.executeScript("arguments[0].scrollIntoView();", initialTextOnHomePage);
+													if(initialTextOnHomePage.isDisplayed())
+													{
+														if(initialText.equalsIgnoreCase(initialTextOnHomePage.getText()))
+														{
+															status.add("true");
+															break;
+														}
+													}
+												}
+												driver.switchTo().window(page);
+												}
 										}
 									}
-									
-							     }
+									break;
 							}
 					
 				driver.switchTo().window(parentWindow);
 			}
-			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -207,9 +224,97 @@ public class AccountPageLocator
 	public String checkAccount()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			String parentWindow = driver.getWindowHandle();
 			
+			Set<String> allPage = driver.getWindowHandles();
+			
+			for(String eachPage : allPage)
+			{
+				driver.switchTo().window(eachPage);
+				
+				if(driver.getCurrentUrl().contains("account"))
+				{
+					driver.switchTo().window(eachPage);
+					
+					if(driver.findElements(By.cssSelector("div[class*='SKILLUP-106258'] span[class*='u-field-order-link']>a")).size()>0)
+					{
+						List<WebElement> clickAccountInfo = driver.findElements(By.cssSelector("div[class*='SKILLUP-106258'] span[class*='u-field-order-link']>a"));
+						
+						for(int i = 0; i < clickAccountInfo.size(); i++)
+						{
+							js.executeScript("arguments[0].scrollIntoView();", clickAccountInfo.get(i));
+							
+								if(clickAccountInfo.get(i).getAttribute("href").contains("receipt"))
+								{
+									js.executeScript("arguments[0].click()", clickAccountInfo.get(i));
+									
+									Set<String> windows = driver.getWindowHandles();
+									for(String window : windows)
+									{
+										driver.switchTo().window(window);
+										
+										if(driver.getCurrentUrl().contains("receipt/?"))
+										{
+											driver.switchTo().window(window);
+											WebElement checkOrderNumber = driver.findElement(By.cssSelector("div[class*='purchase_section'] div[class='col-md-12 order mg_2 spacing_20']>h4"));
+											if(driver.getCurrentUrl().contains(checkOrderNumber.getText()))
+											{
+												System.out.println("order generated number presented");
+												status = "true";
+												driver.close();
+												driver.switchTo().window(eachPage);
+												break;
+											}
+										}
+									}
+								}
+									if(clickAccountInfo.get(i).getAttribute("href").contains("invoice"))
+									{
+										js.executeScript("arguments[0].click()", clickAccountInfo.get(i));
+										
+										Set<String> allPages = driver.getWindowHandles();
+										for(String page : allPages)
+										{
+											driver.switchTo().window(page);
+											if(driver.getCurrentUrl().contains("invoice"))
+											{
+												driver.switchTo().window(page);
+												WebElement checkOrderNumber = driver.findElement(By.cssSelector("p[class='tax_invoiceNum']"));
+												String[] OrderNumberFromInvoice = checkOrderNumber.getText().split("#");
+												if(driver.getCurrentUrl().contains(OrderNumberFromInvoice[1]))
+												{
+													System.out.println("order generated number presented");
+													status = "true";
+													driver.close();
+													driver.switchTo().window(eachPage);
+													WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[class='dPaRoW']"));
+													js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+													if(clickDropdown.isDisplayed())
+													{
+														js.executeScript("arguments[0].click()", clickDropdown);
+														WebElement signout = driver.findElement(By.cssSelector("ul[class*='dropdown-menu']>li:nth-child(5)>a"));
+														js.executeScript("arguments[0].scrollIntoView();", signout);
+														if(signout.isDisplayed())
+														{
+															js.executeScript("arguments[0].click()", signout);
+														}
+													}
+													break;
+												}
+											}
+										}
+										
+									}
+								}
+						}
+					break;
+					}
+				}
+				driver.switchTo().window(parentWindow);
+				
 		}
 		catch(Exception e)
 		{
