@@ -259,6 +259,9 @@ public class RegressionTesting
 							 case "AccountPage":
 								 sheetStatus = new AccountPageValidation(sheetData, driver).start(); 
 								 break;
+							 case "DevopsPage":
+								 sheetStatus = new DevopsPageValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
