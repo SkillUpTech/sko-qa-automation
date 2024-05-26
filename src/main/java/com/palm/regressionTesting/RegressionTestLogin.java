@@ -31,7 +31,7 @@ public class RegressionTestLogin
 		{
 			String BaseWindow = driver.getWindowHandle();
 			driver.switchTo().newWindow(WindowType.TAB);
-			OpenWebsite.openSite(driver);
+			OpenWebsite.openSite(this.driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
 				ArrayList<String> row = this.sheetData.get(i);

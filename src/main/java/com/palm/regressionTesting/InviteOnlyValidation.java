@@ -33,19 +33,18 @@ public class InviteOnlyValidation
 			String firstColumn = row.get(0);
 			switch(firstColumn)
 			{
-				case "checkStatusCode_inviteOnlyCourse":
-					checkStatusCode_inviteOnlyCourse(row);
-					break;
-				case "checkDate_inviteOnlyCourse":
-					checkDate_inviteOnlyCourse(row);
-					break;
+			/*
+			 * case "checkStatusCode_inviteOnlyCourse":
+			 * checkStatusCode_inviteOnlyCourse(row); break; case
+			 * "checkDate_inviteOnlyCourse": checkDate_inviteOnlyCourse(row); break;
+			 */
 				case "checkProgram_Courses":
 					checkProgram_Courses(row);
 					break;
 				case "checkInviteOnly_Courses":
 					checkInviteOnly_Courses(row);
 					break;
-				case "checkEnrollmentDateIsExpired_Courses":
+				case "checkEnrollmentDateIsExpiredFuturedCurrent_Courses":
 					checkEnrollmentDateIsExpiredFuturedCurrent_Courses(row);
 					break;
 			}
@@ -116,14 +115,9 @@ public class InviteOnlyValidation
 			{
 				for(int i = 0; i < getStatus.size(); i++)
 				{
-					if(data.contains(getStatus.get(i)))
-					{
 						sheetStatus = "Fail";
-						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(1).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(1).set(position, (cellValue + " - failed"));
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(1).add(data.size()+i, (getStatus.get(i) + "checkDate_inviteOnlyCourse - failed"));
 
-					}
 				}
 			}
 		}
@@ -138,14 +132,9 @@ public class InviteOnlyValidation
 			{
 				for(int i = 0; i < getStatus.size(); i++)
 				{
-					if(data.contains(getStatus.get(i)))
-					{
 						sheetStatus = "Fail";
-						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).set(position, (cellValue + " - failed"));
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(2).add(data.size()+i, (getStatus.get(i)+ "checkProgram_Courses - failed"));
 
-					}
 				}
 			}
 		}
@@ -160,14 +149,9 @@ public class InviteOnlyValidation
 			{
 				for(int i = 0; i < getStatus.size(); i++)
 				{
-					if(data.contains(getStatus.get(i)))
-					{
 						sheetStatus = "Fail";
-						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(3).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(3).set(position, (cellValue + " - failed"));
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(3).add(data.size()+i, (getStatus.get(i) + "checkInviteOnly_Courses - failed"));
 
-					}
 				}
 			}
 		}
@@ -184,14 +168,9 @@ public class InviteOnlyValidation
 			{
 				for(int i = 0; i < getStatus.size(); i++)
 				{
-					if(data.contains(getStatus.get(i)))
-					{
 						sheetStatus = "Fail";
-						int position = data.indexOf(getStatus.get(i));
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(4).get(position);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(4).set(position, (cellValue + " - failed"));
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("InviteOnlyCourse").get(4).add(data.size()+i, (getStatus.get(i) +"checkEnrollmentDateIsExpiredFuturedCurrent_Courses - failed"));
 
-					}
 				}
 			}
 		}

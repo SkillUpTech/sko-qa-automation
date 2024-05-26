@@ -554,6 +554,7 @@ public class EditProfileLocator
 					try
 					{
 						js.executeScript("arguments[0].click()", clickUpdateFromContacts);
+						Thread.sleep(1000);
 			        }
 					catch (StaleElementReferenceException e)
 					{
@@ -574,7 +575,7 @@ public class EditProfileLocator
 					if(driver.getCurrentUrl().contains("/update/"))
 					{
 						driver.switchTo().window(window1);
-						
+						Thread.sleep(1000);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						js.executeScript("window.scrollBy(0, 100)","");
@@ -588,6 +589,7 @@ public class EditProfileLocator
 							try
 							{
 								js.executeScript("arguments[0].click()", clickCancel);
+								Thread.sleep(1000);
 					        } 
 							catch (StaleElementReferenceException e)
 							{
@@ -609,6 +611,8 @@ public class EditProfileLocator
 							try
 							{
 								js.executeScript("arguments[0].click()", clickYesFromAlert);
+								Thread.sleep(1000);
+								status = "pass";
 					        } 
 							catch (StaleElementReferenceException e)
 							{
@@ -1052,101 +1056,81 @@ public class EditProfileLocator
 		String status = "";
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+					
+			jse1.executeScript("window.scrollBy(0, -100)","");
+			
+			WebElement clickUpdateFromAreaOfInterest = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(2) div[class='EditUpdate'] a"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(2) div[class='EditUpdate'] a")));
+			jse1.executeScript("arguments[0].scrollIntoView();", clickUpdateFromAreaOfInterest);
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			if(clickUpdateFromAreaOfInterest.isDisplayed())
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("/u/"))
+				Thread.sleep(1000);
+				try
 				{
-					driver.switchTo().window(window);
+					js.executeScript("arguments[0].click()", clickUpdateFromAreaOfInterest);
+		        } 
+				catch (StaleElementReferenceException e)
+				{
+					clickUpdateFromAreaOfInterest = wait.until(ExpectedConditions.elementToBeClickable(clickUpdateFromAreaOfInterest));
+					clickUpdateFromAreaOfInterest.click(); 
+				}
+				Thread.sleep(1000);
+			}
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			Set<String> allWindows1 = driver.getWindowHandles();
+			for(String window1 : allWindows1)
+			{
+				driver.switchTo().window(window1);
+				if(driver.getCurrentUrl().contains("interestedUpdate"))
+				{
+					driver.switchTo().window(window1);
 					Thread.sleep(1000);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					Thread.sleep(1000);
-					
-					jse1.executeScript("window.scrollBy(0, -100)","");
+					jse1.executeScript("window.scrollBy(0, 100)","");
 					Thread.sleep(1000);
-					WebElement clickUpdateFromAreaOfInterest = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(2) div[class='EditUpdate'] a"));
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(2) div[class='EditUpdate'] a")));
-					jse1.executeScript("arguments[0].scrollIntoView();", clickUpdateFromAreaOfInterest);
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					if(clickUpdateFromAreaOfInterest.isDisplayed())
+					WebElement clickCancel = driver.findElement(By.cssSelector("div[class='row gy-3']>div[class='col-md-12']:nth-child(2) div[class*='Interested_buttonBottom'] div[class='Interested_skipButonDesk__sc5lk']>button"));
+					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3']>div[class='col-md-12']:nth-child(2) div[class*='Interested_buttonBottom'] div[class='Interested_skipButonDesk__sc5lk']>button")));
+					jse1.executeScript("arguments[0].scrollIntoView();", clickCancel);
+					JavascriptExecutor js2 = (JavascriptExecutor) driver;
+					if(clickCancel.isDisplayed())
 					{
 						Thread.sleep(1000);
-						try
-						{
-							js.executeScript("arguments[0].click()", clickUpdateFromAreaOfInterest);
-				        } 
-						catch (StaleElementReferenceException e)
-						{
-							clickUpdateFromAreaOfInterest = wait.until(ExpectedConditions.elementToBeClickable(clickUpdateFromAreaOfInterest));
-							clickUpdateFromAreaOfInterest.click(); 
-						}
+						js2.executeScript("arguments[0].click()", clickCancel);
 						Thread.sleep(1000);
 					}
-					Thread.sleep(1000);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					Set<String> allWindows1 = driver.getWindowHandles();
-					for(String window1 : allWindows1)
+					WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
+					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
+					js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
+					if(clickYesFromAlert.isDisplayed())
 					{
-					driver.switchTo().window(window1);
-					if(driver.getCurrentUrl().contains("interestedUpdate"))
-					{
-						driver.switchTo().window(window1);
 						Thread.sleep(1000);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+						js2.executeScript("arguments[0].click()", clickYesFromAlert);
 						Thread.sleep(1000);
-						jse1.executeScript("window.scrollBy(0, 100)","");
-						Thread.sleep(1000);
-						WebElement clickCancel = driver.findElement(By.cssSelector("div[class='row gy-3']>div[class='col-md-12']:nth-child(2) div[class*='Interested_buttonBottom'] div[class='Interested_skipButonDesk__sc5lk']>button"));
-						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3']>div[class='col-md-12']:nth-child(2) div[class*='Interested_buttonBottom'] div[class='Interested_skipButonDesk__sc5lk']>button")));
-						jse1.executeScript("arguments[0].scrollIntoView();", clickCancel);
-						JavascriptExecutor js2 = (JavascriptExecutor) driver;
-						if(clickCancel.isDisplayed())
-						{
-							Thread.sleep(1000);
-							js2.executeScript("arguments[0].click()", clickCancel);
-							Thread.sleep(1000);
-						}
-						Thread.sleep(1000);
-						driver.switchTo().window(window1);
-						if(driver.getCurrentUrl().contains("interestedUpdate"))
-						{
-							driver.switchTo().window(window1);
-							Thread.sleep(1000);
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-							Thread.sleep(1000);
-							WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("//div[contains(@class,'modelPopup_popupBottom')]//a")));
-							js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
-							if(clickYesFromAlert.isDisplayed())
-							{
-								Thread.sleep(1000);
-								js2.executeScript("arguments[0].click()", clickYesFromAlert);
-								Thread.sleep(1000);
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-							Thread.sleep(1000);
-							if(driver.getCurrentUrl().contains("/u/"))
-							{
-								status = "pass";
-								Thread.sleep(1000);
-								System.out.println("AreasOfInterest_Alert_yes Button process done");
-								Thread.sleep(1000);
-							}
-							Thread.sleep(1000);
-						}
-						Thread.sleep(1000);
+						break;
 					}
 				}
 			}
-				
-			}
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 			Thread.sleep(1000);
+			Set<String> allWindows = driver.getWindowHandles();
+			for(String window1 : allWindows)
+			{
+				driver.switchTo().window(window1);
+				if(driver.getCurrentUrl().contains("/u/"))
+				{
+					status = "pass";
+					Thread.sleep(1000);
+					System.out.println("AreasOfInterest_Alert_yes Button process done");
+					Thread.sleep(1000);
+					break;
+				}
+			}
+				
 		}
 		catch(Exception e)
 		{
@@ -1166,46 +1150,36 @@ public class EditProfileLocator
 		String status = "";
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			WebElement updateIcon = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a")));
+			js.executeScript("arguments[0].scrollIntoView();", updateIcon);
+			if(updateIcon.isDisplayed())
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("/u/"))
+				try 
 				{
-					driver.switchTo().window(window);
+					js.executeScript("arguments[0].click()", updateIcon);
 					Thread.sleep(1000);
-					WebElement updateIcon = driver.findElement(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a"));
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='profileheadLeft']>div[class='ProfileJourny_main']:nth-child(3) div[class='EditUpdate'] a")));
-					js.executeScript("arguments[0].scrollIntoView();", updateIcon);
-					if(updateIcon.isDisplayed())
-					{
-						try 
-						{
-							js.executeScript("arguments[0].click()", updateIcon);
-				        } 
-						catch (StaleElementReferenceException e)
-						{
-				        	updateIcon = wait.until(ExpectedConditions.elementToBeClickable(updateIcon));
-				        	updateIcon.click(); // Attempt to click again
-				        }
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					Set<String> allWindows1 = driver.getWindowHandles();
-					for(String window1 : allWindows1)
-					{
-						driver.switchTo().window(window1);
-						Thread.sleep(1000);
-						if(driver.getCurrentUrl().contains("workstatusUpdate/"))
-						{
-							Thread.sleep(1000);
-							driver.switchTo().window(window1);
-							Thread.sleep(1000);
-							System.out.println("workstatusUpdate page");
-							status = "pass";
-							break;
-						}
-					}
+		        } 
+				catch (StaleElementReferenceException e)
+				{
+		        	updateIcon = wait.until(ExpectedConditions.elementToBeClickable(updateIcon));
+		        	updateIcon.click(); // Attempt to click again
+		        	
+		        }
+			}
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			Set<String> allWindows1 = driver.getWindowHandles();
+			for(String window1 : allWindows1)
+			{
+				driver.switchTo().window(window1);
+				if(driver.getCurrentUrl().contains("workstatusUpdate/"))
+				{
+					driver.switchTo().window(window1);
+					Thread.sleep(1000);
+					System.out.println("workstatusUpdate page");
+					status = "pass";
+					System.out.println("current work UpdateIcon process done");
 					break;
 				}
 			}
@@ -1215,7 +1189,6 @@ public class EditProfileLocator
 			e.printStackTrace();
 			status = "fail";
 		}
-		System.out.println("current work UpdateIcon process done");
 		return status;
 	
 	}
@@ -1223,62 +1196,44 @@ public class EditProfileLocator
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			js.executeScript("window.scrollBy(0, 500)","");
+			WebElement clickCancel = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']")));
+			js.executeScript("arguments[0].scrollIntoView();", clickCancel);
+			if(clickCancel.isDisplayed())
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("workstatusUpdate/"))
+				try 
 				{
-					driver.switchTo().window(window);
-					JavascriptExecutor js = (JavascriptExecutor) driver;
-					js.executeScript("window.scrollBy(0, 500)","");
+					js.executeScript("arguments[0].click()", clickCancel);
 					Thread.sleep(1000);
-					WebElement clickCancel = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']"));
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']")));
-					js.executeScript("arguments[0].scrollIntoView();", clickCancel);
-					if(clickCancel.isDisplayed())
-					{
-						try 
-						{
-							js.executeScript("arguments[0].click()", clickCancel);
-							Thread.sleep(1000);
-				        } 
-						catch (StaleElementReferenceException e)
-						{
-							clickCancel = wait.until(ExpectedConditions.elementToBeClickable(clickCancel));
-							clickCancel.click(); 
-				        }
-					}
+		        } 
+				catch (StaleElementReferenceException e)
+				{
+					clickCancel = wait.until(ExpectedConditions.elementToBeClickable(clickCancel));
+					clickCancel.click(); 
 					Thread.sleep(1000);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					Set<String> a = driver.getWindowHandles();
-					for(String win : a)
-					{
-						driver.switchTo().window(win);
-						if(driver.getCurrentUrl().contains("workstatusUpdate/"))
-						{
-							driver.switchTo().window(win);
-							Thread.sleep(1000);
-							WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("//p[contains(text(),'Are you sure to cancel the updates?')]")));
-
-							System.out.println(getTextFromAlert.getText());
-							Thread.sleep(1000);
-							System.out.println("Alert from work experience");
-						}
-					}
-					status = "pass";
-				}
+		        }
+			}
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			WebElement getTextFromAlert = driver.findElement(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//p[contains(text(),'Are you sure to cancel the updates?')]")));
+			if(getTextFromAlert.isDisplayed())
+			{
+				status = "pass";
+				System.out.println(getTextFromAlert.getText());
+				Thread.sleep(1000);
+				System.out.println("Alert from work experience");
+				System.out.println("current work cancelIcon process done");
 			}
 		}
 		catch(Exception e)
 		{
 			status = "fail";
 		}
-		System.out.println("current work cancelIcon process done");
 		return status;
 	}
 	
@@ -1289,40 +1244,26 @@ public class EditProfileLocator
 		String status = "";
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			WebElement closeAlert = driver.findElement(By.cssSelector("button[class='btn-close']"));
+			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("button[class='btn-close']")));
+			js.executeScript("arguments[0].scrollIntoView();", closeAlert);
+			if(closeAlert.isDisplayed())
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("workstatusUpdate/"))
+				Thread.sleep(1000);
+				try 
 				{
-					driver.switchTo().window(window);
-					Thread.sleep(1000);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					Thread.sleep(1000);
-					WebElement closeAlert = driver.findElement(By.cssSelector("button[class='btn-close']"));
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("button[class='btn-close']")));
-					js.executeScript("arguments[0].scrollIntoView();", closeAlert);
-					if(closeAlert.isDisplayed())
-					{
-						Thread.sleep(1000);
-						try 
-						{
-							js.executeScript("arguments[0].click()", closeAlert);
-				        } 
-						catch (StaleElementReferenceException e)
-						{
-							closeAlert = wait.until(ExpectedConditions.elementToBeClickable(closeAlert));
-							closeAlert.click(); 
-				        }
-						Thread.sleep(1000);
-					}
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					js.executeScript("arguments[0].click()", closeAlert);
 					Thread.sleep(1000);
 					status = "pass";
 					System.out.println("Alert close process done");
-				}
+					System.out.println("alert close from current work");
+		        } 
+				catch (StaleElementReferenceException e)
+				{
+					closeAlert = wait.until(ExpectedConditions.elementToBeClickable(closeAlert));
+					closeAlert.click(); 
+					status = "pass";
+		        }
 			}
 		}
 		catch(Exception e)
@@ -1330,7 +1271,6 @@ public class EditProfileLocator
 			e.printStackTrace();
 			status = "fail";
 		}
-		System.out.println("alert close from current work");
 		return status;
 	}
 	public ArrayList<String> checkCurrentWorkSubmitValidData(ArrayList<String> data)
@@ -1340,104 +1280,96 @@ public class EditProfileLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			js.executeScript("window.scrollBy(0, -200)","");
+			Thread.sleep(1000);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			List<WebElement> selectWorkExperience = driver.findElements(By.cssSelector("div[class='Workstatus_currentWork__9e8wr'] ul li input"));
+			for(int i = 0; i < selectWorkExperience.size(); i++)
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("workstatusUpdate"))
+				js.executeScript("arguments[0].scrollIntoView();", selectWorkExperience.get(i));
+				String getDataFromBrowser = selectWorkExperience.get(i).getAttribute("id");
+				for(int k = 0 ; k < data.size(); k++)
 				{
-					driver.switchTo().window(window);
-					Thread.sleep(1000);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					Thread.sleep(1000);
-					js.executeScript("window.scrollBy(0, -200)","");
-					Thread.sleep(1000);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					List<WebElement> selectWorkExperience = driver.findElements(By.cssSelector("div[class='Workstatus_currentWork__9e8wr'] ul li input"));
-					for(int i = 0; i < selectWorkExperience.size(); i++)
+					String getDataFromExcel = data.get(k);
+					if(getDataFromBrowser.equalsIgnoreCase(getDataFromExcel))
 					{
-						js.executeScript("arguments[0].scrollIntoView();", selectWorkExperience.get(i));
-						String getDataFromBrowser = selectWorkExperience.get(i).getAttribute("id");
-						for(int k = 0 ; k < data.size(); k++)
+						Thread.sleep(1000);
+						js.executeScript("arguments[0].click()", selectWorkExperience.get(i));
+						System.out.println("current work data selected");
+						Thread.sleep(1000);
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						System.out.println(selectWorkExperience.get(i).getText()+" is selected");
+						if(k == data.size()-1)
 						{
-							String getDataFromExcel = data.get(k);
-							if(getDataFromBrowser.equalsIgnoreCase(getDataFromExcel))
+							Thread.sleep(1000);
+							break;
+						}
+					}
+				}
+		}
+				Thread.sleep(1000);
+				js.executeScript("window.scrollBy(0, 500)","");
+				Thread.sleep(1000);
+				WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']"));
+				wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']")));
+				js.executeScript("arguments[0].scrollIntoView();", clickUpdateFromContacts);
+				if(clickUpdateFromContacts.isDisplayed())
+				{
+					Thread.sleep(1000);
+					try 
+					{
+						js.executeScript("arguments[0].click()", clickUpdateFromContacts);
+						System.out.println("updated the data");
+						Thread.sleep(1000);
+			        } 
+					catch (StaleElementReferenceException e)
+					{
+						clickUpdateFromContacts = wait.until(ExpectedConditions.elementToBeClickable(clickUpdateFromContacts));
+						clickUpdateFromContacts.click(); 
+			        }
+				}
+				Thread.sleep(1000);
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+					Thread.sleep(1000);
+					Set<String> allwindows = driver.getWindowHandles();
+					for(String window : allwindows)
+					{
+						driver.switchTo().window(window);
+						Thread.sleep(1000);
+						if(driver.getCurrentUrl().contains("/u/"))
+						{
+							driver.switchTo().window(window);
+							Thread.sleep(1000);
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							js.executeScript("window.scrollBy(0, 200)","");
+							Thread.sleep(1000);
+							List<WebElement> selectInterestedTopicsFromHome = driver.findElements(By.cssSelector("div[class='profileheadLeft'] div[class='ProfileJourny_main']:nth-child(3) div[class='ProfileUserDetails'] ul>li a"));
+							for(int j = 0; j < selectInterestedTopicsFromHome.size(); j++)
 							{
 								Thread.sleep(1000);
-								js.executeScript("arguments[0].click()", selectWorkExperience.get(i));
-								Thread.sleep(1000);
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-								System.out.println(selectWorkExperience.get(i).getText()+" is selected");
-								if(k == data.size()-1)
+								for(int k = 0; k < data.size(); k++)
 								{
 									Thread.sleep(1000);
-									break;
+									if(selectInterestedTopicsFromHome.get(j).getText().replaceAll("[^a-zA-Z0-9]", " ").replace(" ","").trim().equalsIgnoreCase(data.get(k).replaceAll("[^a-zA-Z0-9]", " ").replace(" ","").trim()))
+									{
+										Thread.sleep(1000);
+										status.add(data.get(k));
+										System.out.println("saving data");
+										Thread.sleep(1000);
+										System.out.println("current work SubmitValidData process done");
+										Thread.sleep(1000);
+										System.out.println("submit process done for current work status");
+										break;
+									}
 								}
 							}
 						}
 					}
-					Thread.sleep(1000);
-					js.executeScript("window.scrollBy(0, 500)","");
-					Thread.sleep(1000);
-					WebElement clickUpdateFromContacts = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']"));
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] button[type='submit']")));
-					js.executeScript("arguments[0].scrollIntoView();", clickUpdateFromContacts);
-					if(clickUpdateFromContacts.isDisplayed())
-					{
-						Thread.sleep(1000);
-						try 
-						{
-							js.executeScript("arguments[0].click()", clickUpdateFromContacts);
-				        } 
-						catch (StaleElementReferenceException e)
-						{
-							clickUpdateFromContacts = wait.until(ExpectedConditions.elementToBeClickable(clickUpdateFromContacts));
-							clickUpdateFromContacts.click(); 
-				        }
-						Thread.sleep(1000);
-					}
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					Thread.sleep(1000);
-					driver.switchTo().window(window);
-					if(driver.getCurrentUrl().contains("/u/"))
-					{
-						driver.switchTo().window(window);
-						Thread.sleep(1000);
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						js.executeScript("window.scrollBy(0, 200)","");
-						Thread.sleep(1000);
-						List<WebElement> selectInterestedTopicsFromHome = driver.findElements(By.cssSelector("div[class='profileheadLeft'] div[class='ProfileJourny_main']:nth-child(3) div[class='ProfileUserDetails'] ul>li a"));
-						for(int j = 0; j < selectInterestedTopicsFromHome.size(); j++)
-						{
-							for(int k = 0; k < data.size(); k++)
-							{
-								if(selectInterestedTopicsFromHome.get(j).getText().replaceAll("[^a-zA-Z0-9]", " ").replace(" ","").trim().equalsIgnoreCase(data.get(k).replaceAll("[^a-zA-Z0-9]", " ").replace(" ","").trim()))
-								{
-									Thread.sleep(1000);
-									status.add(data.get(k));
-									Thread.sleep(1000);
-									System.out.println("current work SubmitValidData process done");
-									Thread.sleep(1000);
-								}
-							}
-					    }
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						Thread.sleep(1000);
-					}
-					System.out.println("submit process done for current work status");
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					Thread.sleep(1000);
-			}
 		
-		}
-			Thread.sleep(1000);
 		}
 		catch(Exception e)
 		{
@@ -1452,16 +1384,6 @@ public class EditProfileLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window1 : allWindows)
-			{
-				driver.switchTo().window(window1);
-			if(driver.getCurrentUrl().contains("/u/"))
-			{
-			driver.switchTo().window(window1);
-			Thread.sleep(1000);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 			JavascriptExecutor jse1 = (JavascriptExecutor) driver;
 			jse1.executeScript("window.scrollBy(0, 400)","");
 			Thread.sleep(1000);
@@ -1504,75 +1426,56 @@ public class EditProfileLocator
 						try 
 						{
 							js.executeScript("arguments[0].click()", clickCancel);
+							Thread.sleep(1000);
 				        } 
 						catch (StaleElementReferenceException e)
 						{
 							clickCancel = wait.until(ExpectedConditions.elementToBeClickable(clickCancel));
 							clickCancel.click(); 
 				        }
-						Thread.sleep(1000);
 					}
 
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
-					Thread.sleep(1000);
-					driver.switchTo().window(window);
-					if(driver.getCurrentUrl().contains("workstatusUpdate/"))
+					WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]/button"));
+					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]/button")));
+					js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
+					if(clickGoBackFromAlert.isDisplayed())
 					{
-						driver.switchTo().window(window);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 						Thread.sleep(1000);
-						WebElement clickGoBackFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]/button"));
-						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]/button")));
-						js.executeScript("arguments[0].scrollIntoView();", clickGoBackFromAlert);
-						if(clickGoBackFromAlert.isDisplayed())
+						Thread.sleep(1000);
+						try 
 						{
-							Thread.sleep(1000);
+							js.executeScript("arguments[0].click()", clickGoBackFromAlert);
 							status = "pass";
-							Thread.sleep(1000);
-							try 
-							{
-								js.executeScript("arguments[0].click()", clickGoBackFromAlert);
-					        } 
-							catch (StaleElementReferenceException e)
-							{
-								clickGoBackFromAlert = wait.until(ExpectedConditions.elementToBeClickable(clickGoBackFromAlert));
-								clickGoBackFromAlert.click(); 
-					        }
-							Thread.sleep(1000);
-							System.out.println("go back  icon clicked from work status page");
-							Thread.sleep(1000);
-						}
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
+							break;
+				        } 
+						catch (StaleElementReferenceException e)
+						{
+							clickGoBackFromAlert = wait.until(ExpectedConditions.elementToBeClickable(clickGoBackFromAlert));
+							clickGoBackFromAlert.click(); 
+				        }
 						Thread.sleep(1000);
+						System.out.println("go back  icon clicked from work status page");
+						Thread.sleep(1000);
+					}
 						
-					}
-					}
 				}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-			Thread.sleep(1000);
 
-			}
 			}
 			WebElement clickCancel = driver.findElement(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']"));
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='row gy-3'] div[class='col-md-12']:nth-child(2) div[class='Workstatus_buttonBottom__gah5Y'] div[class='Workstatus_skipButonDesk__2yAQW']>button[class='Workstatus_skipButton__vZu4F']")));
 			js.executeScript("arguments[0].scrollIntoView();", clickCancel);
 			if(clickCancel.isDisplayed())
 			{
-				Thread.sleep(1000);
 				try 
 				{
 					js.executeScript("arguments[0].click()", clickCancel);
+					Thread.sleep(1000);
 		        } 
 				catch (StaleElementReferenceException e)
 				{
 					clickCancel = wait.until(ExpectedConditions.elementToBeClickable(clickCancel));
 					clickCancel.click(); 
 		        }
-				Thread.sleep(1000);
 			}
 			WebElement clickYesFromAlert = driver.findElement(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a"));
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'modelPopup_popupBottom')]//a")));
@@ -1580,17 +1483,17 @@ public class EditProfileLocator
 			js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
 			if(clickYesFromAlert.isDisplayed())
 			{
-				Thread.sleep(1000);
 				try 
 				{
 					js.executeScript("arguments[0].click()", clickYesFromAlert);
+					Thread.sleep(1000);
+					System.out.println("Current Work process done");
 		        } 
 				catch (StaleElementReferenceException e)
 				{
 					clickYesFromAlert = wait.until(ExpectedConditions.elementToBeClickable(clickYesFromAlert));
 					clickYesFromAlert.click(); 
 		        }
-				System.out.println("Current Work process done");
 				Thread.sleep(1000);
 			}
 		}
@@ -1632,7 +1535,10 @@ public class EditProfileLocator
 						Thread.sleep(1000);
 						js.executeScript("arguments[0].click()", clickUpdateFromCurrentWork);
 						Thread.sleep(1000);
+						break;
 					}
+				}
+			}
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					Thread.sleep(1000);
@@ -1666,10 +1572,6 @@ public class EditProfileLocator
 					        }
 							Thread.sleep(1000);
 						}
-						driver.switchTo().window(window1);
-						if(driver.getCurrentUrl().contains("workstatusUpdate"))
-						{
-							driver.switchTo().window(window1);
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
@@ -1683,6 +1585,9 @@ public class EditProfileLocator
 								{
 									js.executeScript("arguments[0].click()", clickYesFromAlert);
 									Thread.sleep(1000);
+									status = "pass";
+									System.out.println("Alert yes from current work process done");
+									break;
 						        } 
 								catch (StaleElementReferenceException e)
 								{
@@ -1690,16 +1595,11 @@ public class EditProfileLocator
 									clickYesFromAlert.click(); 
 						        }
 								Thread.sleep(1000);
-								status = "pass";
-								System.out.println("Alert yes from current work process done");
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(50));
 							Thread.sleep(1000);
 						}
-					}
-					}
-				}
 			}
 		}
 		catch(Exception e)
