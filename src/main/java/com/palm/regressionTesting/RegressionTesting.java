@@ -115,6 +115,8 @@ public class RegressionTesting
 			OpenWebsite.openSite(driver);
 			ArrayList<String> browser = master.get(1);
 			ArrayList<String> pages = master.get(0);// Pages row in excel
+			
+			//iterating each pages
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
 				String sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
@@ -250,6 +252,21 @@ public class RegressionTesting
 							 case "ApplyCoupon":
 								 sheetStatus = new ApplyCouponValidation(sheetData, driver).start(); 
 								 break;
+							 case "IBMSkillBuildPage":
+								 sheetStatus = new IBMSkillBuildPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "CheckVILTSelfPacedCourse":
+								 sheetStatus = new CourseLevelValidation(sheetData, driver).start(); 
+								 break;
+							 case "AccountPage":
+								 sheetStatus = new AccountPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "DevopsPage":
+								 sheetStatus = new DevopsPageValidation(sheetData, driver).start(); 
+								 break;
+							 case "OnboardingJourney":
+								 sheetStatus = new OnboardingValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -260,7 +277,7 @@ public class RegressionTesting
 						e.printStackTrace();
 					}
 				}
-			}
+			}//for loop end
 		}
 		catch(Exception e)
 		{

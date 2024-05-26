@@ -179,6 +179,20 @@ public class CertificateLocators
 				}
 				driver.switchTo().window(baseWindow);
 			}
+			
+			WebElement clickDropdown = driver.findElement(By.cssSelector("li[class*='Header_SigNUP'] img[alt='icon']"));
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+			if(clickDropdown.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", clickDropdown);
+				WebElement signout = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary02_Blue']>li:nth-child(5)>a"));
+				js.executeScript("arguments[0].scrollIntoView();", signout);
+				if(signout.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", signout);
+				}
+			}
+			
 		}
 		catch(Exception e)
 		{

@@ -35,7 +35,7 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -262,6 +262,19 @@ public class RegressionTesting
 							 case "DevopsPage":
 								 sheetStatus = new DevopsPageValidation(sheetData, driver).start(); 
 								 break;
+							 case "OnboardingJourney":
+								 sheetStatus = new OnboardingValidation(sheetData, driver).start(); 
+								 break;
+							 case "TechMaster":
+								 sheetStatus = new TechMasterValidation(sheetData, driver).start(); 
+								 break;
+							 case "CategoryBanner":
+								 sheetStatus = new CategoryBannerValidation(sheetData, driver).start(); 
+								 break;
+							 case "CourseCardHover":
+								 sheetStatus = new CourseCardHoverValidation(sheetData, driver).start(); 
+								 break;
+							
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

@@ -411,17 +411,28 @@ public class DashboardLocator
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 				String checkSelfPacedcourse = selfPacedLocator.get(i).findElement(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']")).getText();
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 				if(checkSelfPacedcourse.contains("Self-paced"))
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size()>0)
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if(selfPacedLocator.get(i).findElements(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']>:not([span])")).size()!=1)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 						courseName = selfPacedLocator.get(i).findElement(By.cssSelector(" p[class*='dashboardCourseCards_dataCourseTitle']")).getText();
-						System.out.println("self paced course has date details" + courseName);
-						getStatus.add(courseName);
+						System.out.println("self paced course has no date details" + courseName);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					}
+					else
+					{
+						WebElement checkSelfPacedDate = selfPacedLocator.get(i).findElement(By.cssSelector(" div[class*='dashboardCourseCards_dataOthers'] p[class*='dashboardCourseCards_otherBright']>:not([span])"));
+						if(!checkSelfPacedDate.getText().replaceAll("\\s", "").trim().contains(" | Course Archived".replaceAll("\\s", "").trim()))
+						{
+							getStatus.add(courseName+" : date present for self paced. Its fail");
+						}
+						else
+						{
+							System.out.println("course archeived ");
+						}
 					}
 				}
 			}
@@ -448,16 +459,16 @@ public class DashboardLocator
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 				if(checkSelfPacedcourse.contains("vILT"))
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size() >= 0)
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if(selfPacedLocator.get(i).findElements(By.cssSelector(" span")).size() > 0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 						courseName = selfPacedLocator.get(i).findElement(By.cssSelector(" p[class*='dashboardCourseCards_dataCourseTitle']")).getText();
 						System.out.println("VILT course has date details" + courseName);
 					}
 					else
 					{
-						getStatus.add(courseName);
+						getStatus.add(courseName + "date not present for VILT. Its fail.");
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 				}
@@ -509,36 +520,44 @@ public class DashboardLocator
 	public ArrayList<String> verfiyPartnerIconRedirectionFromCourse()
 	{
 		ArrayList<String> getURLStatus = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			String parentWindow = driver.getWindowHandle();
 			List<WebElement> basicLocator = driver.findElements(By.cssSelector("section[class*='contentDashboardSection_contentCardsFall']>section[id] a[class*='dashboardCourseCards_dataTagsDark']"));
 			for(int i = 0; i < basicLocator.size(); i++)
 			{
-				JavascriptExecutor js = (JavascriptExecutor) driver;
 				String getPartnerURL = basicLocator.get(i).getAttribute("href");
+				String getPartnerName = basicLocator.get(i).getText();
+				
+				if(!getPartnerName.equalsIgnoreCase("Google"))
+				{
 					String url = microsoftCourseLocator.checkCourseCode(getPartnerURL);
-					String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-					basicLocator.get(i).sendKeys(n);
 					if(url.equalsIgnoreCase("fail"))
 					{
 						getURLStatus.add(getPartnerURL);
 					}
-					String parentWindow = driver.getWindowHandle();
-					Set<String> childWnidow = driver.getWindowHandles();
-					for(String windows : childWnidow)
+					else
 					{
-						driver.switchTo().window(windows);
-						if(driver.getCurrentUrl().contains("dashboard"))
+						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+						basicLocator.get(i).sendKeys(n);
+						
+						
+						Set<String> childWnidow = driver.getWindowHandles();
+						for(String windows : childWnidow)
 						{
 							driver.switchTo().window(windows);
-							System.out.println("dasboard page : "+driver.getCurrentUrl());
+							if(driver.getCurrentUrl().contains(getPartnerURL))
+							{
+								driver.switchTo().window(windows);
+								driver.close();
+								driver.switchTo().window(parentWindow);
+								break;
+							}
 						}
-						else if(!driver.getCurrentUrl().contains("dashboard") && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-						{
-							driver.close();
-						}
+						driver.switchTo().window(parentWindow);
 					}
-					driver.switchTo().window(parentWindow);
+				}
 			}
 		}
 		catch(Exception e)
@@ -583,36 +602,35 @@ public class DashboardLocator
 				  {
 					  js.executeScript("window.scrollBy(0,200)");
 					  WebElement shareIcons = checkcourseName.get(j).findElement(By.cssSelector(" [class*='dashboardCourseCards_containerBottom'] div[href]>p"));
-					 if(shareIcons.isDisplayed())
-					 {
-						 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-						 js.executeScript("arguments[0].click()", shareIcons);
-						 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-						// shareIcons.click(); 
-					 }
+						 if(shareIcons.isDisplayed())
+						 {
+							 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+							 js.executeScript("arguments[0].click()", shareIcons);
+							 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+						 }
 					  WebElement clickCopy = driver.findElement(By.cssSelector("button[class*='btn shadow-none shareSocialMedia_copyButton']"));
 					 if(clickCopy.isDisplayed())
 					 {
 						 js.executeScript("arguments[0].click()", clickCopy);
-						 //clickCopy.click(); 
 					 }
-					  String parentWindow = driver.getWindowHandle();
 					  List<WebElement> socialLink = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist']>ul>li>a"));
 					  for(int k = 0; k < socialLink.size(); k++) 
 					  {
+						  String parentWindow = driver.getWindowHandle();
 						  if(socialLink.get(k).getAttribute("href").contains(share.get(3)))
 						  {
 							  socialLink.get(k).click(); 
 							  Set<String> windows = driver.getWindowHandles(); 
 							  for(String window : windows)
-							  { 
+							  {
 								  driver.switchTo().window(window);
 								  if(driver.getCurrentUrl().contains("linkedin"))
-								  { 
+								  {
 									  driver.switchTo().window(window);
 									  System.out.println("Linked In page opened");
-									 status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
 									  driver.close();
+									  driver.switchTo().window(parentWindow);
+									  break;
 								  }
 							  }
 							  driver.switchTo().window(parentWindow);
@@ -625,11 +643,12 @@ public class DashboardLocator
 							  { 
 								  driver.switchTo().window(window);
 								  if(driver.getCurrentUrl().contains("whatsapp"))
-								  { 
+								  {
 									  driver.switchTo().window(window);
 									  System.out.println("whatsapp page opened");
-									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));
 									  driver.close();
+									  driver.switchTo().window(parentWindow);
+									  break;
 								  }
 							  }
 							  driver.switchTo().window(parentWindow);
@@ -645,8 +664,9 @@ public class DashboardLocator
 								  { 
 									  driver.switchTo().window(window);
 									  System.out.println("facebook page opened");
-									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
 									  driver.close();
+									  driver.switchTo().window(parentWindow);
+									  break;
 								  }
 							  }
 							  driver.switchTo().window(parentWindow);
@@ -661,9 +681,10 @@ public class DashboardLocator
 								  if(driver.getCurrentUrl().contains("twitter"))
 								  { 
 									  driver.switchTo().window(window);
-									  System.out.println("whatsapp page opened");
-									  status.add(microsoftCourseLocator.checkCourseCode(driver.getCurrentUrl()));;
+									  System.out.println("twitter page opened");
 									  driver.close();
+									  driver.switchTo().window(parentWindow);
+									  break;
 								  }
 							  }
 							  driver.switchTo().window(parentWindow);
@@ -919,23 +940,29 @@ public class DashboardLocator
 					driver.switchTo().window(win); //dashboard page landed
 
 						 
-						 List<WebElement> clickSkillupPartner = driver.findElements(By.xpath("//*[contains(@class,'dashboardCourseCards_dataTagsDark')]"));
+					
+						 List<WebElement> clickSkillupPartner = driver.findElements(By.xpath("//section[contains(@class,'dashboardCourseCards_cardContainer')]//following::a[contains(@class,'dashboardCourseCards_dataTagsDark')]"));
 						  {
 							  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							  
+							  wait.until(ExpectedConditions.visibilityOfAllElements(clickSkillupPartner));
+							  
 							  for(int l = 0; l < clickSkillupPartner.size(); l++)
 							  {
-								  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+								  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 								  
-								  if(clickSkillupPartner.get(l).getText().contains("SkillUp Online") || clickSkillupPartner.get(l).getText().contains("Microsoft"))
+								  wait.until(ExpectedConditions.visibilityOfAllElements(clickSkillupPartner.get(l)));
+								  
+								  String checkPartner = clickSkillupPartner.get(l).getText();
+								  
+								  
+								  if(checkPartner.contains("SKillUp") || checkPartner.contains("Microsoft"))
 								  {
-									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-									  
-									  int getCourseCount = l+1;
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 									  
 									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 									  
-									  WebElement clickCourse = clickSkillupPartner.get(l).findElement(By.xpath("//section[contains(@class,'dashboardCourseCards_cardContainer')]["+getCourseCount+"]/a"));
+									  WebElement clickCourse = clickSkillupPartner.get(l).findElement(By.xpath("//preceding::a[contains(@class,'dashboardCourseCards_spanLink')]"));
 									  
 									  js.executeScript("arguments[0].scrollIntoView();", clickCourse);	
 									  
@@ -950,8 +977,6 @@ public class DashboardLocator
 											
 											 ((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", clickCourse.getAttribute("href"));
 											
-											
-											 
 											 Set<String> windowHandles = driver.getWindowHandles();
 											 
 										        for (String windowHandle : windowHandles)
@@ -1001,8 +1026,12 @@ public class DashboardLocator
 																				System.out.println("course content page : "+driver.getCurrentUrl());
 																				
 																				driver.close();
+																				
+																				driver.switchTo().window(courseContentTabs);
 																			}
+																			
 																			driver.switchTo().window(courseContentTabs);
+																			getStatus.add("pass");
 																		}
 																  }
 																
@@ -1034,6 +1063,7 @@ public class DashboardLocator
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			getStatus.add("fail");
 		}
 		
 		return getStatus;

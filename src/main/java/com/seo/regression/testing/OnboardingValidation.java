@@ -49,6 +49,9 @@ public class OnboardingValidation
 				case "workstatusPage":
 					workstatusPage();
 					break;
+				case "WorkExperience":
+					WorkExperience();
+					break;
 				case "aboutYouPage":
 					aboutYouPage();
 					break;
@@ -134,14 +137,22 @@ public class OnboardingValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(3).set(0, "workstatusPage - failed");
 		}
 	}
-	
+	public void WorkExperience()
+	{
+		String status = onboardingLocator.checkWorkExperience();
+		if(status.equalsIgnoreCase("fail"))
+		{
+			sheetStatus = "Fail";
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(4).set(0, "WorkExperience - failed");
+		}
+	}
 	public void aboutYouPage()
 	{
 		String status = onboardingLocator.checkAboutYouPage();
 		if(status.equalsIgnoreCase("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(4).set(0, "aboutYouPage - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(5).set(0, "aboutYouPage - failed");
 		}
 	}
 	
@@ -151,7 +162,7 @@ public class OnboardingValidation
 		if(status.equalsIgnoreCase("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(5).set(0, "educationPage - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(6).set(0, "educationPage - failed");
 		}
 	}
 	
@@ -161,7 +172,7 @@ public class OnboardingValidation
 		if(status.equalsIgnoreCase("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(6).set(0, "jobOpportunites - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(7).set(0, "jobOpportunites - failed");
 		}
 	}
 }

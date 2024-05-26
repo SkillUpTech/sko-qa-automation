@@ -629,6 +629,7 @@ public class DashboardLocator
 									  driver.switchTo().window(window);
 									  System.out.println("Linked In page opened");
 									  driver.close();
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 									  driver.switchTo().window(parentWindow);
 									  break;
 								  }
@@ -647,6 +648,7 @@ public class DashboardLocator
 									  driver.switchTo().window(window);
 									  System.out.println("whatsapp page opened");
 									  driver.close();
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 									  driver.switchTo().window(parentWindow);
 									  break;
 								  }
@@ -665,6 +667,7 @@ public class DashboardLocator
 									  driver.switchTo().window(window);
 									  System.out.println("facebook page opened");
 									  driver.close();
+									  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 									  driver.switchTo().window(parentWindow);
 									  break;
 								  }
@@ -678,7 +681,7 @@ public class DashboardLocator
 							  for(String window : windows)
 							  { 
 								  driver.switchTo().window(window);
-								  if(driver.getCurrentUrl().contains("twitter"))
+								  if(driver.getCurrentUrl().contains("twitter")||driver.getCurrentUrl().contains("intent"))
 								  { 
 									  driver.switchTo().window(window);
 									  System.out.println("twitter page opened");
@@ -751,6 +754,7 @@ public class DashboardLocator
 											System.out.println("open social links : "+socialLinks.get(l));
 											status.add("pass");
 											driver.close();
+											  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 											break;
 										}
 									}
@@ -760,6 +764,7 @@ public class DashboardLocator
 						}
 						WebElement closePopup = driver.findElement(By.cssSelector("button[class*='btn-close shadow-none  shareSocialMedia_modalCloseBtn']"));
 						closePopup.click();
+						  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
 				}
 			}
 		}
@@ -915,6 +920,47 @@ public class DashboardLocator
 		return status;
 	}
 
+	public ArrayList<String> checkExpiredCourseOnDashboard(String data)
+	{
+		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		try
+		{
+			Set<String> windows = driver.getWindowHandles();
+			
+			for(String window : windows)
+			{
+				driver.switchTo().window(window);
+				
+				if(driver.getCurrentUrl().contains("dashboard"))
+				{
+					driver.switchTo().window(window);
+					
+					List<WebElement> checkcourseCards = driver.findElements(By.xpath("//section[contains(@class,'dashboardCourseCards_cardContainer')]//*[contains(text(),' | Course Archived')]/ancestor::section[contains(@class,'dashboardCourseCards_cardContainer')]/a"));
+					for(int i = 0; i < checkcourseCards.size(); i++)
+					{
+						//WebElement checkExpireCourse = checkcourseCards.get(i).findElement(By.xpath("//*[contains(text(),' | Course Archived')]/ancestor::section[contains(@class,'dashboardCourseCards_cardContainer')]/a"));
+						if(checkcourseCards.get(i).getAttribute("href") == null || checkcourseCards.get(i).getAttribute("href").isEmpty() || checkcourseCards.get(i).getAttribute("href").isBlank())
+						{
+							System.out.println("link not available on expired courses");
+						}
+						else
+						{
+							String title = checkcourseCards.get(i).getAttribute("id");
+							System.out.println("Able to access expired course");
+							status.add("fail "+title);
+						}
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	
 	
 	public ArrayList<String> checkCourseContentTabs(String data)
 	{
@@ -939,7 +985,7 @@ public class DashboardLocator
 				{
 					driver.switchTo().window(win); //dashboard page landed
 
-						 
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					
 						 List<WebElement> clickSkillupPartner = driver.findElements(By.xpath("//section[contains(@class,'dashboardCourseCards_cardContainer')]//following::a[contains(@class,'dashboardCourseCards_dataTagsDark')]"));
 						  {

@@ -86,9 +86,15 @@ public class DashboardValidation
 					checkPartnerIconRedirectionFromCourse(row.get(1));
 					break;
 					
+				case "checkExpiredCourse":
+					checkExpiredCourse(row.get(1));
+					break;
+				
+				
 				case "checkCourseContentTabs":
 					checkCourseContentTabs(row.get(1));
 					break;
+					
 					
 				case "checkProgramSection":
 					checkProgramSection(row.get(1));
@@ -266,7 +272,7 @@ public class DashboardValidation
 			if(urlStatus.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(13).add(1, (urlStatus + "checkEnrolledCourse - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(14).add(1, (urlStatus + "checkEnrolledCourse - failed"));
 			}
 		}
 	}
@@ -348,6 +354,25 @@ public class DashboardValidation
 		}
 	}
 	
+	public void checkExpiredCourse(String data)
+	{
+		if(!data.contains("No"))
+		{
+			ArrayList<String> urlStatus = dashboardLocator.checkExpiredCourseOnDashboard(data);
+			if(urlStatus.contains("fail"))
+			{
+				if(urlStatus.size()>= 0)
+				{
+					for(int i = 0; i < urlStatus.size(); i++)
+					{
+						sheetStatus = "Fail";
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(11).add(i+1, (urlStatus.get(i)+ "checkExpiredCourse - failed"));
+					}
+				}
+			}
+		}
+	}
+	
 	public void checkCourseContentTabs(String data)
 	{
 		if(!data.contains("No"))
@@ -360,7 +385,7 @@ public class DashboardValidation
 					for(int i = 0; i < tabStatus.size(); i++)
 					{
 						sheetStatus = "Fail";
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(11).add(i+1, (tabStatus.get(i)+ "checkCourseContentTabs - failed"));
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(12).add(i+1, (tabStatus.get(i)+ "checkCourseContentTabs - failed"));
 					}
 				}
 			}
@@ -377,7 +402,7 @@ public class DashboardValidation
 			if(urlStatus.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(12).set(0, "checkProgram - failed");
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(13).set(0, "checkProgram - failed");
 			}
 		}
 	}
@@ -391,7 +416,7 @@ public class DashboardValidation
 			if(urlStatus.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(14).set(0, "checkProgramSocialLinks - failed");
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(15).set(0, "checkProgramSocialLinks - failed");
 			}
 		}
 	}
@@ -406,17 +431,17 @@ public class DashboardValidation
 				if(!process.contains("expanded"))
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(15).set(1, "checkIncludeCourses - failed");
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(16).set(1, "checkIncludeCourses - failed");
 				}
 				if(!process.contains("unExpanded"))
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(15).set(2, "checkIncludeCourses - failed");
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(16).set(2, "checkIncludeCourses - failed");
 				}
 				if(process.contains("fail"))
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(15).set(3, "checkIncludeCourses - failed");
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Dashboard").get(16).set(3, "checkIncludeCourses - failed");
 				}
 			}
 		}
