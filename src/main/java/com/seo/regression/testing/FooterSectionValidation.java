@@ -12,7 +12,7 @@ public class FooterSectionValidation
 	ArrayList<ArrayList<String>> sheetData = null;
 	FooterSectionLocator footerSectionLocator;
 	String sheetStatus = "Pass";
-	public FooterSectionValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public FooterSectionValidation(ArrayList<ArrayList<String>> sheetData , WebDriver driver) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		this.driver = driver;

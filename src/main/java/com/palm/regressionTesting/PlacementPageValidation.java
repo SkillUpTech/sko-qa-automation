@@ -1,12 +1,19 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class PlacementPageValidation
+import com.regression.utility.TestUtil;
+
+public class PlacementPageValidation implements Callable<String>
 {
 	
 	WebDriver driver;
@@ -14,14 +21,34 @@ public class PlacementPageValidation
 	PlacementPageLocator placementPageLocator;
 	String sheetStatus = "Pass";
 	
-	public PlacementPageValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public PlacementPageValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.placementPageLocator = new PlacementPageLocator(driver);
-		System.out.println("Placement page process started");
+		
 	}
-	
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	public String start() throws InterruptedException
 	{
 		try
@@ -294,5 +321,83 @@ public class PlacementPageValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("PlacementPage").get(13).set(0, "withoutData - failed");
 
 		}
+	}
+
+	@Override
+	public String call() throws Exception {
+		System.out.println("Placement page process started");
+
+		try
+		{
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			this.placementPageLocator = new PlacementPageLocator(driver);
+			OpenWebsite.openSite(driver);
+			String BaseWindow = driver.getWindowHandle();
+			driver.switchTo().newWindow(WindowType.TAB);
+			OpenWebsite.openSite(this.driver);
+			for(int i = 0; i < this.sheetData.size(); i++)
+			{
+				ArrayList<String> row = this.sheetData.get(i);
+				String firstColumn = row.get(0);
+				switch(firstColumn)
+				{
+					case "ArrangeAChatIcon":
+						ArrangeAChatIcon();
+						break;
+					case "ConnectWithOurPlacementTeam":
+						ConnectWithOurPlacementTeam();
+						break;
+					case "ArrangeAChatWithOurPlacementTeam":
+						ArrangeAChatWithOurPlacementTeam();
+						break;
+					/*
+					 * case "InvalidFirstName": InvalidFirstName(row); break; case "EmptyFirstName":
+					 * EmptyFirstName(row); break; case "EmptyLastName": EmptyLastName(row); break;
+					 * case "InvalidContactNo": InvalidContactNo(row); break; case "EmptyContactNo":
+					 * EmptyContactNo(row); break; case "InvalidEmail": InvalidEmail(row); break;
+					 * case "EmptyEmail": EmptyEmail(row); break; case "WithoutState":
+					 * WithoutState(row); break; case "ValidPlacementForm": ValidPlacementForm(row);
+					 * break;
+					 */
+					case "withoutData":
+						withoutData(row);
+						break;
+				}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }

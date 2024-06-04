@@ -1,24 +1,29 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class ContactInfoValidation
+import com.regression.utility.TestUtil;
+
+public class ContactInfoValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	ContactInfoLocator contactInfoLocator;
 	String sheetStatus = "Pass";
 	WebDriver driver;
-	public ContactInfoValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public ContactInfoValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
 		
-		this.contactInfoLocator = new ContactInfoLocator(driver);
-		System.out.println("contact information process started");
+		
 	}
 	
 	public String start() throws InterruptedException
@@ -1316,4 +1321,149 @@ public class ContactInfoValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ContactInfo").get(21).set(0, "business_ValidData - failed");
 			}
 		}
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
+	@Override
+	public String call() throws Exception {
+		System.out.println("contact information process started");
+
+		try
+		{
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			this.contactInfoLocator = new ContactInfoLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+				case "individual_InvalidName":
+					verifyIndividual_InvalidName(row);
+					break;
+				case "individual_InvalidEmail":
+					verifyIndividual_InvalidEmail(row); 
+					break;
+				case "individual_InvalidMobile": 
+					verifyIndividual_InvalidMobile(row); 
+					break; 
+				case "individual_WithoutSkill": 
+					verifyIndividual_WithoutSkill(row); 
+					break;
+				case "individual_WithoutData": 
+					verifyIndividual_WithoutData(row); 
+					break;
+				case "individual_ValidData": 
+					verifyIndividual_ValidData(row); 
+					break; 
+				case "academic_InvalidName":
+					verifyAcademic_InvalidName(row);
+					break;
+				case "academic_InvalidEmail":
+					verifyAcademic_InvalidEmail(row); 
+					break;
+				case "academic_InvalidMobile": 
+					verifyAcademic_InvalidMobile(row); 
+					break; 
+				case "academic_InvalidInstitution": 
+					verifyAcademic_InvalidInstitution(row); 
+					break;
+				case "academic_WithoutJob": 
+					verifyAcademic_WithoutJob(row); 
+					break;
+				case "academic_WithoutMessage": 
+					verifyAcademic_WithoutMessage(row); 
+					break; 
+				case "academic_WithoutData":
+					verifyAcademic_WithoutData(row);
+					break;
+				case "academic_ValidData":
+					verifyAcademic_ValidData(row);
+					break;
+				case "business_InvalidName":
+					verifyBusiness_InvalidName(row);
+					break;
+				case "business_InvalidEmail":
+					verifyBusiness_InvalidEmail(row); 
+					break;
+				case "business_InvalidMobile": 
+					verifyBusiness_InvalidMobile(row); 
+					break; 
+				case "business_WithoutOrganization": 
+					verifyBusiness_WithoutOrganization(row); 
+					break;
+				case "business_WithoutJob": 
+					verifyBusiness_WithoutJob(row); 
+					break;
+				case "business_WithoutMessage": 
+					verifyBusiness_WithoutMessage(row); 
+					break; 
+				case "business_WithoutData":
+					verifyBusiness_WithoutData(row);
+					break;
+				case "business_ValidData":
+					verifyBusiness_ValidData(row);
+					break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
+	}
 	}

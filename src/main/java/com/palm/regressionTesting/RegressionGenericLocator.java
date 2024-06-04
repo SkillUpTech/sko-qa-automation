@@ -341,7 +341,7 @@ public class RegressionGenericLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 						freeConsultationStatus.add("Fail");
 						WebElement closePopUp = driver
-								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
+								.findElement(By.xpath("//button[@class='btn-close shadow-none']"));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if (closePopUp.isDisplayed()) 
 						{

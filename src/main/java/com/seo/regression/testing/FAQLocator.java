@@ -275,56 +275,56 @@ public class FAQLocator
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Empty Fullname process done");
+		System.out.println("Empty Fullname process done");
 		return datastatus;
 	}
 	public ArrayList<String> validFullname(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid valid Fullname process done");
+		System.out.println("valid Fullname process done");
 		return datastatus;
 	}
 	public ArrayList<String> invalidEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Invalid Fullname process done");
+		System.out.println("Invalid Email process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Empty mail process done");
+		System.out.println("Empty Email process done");
 		return datastatus;
 	}
 	public ArrayList<String> validEmail(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Empty valid Email process done");
+		System.out.println("valid Email process done");
 		return datastatus;
 	}
 	public ArrayList<String> InvalidContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Invalid contact process done");
+		System.out.println("Invalid contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Empty contact process done");
+		System.out.println("Empty contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> validContact(ArrayList<String> data)
 	{
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid valid contact process done");
+		System.out.println("valid contact process done");
 		return datastatus;
 	}
 	public ArrayList<String> EmptyQuery(ArrayList<String> data)
@@ -332,7 +332,7 @@ public class FAQLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> datastatus = new ArrayList<String>();
 		datastatus.addAll(this.verifyFAQFormProcess(data));
-		System.out.println("Invalid Empty query process done");
+		System.out.println("Empty query process done");
 		
 		  WebElement dropdownIcon =
 		  driver.findElement(By.cssSelector("li[class*='Header_SigNUP']>a"));
@@ -390,17 +390,10 @@ public class FAQLocator
 			}
 			else if(driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2")).size()>0)
 			{
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				/*List<WebElement> checkSuccessMsg = driver.findElements(By.cssSelector("div[class*='Form_successMessageSection'] h2"));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				if(checkSuccessMsg.size()>0)
-				{*/
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					Thread.sleep(1000);
 					System.out.println("success msg present");
-					status.add("pass");
 					Thread.sleep(1000);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					status.add("pass");
 			}
 		}
 		catch(Exception e)

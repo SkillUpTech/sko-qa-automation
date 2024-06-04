@@ -1,6 +1,7 @@
 package com.palm.regressionTesting;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -8,12 +9,16 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.asserts.SoftAssert;
 
 import com.regression.utility.ProcessExcel;
+import com.regression.utility.TestUtil;
 import com.regression.utility.Utils;
 import com.seo.dataProvider.ConfigFileReader;
 import com.seo.pompages.NewAboutCourseLocator;
@@ -42,7 +47,29 @@ public class TestNewAboutCourse
 		excelPath = "D:\\statusCode.xlsx";
 		this.newAboutCoursePage(excelPath);
 	}
-
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	public void newAboutCoursePage(String excelPath)
 	{
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
@@ -54,7 +81,7 @@ public class TestNewAboutCourse
 				String sheetName = entry.getKey();
 				ArrayList<ArrayList<String>> sheetData = entry.getValue();
 				try {
-					NewAboutCourseValidator newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
+					NewAboutCourseValidator newAboutCourseValidator = new NewAboutCourseValidator(sheetData, sheetName);
 					String sheetStatus = newAboutCourseValidator.processSheetData();
 					sheetsResult.put(sheetName, sheetStatus);
 				} catch (Exception e) {

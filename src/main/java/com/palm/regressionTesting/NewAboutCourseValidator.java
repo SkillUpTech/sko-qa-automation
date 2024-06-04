@@ -1,19 +1,25 @@
 package com.palm.regressionTesting;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.Map.Entry;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.regression.utility.TestUtil;
 import com.regression.utility.Utils;
 import com.seo.pompages.NewAboutCourseLocator;
 
-public class NewAboutCourseValidator 
+public class NewAboutCourseValidator implements Callable<String>
 {
 
 	private String SHEET_NAME;
@@ -27,20 +33,43 @@ public class NewAboutCourseValidator
 	private String duration = "";
 	String getMetaHost;
 	WebDriver driver;
-	public NewAboutCourseValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> rows)
+	
+	public NewAboutCourseValidator(ArrayList<ArrayList<String>> rows, String sheetName)
 	{
 		this.SHEET_NAME = sheetName;
 		this.ROWS = rows;
-		this.driver = driver;
-		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
 		System.out.println("About course process started");
 	}
-
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	public String processSheetData()
 	{
-		String BaseWindow = driver.getWindowHandle();
+		
+		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
+		String BaseWindow = driver.getWindowHandle();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) 
 		{
@@ -84,14 +113,16 @@ public class NewAboutCourseValidator
 	public String executeProcess(String process, ArrayList<String> row)
 	{
 		
-		try {
+		try 
+		{
 			switch (process)
 			{
+			
 			case "environment":
 				environment(row.get(1));
 				break;
 			
-			  case "courseCode": courseCode(row.get(1)); break;
+			case "courseCode": courseCode(row.get(1)); break;
 			 
 			case "courseTitle":
 				courseTitle(row.get(1));
@@ -1045,5 +1076,55 @@ public class NewAboutCourseValidator
 		}
 		
 		return stringProps;
+	}
+	
+	@Override
+	public String call() throws Exception 
+	{
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		OpenWebsite.openSite(driver);
+		
+		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
+		
+		String BaseWindow = driver.getWindowHandle();
+		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
+		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) 
+		{
+			ArrayList<String> currentRow = ROWS.get(CURRENT_ROW);
+			String process = currentRow.get(0);
+			sheetStatus = executeProcess(process, currentRow);
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
+		duration = Utils.findDifference(startTime, endTime);
+		collectSheetResult();
+		return sheetStatus;
+	
 	}
 }

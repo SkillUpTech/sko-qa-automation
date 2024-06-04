@@ -5,13 +5,13 @@
     <parameter name="browser" value="Chrome"/>
     <parameter name="env" value="qa-in"/>
     <classes>
-      <class name="com.seo.regression.testing.RegressionTesting">
+      <class name="com.palm.regressionTesting.RegressionTesting">
         <methods>
-          <include name="startTest"/>
           <include name="setup"/>
           <include name="afterMethod"/>
+          <include name="startTesting"/>
         </methods>
-      </class> <!-- com.seo.regression.testing.RegressionTesting -->
+      </class> <!-- com.palm.regressionTesting.RegressionTesting -->
     </classes>
   </test> <!-- Regression(failed) -->
 </suite> <!-- Failed suite [Testing Google Apps] -->

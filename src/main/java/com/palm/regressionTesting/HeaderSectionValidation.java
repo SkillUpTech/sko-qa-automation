@@ -1,33 +1,58 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
-
+import java.util.concurrent.Callable;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class HeaderSectionValidation
+import com.regression.utility.TestUtil;
+
+public class HeaderSectionValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	HeaderSectionLocator headerSectionLocator;
 	String sheetStatus = "Pass";
 	WebDriver driver;
 	OpenWebsite openWebsite;
-	public HeaderSectionValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public HeaderSectionValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.headerSectionLocator = new HeaderSectionLocator(driver);
-		System.out.println("header process started");
+		
 	}
-	
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	public String start() throws InterruptedException
 	{
 		try
 		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
+		
 		OpenWebsite.openSite(this.driver);
+		String BaseWindow = driver.getWindowHandle();
 		int j = 1;
 		while(j<=1)
 		{
@@ -57,7 +82,7 @@ public class HeaderSectionValidation
 						checkLogin(row);
 						break;
 					case "learningPartner":
-						checkLearningPartner(row);
+						checkLearningPartner();
 						break;
 					case "signUP":
 						checkSignUP(row);
@@ -114,17 +139,15 @@ public class HeaderSectionValidation
 		}
 	}
 	
-	public void checkLearningPartner(ArrayList<String> data) throws InterruptedException
+	public void checkLearningPartner() throws InterruptedException
 	{
-		ArrayList<String> learningPartner = headerSectionLocator.verifyLearningPartner(data);
+		ArrayList<String> learningPartner = headerSectionLocator.verifyLearningPartner();
 		for(int i = 0; i < learningPartner.size(); i++)
 		{
-			if(data.contains(learningPartner.get(i)))
+			if(learningPartner.size()>0)
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(learningPartner.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).add(i+1, (learningPartner.get(i) + "partner - failed"));
 			}
 		}
 	}
@@ -205,6 +228,92 @@ public class HeaderSectionValidation
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(7).set(0, "signUP - failed");
 			}
 		}
+	}
+	
+	@Override
+	public String call() throws Exception
+	{
+		try
+		{
+		System.out.println("header process started");
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		OpenWebsite.openSite(driver);
+		this.headerSectionLocator = new HeaderSectionLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		int j = 1;
+		while(j<=1)
+		{
+			System.out.println("Time of execution : "+j);
+			for(int i = 0; i < this.sheetData.size(); i++)
+			{
+				ArrayList<String> row = this.sheetData.get(i);
+				String firstColumn = row.get(0);
+				switch(firstColumn)
+				{
+					case "skillupLogo":
+						checkSkillupLogo(row.get(1));
+						break;
+					case "contactUs":
+						checkContactUs();
+						break;
+					case "blog":
+						checkBlog(row);
+						break;
+					case "categories":
+						checkCategories(row);
+						break;
+					case "popularCourses":
+						checkPopularCourses(row);
+						break;
+					case "login":
+						checkLogin(row);
+						break;
+					case "learningPartner":
+						checkLearningPartner();
+						break;
+					case "signUP":
+						checkSignUP(row);
+						break;
+				}
+			}
+			j++;
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+		
+	
 	}
 	
 }

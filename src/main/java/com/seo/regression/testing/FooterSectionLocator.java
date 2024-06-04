@@ -90,7 +90,7 @@ public class FooterSectionLocator
 			if(!parentWindow.equalsIgnoreCase(childWindow))
 			{
 				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("https://twitter.com/"))
+				if(driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
 				{
 					driver.switchTo().window(childWindow);
 					System.out.println("twitter window");

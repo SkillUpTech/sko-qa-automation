@@ -1,24 +1,29 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class ExploreAllValidator 
+import com.regression.utility.TestUtil;
+
+public class ExploreAllValidator implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
 	ExploreAllLocator exploreAllLocator;
 	String sheetStatus = "Pass";
 	
-	public ExploreAllValidator(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	public ExploreAllValidator(ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.exploreAllLocator = new ExploreAllLocator(driver);
-		System.out.println("Explore All validation Process started");
+		
 	}
 	
 	public String start()
@@ -223,5 +228,108 @@ public class ExploreAllValidator
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(7).set(1, "sortBy - failed");
 			}
 		}
+	}
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
+	@Override
+	public String call() throws Exception {
+		System.out.println("Explore All validation Process started");
+
+		try
+		{
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		OpenWebsite.openSite(driver);
+		this.exploreAllLocator = new ExploreAllLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+				case "verifyExporeAll":
+					verifyExploreAllIcons();
+					break;
+				case "checkActiveCategoryFromHomePage":
+					verifyActiveCategory_HomePage();
+					break;
+				case "clearAll":
+					verify_clearAll();
+					break;
+				case "Categories":
+					verify_Categories();
+					break;
+				case "levels":
+					verify_Level();
+					break;
+				case "learningPartners":
+					verify_learningPartners();
+					break;
+				case "learningStyles":
+					verify_learningStyles();
+					break;
+				/*
+				 * case "sortBy": verify_sortBy(); break;
+				 */
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }

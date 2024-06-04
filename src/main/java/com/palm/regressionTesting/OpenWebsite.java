@@ -81,7 +81,17 @@ public class OpenWebsite
 	
 	public static String openSite(WebDriver driver)
 	{
-		setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
+		try {
+			try {
+				setURL = setEnvironment(RegressionTesting.ENV_TO_USE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		driver.get(setURL);
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));

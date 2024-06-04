@@ -267,11 +267,7 @@ public class ExploreAllLocator
 		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			
-			WebElement baseLocatorForClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-			
-			js.executeScript("arguments[0].scrollIntoView();", baseLocatorForClearAll);
-			
-			WebElement clickClearAll = baseLocatorForClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+			WebElement clickClearAll = driver.findElement(By.xpath("//div[contains(@class,'container-fluid CourseSection_containerInner')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
 			js.executeScript("arguments[0].scrollIntoView();", clickClearAll);
 			
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
@@ -475,13 +471,11 @@ public class ExploreAllLocator
 					}
 					js.executeScript("window.scrollBy(0, -document.body.scrollHeight)","");
 					
-					if(driver.findElements(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])")).size()>0)
+					if(driver.findElements(By.xpath("//div[contains(@class,'container-fluid CourseSection_containerInner')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]")).size()>0)
 					{
-						WebElement baseLocator_ClearAll = driver.findElement(By.cssSelector("section#scrollToTop div[class*='CourseSection_filterMain']:not([id='mobileFilter'])"));
-						js.executeScript("arguments[0].scrollIntoView();", baseLocator_ClearAll);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-						WebElement click_ClearAll = baseLocator_ClearAll.findElement(By.cssSelector(" div[class*='CourseSection_filterSection'] div[class*='flex CourseSection_filterTop'] button"));
+						WebElement click_ClearAll = driver.findElement(By.xpath("//div[contains(@class,'container-fluid CourseSection_containerInner')]//div[contains(@class,'CourseSection_containerInnerFilter')]/div[3]//button[contains(text(),'Clear All')]"));
 						js.executeScript("arguments[0].scrollIntoView();", click_ClearAll);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));

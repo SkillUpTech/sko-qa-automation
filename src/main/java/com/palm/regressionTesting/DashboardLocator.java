@@ -34,6 +34,7 @@ public class DashboardLocator
 		
 		PageFactory.initElements(driver, this);
 	}
+	
 	public ArrayList<String> openSite(ArrayList<String> urgetURLl)
 	{
 		ArrayList<String> status = new ArrayList<String>();
@@ -1056,7 +1057,7 @@ public class DashboardLocator
 							  }
 					 }
 				}
-			
+			 driver.switchTo().window(parent);
 			
 		}	
 			
