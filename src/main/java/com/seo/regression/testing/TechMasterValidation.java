@@ -3,11 +3,20 @@ package com.seo.regression.testing;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class TechMasterValidation 
+import com.palm.regressionTesting.GLXLocator;
+import com.palm.regressionTesting.OpenWebsite;
+import com.palm.regressionTesting.RegressionTesting;
+import com.regression.utility.TestUtil;
+
+public class TechMasterValidation
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
@@ -18,9 +27,9 @@ public class TechMasterValidation
 	{
 		
 		this.sheetData = sheetData;
-		this.driver = driver;
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		this.techMasterLocator = new TechMasterLocator(driver);
+		OpenWebsite.openSite(driver);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		System.out.println("Onboarding Journey Process started");
 	}
 
@@ -58,7 +67,7 @@ public class TechMasterValidation
 			if(!BaseWindow.equals(win))
 			{
 				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				if(driver.getCurrentUrl().equalsIgnoreCase(com.seo.regression.testing.OpenWebsite.setURL+"/"))
 				{
 					driver.switchTo().window(win);
 					driver.close();
@@ -70,7 +79,7 @@ public class TechMasterValidation
 					driver.close();
 					driver.switchTo().window(BaseWindow);
 				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(com.seo.regression.testing.OpenWebsite.setURL+"/"))
 				{
 					driver.switchTo().window(win);
 					driver.close();
@@ -135,4 +144,6 @@ public class TechMasterValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(3).set(0, "findOutMore_Button - failed");
 		}
 	}
+	
+	
 }

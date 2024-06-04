@@ -3,25 +3,28 @@ package com.palm.regressionTesting;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class EditProfileValidation
+import com.regression.utility.TestUtil;
+
+public class EditProfileValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
 	EditProfileLocator editProfileLocator;
 	String sheetStatus = "Pass";
 
-	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
+	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData)
 	{
 		
 		this.sheetData = sheetData;
-		this.driver = driver;
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		this.editProfileLocator = new EditProfileLocator(driver);
-		System.out.println("Edit profile Process started");
+
 	}
 
 	public String start() throws InterruptedException 
@@ -538,6 +541,163 @@ public class EditProfileValidation
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("EditProfile").get(39).set(0,
 					"Education_Alert_goBackButton - failed");
 		}
+	}
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
+	@Override
+	public String call() throws Exception {
+		System.out.println("Edit profile Process started");
+
+		try
+		{
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		OpenWebsite.openSite(driver);
+		this.editProfileLocator = new EditProfileLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for (int i = 0; i < this.sheetData.size(); i++) {
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch (firstColumn)
+			{
+			
+			case "login":
+				verifyLogin(row);
+				break;
+				
+			case "ProfileIcon":
+				verifyProfileIcon();
+				break;
+			
+			case "contacts_updateIcon": 
+				verifyUpdateIcon(); 
+				break; 
+			case "contacts_submitWithoutData": 
+				verifySubmitWithoutDataForMobile(); 
+				break;
+			case "contacts_submitInvalidData_mobile":
+			  verifySubmitInvalidDataForMobile(row.get(1)); break; 
+			case
+			  "contacts_cancelIcon": verifyCancelIcon(); break; 
+			case
+			  "contacts_Alert_close": verifyContactsAlertClose(); break; 
+			case
+			  "contacts_submitValidData_mobile":
+			  verifySubmitValidDataForMobile(row.get(1)); break; 
+			case
+			  "contacts_Alert_yesButton": verifyAlertYesButton(); break; 
+			case
+			  "contacts_Alert_goBackButton": verifyAlertGoBackButton(); break;
+			
+			case "AreasOfInterest_updateIcon": verifyAreasOfInterestUpdateIcon(); break;
+			case "AreasOfInterest_cancelIcon": verifyAreasOfInterestCancelIcon(); break;
+			case "AreasOfInterest_Alert_close": verifyAreasOfInterestAlertClose(); break;
+			case "AreasOfInterest_submitValidData":
+			  verifyAreasOfInterestSubmitValidData(row); break; case
+			  "AreasOfInterest_Alert_yesButton": verifyAreasOfInterestAlertyesButton();
+			  break; 
+			case "AreasOfInterest_Alert_goBackButton":
+			  verifyAreasOfInterestAlertGoBackButton(); break;
+			
+			case "CurrentWorkStatus_updateIcon": CurrentWorkStatus_updateIcon(); break;
+			case "CurrentWorkStatus_cancelIcon": CurrentWorkStatus_cancelIcon(); break;
+			case "CurrentWorkStatus_Alert_close": CurrentWorkStatus_Alert_close(); break;
+			case "CurrentWorkStatus_submitValidData":
+			  CurrentWorkStatus_submitValidData(row); break; 
+			case
+			  "CurrentWorkStatus_Alert_yesButton": CurrentWorkStatus_Alert_yesButton();
+			  break; case "CurrentWorkStatus_Alert_goBackButton":
+			  CurrentWorkStatus_Alert_goBackButton(); break;
+			 
+			
+			
+			  case "WorkExperience_updateIcon": WorkExperience_updateIcon(); break; case
+			  "WorkExperience_cancelIcon": WorkExperience_cancelIcon(); break; case
+			  "WorkExperience_Alert_close": WorkExperience_Alert_close(); break; case
+			  "WorkExperience_submitValidData": WorkExperience_submitValidData(row); break;
+			  case "WorkExperience_Alert_yesButton": WorkExperience_Alert_yesButton();
+			  break; case "WorkExperience_Alert_goBackButton":
+			  WorkExperience_Alert_goBackButton(); break;
+			 
+			
+			
+			  case "PersonalDetails_updateIcon": PersonalDetails_updateIcon(); break; case
+			  "PersonalDetails_cancelIcon": PersonalDetails_cancelIcon(); break; case
+			  "PersonalDetails_Alert_close": PersonalDetails_Alert_close(); break; case
+			  "PersonalDetails_submitValidData": PersonalDetails_submitValidData(row);
+			  break; case "PersonalDetails_Alert_yesButton":
+			  PersonalDetails_Alert_yesButton(); break; case
+			  "PersonalDetails_Alert_goBackButton": PersonalDetails_Alert_goBackButton();
+			  break;
+			 
+			  case "Education_updateIcon": Education_updateIcon(); break; case
+			  "Education_cancelIcon": Education_cancelIcon(); break; case
+			  "Education_Alert_close": Education_Alert_close(); break; case
+			  "Education_submitValidData": Education_submitValidData(row); break; case
+			  "Education_Alert_yesButton": Education_Alert_yesButton(); break; case
+			  "Education_Alert_goBackButton": Education_Alert_goBackButton(); break;
+							 
+			  
+			 
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 
 }

@@ -1271,7 +1271,7 @@ public class RegressionGenericLocator
 							if(!parentWindow.equalsIgnoreCase(childWindow))
 							{
 								driver.switchTo().window(childWindow);
-								if (driver.getCurrentUrl().contains("twitter"))
+								if (driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
 								{
 									driver.switchTo().window(childWindow);
 									System.out.println("twitter screen");

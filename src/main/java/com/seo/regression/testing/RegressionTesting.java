@@ -118,6 +118,7 @@ public class RegressionTesting
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
 				String sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
+				
 				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
@@ -136,6 +137,7 @@ public class RegressionTesting
 								sheetStatus = newAboutCourseValidator.processSheetData();
 							}
 							break;
+							
 							case "AboutProgram":
 							{
 								aboutProgramValidation = new AboutProgramValidation(driver, sheetName, sheetData);
@@ -274,11 +276,13 @@ public class RegressionTesting
 							 case "CourseCardHover":
 								 sheetStatus = new CourseCardHoverValidation(sheetData, driver).start(); 
 								 break;
-							
+							 case "IBMViewCourse":
+								 sheetStatus = new IBMViewCourseValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
-						}
-						sheetsResult.put(sheetName, sheetStatus);
+						}//end of swtich case
+						sheetsResult.put(sheetName, sheetStatus);//st
 					} 
 					catch (Exception e) 
 					{

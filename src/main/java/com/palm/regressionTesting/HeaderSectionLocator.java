@@ -471,14 +471,15 @@ public class HeaderSectionLocator
 		}
 		return urlStatus;
 	}
-	public ArrayList<String> verifyLearningPartner(ArrayList<String> data)
+	public ArrayList<String> verifyLearningPartner()
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
 			System.out.println("learning partner validation started");
 			WebElement clickDropdown = driver.findElement(By.cssSelector("a#navbarDropdown"));
-			clickDropdown.click();//Thread.sleep(4000);
+			
+			//clickDropdown.click();//Thread.sleep(4000);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			if(clickDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"))
 			{
@@ -488,18 +489,9 @@ public class HeaderSectionLocator
 			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] li a"));
 			for(int i = 0; i < learningPartners.size();i++)
 			{
-				if(i>0)
-				{
-					WebElement clickDropdown1 = driver.findElement(By.cssSelector("a#navbarDropdown"));
-					clickDropdown1.click();
-					if(clickDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"))
-					{
-						clickDropdown.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					}
-				}
-				String learningPartnerName = learningPartners.get(i).getAttribute("href");
-					if(learningPartnerName.contains(data.get(i+1)))
+				//String learningPartnerName = learningPartners.get(i).getAttribute("href");
+				String parentWindow = driver.getWindowHandle();
+					if(learningPartners.get(i).isDisplayed())
 					{
 						String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
 						String urlLinkStatus = this.checkURLStatus(getLearningPartnerURL);
@@ -507,28 +499,29 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if(urlLinkStatus.equalsIgnoreCase("fail"))
 						{
-							status.add(data.get(i+1));
+							status.add(getLearningPartnerURL);
 						}
 						else
 						{
-							status.add("pass");
-						}
-						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-						learningPartners.get(i).sendKeys(n);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-						String parentWindow = driver.getWindowHandle();
-						Set<String> childWnidow = driver.getWindowHandles();
-						for(String windows : childWnidow)
-						{
-							if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+							String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+							learningPartners.get(i).sendKeys(n);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+							
+							Set<String> childWnidow = driver.getWindowHandles();
+							for(String windows : childWnidow)
 							{
 								driver.switchTo().window(windows);
-								System.out.println(driver.getCurrentUrl());
-								driver.close();
-								driver.switchTo().window(parentWindow);
-								break;
+								if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+								{
+									driver.switchTo().window(windows);
+									System.out.println(driver.getCurrentUrl());
+									driver.close();
+									driver.switchTo().window(parentWindow);
+									break;
+								}
 							}
+							driver.switchTo().window(parentWindow);
 						}
 					}
 				}

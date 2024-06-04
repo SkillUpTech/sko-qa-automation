@@ -7,7 +7,15 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
@@ -16,8 +24,44 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.google.common.util.concurrent.Service;
 import com.regression.utility.ProcessExcel;
 import com.regression.utility.Utils;
+import com.seo.regression.testing.AccountPageValidation;
+import com.seo.regression.testing.ApplyCouponValidation;
+import com.seo.regression.testing.BlogPageValidation;
+import com.seo.regression.testing.CategoryBannerValidation;
+import com.seo.regression.testing.CertificateValidation;
+import com.seo.regression.testing.ContactUsValidation;
+import com.seo.regression.testing.CourseCardHoverValidation;
+import com.seo.regression.testing.CourseLevelValidation;
+import com.seo.regression.testing.DashboardValidation;
+import com.seo.regression.testing.DevopsPageValidation;
+import com.seo.regression.testing.EditProfileValidation;
+import com.seo.regression.testing.ExploreAllValidator;
+import com.seo.regression.testing.ExploreCourseByNewUserValidation;
+import com.seo.regression.testing.FAQValidation;
+import com.seo.regression.testing.FluidEducationValidation;
+import com.seo.regression.testing.FooterSectionValidation;
+import com.seo.regression.testing.GLXValidation;
+import com.seo.regression.testing.HeaderFeatureValidation;
+import com.seo.regression.testing.HeaderFooterInErrorScreenValidation;
+import com.seo.regression.testing.HeaderFooterInStagecoursesValidation;
+import com.seo.regression.testing.HomePageValidator;
+import com.seo.regression.testing.IBMPageValidation;
+import com.seo.regression.testing.IBMSkillBuildPageValidation;
+import com.seo.regression.testing.IBMViewCourseValidation;
+import com.seo.regression.testing.InviteOnlyValidation;
+import com.seo.regression.testing.LoginPageLinksValidation;
+import com.seo.regression.testing.MicrosoftCourseValidation;
+import com.seo.regression.testing.NewAboutCourseValidator;
+import com.seo.regression.testing.OnboardingValidation;
+import com.seo.regression.testing.PLUValidation;
+import com.seo.regression.testing.PlacementPageValidation;
+import com.seo.regression.testing.RegressionGenericValidator;
+import com.seo.regression.testing.ReimbursedValidation;
+import com.seo.regression.testing.SignUpPageLinksValidation;
+import com.seo.regression.testing.TechMasterValidation;
 
 public class RegressionTesting 
 {
@@ -26,7 +70,8 @@ public class RegressionTesting
 	String startTime = "";
 	String endTime = "";
 	String duration = "";
-	
+	public static String nameOfBrowser = "";
+	public String nameOfEnvironment = "";
 	public static LinkedHashMap<String, ArrayList<ArrayList<String>>> EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP;
 	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
 	NewAboutCourseValidator newAboutCourseValidator;
@@ -35,19 +80,23 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "D:\\chromedriver123\\chromedriver-win64\\chromedriver.exe";
+	String sheetStatus = "";
+	String sheetName = "";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
 	{
 		System.out.println("welcome");
+		nameOfBrowser = browserName;
+		nameOfEnvironment = env;
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = OpenWebsite.openDriver(browserName);
 	    }
 	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
-	    	driver = OpenWebsite.openDriver(browserName);
+	    //	driver = OpenWebsite.openDriver(browserName);
 	    	if(env.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
@@ -88,21 +137,22 @@ public class RegressionTesting
 	}
 	
 	@Test
-	public void startTest()
-	{
-		System.out.println(driver);
-		this.startTesting();
-		driver.quit();
-	}
-	
 	public void startTesting()
 	{
+		ExecutorService service = Executors.newFixedThreadPool(2);
+		
+		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
+		
 		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
+		
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
+		
 		try
 		{
 			LinkedHashMap<String, ArrayList<ArrayList<String>>> data = ProcessExcel.readExcelFileAsRows(excelPath);
+			
 			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
@@ -112,172 +162,198 @@ public class RegressionTesting
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ENV_TO_USE = getEnvironment;
-			OpenWebsite.openSite(driver);
-			ArrayList<String> browser = master.get(1);
+			
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			
-			//iterating each pages
+			HashMap<String, Callable<String>> taskMap = new HashMap<String, Callable<String>>();
+			
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
-				String sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
-				if (data.containsKey(sheetName))// checking whether the excel is having the sheet
+				sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
+			
+				if(data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
 					try
 					{
-						String sheetStatus = "Pass";
+						sheetStatus = "";
 						switch(sheetName)
 						{
-							
 							case "Login":
-								sheetStatus = new RegressionTestLogin(driver, sheetData).start();
-							break;
+								taskMap.put(sheetName,  new RegressionTestLogin(sheetData));
+								break;
 							case "AboutCourse":
 							{
-								newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetName, sheetData);
-								sheetStatus = newAboutCourseValidator.processSheetData();
+								taskMap.put(sheetName, new com.palm.regressionTesting.NewAboutCourseValidator( sheetData, sheetName));
+								break;
 							}
-							break;
-							case "AboutProgram":
-							{
-								aboutProgramValidation = new AboutProgramValidation(driver, sheetName, sheetData);
-								sheetStatus = aboutProgramValidation.processSheetData();
-							}
-							break;
 							case "GenericProcess":
 							{
-								regressionGenericValidator = new RegressionGenericValidator(driver, sheetName, sheetData);
-								sheetStatus = regressionGenericValidator.processSheetData();
+								taskMap.put(sheetName, new com.palm.regressionTesting.RegressionGenericValidator(sheetData, sheetName));
+								break;
 							}
-							break;
-							case "Dashboard":
-								sheetStatus = new DashboardValidation(driver, sheetName, sheetData).start();
-								break;
-							case "URLValidation":
-								sheetStatus = new ErrorCodeValidation(sheetData, driver).start();
-								break;
-							case"SignUp":
-								sheetStatus = new SignUpValidation(sheetData, driver).start();
-								break;
-							case"AddUser":
-								sheetStatus = new AddUserValidation(sheetData, driver).start();
-								break;
-							case"Login if mail id not verified":
-								sheetStatus = new CheckLoginValidation(sheetData, driver).start();
-								break;
-							case"ForGotPwd":
-								sheetStatus = new ForgotPasswordValidation(sheetData, driver).start();
+							case "SearchProcess":
+								taskMap.put(sheetName, new SearchPageValidation(sheetData));
 								break;
 							case"FooterSection":
-								sheetStatus = new FooterSectionValidation(sheetData, driver).start();
-								break;
-							case"HeaderSection":
-								sheetStatus = new HeaderSectionValidation(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.FooterSectionValidation(sheetData));
+								break;	
+							case "SignUp":
+								taskMap.put(sheetName, new SignUpValidation(sheetData));
+							break;
+							case "HeaderSection":
+								taskMap.put(sheetName, new HeaderSectionValidation(sheetData));
+							break;
+							case "Dashboard":
+								taskMap.put(sheetName, new com.palm.regressionTesting.DashboardValidation(sheetData));
 								break;
 							case"HomePage":
-								sheetStatus = new HomePageValidator(driver, sheetName, sheetData).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.HomePageValidator(sheetData));
 								break;
-							case "ContactInfo":
-								sheetStatus = new ContactInfoValidation(sheetData, driver).start();
-								break;
-							case "LoginWithSocialAcc":
-								sheetStatus = new LoginSocialAccValidation(sheetData, driver).start();
+							case"ContactInfo":
+								taskMap.put(sheetName, new ContactInfoValidation(sheetData));
 								break;
 							case "ContactUSForm":
-								sheetStatus = new ContactUsValidation(sheetData, driver).start();
-								break;
-							case "SearchProcess":
-								sheetStatus = new SearchPageValidation(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.ContactUsValidation(sheetData));
 								break;
 							case "MicrosoftPage":
-								sheetStatus =new MicrosoftCourseValidation(sheetData, driver).start();
-								break;
-							case "SignupWithSocialAcc":
-								sheetStatus = new SignupSocialAccValidator(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.MicrosoftCourseValidation(sheetData));
 								break;
 							case "Pacific":
-								sheetStatus = new PLUValidation(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.PLUValidation(sheetData));
 								break;
 							case "ExploreAll":
-								sheetStatus = new ExploreAllValidator(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.ExploreAllValidator(sheetData));
 								break;
 							case "EditProfile":
-								sheetStatus = new EditProfileValidation(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.EditProfileValidation(sheetData));
 								break;
 							case "LoginPageLinks":
-								sheetStatus = new LoginPageLinksValidation(sheetData, driver).start();
+								taskMap.put(sheetName, new com.palm.regressionTesting.LoginPageLinksValidation(sheetData));
 								break;
-							 case "IBM":
-								 sheetStatus = new IBMPageValidation(sheetData, driver).start(); 
+							case "IBM":
+								taskMap.put(sheetName, new com.palm.regressionTesting.IBMPageValidation(sheetData));
 								 break;
-							 case "Fluideducation":
-								 sheetStatus = new FluidEducationValidation(sheetData, driver).start(); 
+							case "Fluideducation":
+								taskMap.put(sheetName, new com.palm.regressionTesting.FluidEducationValidation(sheetData));
 								 break;
 							 case "GLX":
-								 sheetStatus = new GLXValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.GLXValidation(sheetData));
 								 break;
 							 case "FAQ":
-								 sheetStatus = new FAQValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.FAQValidation(sheetData));
 								 break;
 							 case "HeaderFooterStagecourses":
-								 sheetStatus = new HeaderFooterInStagecoursesValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInStagecoursesValidation(sheetData));
 								 break;
 							 case "HeaderFooterErrorScreen":
-								 sheetStatus = new HeaderFooterInErrorScreenValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInErrorScreenValidation(sheetData));
 								 break;
 							 case "BlogPage":
-								 sheetStatus = new BlogPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.BlogPageValidation(sheetData));
 								 break;
 							 case "InviteOnlyCourse":
-								 sheetStatus = new InviteOnlyValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.InviteOnlyValidation(sheetData));
 								 break;
 							 case "SignUpPageLinks":
-								 sheetStatus = new SignUpPageLinksValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.SignUpPageLinksValidation(sheetData));
 								 break;
 							 case "ExploreCourseByNewUser":
-								 sheetStatus = new ExploreCourseByNewUserValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.ExploreCourseByNewUserValidation(sheetData));
 								 break;
 							 case "ViewCertificate":
-								 sheetStatus = new CertificateValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.CertificateValidation(sheetData));
 								 break;
 							 case "PlacementPage":
-								 sheetStatus = new PlacementPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.PlacementPageValidation(sheetData));
 								 break;
 							 case "HeaderFeature":
-								 sheetStatus = new HeaderFeatureValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFeatureValidation(sheetData));
 								 break;
 							 case "ReimbursedProcess":
-								 sheetStatus = new ReimbursedValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.ReimbursedValidation(sheetData));
 								 break;
 							 case "ApplyCoupon":
-								 sheetStatus = new ApplyCouponValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.ApplyCouponValidation(sheetData));
 								 break;
 							 case "IBMSkillBuildPage":
-								 sheetStatus = new IBMSkillBuildPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMSkillBuildPageValidation(sheetData));
 								 break;
 							 case "CheckVILTSelfPacedCourse":
-								 sheetStatus = new CourseLevelValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseLevelValidation(sheetData));
 								 break;
 							 case "AccountPage":
-								 sheetStatus = new AccountPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.AccountPageValidation(sheetData));
 								 break;
 							 case "DevopsPage":
-								 sheetStatus = new DevopsPageValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.DevopsPageValidation(sheetData));
 								 break;
 							 case "OnboardingJourney":
-								 sheetStatus = new OnboardingValidation(sheetData, driver).start(); 
+								 taskMap.put(sheetName, new com.palm.regressionTesting.OnboardingValidation(sheetData));
+								 break;
+							 case "TechMaster":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.TechMasterValidation(sheetData));
+								 break;
+							 case "CategoryBanner":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.CategoryBannerValidation(sheetData));
+								 break;
+							 case "CourseCardHover":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseCardHoverValidation(sheetData));
+								 break;
+							 case "IBMViewCourse":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMViewCourseValidation(sheetData));
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
-						sheetsResult.put(sheetName, sheetStatus);
 					} 
 					catch (Exception e) 
 					{
 						e.printStackTrace();
 					}
 				}
-			}//for loop end
+			}
+			// Map to store the results
+	        // Create a list to keep the tasks in order
+	        List<Map.Entry<String, Callable<String>>> taskList = new ArrayList<>(taskMap.entrySet());
+
+	        // Submit the initial set of tasks up to the pool size (3)
+	        int submittedTasks = 0;
+	        for (int i = 0; i < Math.min(2, taskList.size()); i++)
+	        {
+	            Map.Entry<String, Callable<String>> entry = taskList.get(i);
+	            completionService.submit(entry.getValue());
+	            System.out.println("Submitting task: " + entry.getKey());
+	            submittedTasks++;
+	        }
+
+	        // Process the tasks as they complete and submit new ones until all tasks are done
+	        for (int i = 0; i < taskList.size(); i++)
+	        {
+	            try
+	            {
+	                Future<String> completedFuture = completionService.take(); // This will block until a task completes
+	                String result = completedFuture.get();
+	                System.out.println("Result: " + result); // Handle potential exceptions here
+	                Map.Entry<String, Callable<String>> completedEntry = taskList.get(i);
+	                sheetsResult.put(completedEntry.getKey(), result);
+
+	                // Submit the next task if there are remaining tasks to be submitted
+	                if (submittedTasks < taskList.size())
+	                {
+	                    Map.Entry<String, Callable<String>> nextEntry = taskList.get(submittedTasks);
+	                    completionService.submit(nextEntry.getValue());
+	                    System.out.println("Submitting task: " + nextEntry.getKey());
+	                    submittedTasks++;
+	                }
+	                
+	            } 
+	            catch (Exception e)
+	            {
+	                e.printStackTrace();
+	            }
+	        }
+
 		}
 		catch(Exception e)
 		{
@@ -327,6 +403,7 @@ public class RegressionTesting
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
 			}
+			service.shutdown();
 		}
 	}
 	
@@ -390,6 +467,7 @@ public class RegressionTesting
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.put(
 				"Consolidated Result" + Utils.DELIMITTER + (hasFailedSheets ? "red" : "green"),
 				consolidatedSheedData);
+		
 	}
 	@AfterMethod
 	public void afterMethod(ITestResult result)

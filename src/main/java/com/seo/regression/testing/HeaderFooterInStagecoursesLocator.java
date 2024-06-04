@@ -309,7 +309,7 @@ public class HeaderFooterInStagecoursesLocator
 				for(String windows : allWindows)
 				{
 					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("twitter"))
+					if(driver.getCurrentUrl().contains("x"))
 					{
 						driver.switchTo().window(windows);
 						String getCurrentURLAfterHost = driver.getCurrentUrl();

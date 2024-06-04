@@ -2,11 +2,12 @@ package com.palm.regressionTesting;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 
-public class HomePageValidator 
+public class HomePageValidator implements Callable<String>
 {
 	private String SHEET_NAME;
 	ArrayList<ArrayList<String>> sheetData;
@@ -14,15 +15,11 @@ public class HomePageValidator
 	HomepageLocator homepageLocator;
 	String sheetStatus;
 	
-	public HomePageValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public HomePageValidator(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
-		this.driver = driver;
 		
-		this.SHEET_NAME = sheetName; 
 		this.sheetData = sheetData;
-		this.homepageLocator = new HomepageLocator(this.driver);
-		System.out.println("Homepage process started");
-		sheetStatus = "Pass";
+		
 	}
 
 	public void homePage(WebDriver driver)
@@ -170,5 +167,75 @@ public class HomePageValidator
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(3).add(i+1, (statusOfTopTechCategories.get(i) + "topTechCategories - failed"));
 				}
 			}
+	}
+
+	@Override
+	public String call() throws Exception
+	{
+		this.homepageLocator = new HomepageLocator(this.driver);
+		System.out.println("Homepage process started");
+		sheetStatus = "Pass";
+
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		this.homePage(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			case "Banner":
+				verifyBanner(row);
+				break;
+			case"learningPartners":
+				verifyLearningPartners(row);
+				break;
+			case"humanSkills":
+				verifyHumanSkills();
+				break;
+			case"topTechCategories":
+				verifyTopTechCategories();
+				break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		driver.quit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }
