@@ -3,7 +3,7 @@
 <suite name="Testing Google Apps">
     <test name="Regression">
 		<parameter name = "browser" value = "Chrome"/>
-		<parameter name = "env" value = "q-in"/>
+		<parameter name = "env" value = "qa-in"/>
 	<classes>
 			<class name="com.palm.regressionTesting.RegressionTesting"/>
 		</classes>

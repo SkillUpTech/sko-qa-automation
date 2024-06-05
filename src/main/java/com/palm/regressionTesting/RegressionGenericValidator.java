@@ -15,6 +15,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.TestUtil;
 import com.regression.utility.Utils;
+import com.seo.pompages.NewAboutCourseLocator;
 
 public class RegressionGenericValidator implements Callable<String>
 {
@@ -29,37 +30,17 @@ public class RegressionGenericValidator implements Callable<String>
 	private String endTime = "";
 	private String duration = "";
 	WebDriver driver;
-	public RegressionGenericValidator(ArrayList<ArrayList<String>> rows, String sheetName)
+	public RegressionGenericValidator(String sheetName, ArrayList<ArrayList<String>> rows)
 	{
+		this.SHEET_NAME = sheetName; 
 		this.ROWS = rows;
 		
 	}
-	public WebDriver openDriver(String browserName)
+	
+	public RegressionGenericValidator(WebDriver driver)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
+		this.driver = driver;
 	}
-	/*
-	 * public RegressionGenericValidator(WebDriver driver) { this.driver = driver; }
-	 */
 	
 	public String processSheetData()
 	{
@@ -540,17 +521,38 @@ public class RegressionGenericValidator implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(durationRow);
 		}
 	}
-
+	public WebDriver openDriver(String browserName)
+	{
+		WebDriver driver = null;
+		if(browserName.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--remote-allow-origins=*");
+			options.addArguments("--disable notifications");
+			driver = new ChromeDriver(options);
+			driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		else if(browserName.equalsIgnoreCase("firefox"))
+		{
+			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
+			driver = new FirefoxDriver(); 
+			driver.manage().window().maximize();
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+		}
+		return driver;
+	}
 	@Override
-	public String call() throws Exception
+	public String call() throws Exception 
 	{
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
+		this.regressionGenericLocator = new RegressionGenericLocator(driver);		
 		String BaseWindow = driver.getWindowHandle();
-		this.regressionGenericLocator = new RegressionGenericLocator(driver);
-		/*
-		 * driver.switchTo().newWindow(WindowType.TAB); OpenWebsite.openSite(driver);
-		 */
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{
