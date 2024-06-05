@@ -341,7 +341,7 @@ public class RegressionGenericLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 						freeConsultationStatus.add("Fail");
 						WebElement closePopUp = driver
-								.findElement(By.xpath("//button[@class='btn-close shadow-none']"));
+								.findElement(By.xpath("(//button[@class='btn-close shadow-none'])[2]"));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						if (closePopUp.isDisplayed()) 
 						{
@@ -1271,7 +1271,7 @@ public class RegressionGenericLocator
 							if(!parentWindow.equalsIgnoreCase(childWindow))
 							{
 								driver.switchTo().window(childWindow);
-								if (driver.getCurrentUrl().contains("twitter"))
+								if (driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
 								{
 									driver.switchTo().window(childWindow);
 									System.out.println("twitter screen");

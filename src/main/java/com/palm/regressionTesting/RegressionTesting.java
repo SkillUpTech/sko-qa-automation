@@ -189,7 +189,7 @@ public class RegressionTesting
 							}
 							case "GenericProcess":
 							{
-								taskMap.put(sheetName, new com.palm.regressionTesting.RegressionGenericValidator(sheetData, sheetName));
+								taskMap.put(sheetName, new com.palm.regressionTesting.RegressionGenericValidator( sheetName, sheetData));
 								break;
 							}
 							case "SearchProcess":
