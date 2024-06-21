@@ -57,7 +57,7 @@ public class DashboardValidation implements Callable<String>
 	{
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -489,8 +489,6 @@ public class DashboardValidation implements Callable<String>
 		OpenWebsite.openSite(driver);
 		this.dashboardLocator = new DashboardLocator(this.driver);
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{

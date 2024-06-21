@@ -557,12 +557,10 @@ public class ContactUsValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			this.contactUSLocator = new ContactUSLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
+		this.contactUSLocator = new ContactUSLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

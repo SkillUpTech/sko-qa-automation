@@ -543,14 +543,14 @@ public class RegressionGenericLocator
 		{
 			WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
 			driver.switchTo().frame(iFrame);
-			List<WebElement> buttons = driver.findElements(By.cssSelector(".border-list button"));
-			for(int i = 0; i < buttons.size(); i++)
+			List<WebElement> buttons = driver.findElements(By.xpath("//label[@class='relative cursor-pointer']"));
+			for(int i = 1; i <= buttons.size(); i++)
 			{
-				if(i == 2)
+				if(i == 4)
 				{
-					WebElement label = buttons.get(i).findElement(By.cssSelector("div.title > div"));
+					WebElement label = buttons.get(i).findElement(By.cssSelector("//span[contains(text(),'Netbanking')]"));
 					System.out.println(label.getText());
-					if(label.getText().equalsIgnoreCase("Pay using Netbanking"))
+					if(label.getText().equalsIgnoreCase("Netbanking"))
 					{
 						label.click();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -559,11 +559,12 @@ public class RegressionGenericLocator
 				}
 			}
 			boolean statusOfbankSelection = false;
-			List<WebElement> listOfNetBanking = driver.findElements(By.cssSelector("div#netb-banks label[for*='bank-radio']"));
+			List<WebElement> listOfNetBanking = driver.findElements(By.cssSelector("//form[@class='flex flex-col gap-2 py-3'][1]//label[@class='relative cursor-pointer']"));
 			for(int j = 0; j < listOfNetBanking.size(); j++)
 			{
 				//to select bank
-				String netbankingName = listOfNetBanking.get(j).getText();
+				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(text(),'IDBI')]"));
+				String netbankingName = selectBankName.getText();
 				System.out.println("net banking name : "+netbankingName);
 				if(listOfNetBanking.get(j).getText().equalsIgnoreCase(bankName))
 				{
@@ -573,8 +574,11 @@ public class RegressionGenericLocator
 					WebElement clickBank = listOfNetBanking.get(j);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 					wait.until(ExpectedConditions.elementToBeClickable(clickBank)).click();
-					WebElement clickPayNow = driver.findElement(By.cssSelector("button#redesign-v15-cta"));
-					clickPayNow.click();
+					/*
+					 * WebElement clickPayNow =
+					 * driver.findElement(By.cssSelector("button#redesign-v15-cta"));
+					 * clickPayNow.click();
+					 */
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
 					System.out.println("amount paid through netbanking");
@@ -624,8 +628,7 @@ public class RegressionGenericLocator
 			System.out.println("netbanking is fail");
 			paymentAndOrderStatus.add("paymentFail");
 		}
-		return paymentAndOrderStatus;
-	}
+		return paymentAndOrderStatus;}
 
 	public String diffBank(String bank)
 	{

@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.TestUtil;
+import com.seo.regression.testing.RegressionTesting;
 
 public class HeaderSectionValidation implements Callable<String>
 {
@@ -73,10 +74,10 @@ public class HeaderSectionValidation implements Callable<String>
 						checkBlog(row);
 						break;
 					case "categories":
-						checkCategories(row);
+						checkCategories();
 						break;
 					case "popularCourses":
-						checkPopularCourses(row);
+						checkPopularCourses();
 						break;
 					case "login":
 						checkLogin(row);
@@ -142,12 +143,12 @@ public class HeaderSectionValidation implements Callable<String>
 	public void checkLearningPartner() throws InterruptedException
 	{
 		ArrayList<String> learningPartner = headerSectionLocator.verifyLearningPartner();
-		for(int i = 0; i < learningPartner.size(); i++)
+		if(learningPartner.size()>0)
 		{
-			if(learningPartner.size()>0)
+			for(int i = 0; i < learningPartner.size(); i++)
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).add(i+1, (learningPartner.get(i) + "partner - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(5).add(learningPartner.size()+1, (learningPartner.get(i) + "failed"));
 			}
 		}
 	}
@@ -173,37 +174,30 @@ public class HeaderSectionValidation implements Callable<String>
 			}
 		}
 	}
-	public void checkCategories(ArrayList<String> data)
+	public void checkCategories()
 	{
-		ArrayList<String> categoriesProcess = headerSectionLocator.checkCategories(data);
-		for(int i = 0; i < categoriesProcess.size(); i++)
+		ArrayList<String> categoriesProcess = headerSectionLocator.checkCategories();
+		if(categoriesProcess.size()>0)
 		{
-			if(data.contains(categoriesProcess.get(i)))
+			for(int i = 0; i < categoriesProcess.size(); i++)
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(categoriesProcess.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(3).add(categoriesProcess.size()+1, (categoriesProcess.get(i) + "failed"));
 			}
 		}
 	}
-	public void checkPopularCourses(ArrayList<String> data)
+	public void checkPopularCourses()
 	{
-		if(!data.contains("NA"))
-		{
 			
-			ArrayList<String> popularCouseProcess = headerSectionLocator.checkPopularCourses(data);
-			for(int i = 0; i < popularCouseProcess.size(); i++)
+			ArrayList<String> popularCouseProcess = headerSectionLocator.checkPopularCourses();
+			if(popularCouseProcess.size()>0)
 			{
-				if(data.contains(popularCouseProcess.get(i)))
+				for(int i = 0; i < popularCouseProcess.size(); i++)
 				{
 					sheetStatus = "Fail";
-					int position = data.indexOf(popularCouseProcess.get(i));
-					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).get(position);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).set(position, (cellValue + " - failed"));
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderSection").get(4).add(popularCouseProcess.size()+1, (popularCouseProcess.get(i) + "failed"));
 				}
 			}
-		}
 	}
 	public void checkLogin(ArrayList<String> data)
 	{
@@ -233,10 +227,10 @@ public class HeaderSectionValidation implements Callable<String>
 	@Override
 	public String call() throws Exception
 	{
+		System.out.println("header process started");
 		try
 		{
-		System.out.println("header process started");
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
 		String BaseWindow = driver.getWindowHandle();
@@ -260,10 +254,10 @@ public class HeaderSectionValidation implements Callable<String>
 						checkBlog(row);
 						break;
 					case "categories":
-						checkCategories(row);
+						checkCategories();
 						break;
 					case "popularCourses":
-						checkPopularCourses(row);
+						checkPopularCourses();
 						break;
 					case "login":
 						checkLogin(row);

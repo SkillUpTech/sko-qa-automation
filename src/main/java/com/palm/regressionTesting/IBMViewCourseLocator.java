@@ -14,6 +14,8 @@ import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.palm.regressionTesting.RegressionTesting;
+
 public class IBMViewCourseLocator
 {
 	WebDriver driver;

@@ -24,44 +24,13 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.google.common.util.concurrent.Service;
+
 import com.regression.utility.ProcessExcel;
 import com.regression.utility.Utils;
-import com.seo.regression.testing.AccountPageValidation;
-import com.seo.regression.testing.ApplyCouponValidation;
-import com.seo.regression.testing.BlogPageValidation;
-import com.seo.regression.testing.CategoryBannerValidation;
-import com.seo.regression.testing.CertificateValidation;
-import com.seo.regression.testing.ContactUsValidation;
-import com.seo.regression.testing.CourseCardHoverValidation;
-import com.seo.regression.testing.CourseLevelValidation;
-import com.seo.regression.testing.DashboardValidation;
-import com.seo.regression.testing.DevopsPageValidation;
-import com.seo.regression.testing.EditProfileValidation;
-import com.seo.regression.testing.ExploreAllValidator;
-import com.seo.regression.testing.ExploreCourseByNewUserValidation;
-import com.seo.regression.testing.FAQValidation;
-import com.seo.regression.testing.FluidEducationValidation;
-import com.seo.regression.testing.FooterSectionValidation;
-import com.seo.regression.testing.GLXValidation;
-import com.seo.regression.testing.HeaderFeatureValidation;
-import com.seo.regression.testing.HeaderFooterInErrorScreenValidation;
-import com.seo.regression.testing.HeaderFooterInStagecoursesValidation;
-import com.seo.regression.testing.HomePageValidator;
-import com.seo.regression.testing.IBMPageValidation;
-import com.seo.regression.testing.IBMSkillBuildPageValidation;
-import com.seo.regression.testing.IBMViewCourseValidation;
-import com.seo.regression.testing.InviteOnlyValidation;
-import com.seo.regression.testing.LoginPageLinksValidation;
-import com.seo.regression.testing.MicrosoftCourseValidation;
+
+
 import com.seo.regression.testing.NewAboutCourseValidator;
-import com.seo.regression.testing.OnboardingValidation;
-import com.seo.regression.testing.PLUValidation;
-import com.seo.regression.testing.PlacementPageValidation;
-import com.seo.regression.testing.RegressionGenericValidator;
-import com.seo.regression.testing.ReimbursedValidation;
-import com.seo.regression.testing.SignUpPageLinksValidation;
-import com.seo.regression.testing.TechMasterValidation;
+
 
 public class RegressionTesting 
 {
@@ -139,7 +108,7 @@ public class RegressionTesting
 	@Test
 	public void startTesting()
 	{
-		ExecutorService service = Executors.newFixedThreadPool(2);
+		ExecutorService service = Executors.newFixedThreadPool(5);
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
@@ -303,6 +272,9 @@ public class RegressionTesting
 							 case "IBMViewCourse":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMViewCourseValidation(sheetData));
 								 break;
+							 case "ProgramURLandSlug":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData));
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -319,7 +291,7 @@ public class RegressionTesting
 
 	        // Submit the initial set of tasks up to the pool size (3)
 	        int submittedTasks = 0;
-	        for (int i = 0; i < Math.min(2, taskList.size()); i++)
+	        for (int i = 0; i < Math.min(5, taskList.size()); i++)
 	        {
 	            Map.Entry<String, Callable<String>> entry = taskList.get(i);
 	            completionService.submit(entry.getValue());

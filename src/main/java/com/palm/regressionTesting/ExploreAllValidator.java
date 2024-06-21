@@ -262,8 +262,6 @@ public class ExploreAllValidator implements Callable<String>
 		OpenWebsite.openSite(driver);
 		this.exploreAllLocator = new ExploreAllLocator(driver);
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

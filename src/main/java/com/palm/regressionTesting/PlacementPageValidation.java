@@ -333,8 +333,6 @@ public class PlacementPageValidation implements Callable<String>
 			this.placementPageLocator = new PlacementPageLocator(driver);
 			OpenWebsite.openSite(driver);
 			String BaseWindow = driver.getWindowHandle();
-			driver.switchTo().newWindow(WindowType.TAB);
-			OpenWebsite.openSite(this.driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
 				ArrayList<String> row = this.sheetData.get(i);

@@ -1,5 +1,6 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -103,74 +104,86 @@ public class CertificateLocators
 					if(driver.getCurrentUrl().contains("certificates"))
 					{
 						driver.switchTo().window(win);
-						
-						WebElement facebook = driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(2)>a"));
-						js.executeScript("arguments[0].scrollIntoView();", facebook);
-						if(facebook.isDisplayed())
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if(driver.findElements(By.cssSelector("ul[class='social']>li:nth-child(2)>a")).size()>0)
 						{
-							js.executeScript("arguments[0].click()", facebook);
-							String certificateScreen = driver.getWindowHandle();
-							Set<String> nextWindow = driver.getWindowHandles();
-							for(String screen : nextWindow)
+							WebElement facebook = driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(2)>a"));
+							js.executeScript("arguments[0].scrollIntoView();", facebook);
+							if(facebook.isDisplayed())
 							{
-								driver.switchTo().window(screen);
-								if(driver.getCurrentUrl().contains("facebook"))
+								js.executeScript("arguments[0].click()", facebook);
+								String certificateScreen = driver.getWindowHandle();
+								Set<String> nextWindow = driver.getWindowHandles();
+								for(String screen : nextWindow)
 								{
 									driver.switchTo().window(screen);
-									System.out.println("facebook screen");
-									driver.close();
+									if(driver.getCurrentUrl().contains("facebook"))
+									{
+										driver.switchTo().window(screen);
+										System.out.println("facebook screen");
+										driver.close();
+										driver.switchTo().window(certificateScreen);
+										break;
+									}
 									driver.switchTo().window(certificateScreen);
-									break;
 								}
 								driver.switchTo().window(certificateScreen);
 							}
-							driver.switchTo().window(certificateScreen);
 						}
 						
-						WebElement twitter =  driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(3)>a"));
-						js.executeScript("arguments[0].scrollIntoView();", twitter);
-						if(facebook.isDisplayed())
+						else if(driver.findElements(By.cssSelector("ul[class='social']>li:nth-child(3)>a")).size()>0)
 						{
-							js.executeScript("arguments[0].click()", twitter);
-							String certificateScreen = driver.getWindowHandle();
-							Set<String> nextWindow = driver.getWindowHandles();
-							for(String screen : nextWindow)
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							WebElement twitter =  driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(3)>a"));
+							js.executeScript("arguments[0].scrollIntoView();", twitter);
+							if(twitter.isDisplayed())
 							{
-								driver.switchTo().window(screen);
-								if(driver.getCurrentUrl().contains("twitter"))
+								js.executeScript("arguments[0].click()", twitter);
+								String certificateScreen = driver.getWindowHandle();
+								Set<String> nextWindow = driver.getWindowHandles();
+								for(String screen : nextWindow)
 								{
 									driver.switchTo().window(screen);
-									System.out.println("twitter screen");
-									driver.close();
+									if(driver.getCurrentUrl().contains("intent"))
+									{
+										driver.switchTo().window(screen);
+										System.out.println("twitter screen");
+										driver.close();
+										driver.switchTo().window(certificateScreen);
+										break;
+									}
 									driver.switchTo().window(certificateScreen);
-									break;
 								}
 								driver.switchTo().window(certificateScreen);
 							}
-							driver.switchTo().window(certificateScreen);
 						}
 						
-						WebElement LinkedIn	= driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(4)>a"));
-						js.executeScript("arguments[0].scrollIntoView();", LinkedIn);
-						if(facebook.isDisplayed())
+						else if(driver.findElements(By.cssSelector("ul[class='social']>li:nth-child(4)>a")).size()>0)
 						{
-							js.executeScript("arguments[0].click()", LinkedIn);
-							String certificateScreen = driver.getWindowHandle();
-							Set<String> nextWindow = driver.getWindowHandles();
-							for(String screen : nextWindow)
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							WebElement LinkedIn	= driver.findElement(By.cssSelector("ul[class='social']>li:nth-child(4)>a"));
+							js.executeScript("arguments[0].scrollIntoView();", LinkedIn);
+							if(LinkedIn.isDisplayed())
 							{
-								driver.switchTo().window(screen);
-								if(driver.getCurrentUrl().contains("linkedin"))
+								js.executeScript("arguments[0].click()", LinkedIn);
+								String certificateScreen = driver.getWindowHandle();
+								Set<String> nextWindow = driver.getWindowHandles();
+								for(String screen : nextWindow)
 								{
 									driver.switchTo().window(screen);
-									System.out.println("linkedin screen");
-									driver.close();
+									if(driver.getCurrentUrl().contains("linkedin"))
+									{
+										driver.switchTo().window(screen);
+										System.out.println("linkedin screen");
+										driver.close();
+										driver.switchTo().window(certificateScreen);
+										break;
+									}
 									driver.switchTo().window(certificateScreen);
-									break;
 								}
 								driver.switchTo().window(certificateScreen);
 							}
-							driver.switchTo().window(certificateScreen);
 						}
 						driver.close();
 						driver.switchTo().window(baseWindow);
