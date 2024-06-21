@@ -591,6 +591,7 @@ public class RegressionGenericValidator implements Callable<String>
 				}
 			}
 		}
+		driver.quit();
 		return sheetStatus;
 	
 	}

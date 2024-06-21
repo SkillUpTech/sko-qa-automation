@@ -460,8 +460,8 @@ public class SignUpValidation implements Callable<String>
 	@Override
 	public String call() throws Exception
 	{
+		System.out.println("Sign up validation begins");
 		try {
-			System.out.println("Sign up validation begins");
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
 		this.signUpLocator = new SignUpLocator(this.driver);

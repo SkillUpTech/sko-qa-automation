@@ -103,7 +103,7 @@ public class MicrosoftCourseValidation implements Callable<String>
 			for(int i = 0; i < getStatus.size(); i++)
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + "MicrosoftScourses - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + "failed"));
 			}
 		}
 	}
@@ -137,12 +137,10 @@ public class MicrosoftCourseValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			this.microsoftCourseLocator = new MicrosoftCourseLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
+		this.microsoftCourseLocator = new MicrosoftCourseLocator(driver);
+		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

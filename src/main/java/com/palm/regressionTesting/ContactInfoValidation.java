@@ -1354,8 +1354,6 @@ public class ContactInfoValidation implements Callable<String>
 			OpenWebsite.openSite(driver);
 			this.contactInfoLocator = new ContactInfoLocator(driver);
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

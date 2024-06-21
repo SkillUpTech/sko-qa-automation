@@ -142,7 +142,7 @@ public class SignUpLocator
 				System.out.println("sign up page");
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				Thread.sleep(1000);
@@ -176,7 +176,7 @@ public class SignUpLocator
 			{
 				driver.switchTo().window(window);
 				System.out.println("sign up page");
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -208,7 +208,7 @@ public class SignUpLocator
 			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-			//	this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase = this.checkValidationMessage();
 				Thread.sleep(1000);
@@ -240,7 +240,7 @@ public class SignUpLocator
 			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-				//this.signUpFunction(dataFromExcel);
+				this.signUpFunction(dataFromExcel);
 				Thread.sleep(1000);
 				statusOfTestCase.addAll(this.checkValidationMessage());
 				Thread.sleep(1000);

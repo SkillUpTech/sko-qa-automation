@@ -1083,9 +1083,7 @@ public class NewAboutCourseValidator implements Callable<String>
 	{
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
-		
 		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
-		
 		String BaseWindow = driver.getWindowHandle();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) 
@@ -1124,6 +1122,7 @@ public class NewAboutCourseValidator implements Callable<String>
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
+		driver.quit();
 		return sheetStatus;
 	
 	}

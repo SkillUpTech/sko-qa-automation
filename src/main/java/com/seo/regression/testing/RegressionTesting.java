@@ -279,6 +279,9 @@ public class RegressionTesting
 							 case "IBMViewCourse":
 								 sheetStatus = new IBMViewCourseValidation(sheetData, driver).start(); 
 								 break;
+							 case "ProgramURLandSlug":
+								 sheetStatus = new verifyProgramURLValidation(sheetData, driver).start(); 
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}//end of swtich case

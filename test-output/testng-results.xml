@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-06-05T10:42:36 IST" name="Testing Google Apps" finished-at="2024-06-05T10:43:58 IST" duration-ms="82211">
+  <suite started-at="2024-06-20T17:36:04 IST" name="Testing Google Apps" finished-at="2024-06-20T17:48:26 IST" duration-ms="742424">
     <groups>
     </groups>
-    <test started-at="2024-06-05T10:42:36 IST" name="Regression" finished-at="2024-06-05T10:43:58 IST" duration-ms="82211">
+    <test started-at="2024-06-20T17:36:04 IST" name="Regression" finished-at="2024-06-20T17:48:26 IST" duration-ms="742424">
       <class name="com.palm.regressionTesting.RegressionTesting">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@131774fe]" started-at="2024-06-05T10:42:36 IST" name="setup" finished-at="2024-06-05T10:42:36 IST" duration-ms="8" status="PASS">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-06-20T17:36:04 IST" name="setup" finished-at="2024-06-20T17:36:04 IST" duration-ms="18" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -23,15 +23,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@131774fe]" started-at="2024-06-05T10:42:36 IST" name="startTesting" finished-at="2024-06-05T10:43:58 IST" duration-ms="82153" status="PASS">
+        <test-method signature="startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-06-20T17:36:04 IST" name="startTesting" finished-at="2024-06-20T17:48:26 IST" duration-ms="742324" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startTesting -->
-        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@131774fe]" started-at="2024-06-05T10:43:58 IST" name="afterMethod" finished-at="2024-06-05T10:43:58 IST" duration-ms="12" status="PASS">
+        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-06-20T17:48:26 IST" name="afterMethod" finished-at="2024-06-20T17:48:26 IST" duration-ms="5" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@131774fe] output={null}]]]>
+                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc] output={null}]]]>
               </value>
             </param>
           </params>

@@ -156,8 +156,8 @@ public class ApplyCouponValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		OpenWebsite.openSite(driver);
 		this.applyCouponLocator = new ApplyCouponLocator(driver);
 		//this.regressionGenericValidator = new RegressionGenericValidator(sheetName, SheetData);
 		String BaseWindow = driver.getWindowHandle();

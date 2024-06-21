@@ -166,17 +166,14 @@ public class TechMasterValidation implements Callable<String>
 	}
 	@Override
 	public String call() throws Exception {
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-		System.out.println("Onboarding Journey Process started");
+		System.out.println("Techmaster Process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			this.techMasterLocator = new TechMasterLocator(driver);
-			OpenWebsite.openSite(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
+		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		this.techMasterLocator = new TechMasterLocator(driver);
 		OpenWebsite.openSite(driver);
+		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

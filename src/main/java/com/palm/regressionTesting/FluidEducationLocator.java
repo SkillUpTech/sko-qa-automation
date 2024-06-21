@@ -350,7 +350,7 @@ public class FluidEducationLocator
 				}
 				
 				WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
-				String statusOfURL = microsoftCourseLocator.checkCourseCode(urlLink.getAttribute("href"));
+				String statusOfURL = microsoftCourseLocator.checkURLStatus(urlLink.getAttribute("href"));
 				if(!statusOfURL.contains("fail"))
 				{
 					String parentwindow = driver.getWindowHandle();

@@ -321,9 +321,9 @@ public class FooterSectionValidation implements Callable<String>
 	}
 	@Override
 	public String call() throws Exception {
+		System.out.println("footer section process started");	
 		try
 		{
-			System.out.println("footer section process started");	
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		OpenWebsite.openSite(driver);
 		this.footerSectionLocator = new FooterSectionLocator(driver);
