@@ -2,11 +2,16 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Testing Google Apps">
     <test name="Regression">
-		<parameter name = "browser" value = "Chrome"/>
-		<parameter name = "env" value = "qa"/>
-	<classes>
-			<class name="com.palm.regressionTesting.RegressionTesting"/>
-		</classes>
-     </test> <!-- Test -->
+        <parameter name="browser" value="chrome"/>
+<<<<<<< HEAD
+        <parameter name="env" value="qa"/>
+        <classes>
+            <class name="com.palm.regressionTesting.RegressionTesting"/>
+=======
+        <parameter name="Denvironment" value="{$Denvironment}"/>
+        <classes>
+            <class name="com.seo.regression.testing.RegressionTesting"/>
+>>>>>>> origin/main
+        </classes>
+    </test> <!-- Test -->
 </suite> <!-- Suite -->
-	
