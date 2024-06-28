@@ -2,11 +2,10 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Testing Google Apps">
     <test name="Regression">
-		<parameter name = "browser" value = "Chrome"/>
-		<parameter name = "env" value = "qa-in"/>
-	<classes>
-			<class name="com.palm.regressionTesting.RegressionTesting"/>
+		<parameter name = "browser" value = "chrome"/>
+		<parameter name = "Denvironment" value = "{$Denvironment}"/>
+		<classes>
+			<class name="com.seo.regression.testing.RegressionTesting"/>
 		</classes>
      </test> <!-- Test -->
 </suite> <!-- Suite -->
-	
