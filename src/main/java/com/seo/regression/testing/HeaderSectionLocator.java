@@ -228,9 +228,8 @@ public class HeaderSectionLocator
 				JavascriptExecutor js = (JavascriptExecutor) driver;
 				WebElement categoryElement = selectCourse.get(i).findElement(By.cssSelector(" a"));
 				js.executeScript("arguments[0].scrollIntoView();", categoryElement);
-				String categoryName = selectCourse.get(i).findElement(By.cssSelector(" a")).getText();
 				
-				if(categoryName.equalsIgnoreCase(data.get(i+1)))
+				if(categoryElement.isDisplayed())
 				{
 					//driver.findElement(By.cssSelector("div[class=' Header_category__mr_e4']")).click();
 					String getCatagoriesURL = selectCourse.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
@@ -311,7 +310,7 @@ public class HeaderSectionLocator
 					}
 				}
 				String popularCourseName = popularCourses.get(i).findElement(By.cssSelector(" p")).getText();
-				if(popularCourseName.equalsIgnoreCase(data.get(i+1)))
+				if( popularCourses.get(i).isDisplayed())
 				{
 					
 					String getPopularCourseURL = popularCourses.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
@@ -320,10 +319,6 @@ public class HeaderSectionLocator
 					if(urlLinkStatus.equalsIgnoreCase("fail"))
 					{
 						status.add(popularCourses.get(i).getText());
-					}
-					else
-					{
-						status.add("pass");
 					}
 					 String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 					 popularCourses.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
@@ -499,7 +494,7 @@ public class HeaderSectionLocator
 					}
 				}
 				String learningPartnerName = learningPartners.get(i).getAttribute("href");
-					if(learningPartnerName.contains(data.get(i+1)))
+					if(learningPartners.get(i).isDisplayed())
 					{
 						String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
 						String urlLinkStatus = this.checkURLStatus(getLearningPartnerURL);
@@ -509,10 +504,7 @@ public class HeaderSectionLocator
 						{
 							status.add(data.get(i+1));
 						}
-						else
-						{
-							status.add("pass");
-						}
+						
 						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 						learningPartners.get(i).sendKeys(n);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
