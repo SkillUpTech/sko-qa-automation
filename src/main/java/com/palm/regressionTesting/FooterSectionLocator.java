@@ -608,7 +608,7 @@ public class FooterSectionLocator
 				{
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					String categoriesName = popularCategories.get(i).getText();
-					if(categoriesName.equalsIgnoreCase(data.get(i+1)))
+					if(popularCategories.get(i).isDisplayed())
 					{
 						String getCatagoriesURL =  popularCategories.get(i).getAttribute("href");
 						String urlstatus=this.checkURLStatus(getCatagoriesURL);
@@ -714,7 +714,7 @@ public class FooterSectionLocator
 		List<WebElement> popularCourses = driver.findElements(By.cssSelector("div[class*='Footer_PopularCourses'] ul li a"));
 		for(int i = 0; i < popularCourses.size(); i++)
 		{
-			if(data.get(i+1).equalsIgnoreCase(popularCourses.get(i).getText()))
+			if(popularCourses.get(i).isDisplayed())
 			{
 				String URLStatus=this.checkURLStatus(popularCourses.get(i).getAttribute("href")); 
 				if(URLStatus.equalsIgnoreCase("failed"))
@@ -813,7 +813,7 @@ public class FooterSectionLocator
 		List<WebElement> blogs = driver.findElements(By.cssSelector("div[class*='Footer_LatestBlogsRepT']"));
 		for(int i = 0; i < blogs.size(); i++)
 		{
-			if(data.get(i+1).equalsIgnoreCase(blogs.get(i).findElement(By.cssSelector(" h3")).getText()))
+			if(blogs.get(i).isDisplayed())
 			{
 				String urlStatus = this.checkURLStatus(blogs.get(i).findElement(By.cssSelector("div[class*='Footer_LatestBlogsRepT'] a")).getAttribute("href"));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
