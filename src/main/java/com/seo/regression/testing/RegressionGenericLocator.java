@@ -543,27 +543,21 @@ public class RegressionGenericLocator
 		{
 			WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
 			driver.switchTo().frame(iFrame);
-			List<WebElement> buttons = driver.findElements(By.xpath("//label[@class='relative cursor-pointer']"));
-			for(int i = 1; i <= buttons.size(); i++)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			WebElement label = driver.findElement(By.xpath("//*[contains(text(),'Netbanking')]"));////label[@class='relative cursor-pointer']//span[@class='truncate font-medium']
+			System.out.println(label.getText());
+			if(label.isDisplayed())
 			{
-				if(i == 4)
-				{
-					WebElement label = buttons.get(i).findElement(By.cssSelector("//span[contains(text(),'Netbanking')]"));
-					System.out.println(label.getText());
-					if(label.getText().equalsIgnoreCase("Netbanking"))
-					{
-						label.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					}
-				}
+				label.click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 			}
 			boolean statusOfbankSelection = false;
-			List<WebElement> listOfNetBanking = driver.findElements(By.cssSelector("//form[@class='flex flex-col gap-2 py-3'][1]//label[@class='relative cursor-pointer']"));
+			List<WebElement> listOfNetBanking = driver.findElements(By.xpath("//form[@class='flex flex-col gap-2 py-3'][2]//label[@class='relative cursor-pointer']"));
 			for(int j = 0; j < listOfNetBanking.size(); j++)
 			{
 				//to select bank
-				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(text(),'IDBI')]"));
+				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(normalize-space(text()),'IDBI')]"));
 				String netbankingName = selectBankName.getText();
 				System.out.println("net banking name : "+netbankingName);
 				if(listOfNetBanking.get(j).getText().equalsIgnoreCase(bankName))
@@ -628,7 +622,8 @@ public class RegressionGenericLocator
 			System.out.println("netbanking is fail");
 			paymentAndOrderStatus.add("paymentFail");
 		}
-		return paymentAndOrderStatus;}
+		return paymentAndOrderStatus;
+	}
 
 	public String diffBank(String bank)
 	{
@@ -1274,7 +1269,7 @@ public class RegressionGenericLocator
 							if(!parentWindow.equalsIgnoreCase(childWindow))
 							{
 								driver.switchTo().window(childWindow);
-								if (driver.getCurrentUrl().contains("x")||driver.getCurrentUrl().contains("intent"))
+								if (driver.getCurrentUrl().contains("x.com"))
 								{
 									driver.switchTo().window(childWindow);
 									System.out.println("twitter screen");
