@@ -1,4 +1,4 @@
-package com.palm.regressionTesting;
+package com.seo.sanityTesting;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
