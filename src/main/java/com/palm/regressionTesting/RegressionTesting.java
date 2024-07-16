@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.devtools.v124.database.model.Error;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
@@ -27,8 +28,7 @@ import org.testng.annotations.Test;
 
 import com.regression.utility.ProcessExcel;
 import com.regression.utility.Utils;
-
-
+import com.seo.regression.testing.ErrorCodeValidation;
 import com.seo.regression.testing.NewAboutCourseValidator;
 
 
@@ -275,6 +275,9 @@ public class RegressionTesting
 							 case "ProgramURLandSlug":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData));
 								 break;
+							 case "URLValidation":
+									sheetStatus = new com.palm.regressionTesting.ErrorCodeValidation(sheetData)
+									break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

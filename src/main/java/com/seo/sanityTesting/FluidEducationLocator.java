@@ -250,4 +250,31 @@ public class FluidEducationLocator
 		return processStatus;
 		
 	}
+	//verifyFluidEducationCourse
+	public ArrayList<String> verifyFluidEducationCourse()
+	{
+		ArrayList<String> processStatus = new ArrayList<String>();
+		try
+		{
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollBy(0, 3000)", "");
+			driver.switchTo().defaultContent();
+			List<WebElement> ListOfCourse = driver.findElements(By.cssSelector("section[class*='HumanSkills_mainContainer'] div[class*='HumanSkills_mainContent'] a"));
+			for(int i = 0; i < ListOfCourse.size(); i++)
+			{
+				String URLFluidEducation = ListOfCourse.get(i).getAttribute("href");
+				String status = this.checkURLStatus(URLFluidEducation);
+				if(status.contains("fail"))
+				{
+					processStatus.add(status);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return processStatus;
+		
+	}
 }

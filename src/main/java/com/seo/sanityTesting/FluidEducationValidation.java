@@ -49,6 +49,9 @@ public class FluidEducationValidation
 				case "programs":
 					programs(row);
 					break;
+				case "ExploreCourse":
+					ExploreCourse();
+					break;
 			}
 		}
 		Set<String> windows = driver.getWindowHandles();
@@ -134,6 +137,18 @@ public class FluidEducationValidation
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(4).add(i+1, (getStatus.get(i) + "programs - failed"));
 				}
+			}
+		}
+	}
+	public void ExploreCourse()
+	{
+		ArrayList<String> getStatus = fluidEducationLocator.verifyFluidEducationCourse();
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(5).add(i+1, (getStatus.get(i) + "programs - failed"));
 			}
 		}
 	}
