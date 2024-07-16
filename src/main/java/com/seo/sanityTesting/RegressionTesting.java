@@ -95,7 +95,7 @@ public class RegressionTesting
 	
 	public void startTesting()
 	{
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "D:\\Doc\\SanityTesting.xlsx";
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		try
@@ -180,6 +180,9 @@ public class RegressionTesting
 								 break;
 							 case "CategoryBanner":
 								 sheetStatus = new CategoryBannerValidation(sheetData, driver).start(); 
+								 break;
+							 case "purchaseCourse":
+								 sheetStatus = new PurchaseCourseValidation(sheetData, driver).start(); 
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");

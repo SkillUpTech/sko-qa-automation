@@ -138,5 +138,16 @@ public class GLXValidation
 			}
 		}
 	}
-
+	public void ExploreCourse()
+	{
+		ArrayList<String> getStatus = glxLocator.verifyGLXCourse();
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GLX").get(2).add(i+1, (getStatus.get(i) + "programs - failed"));
+			}
+		}
+	}
 }

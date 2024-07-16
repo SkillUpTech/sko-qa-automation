@@ -20,14 +20,14 @@ public class FutureSkillValidation
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
-	FutureSkillLocator techMasterLocator;
+	FutureSkillLocator futureSkillLocator;
 	String sheetStatus = "Pass";
 
 	public FutureSkillValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver)
 	{
 		
 		this.sheetData = sheetData;
-		this.techMasterLocator = new FutureSkillLocator(driver);
+		this.futureSkillLocator = new FutureSkillLocator(driver);
 		OpenWebsite.openSite(driver);
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		System.out.println("Onboarding Journey Process started");
@@ -97,7 +97,7 @@ public class FutureSkillValidation
 	
 	public void launchSite(String url)
 	{
-		String status = techMasterLocator.launchSite(url);
+		String status = futureSkillLocator.launchSite(url);
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
@@ -106,7 +106,7 @@ public class FutureSkillValidation
 	}
 	public void findOutMore_Button()
 	{
-		String status = techMasterLocator.findOutMore_Button();
+		String status = futureSkillLocator.findOutMore_Button();
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
@@ -115,7 +115,7 @@ public class FutureSkillValidation
 	}
 	public void learnmore_Button()
 	{
-		String status = techMasterLocator.learnmore_Button();
+		String status = futureSkillLocator.learnmore_Button();
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
@@ -124,7 +124,7 @@ public class FutureSkillValidation
 	}
 	public void Cards()
 	{
-		ArrayList<String> status = techMasterLocator.Cards();
+		ArrayList<String> status = futureSkillLocator.Cards();
 		if(status.size()>0)
 		{
 			for(int i = 0; i < status.size(); i++)
