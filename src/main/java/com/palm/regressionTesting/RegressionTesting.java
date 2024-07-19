@@ -276,8 +276,8 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData));
 								 break;
 							 case "URLValidation":
-									sheetStatus = new com.palm.regressionTesting.ErrorCodeValidation(sheetData)
-									break;
+									 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
+									 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}

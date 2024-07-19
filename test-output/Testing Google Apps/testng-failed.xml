@@ -3,15 +3,15 @@
 <suite name="Failed suite [Testing Google Apps]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Regression(failed)">
     <parameter name="browser" value="Chrome"/>
-    <parameter name="env" value="qa-in"/>
+    <parameter name="env" value="dev-in"/>
     <classes>
-      <class name="com.seo.regression.testing.RegressionTesting">
+      <class name="com.palm.sanityTesting.RegressionTesting">
         <methods>
           <include name="startTest"/>
           <include name="setup"/>
           <include name="afterMethod"/>
         </methods>
-      </class> <!-- com.seo.regression.testing.RegressionTesting -->
+      </class> <!-- com.palm.sanityTesting.RegressionTesting -->
     </classes>
   </test> <!-- Regression(failed) -->
 </suite> <!-- Failed suite [Testing Google Apps] -->
