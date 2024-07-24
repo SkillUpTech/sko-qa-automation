@@ -278,6 +278,9 @@ public class RegressionTesting
 							 case "URLValidation":
 									 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
 									 break;
+							 case "LoginSocialAccount":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.LoginSocialAccountValidation(sheetData));
+								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
