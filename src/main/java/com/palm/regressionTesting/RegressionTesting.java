@@ -51,7 +51,7 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\125driver\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "D:\\chromedriver_127\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -280,6 +280,9 @@ public class RegressionTesting
 									 break;
 							 case "LoginSocialAccount":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.LoginSocialAccountValidation(sheetData));
+								 break;
+							 case "TNSDC_1":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.TNSDC_Phase1Validation(sheetData));
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");
