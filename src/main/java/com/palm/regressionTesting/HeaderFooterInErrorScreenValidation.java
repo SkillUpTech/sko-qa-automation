@@ -28,7 +28,7 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 	{
 		try
 		{
-			
+		System.out.println("Header and Footer error page validation");
 		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);

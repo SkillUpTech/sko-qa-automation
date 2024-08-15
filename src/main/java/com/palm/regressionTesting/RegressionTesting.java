@@ -281,8 +281,14 @@ public class RegressionTesting
 							 case "LoginSocialAccount":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.LoginSocialAccountValidation(sheetData));
 								 break;
-							 case "TNSDC_1":
+							 case "TNSDC1":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.TNSDC_Phase1Validation(sheetData));
+								 break;
+							 case "TNSDC2":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.TNSDC_Phase2Validation(sheetData));
+								 break;
+							 case "SPOC":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.SPOC_DashboardValidation(sheetData));
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");

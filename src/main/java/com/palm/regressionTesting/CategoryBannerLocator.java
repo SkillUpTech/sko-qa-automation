@@ -86,13 +86,13 @@ public class CategoryBannerLocator
 							
 							js.executeScript("arguments[0].click()", checkActiveBanner);
 							
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 							
 								
 							if(driver.findElements(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Whitepaper')]")).size()>0)
 							{
 								checkStatus = true;
-								Thread.sleep(1000);
+								Thread.sleep(2000);
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 								WebElement clickWhitepaper = driver.findElement(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Whitepaper')]"));
 								js.executeScript("arguments[0].scrollIntoView();", clickWhitepaper);
@@ -112,6 +112,7 @@ public class CategoryBannerLocator
 										status.add("pass");
 										driver.navigate().back();
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										Thread.sleep(1000);
 										driver.switchTo().window(parent);
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 									}
@@ -120,7 +121,7 @@ public class CategoryBannerLocator
 							}
 							else if(driver.findElements(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Brochure')]")).size()>0)
 							{
-								Thread.sleep(1000);
+								Thread.sleep(2000);
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 								WebElement clickBrochureButton = driver.findElement(By.xpath("//div[@class='slick-slide slick-active slick-current']//button[contains(text(),'Download Brochure')]"));
 								js.executeScript("arguments[0].scrollIntoView();", clickBrochureButton);
@@ -140,6 +141,7 @@ public class CategoryBannerLocator
 										status.add("pass");
 										driver.navigate().back();
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+										Thread.sleep(1000);
 										driver.switchTo().window(parent);
 										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 									}
