@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-08-05T21:44:23 IST" name="Testing Google Apps" finished-at="2024-08-05T21:44:48 IST" duration-ms="25490">
+  <suite started-at="2024-08-14T22:00:42 IST" name="Testing Google Apps" finished-at="2024-08-14T22:10:16 IST" duration-ms="574390">
     <groups>
     </groups>
-    <test started-at="2024-08-05T21:44:23 IST" name="Regression" finished-at="2024-08-05T21:44:48 IST" duration-ms="25490">
+    <test started-at="2024-08-14T22:00:42 IST" name="Regression" finished-at="2024-08-14T22:10:16 IST" duration-ms="574390">
       <class name="com.palm.regressionTesting.RegressionTesting">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-08-05T21:44:23 IST" name="setup" finished-at="2024-08-05T21:44:23 IST" duration-ms="15" status="PASS">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@7d20d0b]" started-at="2024-08-14T22:00:42 IST" name="setup" finished-at="2024-08-14T22:00:42 IST" duration-ms="20" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -16,22 +16,22 @@
             </param>
             <param index="1">
               <value>
-                <![CDATA[qa-in]]>
+                <![CDATA[dev-in]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-08-05T21:44:23 IST" name="startTesting" finished-at="2024-08-05T21:44:48 IST" duration-ms="25427" status="PASS">
+        <test-method signature="startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@7d20d0b]" started-at="2024-08-14T22:00:42 IST" name="startTesting" finished-at="2024-08-14T22:10:16 IST" duration-ms="574308" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startTesting -->
-        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc]" started-at="2024-08-05T21:44:48 IST" name="afterMethod" finished-at="2024-08-05T21:44:48 IST" duration-ms="0" status="PASS">
+        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@7d20d0b]" started-at="2024-08-14T22:10:16 IST" name="afterMethod" finished-at="2024-08-14T22:10:16 IST" duration-ms="3" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@24313fcc] output={null}]]]>
+                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@7d20d0b] output={null}]]]>
               </value>
             </param>
           </params>

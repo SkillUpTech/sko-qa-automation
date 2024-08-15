@@ -2,7 +2,6 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
@@ -56,7 +55,6 @@ public String call() throws Exception
 	driver = this.openDriver(RegressionTesting.nameOfBrowser);
 	OpenWebsite.openSite(driver);
 	this.checkTNSDC_Phase1Locator = new TNSDC_Phase1Locator(driver);
-	String BaseWindow = driver.getWindowHandle();
 	for(int i = 0; i < this.sheetData.size(); i++)
 	{
 		ArrayList<String> row = this.sheetData.get(i);
@@ -119,7 +117,7 @@ public void verifyMentorDashboardPage(ArrayList<String> data)
 		else if(status.contains("issue in collegeName"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(2).add(1, ("issue in collegeName" + "failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TNSDC_1").get(2).add(1, ("issue in collegeName" + "failed"));
 
 		}
 		else if(status.contains("courseNameFail"))
@@ -128,7 +126,7 @@ public void verifyMentorDashboardPage(ArrayList<String> data)
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TNSDC_1").get(2).set(2, "TNSDC_1 - failed");
 
 		}
-		else if(status.contains("projectName"))
+		else if(status.contains("projectNameFail"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TNSDC_1").get(2).set(3, "TNSDC_1 - failed");

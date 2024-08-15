@@ -3,13 +3,13 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.palm.sanityTesting.RegressionTesting">
+      <class name="com.palm.regressionTesting.RegressionTesting">
         <methods>
-          <include name="startTest"/>
-          <include name="setup"/>
           <include name="afterMethod"/>
+          <include name="setup"/>
+          <include name="startTesting"/>
         </methods>
-      </class> <!-- com.palm.sanityTesting.RegressionTesting -->
+      </class> <!-- com.palm.regressionTesting.RegressionTesting -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
