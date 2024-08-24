@@ -146,6 +146,7 @@ public class RegressionTesting
 					try
 					{
 						sheetStatus = "";
+						
 						switch(sheetName)
 						{
 							case "Login":
@@ -323,7 +324,7 @@ public class RegressionTesting
 	                String result = completedFuture.get();
 	                System.out.println("Result: " + result); // Handle potential exceptions here
 	                Map.Entry<String, Callable<String>> completedEntry = taskList.get(i);
-	                sheetsResult.put(completedEntry.getKey(), result);
+	                sheetsResult.put(completedEntry.getKey(), result);//we get status of sheetname
 
 	                // Submit the next task if there are remaining tasks to be submitted
 	                if (submittedTasks < taskList.size())
@@ -477,7 +478,6 @@ public class RegressionTesting
 	     else if(result.getStatus() == ITestResult.SKIP ){
 
 	        System.out.println("Skiped***********");
-
 	    }
 	}
 	   catch(Exception e)
@@ -486,4 +486,8 @@ public class RegressionTesting
 	   }
 
 	}
+	
+	 public void updateJiraWithTestResult(String testCaseId, String status) {
+	        // Call to JiraClient or API
+	    }
 }

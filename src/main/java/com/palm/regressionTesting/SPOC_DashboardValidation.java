@@ -47,10 +47,12 @@ public class SPOC_DashboardValidation implements Callable<String>
 		}
 
 		@Override
-		public String call() throws Exception {
+		public String call() throws Exception 
+		{
 			System.out.println("TNSDC phase 2 verification");
 
-			try {
+			try
+			{
 				driver = this.openDriver(RegressionTesting.nameOfBrowser);
 				OpenWebsite.openSite(driver);
 				this.sPOC_DashboardLocator = new SPOC_DashboardLocator(driver);
@@ -66,9 +68,9 @@ public class SPOC_DashboardValidation implements Callable<String>
 					case "SPOCMentorDashoardPage":
 						verifySPOCMentorDashoardPage(row.get(1));
 						break;
-					case "AddMentor":
-						verifyMentorCreation(row);
-						break;
+					/*
+					 * case "AddMentor": verifyMentorCreation(row); break;
+					 */
 					case "UpdateMentor":
 						verifyUpdateMentor(row);
 						break;

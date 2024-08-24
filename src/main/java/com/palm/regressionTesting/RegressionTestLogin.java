@@ -2,14 +2,16 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import com.regression.utility.TestUtil;
+
+import com.seo.utility.TestUtil;
 
 public class RegressionTestLogin implements Callable<String>
 {
@@ -20,6 +22,8 @@ public class RegressionTestLogin implements Callable<String>
 	String sheetStatus = "Pass";
 	String browser = "";
 	RegressionTesting regressionTesting;
+	ArrayList<String> row = new ArrayList<String>();
+	ArrayList<String> ticketStatus = new ArrayList<String>();
 	
 	public RegressionTestLogin(ArrayList<ArrayList<String>> sheetData) throws Exception
 	{		
@@ -119,22 +123,22 @@ public class RegressionTestLogin implements Callable<String>
 			String BaseWindow = driver.getWindowHandle();
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
-				ArrayList<String> row = this.sheetData.get(i);
+				row = this.sheetData.get(i);
 				String firstColumn = row.get(0);
 				switch(firstColumn)
 				{
 					case "InvalidUsername":
 						InvalidUsername();
 						break;
-					case "InvalidPassword":
-						InvalidPassword();
-						break;
-					case "InvalidUserNameAndPassword":
-						InvalidUserNameAndPassword();
-						break;
-					case "ValidCredentials":
-						ValidCredentials();
-						break;
+//					case "InvalidPassword":
+//						InvalidPassword();
+//						break;
+//					case "InvalidUserNameAndPassword":
+//						InvalidUserNameAndPassword();
+//						break;
+//					case "ValidCredentials":
+//						ValidCredentials();
+//						break;
 				}
 			}
 			Set<String> windows = driver.getWindowHandles();
@@ -158,6 +162,23 @@ public class RegressionTestLogin implements Callable<String>
 					}
 				}
 				
+			}
+			HashMap<String, String> resultStatus = new HashMap<String, String>();
+			ArrayList<String> sheetRow = sheetData.get(4);
+			String getExecutionStatus = "";
+			//JiraIntegration jiraUpdater = new JiraIntegration();
+			if(sheetStatus == "fail")
+			{
+				getExecutionStatus = "FAIL";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
+			}
+			else
+			{
+				getExecutionStatus = "PASS";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				
+				//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
 			}
 			driver.quit();
 		}

@@ -103,15 +103,15 @@ public class ExploreAllValidator implements Callable<String>
 	
 	public void verifyExploreAllIcons()
 	{
-		ArrayList<String> getStatus = exploreAllLocator.checkExploreAll();
+		ArrayList<String> getStatus = exploreAllLocator.checkExploreAllLinks();
 		for(int i = 0; i < getStatus.size(); i++)
 		{
-			if(getStatus.get(0).contains("home"))
+			if(getStatus.get(0).contains("megaMenu_Fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(1, "verifyExploreAll - failed");
 			}
-			if(getStatus.get(1).contains("mega"))
+			if(getStatus.get(1).contains("HomePage_Fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(2, "verifyExploreAll - failed");

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+<repositories>
+ <repository>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+</repositories>
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.skillup</groupId>
 	<artifactId>seo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -61,14 +67,13 @@
 <dependency>
     <groupId>org.seleniumhq.selenium</groupId>
     <artifactId>selenium-java</artifactId>
-    <version>4.21.0</version>
+    <version>4.23.1</version>
 </dependency>
 <dependency>
     <groupId>org.seleniumhq.selenium</groupId>
-    <artifactId>selenium-devtools-v125</artifactId>
-    <version>4.21.0</version>
+    <artifactId>selenium-devtools-v97</artifactId>
+    <version>4.1.2</version>
 </dependency>
-
 		
 		<dependency>
 			<groupId>io.cucumber</groupId>
@@ -116,6 +121,7 @@
     <artifactId>poi</artifactId>
     <version>5.2.3</version>
 </dependency>
+
 	</dependencies>
 
 	<build>
