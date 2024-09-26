@@ -145,7 +145,7 @@
 &lt;suite name=&quot;Testing Google Apps&quot; guice-stage=&quot;DEVELOPMENT&quot;&gt;
   &lt;test thread-count=&quot;5&quot; name=&quot;Regression&quot;&gt;
     &lt;parameter name=&quot;browser&quot; value=&quot;Chrome&quot;/&gt;
-    &lt;parameter name=&quot;env&quot; value=&quot;qa-in&quot;/&gt;
+    &lt;parameter name=&quot;env&quot; value=&quot;dev-in&quot;/&gt;
     &lt;classes&gt;
       &lt;class name=&quot;com.palm.regressionTesting.RegressionTesting&quot;/&gt;
     &lt;/classes&gt;
@@ -191,7 +191,7 @@ data.addRows(1);
 data.setCell(0, 0, 0)
 data.setCell(0, 1, 'startTesting')
 data.setCell(0, 2, 'com.palm.regressionTesting.RegressionTesting')
-data.setCell(0, 3, 157297);
+data.setCell(0, 3, 124457);
 window.suiteTableData['Testing_Google_Apps']= { tableData: data, tableDiv: 'times-div-Testing_Google_Apps'}
 return data;
 }
@@ -224,16 +224,16 @@ return data;
             <div class="chronological-class">
               <div class="chronological-class-name">com.palm.regressionTesting.RegressionTesting</div> <!-- chronological-class-name -->
               <div class="configuration-test before">
-                <span class="method-name">setup(Chrome, qa-in)</span>
+                <span class="method-name">setup(Chrome, dev-in)</span>
                 <span class="method-start">0 ms</span>
               </div> <!-- configuration-test before -->
               <div class="test-method">
                 <span class="method-name">startTesting</span>
-                <span class="method-start">38 ms</span>
+                <span class="method-start">95 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">afterMethod([TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance...)</span>
-                <span class="method-start">157339 ms</span>
+                <span class="method-start">124569 ms</span>
               </div> <!-- configuration-method after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->
