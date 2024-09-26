@@ -6,17 +6,20 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.regression.utility.Utils;
 import com.seo.utility.TestUtil;
 
 public class RegressionTestLogin implements Callable<String>
 {
 	WebDriver driver;
 	String result = "failed";
+	String jiraProcess ="";
 	ArrayList<ArrayList<String>> sheetData = null;
 	ProcessLogin processLogin;
 	String sheetStatus = "Pass";
@@ -25,9 +28,10 @@ public class RegressionTestLogin implements Callable<String>
 	ArrayList<String> row = new ArrayList<String>();
 	ArrayList<String> ticketStatus = new ArrayList<String>();
 	
-	public RegressionTestLogin(ArrayList<ArrayList<String>> sheetData) throws Exception
+	public RegressionTestLogin(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws Exception
 	{		
 		 	this.sheetData = sheetData;
+		 	this.jiraProcess = jiraProcessStatus;
 	}
 	public WebDriver openDriver(String browserName)
 	{
@@ -166,19 +170,36 @@ public class RegressionTestLogin implements Callable<String>
 			HashMap<String, String> resultStatus = new HashMap<String, String>();
 			ArrayList<String> sheetRow = sheetData.get(4);
 			String getExecutionStatus = "";
+			String getprocessStatus = "";
+			JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 			//JiraIntegration jiraUpdater = new JiraIntegration();
-			if(sheetStatus == "fail")
+			
+			if(jiraProcess.contains("Yes"))
 			{
-				getExecutionStatus = "FAIL";
-				resultStatus.put(sheetRow.get(1), getExecutionStatus);
-				//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
-			}
-			else
-			{
-				getExecutionStatus = "PASS";
-				resultStatus.put(sheetRow.get(1), getExecutionStatus);
 				
-				//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
+				if(sheetStatus == "fail")
+				{
+					getExecutionStatus = "FAIL";
+					resultStatus.put(sheetRow.get(1), getExecutionStatus);
+					//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
+					//jiraClient.updateIssueStatus(issueKey, "31");
+					
+					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+					System.out.println(getprocessStatus);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(4).add(2, (getExecutionStatus + "failed"));
+				}
+				else
+				{
+					getExecutionStatus = "PASS";
+					resultStatus.put(sheetRow.get(1), getExecutionStatus);
+					//jiraClient.updateIssueStatus(issueKey, "31");
+					//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
+					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+					System.out.println(getprocessStatus);
+					
+				}
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(4).add(2, 
+						(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 			}
 			driver.quit();
 		}

@@ -18,7 +18,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.devtools.v124.database.model.Error;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
@@ -41,6 +40,7 @@ public class RegressionTesting
 	String duration = "";
 	public static String nameOfBrowser = "";
 	public String nameOfEnvironment = "";
+	public String jiraStatusUpdation = "";
 	public static LinkedHashMap<String, ArrayList<ArrayList<String>>> EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP;
 	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
 	NewAboutCourseValidator newAboutCourseValidator;
@@ -130,6 +130,8 @@ public class RegressionTesting
 			{
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
+			ArrayList<String> jiraExecution = master.get(2);
+			jiraStatusUpdation = jiraExecution.get(1);
 			ENV_TO_USE = getEnvironment;
 			
 			ArrayList<String> pages = master.get(0);// Pages row in excel
@@ -139,7 +141,7 @@ public class RegressionTesting
 			for(int j = 0; j < pages.size(); j++)// iterating the pages row
 			{
 				sheetName = pages.get(j);// getting the cell values of pages row eg. Pages, Login-ignore, ErrorCodeValidation, etc,.
-			
+				
 				if(data.containsKey(sheetName))// checking whether the excel is having the sheet
 				{
 					ArrayList<ArrayList<String>> sheetData = data.get(sheetName);// reading the sheet data
@@ -150,7 +152,7 @@ public class RegressionTesting
 						switch(sheetName)
 						{
 							case "Login":
-								taskMap.put(sheetName,  new RegressionTestLogin(sheetData));
+								taskMap.put(sheetName,  new RegressionTestLogin(sheetData, jiraStatusUpdation));
 								break;
 							case "AboutCourse":
 							{
@@ -419,7 +421,12 @@ public class RegressionTesting
 		executionDuration.add("Execution time" + Utils.DELIMITTER + "bold" + Utils.DELIMITTER
 				+ "backgroundlime" + Utils.DELIMITTER + "border");
 		executionDuration.add(duration + Utils.DELIMITTER + "backgroundLT" + Utils.DELIMITTER + "border");
-
+		
+		ArrayList<String> jiraStatus = new ArrayList<>();
+		jiraStatus.add("JiraExecutionStatus" + Utils.DELIMITTER + "bold" + Utils.DELIMITTER
+				+ "backgroundlime" + Utils.DELIMITTER + "border");
+		jiraStatus.add(jiraStatusUpdation + Utils.DELIMITTER + "backgroundLT" + Utils.DELIMITTER + "border");
+		
 		ArrayList<String> emptyRow = new ArrayList<>();
 		emptyRow.add("");
 
@@ -433,10 +440,13 @@ public class RegressionTesting
 		consolidatedSheedData.add(executionStartsOn);
 		consolidatedSheedData.add(executionEndsOn);
 		consolidatedSheedData.add(executionDuration);
+		consolidatedSheedData.add(jiraStatus);
 		consolidatedSheedData.add(emptyRow);
 		consolidatedSheedData.add(courseResultHeader);
+		
 		boolean hasFailedSheets = false;
-		for (Entry<String, String> entry : sheetsResult.entrySet()) {
+		for (Entry<String, String> entry : sheetsResult.entrySet())
+		{
 			String sheetName = entry.getKey();
 			String sheetStatus = entry.getValue();
 			ArrayList<String> sheetResult = new ArrayList<String>();
