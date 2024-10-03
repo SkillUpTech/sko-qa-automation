@@ -134,15 +134,15 @@ public class RegressionTestLogin implements Callable<String>
 					case "InvalidUsername":
 						InvalidUsername();
 						break;
-//					case "InvalidPassword":
-//						InvalidPassword();
-//						break;
-//					case "InvalidUserNameAndPassword":
-//						InvalidUserNameAndPassword();
-//						break;
-//					case "ValidCredentials":
-//						ValidCredentials();
-//						break;
+					case "InvalidPassword":
+						InvalidPassword();
+						break;
+					case "InvalidUserNameAndPassword":
+						InvalidUserNameAndPassword();
+						break;
+					case "ValidCredentials":
+						ValidCredentials();
+						break;
 				}
 			}
 			Set<String> windows = driver.getWindowHandles();
@@ -172,7 +172,6 @@ public class RegressionTestLogin implements Callable<String>
 			String getExecutionStatus = "";
 			String getprocessStatus = "";
 			JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
-			//JiraIntegration jiraUpdater = new JiraIntegration();
 			
 			if(jiraProcess.contains("Yes"))
 			{
@@ -181,24 +180,19 @@ public class RegressionTestLogin implements Callable<String>
 				{
 					getExecutionStatus = "FAIL";
 					resultStatus.put(sheetRow.get(1), getExecutionStatus);
-					//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
-					//jiraClient.updateIssueStatus(issueKey, "31");
-					
 					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
 					System.out.println(getprocessStatus);
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(4).add(2, (getExecutionStatus + "failed"));
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(4).add(2, (getExecutionStatus + "failed"));
 				}
 				else
 				{
 					getExecutionStatus = "PASS";
 					resultStatus.put(sheetRow.get(1), getExecutionStatus);
-					//jiraClient.updateIssueStatus(issueKey, "31");
-					//jiraUpdater.updateJiraWithTestResult(sheetRow.get(1), getExecutionStatus);
 					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
 					System.out.println(getprocessStatus);
 					
 				}
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(4).add(2, 
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(4).add(2, 
 						(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 			}
 			driver.quit();
