@@ -51,7 +51,7 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "D:\\chromedriver_127\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "D:\\chromedriver_129\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -240,7 +240,7 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.PlacementPageValidation(sheetData));
 								 break;
 							 case "HeaderFeature":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFeatureValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFeatureValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "ReimbursedProcess":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.ReimbursedValidation(sheetData));
@@ -249,7 +249,7 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.ApplyCouponValidation(sheetData));
 								 break;
 							 case "IBMSkillBuildPage":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMSkillBuildPageValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMSkillBuildPageValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "CheckVILTSelfPacedCourse":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseLevelValidation(sheetData));
@@ -258,7 +258,7 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.AccountPageValidation(sheetData));
 								 break;
 							 case "DevopsPage":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.DevopsPageValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.DevopsPageValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "OnboardingJourney":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.OnboardingValidation(sheetData));
@@ -270,13 +270,13 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.CategoryBannerValidation(sheetData));
 								 break;
 							 case "CourseCardHover":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseCardHoverValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseCardHoverValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "IBMViewCourse":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMViewCourseValidation(sheetData));
 								 break;
 							 case "ProgramURLandSlug":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "URLValidation":
 									 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));

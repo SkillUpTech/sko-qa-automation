@@ -2,6 +2,7 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -12,74 +13,23 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.TestUtil;
+import com.regression.utility.Utils;
 
 public class IBMSkillBuildPageValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
+	String jiraProcess ="";
 	IBMSkillBuildPageLocator ibmSkillBuildPageLocator;
 	String sheetStatus = "Pass";
 	
-	public IBMSkillBuildPageValidation(ArrayList<ArrayList<String>> sheetData)
+	public IBMSkillBuildPageValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
 	{
 		this.sheetData = sheetData;
+		this.jiraProcess = jiraProcessStatus;
+	}
+	
 		
-	}
-	
-	public String start()
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "headerFeatureOnPage":
-					headerFeatureOnPage(row.get(1));
-					break;
-				
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
-	
 	public void headerFeatureOnPage(String data)
 	{
 		ArrayList<String> getStatus = ibmSkillBuildPageLocator.headerFeatureOnCategory(data);
@@ -165,6 +115,34 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 					driver.switchTo().window(BaseWindow);
 				}
 			}
+		}
+		HashMap<String, String> resultStatus = new HashMap<String, String>();
+		ArrayList<String> sheetRow = sheetData.get(1);
+		String getExecutionStatus = "";
+		String getprocessStatus = "";
+		JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
+		
+		if(jiraProcess.contains("Yes"))
+		{
+			
+			if(sheetStatus == "fail")
+			{
+				getExecutionStatus = "FAIL";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(1).add(2, (getExecutionStatus + "failed"));
+			}
+			else
+			{
+				getExecutionStatus = "PASS";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				
+			}
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(1).add(2, 
+					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
 		driver.quit();
 		}

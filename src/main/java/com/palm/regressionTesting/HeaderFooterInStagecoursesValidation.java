@@ -25,109 +25,6 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-			  case "LoginIcon": 
-				  LoginIcon(row); 
-				  break; 
-			  case "skillupIcon": 
-				  skillupIcon(); 
-				  break; 
-			  case "AboutSkillupOnline": 
-				  AboutSkillupOnline(row.get(1)); 
-				  break; 
-			  case "ContactUs": 
-				  ContactUs(row.get(1)); 
-				  break; 
-			  case "Blog": 
-				  Blog(row); 
-				  break; 
-			  case "twitter": 
-				  twitter(row.get(1)); 
-				  break; 
-			  case "facebook": 
-				  facebook(row.get(1)); 
-				  break; 
-			  case "linkedIn": 
-				  linkedIn(row.get(1)); 
-				  break; 
-			  case "instagram": 
-				  instagram(row.get(1)); 
-				  break; 
-			  case "youtube": 
-				  youtube(row.get(1)); 
-				  break; 
-			  case "contactUSFooter": 
-				  contactUSFooter(row.get(1)); 
-				  break; 
-			  case "AboutSkillupOnlineFooter": 
-				  AboutSkillupOnlineFooter(row.get(1)); 
-				  break; 
-			  case "SkillupOnlineForBusiness": 
-				  SkillupOnlineForBusiness(row.get(1)); 
-				  break; 
-			  case "FAQ": 
-				  FAQ(row.get(1)); 
-				  break; 
-			  case "PrivacyPolicy": 
-				  PrivacyPolicy(row.get(1)); 
-				  break; 
-			  case "TermsOfService": 
-				  TermsOfService(row.get(1)); 
-				  break; 					 
-			  case "BlogFooter": 
-				  BlogFooter(row); 
-				  break; 		 
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				driver.switchTo().window(BaseWindow);
-			}
-			driver.switchTo().window(BaseWindow);
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
-	
 	public void LoginIcon(ArrayList<String> data)
 	{
 		if(!data.contains("NA"))
@@ -138,15 +35,6 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 				sheetStatus="Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
 			}
-		}
-	}
-	public void FindOutMore(String data)
-	{
-		String status = headerFooterInStagecoursesLocator.FindOutMoreProcess(data);
-		if(!status.equalsIgnoreCase("pass"))
-		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(2).add(2, (status + " - failed"));
 		}
 	}
 	public void skillupIcon()
@@ -247,6 +135,11 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 
 		}
 	}
+	
+	public void skillupLogoFooter()
+	{
+		
+	}
 	public void contactUSFooter(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.contactUSProcess(data);
@@ -309,6 +202,63 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		}
 	}
 	public void BlogFooter(ArrayList<String> data)
+	{
+		if(!data.contains("NA"))
+		{
+			
+			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				
+			}
+		}
+	}
+	
+	public void pressRelease(ArrayList<String> data)
+	{
+		if(!data.contains("NA"))
+		{
+			
+			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				
+			}
+		}
+	}
+	public void events(ArrayList<String> data)
+	{
+		if(!data.contains("NA"))
+		{
+			
+			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				
+			}
+		}
+	}
+	public void newsLetter(ArrayList<String> data)
+	{
+		if(!data.contains("NA"))
+		{
+			
+			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			if(!status.equalsIgnoreCase("pass"))
+			{
+				sheetStatus="Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				
+			}
+		}
+	}
+	public void placement(ArrayList<String> data)
 	{
 		if(!data.contains("NA"))
 		{
@@ -415,8 +365,18 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			  case "BlogFooter": 
 				  BlogFooter(row); 
 				  break; 		 
-							 
-				 
+			  case "pressRelease": 
+				  pressRelease(row); 
+				  break; 
+			  case "events": 
+				  events(row); 
+				  break; 
+			  case "newsLetter": 
+				  newsLetter(row); 
+				  break; 
+			  case "placement": 
+				  placement(row); 
+				  break; 
 			}
 		}
 		Set<String> windows = driver.getWindowHandles();
@@ -455,6 +415,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			e.printStackTrace();
 		}
 		return sheetStatus;
-	
 	}
+	
+	
 }

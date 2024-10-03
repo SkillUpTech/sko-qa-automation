@@ -157,7 +157,7 @@ public class PlacementPageLocator
 			WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
 			driver.switchTo().frame(frameElement);
 			
-			WebElement firstName = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(1) input[class=' inTextbox']"));
+			WebElement firstName = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(1) input"));
 			wait.until(ExpectedConditions.visibilityOfAllElements(firstName));
 			js.executeScript("arguments[0].scrollIntoView();", firstName);
 			if(firstName.isDisplayed())
@@ -173,7 +173,7 @@ public class PlacementPageLocator
 				}
 			}
 			
-			WebElement lastName = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(2) input[class=' inTextbox']"));
+			WebElement lastName = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(2) input"));
 			wait.until(ExpectedConditions.visibilityOfAllElements(lastName));
 			js.executeScript("arguments[0].scrollIntoView();", lastName);
 			if(lastName.isDisplayed())
@@ -190,7 +190,7 @@ public class PlacementPageLocator
 				
 			}
 			
-			WebElement contactNo = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(3) input[class=' inTextbox']"));
+			WebElement contactNo = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(3) input"));
 			wait.until(ExpectedConditions.visibilityOfAllElements(contactNo));
 			js.executeScript("arguments[0].scrollIntoView();", contactNo);
 			if(contactNo.isDisplayed())
@@ -207,7 +207,7 @@ public class PlacementPageLocator
 				}
 			}
 			
-			WebElement email = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(4) input[class=' inTextbox']"));
+			WebElement email = driver.findElement(By.cssSelector("ul[class='choicelist clearfix']>li:nth-child(4) input"));
 			wait.until(ExpectedConditions.visibilityOfAllElements(email));
 			js.executeScript("arguments[0].scrollIntoView();", email);
 			if(email.isDisplayed())
@@ -225,7 +225,7 @@ public class PlacementPageLocator
 			}
 			
 			
-			WebElement dropDownforState = driver.findElement(By.cssSelector("div[name='dropdown_closest']>section div[class='zsSelector dropdown']>button[class='btn dropdown-toggle']"));
+			WebElement dropDownforState = driver.findElement(By.cssSelector("div[name='dropdown_closest']>section div[class='zsSelector dropdown']>button"));
 			//wait.until(ExpectedConditions.visibilityOfAllElements(dropDownforState));
 			js.executeScript("arguments[0].scrollIntoView();", dropDownforState);
 			js.executeScript("arguments[0].click()", dropDownforState);
@@ -244,7 +244,7 @@ public class PlacementPageLocator
 			}
 			
 			
-			List<WebElement> skills = driver.findElements(By.cssSelector("ul[id='simplechoicelist']>li span[class='choiceLabel']"));
+			List<WebElement> skills = driver.findElements(By.cssSelector("ul[id='simplechoicelist']>li span[class='zsCheckboxFaux']"));
 			for(int i = 0; i < skills.size(); i++)
 			{
 				js.executeScript("arguments[0].scrollIntoView();", skills.get(i));
