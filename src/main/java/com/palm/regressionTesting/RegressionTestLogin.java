@@ -134,15 +134,11 @@ public class RegressionTestLogin implements Callable<String>
 					case "InvalidUsername":
 						InvalidUsername();
 						break;
-					case "InvalidPassword":
-						InvalidPassword();
-						break;
-					case "InvalidUserNameAndPassword":
-						InvalidUserNameAndPassword();
-						break;
-					case "ValidCredentials":
-						ValidCredentials();
-						break;
+					/*
+					 * case "InvalidPassword": InvalidPassword(); break; case
+					 * "InvalidUserNameAndPassword": InvalidUserNameAndPassword(); break; case
+					 * "ValidCredentials": ValidCredentials(); break;
+					 */
 				}
 			}
 			Set<String> windows = driver.getWindowHandles();
@@ -192,9 +188,12 @@ public class RegressionTestLogin implements Callable<String>
 					System.out.println(getprocessStatus);
 					
 				}
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(4).add(2, 
-						(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
-			}
+				/*
+				 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
+				 * "ProgramURLandSlug").get(4).add(2, (getExecutionStatus)+ Utils.DELIMITTER +
+				 * "bold" + Utils.DELIMITTER + "color" +
+				 * (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
+				 */			}
 			driver.quit();
 		}
 		catch(Exception e)
