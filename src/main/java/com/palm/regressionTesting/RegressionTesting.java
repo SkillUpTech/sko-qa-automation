@@ -51,7 +51,7 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "D:\\chromedriver_129\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "C:\\Users\\Hemamalini\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -171,7 +171,7 @@ public class RegressionTesting
 								taskMap.put(sheetName, new com.palm.regressionTesting.FooterSectionValidation(sheetData));
 								break;	
 							case "SignUp":
-								taskMap.put(sheetName, new SignUpValidation(sheetData));
+								taskMap.put(sheetName, new SignUpValidation(sheetData, jiraStatusUpdation));
 							break;
 							case "HeaderSection":
 								taskMap.put(sheetName, new HeaderSectionValidation(sheetData));
@@ -201,7 +201,7 @@ public class RegressionTesting
 								taskMap.put(sheetName, new com.palm.regressionTesting.EditProfileValidation(sheetData));
 								break;
 							case "LoginPageLinks":
-								taskMap.put(sheetName, new com.palm.regressionTesting.LoginPageLinksValidation(sheetData));
+								taskMap.put(sheetName, new com.palm.regressionTesting.LoginPageLinksValidation(sheetData, jiraStatusUpdation));
 								break;
 							case "IBM":
 								taskMap.put(sheetName, new com.palm.regressionTesting.IBMPageValidation(sheetData));
@@ -215,7 +215,7 @@ public class RegressionTesting
 							 case "FAQ":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.FAQValidation(sheetData));
 								 break;
-							 case "HeaderFooterStagecourses":
+							 case "LinkInStagecourseAndHomepage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInStagecoursesValidation(sheetData));
 								 break;
 							 case "HeaderFooterErrorScreen":

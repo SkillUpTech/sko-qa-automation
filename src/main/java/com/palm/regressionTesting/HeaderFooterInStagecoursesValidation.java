@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -25,29 +24,6 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		
 	}
 	
-	public void LoginIcon(ArrayList<String> data)
-	{
-		if(!data.contains("NA"))
-		{
-			String status = headerFooterInStagecoursesLocator.loginProcess();
-			if(status.equalsIgnoreCase("fail"))
-			{
-				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(1).set(0, "LoginIcon - failed");
-			}
-		}
-	}
-	public void skillupIcon()
-	{
-		String status = headerFooterInStagecoursesLocator.skillupIconProcess();
-		if(status.equalsIgnoreCase("fail"))
-		{
-
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(3).set(0, "skillupIcon - failed");
-		
-		}
-	}
 	public void AboutSkillupOnline(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.AboutSkillupOnlineProcess(data);
@@ -55,7 +31,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		{
 
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(4).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(2).add(2, (status + " - failed"));
 		
 		}
 	}
@@ -66,7 +42,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		{
 
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(5).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(3).add(2, (status + " - failed"));
 		
 		}
 	}
@@ -79,7 +55,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			{
 				
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(6).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(4).add(2, (status + " - failed"));
 				
 			}
 		}
@@ -90,7 +66,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(8).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(6).add(2, (status + " - failed"));
 
 		}
 		
@@ -101,7 +77,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(9).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(7).add(2, (status + " - failed"));
 
 		}
 	}
@@ -111,7 +87,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(10).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(8).add(2, (status + " - failed"));
 
 		}
 	}
@@ -121,7 +97,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(11).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(9).add(2, (status + " - failed"));
 
 		}
 	}
@@ -131,22 +107,18 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(12).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(10).add(2, (status + " - failed"));
 
 		}
 	}
 	
-	public void skillupLogoFooter()
-	{
-		
-	}
 	public void contactUSFooter(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.contactUSProcess(data);
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(13).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(11).add(2, (status + " - failed"));
 
 		}
 	}
@@ -156,7 +128,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(14).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(12).add(2, (status + " - failed"));
 
 		}
 	}
@@ -166,7 +138,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(15).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(13).add(2, (status + " - failed"));
 
 		}
 	}
@@ -177,7 +149,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(17).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(14).add(2, (status + " - failed"));
 
 		}
 	}
@@ -187,7 +159,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(18).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(15).add(2, (status + " - failed"));
 
 		}
 	}
@@ -197,11 +169,11 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		if(!status.equalsIgnoreCase("pass"))
 		{
 			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(19).add(2, (status + " - failed"));
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(16).add(2, (status + " - failed"));
 
 		}
 	}
-	public void BlogFooter(ArrayList<String> data)
+	public void BlogFooter(String data)
 	{
 		if(!data.contains("NA"))
 		{
@@ -210,64 +182,64 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			if(!status.equalsIgnoreCase("pass"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(17).add(2, (status + " - failed"));
 				
 			}
 		}
 	}
 	
-	public void pressRelease(ArrayList<String> data)
+	public void pressRelease(String data)
 	{
 		if(!data.contains("NA"))
 		{
 			
-			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			String status = headerFooterInStagecoursesLocator.pressReleaseProcess(data);
 			if(!status.equalsIgnoreCase("pass"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(18).add(2, (status + " - failed"));
 				
 			}
 		}
 	}
-	public void events(ArrayList<String> data)
+	public void events(String data)
 	{
 		if(!data.contains("NA"))
 		{
 			
-			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			String status = headerFooterInStagecoursesLocator.eventsProcess(data);
 			if(!status.equalsIgnoreCase("pass"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(19).add(2, (status + " - failed"));
 				
 			}
 		}
 	}
-	public void newsLetter(ArrayList<String> data)
+	public void newsLetter(String data)
 	{
 		if(!data.contains("NA"))
 		{
 			
-			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			String status = headerFooterInStagecoursesLocator.newsLetterProcess(data);
 			if(!status.equalsIgnoreCase("pass"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(20).add(2, (status + " - failed"));
 				
 			}
 		}
 	}
-	public void placement(ArrayList<String> data)
+	public void placement(String data)
 	{
 		if(!data.contains("NA"))
 		{
 			
-			String status = headerFooterInStagecoursesLocator.BlogFooterProcess(data);
+			String status = headerFooterInStagecoursesLocator.placementProcess(data);
 			if(!status.equalsIgnoreCase("pass"))
 			{
 				sheetStatus="Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterStagecourses").get(20).add(2, (status + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LinkInStagecourseAndHomepage").get(21).add(2, (status + " - failed"));
 				
 			}
 		}
@@ -306,20 +278,12 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		this.headerFooterInStagecoursesLocator = new HeaderFooterInStagecoursesLocator(driver);
 		OpenWebsite.openSite(driver);
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
 			String firstColumn = row.get(0);
 			switch(firstColumn)
 			{
-			  case "LoginIcon": 
-				  LoginIcon(row); 
-				  break; 
-			  case "skillupIcon": 
-				  skillupIcon(); 
-				  break; 
 			  case "AboutSkillupOnline": 
 				  AboutSkillupOnline(row.get(1)); 
 				  break; 
@@ -363,19 +327,19 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 				  TermsOfService(row.get(1)); 
 				  break; 					 
 			  case "BlogFooter": 
-				  BlogFooter(row); 
+				  BlogFooter(row.get(1)); 
 				  break; 		 
 			  case "pressRelease": 
-				  pressRelease(row); 
+				  pressRelease(row.get(1)); 
 				  break; 
 			  case "events": 
-				  events(row); 
+				  events(row.get(1)); 
 				  break; 
 			  case "newsLetter": 
-				  newsLetter(row); 
+				  newsLetter(row.get(1)); 
 				  break; 
 			  case "placement": 
-				  placement(row); 
+				  placement(row.get(1)); 
 				  break; 
 			}
 		}
@@ -404,9 +368,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 					driver.close();
 					driver.switchTo().window(BaseWindow);
 				}
-				driver.switchTo().window(BaseWindow);
 			}
-			driver.switchTo().window(BaseWindow);
 		}
 		driver.quit();
 		}
