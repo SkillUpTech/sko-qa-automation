@@ -19,8 +19,11 @@ public class HeaderFooterInStagecoursesLocator
 	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li[class='Header_loginBtn__3Xv3A']>a")
 	private WebElement clickLoginIcon;
 	
-	@FindBy(xpath = "//ul[contains(@class,'nav navbar-nav LoGInMeNU')]/li[3]/a[contains(@href,'register')]") //Find out more
-	private WebElement clickSignupIcon;
+	@FindBy(css = "div[class='TickerButton']>a") //Find out more
+	private WebElement clickFindOutMoreIcon;
+	
+	@FindBy(css = "a[class='navbar-brand'] img") //skillup icon
+	private WebElement clickSkillupIcon;
 	
 	@FindBy(css = "div[class='navbar-right NAVRiGhT']>ul[class='nav navbar-nav MobIlE_MenU']>li:nth-child(1)>a")
 	private WebElement clickAboutSkillupIcon;
@@ -57,7 +60,6 @@ public class HeaderFooterInStagecoursesLocator
 	{
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
-		
 	}
 	
 	public String loginProcess()
@@ -86,15 +88,84 @@ public class HeaderFooterInStagecoursesLocator
 		}
 		return status;
 	}
-	
-	
+	public String FindOutMoreProcess(String data)
+	{
+		String status = "fail";
+		try
+		{
+			if(clickFindOutMoreIcon.isDisplayed())
+			{
+				Actions action = new Actions(driver);
+				action.keyDown(Keys.CONTROL).click(clickFindOutMoreIcon).keyUp(Keys.CONTROL).build().perform();
+				String ParentWindow = driver.getWindowHandle();
+				Set<String> allWindows = driver.getWindowHandles();
+				for(String windows : allWindows)
+				{
+					driver.switchTo().window(windows);
+					if(driver.getCurrentUrl().contains("futureskills"))
+					{
+						driver.switchTo().window(windows);
+						String hostURL[] = driver.getCurrentUrl().split("online/");
+						String getCurrentURLAfterHost = hostURL[1];
+						if(data.equals(getCurrentURLAfterHost))
+						{
+							status = "pass";
+						}
+						else
+						{
+							status = getCurrentURLAfterHost;
+						}
+						driver.close();
+						
+						driver.switchTo().window(ParentWindow);
+						break;
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
+	public String skillupIconProcess()
+	{
+		String status = "fail";
+		try
+		{
+			String parentWindow = driver.getWindowHandle();
+			if(clickSkillupIcon.isDisplayed())
+			{
+				Actions action = new Actions(driver);
+				action.keyDown(Keys.CONTROL).click(clickSkillupIcon).keyUp(Keys.CONTROL).build().perform();
+				Set<String> allWindows = driver.getWindowHandles();
+				for(String windows : allWindows)
+				{
+					driver.switchTo().window(windows);
+					if(driver.getCurrentUrl().contains("login"))
+					{
+						driver.switchTo().window(windows);
+						status = "pass";
+						System.out.println("skillup icon verified on header");
+						driver.switchTo().window(parentWindow);
+						break;
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return status;
+	}
 	public String AboutSkillupOnlineProcess(String data)
 	{
 		String status = "fail";
 		try
 		{
-			status = this.loginProcess();
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickAboutSkillupIcon.isDisplayed())
 			{
@@ -107,7 +178,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("about"))
 					{
 						driver.switchTo().window(windows);
-						String[] hostURL = driver.getCurrentUrl().split("\\?");
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -139,7 +210,7 @@ public class HeaderFooterInStagecoursesLocator
 		String status = "fail";
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickContactUSIcon.isDisplayed())
 			{
@@ -152,7 +223,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
-						String[] hostURL = driver.getCurrentUrl().split("\\?");
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -200,17 +271,17 @@ public class HeaderFooterInStagecoursesLocator
 						driver.switchTo().window(windows);
 						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
 						{
-							stageSiteURL = "https://qa.skillup.online"+data.get(1);
+							stageSiteURL = "https://dev.skillup.online/"+data.get(1);
 						}
 						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
 						{
-							stageSiteURL = "https://dev.skillup.online"+data.get(1);
+							stageSiteURL = "https://dev.skillup.online/"+data.get(1);
 						}
 						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
 						{
-							stageSiteURL = "https://skillup.online"+data.get(1);
+							stageSiteURL = "https://skillup.online/"+data.get(1);
 						}
-						String[] hostURL = driver.getCurrentUrl().split("\\?");
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -471,7 +542,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			if(clickContactUSFooter.isDisplayed())
 			{
@@ -484,7 +555,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("contact"))
 					{
 						driver.switchTo().window(windows);
-						String[] hostURL = driver.getCurrentUrl().split("\\?");
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -518,7 +589,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -533,7 +604,7 @@ public class HeaderFooterInStagecoursesLocator
 						if(driver.getCurrentUrl().contains("about"))
 						{
 							driver.switchTo().window(windows);
-							String hostURL[] = driver.getCurrentUrl().split("\\?");
+							String hostURL[] = driver.getCurrentUrl().split("\\?utm");
 							String getCurrentURLAfterHost = hostURL[0];
 							if(stageSiteURL.equals(getCurrentURLAfterHost))
 							{
@@ -581,12 +652,12 @@ public class HeaderFooterInStagecoursesLocator
 			}
 			else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
 			{
-				stageSiteURL = "https://courses-in.skillup.online"+data;
+				stageSiteURL = "https://in.skillup.online"+data;
 			}
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("SkillUp for Business"))
+				if(clickCompanyFooterIcons.get(i).getText().contains("SkillUp Online for Business"))
 				{
 				Actions action = new Actions(driver);
 				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
@@ -597,7 +668,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("enterprise"))
 					{
 						driver.switchTo().window(windows);
-						String[] hostURL = driver.getCurrentUrl().split("\\?");
+						String[] hostURL = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -633,7 +704,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -648,7 +719,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("faq"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -684,7 +755,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -699,7 +770,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("privacy"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -734,7 +805,7 @@ public class HeaderFooterInStagecoursesLocator
 		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
 		try
 		{
-			String stageSiteURL = OpenWebsite.setHost+data;
+			String stageSiteURL = OpenWebsite.setHost+"/"+data;
 			String parentWindow = driver.getWindowHandle();
 			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
 			{
@@ -749,7 +820,7 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("tos"))
 					{
 						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
@@ -777,7 +848,7 @@ public class HeaderFooterInStagecoursesLocator
 		}
 		return status;
 	}
-	public String BlogFooterProcess(String data)
+	public String BlogFooterProcess(ArrayList<String> data)
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -800,30 +871,29 @@ public class HeaderFooterInStagecoursesLocator
 					if(driver.getCurrentUrl().contains("blog"))
 					{
 						driver.switchTo().window(windows);
-						Thread.sleep(1000);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
+						String hostURL[] = driver.getCurrentUrl().split("\\?utm");
 						String getCurrentURLAfterHost = hostURL[0];
 						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
 						{
-							stageSiteURL = "https://qa.skillup.online"+data;
+							stageSiteURL = "https://dev.skillup.online/"+data.get(1);
 						}
 						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
 						{
-							stageSiteURL = "https://dev.skillup.online"+data;
+							stageSiteURL = "https://dev.skillup.online/"+data.get(1);
 						}
 						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
 						{
-							stageSiteURL = "https://skillup.online"+data;
+							stageSiteURL = "https://skillup.online/"+data.get(1);
 						}
 						if(stageSiteURL.equals(getCurrentURLAfterHost))
 						{
 							status = "pass";
-							System.out.println(" Blog footer icon verified on footer is pass");
+							System.out.println(" Blog icon verified on footer is pass");
 						}
 						else
 						{
 							status = getCurrentURLAfterHost;
-							System.out.println(" Blog  footer icon verified on footer is fail");
+							System.out.println(" Blog icon verified on footer is fail");
 						}
 						driver.close();
 						driver.switchTo().window(parentWindow);
@@ -844,269 +914,4 @@ public class HeaderFooterInStagecoursesLocator
 		return status;
 	}
 	
-	public String pressReleaseProcess(String data)
-	{
-		String status = "fail";
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
-		String stageSiteURL = "";
-		try
-		{
-			
-			String parentWindow = driver.getWindowHandle();
-			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
-			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("Press Release"))
-				{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("prpage"))
-					{
-						driver.switchTo().window(windows);
-						Thread.sleep(1000);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
-						String getCurrentURLAfterHost = hostURL[0];
-						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
-						{
-							stageSiteURL = "https://qa.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
-						{
-							stageSiteURL = "https://dev.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
-						{
-							stageSiteURL = "https://skillup.online"+data;
-						}
-						if(stageSiteURL.equals(getCurrentURLAfterHost))
-						{
-							status = "pass";
-							System.out.println(" press release verified on footer is pass");
-						}
-						else
-						{
-							status = getCurrentURLAfterHost;
-							System.out.println(" Press release verified on footer is fail");
-						}
-						driver.close();
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
-				break;
-			}
-		
-			}
-			
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	public String eventsProcess(String data)
-	{
-		String status = "fail";
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
-		String stageSiteURL = "";
-		try
-		{
-			
-			String parentWindow = driver.getWindowHandle();
-			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
-			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("Events"))
-				{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("events"))
-					{
-						driver.switchTo().window(windows);
-						Thread.sleep(1000);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
-						String getCurrentURLAfterHost = hostURL[0];
-						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
-						{
-							stageSiteURL = "https://qa.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
-						{
-							stageSiteURL = "https://dev.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
-						{
-							stageSiteURL = "https://skillup.online"+data;
-						}
-						if(stageSiteURL.equals(getCurrentURLAfterHost))
-						{
-							status = "pass";
-							System.out.println(" event icon verified on footer is pass");
-						}
-						else
-						{
-							status = getCurrentURLAfterHost;
-							System.out.println(" event icon verified on footer is fail");
-						}
-						driver.close();
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
-				break;
-			}
-		
-			}
-			
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	public String newsLetterProcess(String data)
-	{
-		String status = "fail";
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
-		String stageSiteURL = "";
-		try
-		{
-			
-			String parentWindow = driver.getWindowHandle();
-			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
-			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("Newsletter"))
-				{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("new"))
-					{
-						driver.switchTo().window(windows);
-						Thread.sleep(1000);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
-						String getCurrentURLAfterHost = hostURL[0];
-						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
-						{
-							stageSiteURL = "https://qa.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
-						{
-							stageSiteURL = "https://dev.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
-						{
-							stageSiteURL = "https://skillup.online"+data;
-						}
-						if(stageSiteURL.equals(getCurrentURLAfterHost))
-						{
-							status = "pass";
-							System.out.println(" News Letter icon verified on footer is pass");
-						}
-						else
-						{
-							status = getCurrentURLAfterHost;
-							System.out.println(" News Letter icon verified on footer is fail");
-						}
-						driver.close();
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
-				break;
-			}
-		
-			}
-			
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	
-	public String placementProcess(String data)
-	{
-		String status = "fail";
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
-		String stageSiteURL = "";
-		try
-		{
-			
-			String parentWindow = driver.getWindowHandle();
-			for(int i = 0; i < clickCompanyFooterIcons.size(); i++)
-			{
-				if(clickCompanyFooterIcons.get(i).getText().contains("Placement"))
-				{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickCompanyFooterIcons.get(i)).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("placement"))
-					{
-						driver.switchTo().window(windows);
-						Thread.sleep(1000);
-						String hostURL[] = driver.getCurrentUrl().split("\\?");
-						String getCurrentURLAfterHost = hostURL[0];
-						if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("qa-in"))
-						{
-							stageSiteURL = "https://qa-in.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("dev-in"))
-						{
-							stageSiteURL = "https://dev-in.skillup.online"+data;
-						}
-						else if(RegressionTesting.ENV_TO_USE.equalsIgnoreCase("prod-in"))
-						{
-							stageSiteURL = "https://in.skillup.online"+data;
-						}
-						if(stageSiteURL.equals(getCurrentURLAfterHost))
-						{
-							status = "pass";
-							System.out.println(" Placement icon verified on footer is pass");
-						}
-						else
-						{
-							status = getCurrentURLAfterHost;
-							System.out.println(" Placement icon verified on footer is fail");
-						}
-						driver.close();
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
-				break;
-			}
-		
-			}
-			
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
 }

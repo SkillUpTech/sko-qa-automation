@@ -25,290 +25,25 @@ public class SignUpLocator
 	{
 		this.driver = driver;
 	}
-	public String signUpPage() throws InterruptedException
+	public void signUpPage() throws InterruptedException
 	{
-		String status = "FAIL";
-		try
-		{
-			WebElement clickSignUp = driver.findElement(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li:nth-child(3) a"));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-			clickSignUp.sendKeys(n);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			status = "PASS";
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			status = "FAIL";
-		}
-		return status;
+		WebElement clickSignUp = driver.findElement(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li:nth-child(3) a"));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+		String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+		clickSignUp.sendKeys(n);
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 	}
 	
-	public String verifySignUPFreeButton()
-	{
-		String status = "FAIL";
-		try
-		{
-			status = this.signUpPage();
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					driver.switchTo().window(window);
-					System.out.println("sign up page");
-					driver.close();
-					break;
-				}
-			}
-			driver.switchTo().window(parentWindow);//home page
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	public ArrayList<String> verifySpaceOnMail(ArrayList<String> data)
-	{
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
-		{
-			System.out.println("space on mail validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("space on mail Validation process done");
-					driver.close();
-					break;
-				}
-			}
-			driver.switchTo().window(parentWindow);//homepage
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
-		return statusOfTestCase;
-	}
-	public ArrayList<String> verifySpaceOnFullname(ArrayList<String> data)
-	{
-
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
-		{
-			System.out.println("space on Full Name validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("space on mail Validation process done");
-					driver.close();
-					break;
-				}
-			}
-			driver.switchTo().window(parentWindow);//homepage
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
-		return statusOfTestCase;
 	
-	}
-	public ArrayList<String> verifySpaceOnPassword(ArrayList<String> data)
+	public ArrayList<Integer> checkValidationMessage()
 	{
-
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
+		ArrayList<Integer> errorMsgStatus = new ArrayList<Integer>();
 		try
 		{
-			System.out.println("space on Password validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("space on Password Validation process done");
-					driver.close();
-					break;
-				}
-			}
-			driver.switchTo().window(parentWindow);//homepage
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
-		return statusOfTestCase;
-	
-	}
-	public String verifySubmitButtonForValidData()
-	{
-		String status = "FAIL";
-		try
-		{
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
-	public ArrayList<String> checkValidationMessage()
-	{
-		ArrayList<String> errorMsgStatus = new ArrayList<String>();
-		try
-		{
-			if(driver.findElements(By.cssSelector("div[role='alert'][class*='status message submission-error ']")).size()>0)
-			{
 				List<WebElement> errorMessage = driver.findElements(By.cssSelector("div[role='alert'][class*='status message submission-error ']"));
 				
+				if(errorMessage.size()>0)
+				{
 					for(int i = 0; i < errorMessage.size(); i++)
 					{	
 						switch(i)
@@ -318,11 +53,11 @@ public class SignUpLocator
 							String getNameMessage = errorMessage.get(i).getAttribute("class");
 							if(getNameMessage.contains("error-name is-shown"))
 							{
-								errorMsgStatus.add("validation message in full name ");
+								errorMsgStatus.add(1);
 							}
 							else
 							{
-								System.out.println("no validation message for full name");
+								System.out.println("no validation message for name");
 							}
 							break;
 						case 1:
@@ -330,7 +65,7 @@ public class SignUpLocator
 							String getEmailMessage = errorMessage.get(i).getAttribute("class");
 							if(getEmailMessage.contains("error-email is-shown") && getEmailMessage.contains("is-shown"))
 							{
-								errorMsgStatus.add("validation message in email ");
+								errorMsgStatus.add(2);
 							}
 							else
 							{
@@ -342,7 +77,7 @@ public class SignUpLocator
 							String getPasswordMessage = errorMessage.get(i).getAttribute("class");
 							if(getPasswordMessage.contains("error-password is-shown") && getPasswordMessage.contains("is-shown"))
 							{
-								errorMsgStatus.add("validation message in password ");
+								errorMsgStatus.add(3);
 							}
 							else
 							{
@@ -354,7 +89,7 @@ public class SignUpLocator
 							String getCountryMessage = errorMessage.get(i).getAttribute("class");
 							if(getCountryMessage.contains("error-country is-shown")&& getCountryMessage.contains("is-shown"))
 							{
-								errorMsgStatus.add("validation message in country ");
+								errorMsgStatus.add(4);
 							}
 							else
 							{
@@ -366,7 +101,7 @@ public class SignUpLocator
 							String getMobileMessage = errorMessage.get(i).getAttribute("class");
 							if(getMobileMessage.contains("error-mobile is-shown"))
 							{
-								errorMsgStatus.add("validation message in mobile ");
+								errorMsgStatus.add(5);
 							}
 							else
 							{
@@ -378,240 +113,154 @@ public class SignUpLocator
 				}
 				else
 				{
-					errorMsgStatus.add("No validation message");
+					errorMsgStatus.add(0);
 				}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			errorMsgStatus.add("exception");
 		}
 		return errorMsgStatus;
 	}
 	
-	public ArrayList<String> checkFullName(ArrayList<String> dataFromExcel) throws InterruptedException
+	public ArrayList<Integer> checkFullName(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
+		System.out.println("FullName validation started");
+		OpenWebsite.openSite(driver);
+		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
+		this.signUpPage();
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+		Thread.sleep(1000);
+		String parentWindow = driver.getWindowHandle();
+		Set<String> allWindows = driver.getWindowHandles();
+		for(String window : allWindows)
 		{
-			System.out.println("FullName validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			driver.switchTo().window(window);
+			if(driver.getCurrentUrl().contains("register"))
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(dataFromExcel));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					Thread.sleep(1000);
-					System.out.println("Invalid FullName Validation process done");
-					Thread.sleep(1000);
-					driver.close();
-					break;
-				}
+				System.out.println("sign up page");
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				this.signUpFunction(dataFromExcel);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				Thread.sleep(1000);
+			statusOfTestCase = this.checkValidationMessage();
+				System.out.println("Invalid FullName Validation process done");
+				Thread.sleep(1000);
+				driver.close();
 			}
-			driver.switchTo().window(parentWindow);//homepage
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
+		driver.switchTo().window(parentWindow);
+		Thread.sleep(1000);
 		return statusOfTestCase;
 	}
-	public ArrayList<String> checkEmail(ArrayList<String> data) throws InterruptedException
+	public ArrayList<Integer> checkEmail(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
+		System.out.println(" Invalid Email validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
+		this.signUpPage();
+		String parentWindow = driver.getWindowHandle();
+		Set<String> allWindows = driver.getWindowHandles();
+		for(String window : allWindows)
 		{
-			System.out.println("Invalid Email validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			driver.switchTo().window(window);
+			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("Invalid mail Validation process done");
-					driver.close();
-					break;
-				}
+				System.out.println("sign up page");
+				this.signUpFunction(dataFromExcel);
+				Thread.sleep(1000);
+				statusOfTestCase = this.checkValidationMessage();
+				Thread.sleep(1000);
+				System.out.println("Invalid Email Validation process done");
+				driver.close();
+				break;
 			}
-			driver.switchTo().window(parentWindow);//homepage
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
+		driver.switchTo().window(parentWindow);
+		Thread.sleep(1000);
 		return statusOfTestCase;
-	
 	}
-	public ArrayList<String> checkPassword(ArrayList<String> data) throws InterruptedException
+	public ArrayList<Integer> checkPassword(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
+		System.out.println("Invalid Password validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
+		this.signUpPage();
+		String parentWindow = driver.getWindowHandle();
+		Set<String> allWindows = driver.getWindowHandles();
+		for(String window : allWindows)
 		{
-			System.out.println("Invalid Password validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
+			driver.switchTo().window(window);
+			if(driver.getCurrentUrl().contains("register"))
 			{
 				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("PASS");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("Invalid Password Validation process done");
-					driver.close();
-					break;
-				}
+				this.signUpFunction(dataFromExcel);
+				Thread.sleep(1000);
+				statusOfTestCase = this.checkValidationMessage();
+				Thread.sleep(1000);
+				System.out.println("Invalid Password Validation process done");
+				driver.close();
+				break;
 			}
-			driver.switchTo().window(parentWindow);//homepage
 		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
+		driver.switchTo().window(parentWindow);
+		Thread.sleep(1000);
 		return statusOfTestCase;
-	
 	}
-	
+	public ArrayList<Integer> checkMobileNumber(ArrayList<String> dataFromExcel) throws InterruptedException
+	{
+		System.out.println("Invalid mobile validation started");
+		OpenWebsite.openSite(driver);
+		/*
+		 * WebElement signupClick = driver.findElement(By.
+		 * cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"
+		 * )); if(signupClick.isDisplayed()) { signupClick.click(); }
+		 */
+		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
+		this.signUpPage();
+		String parentWindow = driver.getWindowHandle();
+		Set<String> allWindows = driver.getWindowHandles();
+		for(String window : allWindows)
+		{
+			driver.switchTo().window(window);
+			if(driver.getCurrentUrl().contains("register"))
+			{
+				driver.switchTo().window(window);
+				this.signUpFunction(dataFromExcel);
+				Thread.sleep(1000);
+				statusOfTestCase.addAll(this.checkValidationMessage());
+				Thread.sleep(1000);
+				System.out.println("Invalid Mobile Number Validation process done");
+				driver.close();
+				break;
+			}
+		}
+		driver.switchTo().window(parentWindow);
+		Thread.sleep(1000);
+		return statusOfTestCase;
+	}
 	public ArrayList<Integer> checkSignupWithValidData(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		try
 		{
 			System.out.println("sign up validation started with valid data");
+			driver.switchTo().newWindow(WindowType.TAB);
+			OpenWebsite.openSite(driver);
 			
 			this.signUpPage();//click sign up icon
 			
@@ -625,7 +274,7 @@ public class SignUpLocator
 				{
 					driver.switchTo().window(window);
 					
-					//statusOfTestCase.addAll(this.signUpFunction(dataFromExcel));//enter all data in text box
+					statusOfTestCase.addAll(this.signUpFunction(dataFromExcel));//enter all data in text box
 					
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					break;
@@ -689,82 +338,9 @@ public class SignUpLocator
 		
 		return statusOfTestCase;
 	}
-	
-	public ArrayList<String> verifyValidDataOnSignUp(ArrayList<String> data)
+	public ArrayList<Integer> signUpFunction(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-		
-		ArrayList<String> getSignupStatus = new ArrayList<String>();
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
-		try
-		{
-			System.out.println("Signup using valid  data validation started");
-			statusOfTestCase.add(this.signUpPage());
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			Thread.sleep(1000);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for(String window : allWindows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					System.out.println("sign up page");
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					getSignupStatus.addAll(this.signUpFunction(data));
-					if(getSignupStatus.contains("validation message in full name "))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("no validation message for full name"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("No validation message"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("exception"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("email"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("password"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("country"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					else if(getSignupStatus.contains("mobile"))
-					{
-						statusOfTestCase.add("FAIL");
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					System.out.println("signup using valid data Validation process done");
-					driver.close();
-					break;
-				}
-			}
-			driver.switchTo().window(parentWindow);//homepage
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			statusOfTestCase.add("FAIL");
-		}
-		return statusOfTestCase;
-	}
-	
-	public ArrayList<String> signUpFunction(ArrayList<String> dataFromExcel) throws InterruptedException
-	{
-		ArrayList<String> statusOfTestCase = new ArrayList<String>();
+		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		try
 		{
 			WebElement fullName = driver.findElement(By.cssSelector("input#name"));
@@ -811,14 +387,13 @@ public class SignUpLocator
 			else
 			{
 				System.out.println("no error msg");
-				statusOfTestCase.add("No Validation message");
+				statusOfTestCase.add(0);
 			}
 			Thread.sleep(3000);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			statusOfTestCase.add("Fail");
 		}
 		
 		return statusOfTestCase;

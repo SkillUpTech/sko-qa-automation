@@ -103,83 +103,46 @@ public class PLULocators
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			if(driver.findElements(By.cssSelector("section[class*='container-fluid TechPrograms_mainContainer'] div[class*='row g-3'] div[class*='TechPrograms_cardWrapper']>a")).size()>0)
+			js.executeScript("window.scrollBy(0, 600)", "");
+			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='container-fluid TechPrograms_mainContainer'] div[class*='row g-3'] div[class*='TechPrograms_cardWrapper']>a"));
+			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
-				List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='container-fluid TechPrograms_mainContainer'] div[class*='row g-3'] div[class*='TechPrograms_cardWrapper']>a"));
-				for(int i = 0; i < ListOfProgram.size(); i++)
-				{
-					
-					js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
-					
-					String url = ListOfProgram.get(i).getAttribute("href");
-					
-					String statuscodeOfCard = (this.checkURLStatus(url));
-					
-					if(statuscodeOfCard.contains("fail"))
-					{
-						processStatus.add(" facing issue on this url "+url);
-					}
-				}	
-			}
-			else
-			{
-				System.out.println("program card not available");
-			}
+				
+				js.executeScript("arguments[0].scrollIntoView();", ListOfProgram.get(i));
+				
+				String url = ListOfProgram.get(i).getAttribute("href");
+				
+				processStatus.add(this.checkURLStatus(url));
+				
+				
 			
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			processStatus.add("fail");
 		}
 		return processStatus;
 		
 	
 	}
-		public ArrayList<String> verifyPLUProgram(ArrayList<String> course)
-		{
-			ArrayList<String> processStatus = new ArrayList<String>();
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			try
-			{
-
-				List<WebElement> courseCards = driver.findElements(By.xpath("//div[@class='d-none d-md-block']//div[@class='row g-3']//div[contains(@class,'TechPrograms_cardWrapper')]/a"));
-				for(int i = 0; i < courseCards.size(); i++)
-				{
-					js.executeScript("arguments[0].scrollIntoView();", courseCards.get(i));
-					String url = courseCards.get(i).getAttribute("href");
-					System.out.println("PLU program card starts execution : "+url);
-					String urlLinkStatus = this.checkURLStatus(url);
-					if(urlLinkStatus.contains("fail"))
-					{
-						processStatus.add(url+urlLinkStatus);
-					}
-				}
-			
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			return processStatus;
-		}	
 	public ArrayList<String> verifyPLUCourse(ArrayList<String> course)
 	{
-		ArrayList<String> processStatus = new ArrayList<String>();
+		ArrayList<String> failedUrls = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 
-			List<WebElement> courseCards = driver.findElements(By.xpath("//div[@class='d-none d-lg-block']/div[@class='row g-3']/div[@class='col-12']//a"));
-			for(int i = 0; i < courseCards.size(); i++)
+			js.executeScript("window.scrollBy(0, 800)", "");
+			List<WebElement> techProgram = driver.findElements(By.cssSelector("section[class*='HumanSkills_mainContainer'] div[class*='HumanSkills_mainContent'] a"));
+			for(int i = 0; i < techProgram.size(); i++)
 			{
-				js.executeScript("arguments[0].scrollIntoView();", courseCards.get(i));
-				String url = courseCards.get(i).getAttribute("href");
+				String url = techProgram.get(i).getAttribute("href");
 				System.out.println("PLU course card starts execution : "+url);
 				String urlLinkStatus = this.checkURLStatus(url);
 				if(urlLinkStatus.contains("fail"))
 				{
-					processStatus.add(url+urlLinkStatus);
+					failedUrls.add(url+urlLinkStatus);
 				}
 			}
 		
@@ -188,7 +151,9 @@ public class PLULocators
 		{
 			e.printStackTrace();
 		}
-		return processStatus;
+		JavascriptExecutor js2 = (JavascriptExecutor) driver;
+		js2.executeScript("window.scrollBy(0,1500)", "");
+		return failedUrls;
 	}
 	public ArrayList<String> verifyFAQ(ArrayList<String>  faq)
 	{

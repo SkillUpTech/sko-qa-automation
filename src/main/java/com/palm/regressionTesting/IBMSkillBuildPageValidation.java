@@ -22,10 +22,7 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 	String jiraProcess ="";
 	IBMSkillBuildPageLocator ibmSkillBuildPageLocator;
 	String sheetStatus = "Pass";
-	String getExecutionStatus = "";
-	String getprocessStatus = "";
-	JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
-	HashMap<String, String> TicketStatus = new HashMap<String, String>();
+	
 	public IBMSkillBuildPageValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
 	{
 		this.sheetData = sheetData;
@@ -119,14 +116,34 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 				}
 			}
 		}
+		HashMap<String, String> resultStatus = new HashMap<String, String>();
+		ArrayList<String> sheetRow = sheetData.get(1);
+		String getExecutionStatus = "";
+		String getprocessStatus = "";
+		JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
+		
 		if(jiraProcess.contains("Yes"))
 		{
-			for(String key : TicketStatus.keySet())
+			
+			if(sheetStatus == "fail")
 			{
-				jiraTicketStatusUpdate.updateStatus(key, TicketStatus.get(key));
+				getExecutionStatus = "FAIL";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(1).add(2, (getExecutionStatus + "failed"));
 			}
+			else
+			{
+				getExecutionStatus = "PASS";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				
+			}
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(1).add(2, 
+					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
-		
 		driver.quit();
 		}
 		catch(Exception e)

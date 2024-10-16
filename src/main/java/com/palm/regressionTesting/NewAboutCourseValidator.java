@@ -1119,12 +1119,9 @@ public class NewAboutCourseValidator implements Callable<String>
 				}
 			}
 		}
-		/*
-		 * endTime = new
-		 * SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().
-		 * getTime()); duration = Utils.findDifference(startTime, endTime);
-		 * collectSheetResult();
-		 */
+		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
+		duration = Utils.findDifference(startTime, endTime);
+		collectSheetResult();
 		driver.quit();
 		return sheetStatus;
 	

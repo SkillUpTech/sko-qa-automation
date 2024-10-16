@@ -22,10 +22,7 @@ public class DevopsPageValidation implements Callable<String>
 	ArrayList<ArrayList<String>> sheetData = null;
 	DevopsPageLocator devopsPageLocator;
 	String sheetStatus = "Pass";
-	String getExecutionStatus = "";
-	String getprocessStatus = "";
-	JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
-	HashMap<String, String> TicketStatus = new HashMap<String, String>();
+	
 	public DevopsPageValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws InterruptedException
 	{
 		this.sheetData = sheetData;
@@ -134,13 +131,33 @@ public class DevopsPageValidation implements Callable<String>
 			}
 		}
 		
+		HashMap<String, String> resultStatus = new HashMap<String, String>();
+		ArrayList<String> sheetRow = sheetData.get(2);
+		String getExecutionStatus = "";
+		String getprocessStatus = "";
+		JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 		
 		if(jiraProcess.contains("Yes"))
 		{
-			for(String key : TicketStatus.keySet())
+			
+			if(sheetStatus == "fail")
 			{
-				jiraTicketStatusUpdate.updateStatus(key, TicketStatus.get(key));
+				getExecutionStatus = "FAIL";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(2).add(2, (getExecutionStatus + "failed"));
 			}
+			else
+			{
+				getExecutionStatus = "PASS";
+				resultStatus.put(sheetRow.get(1), getExecutionStatus);
+				getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+				System.out.println(getprocessStatus);
+				
+			}
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(2).add(2, 
+					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
 		driver.quit();
 		}

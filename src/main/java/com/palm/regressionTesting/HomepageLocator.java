@@ -25,7 +25,7 @@ public class HomepageLocator
 	{
 		this.driver = driver;
 	}
-	public ArrayList<String> checkSliderLink() throws InterruptedException
+	public ArrayList<String> checkSliderLink(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<String> statusOfSliderScreen = new ArrayList<String>();
 		try
@@ -104,7 +104,7 @@ public class HomepageLocator
 			return status;
 	}
 	
-	public ArrayList<String> checkLearningPartners()
+	public ArrayList<String> checkLearningPartners(ArrayList<String> data)
 	{
 		ArrayList<String> verifyPocess = new ArrayList<String>();
 		try
@@ -127,7 +127,7 @@ public class HomepageLocator
 			List<WebElement> partnerList = driver.findElements(By.cssSelector("div[class='Collaborate_excollaborationInner__0u_r2'] ul li a"));
 			for(int i = 0; i < partnerList.size(); i++)
 			{
-				if(partnerList.get(i).isDisplayed())
+				if(data.get(i+1).equalsIgnoreCase(partnerList.get(i).getText()))
 				{
 					String partnerURL = partnerList.get(i).getAttribute("href");
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -136,6 +136,10 @@ public class HomepageLocator
 					if(urlLinkStatus.contains("fail"))
 					{
 						verifyPocess.add(partnerList.get(i).getText()+urlLinkStatus);
+					}
+					else
+					{
+						verifyPocess.add("pass");
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));

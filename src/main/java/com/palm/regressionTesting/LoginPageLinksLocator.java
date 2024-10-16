@@ -1,16 +1,12 @@
 package com.palm.regressionTesting;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -18,7 +14,6 @@ public class LoginPageLinksLocator {
 
 	String url ;
 	WebDriver driver;
-	
 	//OpenWebsite openWebsite;
 	
 	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li[class='Header_loginBtn__3Xv3A']>a")
@@ -305,7 +300,7 @@ public class LoginPageLinksLocator {
 	public String checkLinkedInLink()
 	{
 		
-		String status = "FAIL";
+		String status = "fail";
 		try
 		{
 			JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -324,7 +319,7 @@ public class LoginPageLinksLocator {
 				{
 					driver.switchTo().window(window);
 					System.out.println("linkedin page opened");
-					status = "PASS";
+					status = "pass";
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.navigate().back();
 					driver.switchTo().window(parentWindow);
@@ -334,7 +329,7 @@ public class LoginPageLinksLocator {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			status = "FAIL";
+			status = "fail";
 			// TODO: handle exception
 		}
 		return status;
@@ -410,43 +405,6 @@ public class LoginPageLinksLocator {
 			e.printStackTrace();
 			status = "fail";
 			// TODO: handle exception
-		}
-		return status;
-	}
-	
-	public String checkFAQLinkOnFooter()
-	{
-		String status = "FAIL";
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		try
-		{
-			if(driver.findElements(By.xpath("//div[@class='footertopmenu']//div[@class='FootMenu'][1]//li[3]/a")).size()>0)
-			{
-				System.out.println("FAQ link available");
-				WebElement clickFAQLink = driver.findElement(By.xpath("//div[@class='footertopmenu']//div[@class='FootMenu'][1]//li[3]/a"));
-				js.executeScript("arguments[0].scrollIntoView();", clickFAQLink);
-				if(clickFAQLink.isDisplayed())
-				{
-					String getFAQLink = clickFAQLink.getAttribute("href");
-					driver.switchTo().newWindow(WindowType.TAB);
-					driver.get(getFAQLink);
-					if(driver.getCurrentUrl().contains("faq"))
-					{
-						System.out.println("navigated to FAQ page");
-						status = "PASS";
-					}
-				}
-			}
-			else
-			{
-				System.out.println("FAQ link is not available");
-				status = "FAIL";
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			status = "FAIL";
 		}
 		return status;
 	}

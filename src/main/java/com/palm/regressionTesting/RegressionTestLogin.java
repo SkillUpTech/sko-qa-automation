@@ -27,8 +27,7 @@ public class RegressionTestLogin implements Callable<String>
 	RegressionTesting regressionTesting;
 	ArrayList<String> row = new ArrayList<String>();
 	ArrayList<String> ticketStatus = new ArrayList<String>();
-	JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
-	HashMap<String, String> TicketStatus = new HashMap<String, String>();
+	
 	public RegressionTestLogin(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws Exception
 	{		
 		 	this.sheetData = sheetData;
@@ -168,37 +167,34 @@ public class RegressionTestLogin implements Callable<String>
 				}
 				
 			}
+			HashMap<String, String> resultStatus = new HashMap<String, String>();
+			ArrayList<String> sheetRow = sheetData.get(4);
+			String getExecutionStatus = "";
+			String getprocessStatus = "";
+			JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
+			
 			if(jiraProcess.contains("Yes"))
 			{
-				String getExecutionStatus = "";
-				ArrayList<String> sheetRow = sheetData.get(4);
-				getExecutionStatus = sheetStatus;
-				String ticketID = sheetRow.get(1);
-				jiraTicketStatusUpdate.updateStatus(ticketID, getExecutionStatus);
+				
+				if(sheetStatus == "fail")
+				{
+					getExecutionStatus = "FAIL";
+					resultStatus.put(sheetRow.get(1), getExecutionStatus);
+					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+					System.out.println(getprocessStatus);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(4).add(2, (getExecutionStatus + "failed"));
+				}
+				else
+				{
+					getExecutionStatus = "PASS";
+					resultStatus.put(sheetRow.get(1), getExecutionStatus);
+					getprocessStatus = jiraTicketStatusUpdate.updateStatus(getExecutionStatus);
+					System.out.println(getprocessStatus);
+					
+				}
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(4).add(2, 
+						(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 			}
-			/*
-			 * HashMap<String, String> resultStatus = new HashMap<String, String>();
-			 * ArrayList<String> sheetRow = sheetData.get(4); String getExecutionStatus =
-			 * ""; String getprocessStatus = ""; JiraTicketStatusUpdate
-			 * jiraTicketStatusUpdate = new JiraTicketStatusUpdate(); String ticketID =
-			 * "SCRUM-E1"; if(jiraProcess.contains("Yes")) {
-			 * 
-			 * if(sheetStatus == "fail") { getExecutionStatus = "FAIL";
-			 * resultStatus.put(sheetRow.get(1), getExecutionStatus); getprocessStatus =
-			 * jiraTicketStatusUpdate.updateStatus(ticketID, getExecutionStatus);
-			 * System.out.println(getprocessStatus);
-			 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-			 * "ProgramURLandSlug").get(4).add(2, (getExecutionStatus + "failed")); } else {
-			 * getExecutionStatus = "PASS"; resultStatus.put(sheetRow.get(1),
-			 * getExecutionStatus); getprocessStatus =
-			 * jiraTicketStatusUpdate.updateStatus(ticketID, getExecutionStatus);
-			 * System.out.println(getprocessStatus);
-			 * 
-			 * } RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(
-			 * "ProgramURLandSlug").get(4).add(2, (getExecutionStatus)+ Utils.DELIMITTER +
-			 * "bold" + Utils.DELIMITTER + "color" +
-			 * (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red")); }
-			 */
 			driver.quit();
 		}
 		catch(Exception e)

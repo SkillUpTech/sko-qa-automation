@@ -27,6 +27,76 @@ public class PLUValidation implements Callable<String>
 		
 	}
 	
+	public String start() throws InterruptedException
+	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+				case "courseTitle":
+					courseTitle(row.get(1));
+					break;
+				case "topBannerContent":
+					topBannerContent(row.get(1));
+					break;
+				case "description":
+					description(row.get(1));
+					break;
+				case "techPrograms":
+					techPrograms(row);
+					break;
+				case "PLUCourses":
+					PLUCourses(row);
+					break;
+				case "FAQ":
+					FAQ(row, i);
+					break;
+				case "BackGroundColor_certificateLeftContent":
+				BackGroundColor_certificateLeftContent(row);
+				break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	}
 	
 	public void courseTitle(String titleName)
 	{
@@ -56,15 +126,22 @@ public class PLUValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("PLU").get(2).set(0, "description - failed");
 		}
 	}
-	public void PLUProgram(ArrayList<String> courses)
+	
+	public void techPrograms(ArrayList<String> programs)
 	{
-		if(!courses.contains("NA"))
+		if(!programs.contains("NA"))
 		{
-			ArrayList<String> failedUrls = this.PLUPageLocators.verifyPLUProgram(courses);
-			for(int i = 0; i < failedUrls.size(); i++)
+			ArrayList<String> failTechPgm = this.PLUPageLocators.verifyPrograms(programs);
+			if(failTechPgm.contains("fail"))
 			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failedUrls.get(i) + " - failed"));
+				if(failTechPgm.size()>0)
+				{
+					for(int i = 0; i < failTechPgm.size(); i++)
+					{
+						sheetStatus = "Fail";
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Pacific").get(3).add(i+1, (failTechPgm.get(i) + " - failed"));
+					}
+				}
 			}
 		}
 	}
@@ -164,8 +241,8 @@ public class PLUValidation implements Callable<String>
 				case "description":
 					description(row.get(1));
 					break;
-				case "PLUProgram":
-					PLUProgram(row);
+				case "techPrograms":
+					techPrograms(row);
 					break;
 				case "PLUCourses":
 					PLUCourses(row);

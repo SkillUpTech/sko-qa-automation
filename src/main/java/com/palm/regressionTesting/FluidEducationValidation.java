@@ -26,6 +26,73 @@ public class FluidEducationValidation implements Callable<String>
 		
 	}
 	
+	public String start() throws InterruptedException
+	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+				case "facebook":
+					facebook();
+					break;
+				case "instagram":
+					instagram();
+					break;
+				case "twitter":
+					twitter();
+					break;
+				case "CTADownloadDetails":
+					CTADownloadDetails();
+					break;
+				case "programs":
+					programs(row);
+					break;
+				case "ExploreCourse":
+					  ExploreCourse(row); 
+					  break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	}
 	
 	public void facebook()
 	{
@@ -78,14 +145,17 @@ public class FluidEducationValidation implements Callable<String>
 			}
 		}
 	}
-	public void ExploreOtherCourseLink() throws InterruptedException
+	public void ExploreCourse(ArrayList<String> data) throws InterruptedException
 	{
-			String status = fluidEducationLocator.ExploreOtherCourseLinkProcess();
+		if(!data.contains("NA"))
+		{
+			String status = fluidEducationLocator.ExploreCourseProcess();
 			if(status.equalsIgnoreCase("fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Fluideducation").get(5).set(0, "ExploreCourse - failed");
 			}
+		}
 	}
 	public WebDriver openDriver(String browserName)
 	{
@@ -142,8 +212,8 @@ public class FluidEducationValidation implements Callable<String>
 				case "programs":
 					programs(row);
 					break;
-				case "ExploreOtherCourseLink":
-					ExploreOtherCourseLink(); 
+				case "ExploreCourse":
+					  ExploreCourse(row); 
 					  break;
 			}
 		}

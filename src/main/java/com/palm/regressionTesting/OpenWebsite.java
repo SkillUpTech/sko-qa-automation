@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.*;
+import com.seo.regression.testing.RegressionTesting;
 
 public class OpenWebsite
 {
@@ -18,12 +19,10 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", com.palm.regressionTesting.RegressionTesting.driverPath);
+			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable-notifications");
-			options.addArguments("--user-data-dir=/path/to/temp/profile");
-			options.addArguments("--disable-extensions"); 
+			options.addArguments("--disable notifications");
 			driver = new ChromeDriver(options);
 			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));

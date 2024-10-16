@@ -2,7 +2,6 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -13,25 +12,20 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.regression.utility.TestUtil;
-import com.regression.utility.Utils;
 
 public class LoginPageLinksValidation implements Callable<String>
 {
 	String result = "failed";
 	ArrayList<ArrayList<String>> sheetData = null;
 	String userName;
-	String jiraProcess ="";
 	WebDriver driver;
 	LoginPageLinksLocator loginPageLinksLocator;
 	String sheetStatus = "Pass";
 	
-	
-	HashMap<String, String> TicketStatus = new HashMap<String, String>();
-	
-	public LoginPageLinksValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws InterruptedException
+	public LoginPageLinksValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.jiraProcess = jiraProcessStatus;
+		
 	}
 	public WebDriver openDriver(String browserName)
 	{
@@ -56,7 +50,80 @@ public class LoginPageLinksValidation implements Callable<String>
 		}
 		return driver;
 	}
-	
+	public String start() throws InterruptedException
+	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			  case "LoginIcon": 
+				  LoginIcon(); 
+				  break; 
+				
+				case "ForgotPasswordLink":
+					forgotPasswordLink();
+					break; 
+				case "SignUpLink":
+					SignUpLink();
+					break; 
+				case "TermOfServiceLink": TermOfServiceLink(); break; case
+								"PrivacyPolicyLink":
+									PrivacyPolicyLink();
+									break;
+								case "FacebookLink":
+									FacebookLink();
+									break; 
+											  case "GoogleLink": GoogleLink(); break; case "LinkedInLink":
+											  LinkedInLink(); break; case "MicrosoftLink": MicrosoftLink(); break; case
+											  "SignUpTab": SignUpTab(); break;
+											 
+											 
+							 
+							 
+				 
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	}
 	
 	public void LoginIcon()
 	{
@@ -122,24 +189,13 @@ public class LoginPageLinksValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LoginPageLinks").get(6).set(0, "GoogleLink - failed");
 		}
 	}
-	public void LinkedInLink(ArrayList<String> data)
+	public void LinkedInLink()
 	{
 		String status = loginPageLinksLocator.checkLinkedInLink();
-		if(status.equalsIgnoreCase("FAIL"))
+		if(status.equalsIgnoreCase("fail"))
 		{
-			if(jiraProcess.contains("Yes"))
-			{
-				TicketStatus.put(data.get(1), status);
-			}
 			sheetStatus="Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LoginPageLinks").get(7).set(0, "LinkedInLink - failed");
-		}
-		else
-		{
-			if(jiraProcess.contains("Yes"))
-			{
-				TicketStatus.put(data.get(1), status);
-			}
 		}
 	}
 	public void MicrosoftLink()
@@ -149,7 +205,6 @@ public class LoginPageLinksValidation implements Callable<String>
 		{
 			sheetStatus="Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LoginPageLinks").get(8).set(0, "MicrosoftLink - failed");
-			
 		}
 	}
 	public void SignUpTab()
@@ -159,27 +214,6 @@ public class LoginPageLinksValidation implements Callable<String>
 		{
 			sheetStatus="Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LoginPageLinks").get(9).set(0, "SignUpTab - failed");
-		}
-	}
-	
-	public void FAQLinkOnFooter(ArrayList<String> data)
-	{
-		String status = loginPageLinksLocator.checkFAQLinkOnFooter();
-		if(status.equalsIgnoreCase("FAIL"))
-		{
-			if(jiraProcess.contains("Yes"))
-			{
-				TicketStatus.put(data.get(1), status);
-			}
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LoginPageLinks").get(9).set(0, "SignUpTab - failed");
-		}
-		else
-		{
-			if(jiraProcess.contains("Yes"))
-			{
-				TicketStatus.put(data.get(1), status);
-			}
 		}
 	}
 	@Override
@@ -193,6 +227,8 @@ public class LoginPageLinksValidation implements Callable<String>
 		OpenWebsite.openSite(driver);
 		this.loginPageLinksLocator = new LoginPageLinksLocator(this.driver);
 		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -222,7 +258,7 @@ public class LoginPageLinksValidation implements Callable<String>
 					  GoogleLink(); 
 					  break; 
 				case "LinkedInLink":
-						LinkedInLink(row); 
+						LinkedInLink(); 
 						break; 
 				case "MicrosoftLink": 
 					MicrosoftLink(); 
@@ -230,9 +266,7 @@ public class LoginPageLinksValidation implements Callable<String>
 				case  "SignUpTab": 
 					SignUpTab(); 
 					break;
-				case  "FAQLinkOnFooter": 
-					FAQLinkOnFooter(row); 
-					break;							 
+											 
 			}
 		}
 		Set<String> windows = driver.getWindowHandles();
@@ -262,7 +296,6 @@ public class LoginPageLinksValidation implements Callable<String>
 				}
 			}
 		}
-		
 		driver.quit();
 		}
 		catch(Exception e)

@@ -40,11 +40,73 @@ public class HomePageValidator implements Callable<String>
 			System.out.println("you already in home page");
 		}
 	}
+	public String start() throws InterruptedException
+	{
+		try
+		{
+		String BaseWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
+		OpenWebsite.openSite(driver);
+		this.homePage(driver);
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			case "Banner":
+				verifyBanner(row);
+				break;
+			case"learningPartners":
+				verifyLearningPartners(row);
+				break;
+			case"humanSkills":
+				verifyHumanSkills();
+				break;
+			case"topTechCategories":
+				verifyTopTechCategories();
+				break;
+			}
+		}
+		Set<String> windows = driver.getWindowHandles();
+		for(String win : windows)
+		{
+			driver.switchTo().window(win);
+			if(!BaseWindow.equals(win))
+			{
+				driver.switchTo().window(win);
+				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(driver.getCurrentUrl().contains("courses"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
+				{
+					driver.switchTo().window(win);
+					driver.close();
+					driver.switchTo().window(BaseWindow);
+				}
+			}
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	}
 
 	
-	public void verifyBanner() throws InterruptedException
+	public void verifyBanner(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
-		ArrayList<String> status = homepageLocator.checkSliderLink();
+		ArrayList<String> status = homepageLocator.checkSliderLink(dataFromExcel);
 		{
 			for(int i = 0; i < status.size(); i++)
 			{
@@ -57,18 +119,35 @@ public class HomePageValidator implements Callable<String>
 			}
 		}
 	}
-	public void verifyLearningPartners()
+	public void verifyLearningPartners(ArrayList<String> dataFromExcel)
 	{
-			ArrayList<String> statusOfLearningPartners = homepageLocator.checkLearningPartners();
+		if(!dataFromExcel.contains("NA"))
+		{
+			ArrayList<String> statusOfLearningPartners = homepageLocator.checkLearningPartners(dataFromExcel);
 			for(int i = 0; i < statusOfLearningPartners.size(); i++)
 			{
-				if(statusOfLearningPartners.size()>0)
+				if(dataFromExcel.contains(statusOfLearningPartners.get(i)))
 				{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).add(i+1, (statusOfLearningPartners.get(i) + "failed"));
+					int position = dataFromExcel.indexOf(statusOfLearningPartners.get(i));
+					String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).get(position);
+					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(position, (cellValue + " - failed"));
 
 				}
 			}
+		}
+	}
+	public void verifyLearningCatalog(String dataFromExcel) throws InterruptedException
+	{
+		if(!dataFromExcel.contains("NA"))
+		{
+			ArrayList<String> statusOfLearningPartners = homepageLocator.checkLearningCatalog();
+			if(statusOfLearningPartners.contains("fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HomePage").get(1).set(0, "learningCatalog - failed");
+			}
+		}
 	}
 	public void verifyHumanSkills()
 	{
@@ -140,10 +219,10 @@ public class HomePageValidator implements Callable<String>
 			switch(firstColumn)
 			{
 			case "Banner":
-				verifyBanner();
+				verifyBanner(row);
 				break;
 			case"learningPartners":
-				verifyLearningPartners();
+				verifyLearningPartners(row);
 				break;
 			case"humanSkills":
 				verifyHumanSkills();
