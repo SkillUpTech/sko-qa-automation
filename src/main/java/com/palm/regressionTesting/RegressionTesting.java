@@ -263,7 +263,7 @@ public class RegressionTesting
 							 case "OnboardingJourney":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.OnboardingValidation(sheetData));
 								 break;
-							 case "TechMaster":
+							 case "FutureSkill":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.TechMasterValidation(sheetData));
 								 break;
 							 case "CategoryBanner":

@@ -367,55 +367,68 @@ public class ExploreAllLocator
 		int loopCount;
 		try
 		{
-			List<WebElement> categories = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//div[contains(@class,'CourseSection_checkbox')]/input"));
-			for(int i = 0; i < categories.size(); i++)
+			if(driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//button")).size()>0)
 			{
-				loopCount = i;
-				wait.until(ExpectedConditions.visibilityOf(categories.get(i)));
-				js.executeScript("arguments[0].scrollIntoView();", categories.get(i));
-				if(categories.get(i).isDisplayed())
+				WebElement clickLevel = driver.findElement(By.xpath(
+						"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//button"));
+				js.executeScript("arguments[0].scrollIntoView();", clickLevel);
+				if (clickLevel.isDisplayed())
 				{
-					js.executeScript("arguments[0].click()", categories.get(i));
-					System.out.println("category Name : "+categories.get(i).getAttribute("id"));
-					int retries = 3;
-					while (retries > 0)
+					js.executeScript("arguments[0].click()", clickLevel);
+					List<WebElement> categories = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//div[contains(@class,'CourseSection_checkbox')]/input"));
+					for(int i = 0; i < categories.size(); i++)
 					{
-					    try 
-					    {
-					    	if(driver.findElements(By.xpath("//div[contains(@class,'CourseSection_courseResultContainer')]//div[@class='row g-3 mt-2']/div[contains(@class,'col')]//a")).size()>0)
+						loopCount = i;
+						wait.until(ExpectedConditions.visibilityOf(categories.get(i)));
+						js.executeScript("arguments[0].scrollIntoView();", categories.get(i));
+						if(categories.get(i).isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", categories.get(i));
+							System.out.println("category Name : "+categories.get(i).getAttribute("id"));
+							int retries = 3;
+							while (retries > 0)
 							{
-								List<WebElement> listOfCourses = driver.findElements(By.xpath("//div[contains(@class,'CourseSection_courseResultContainer')]//div[@class='row g-3 mt-2']/div[contains(@class,'col')]//a"));
-								for(int j = 0; j < listOfCourses.size(); j++)
-								{
-									wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
-									js.executeScript("arguments[0].scrollIntoView();", listOfCourses.get(j));
-									if(listOfCourses.get(j).isDisplayed())
+							    try 
+							    {
+							    	if(driver.findElements(By.xpath("//div[contains(@class,'CourseSection_courseResultContainer')]//div[@class='row g-3 mt-2']/div[contains(@class,'col')]//a")).size()>0)
 									{
-										System.out.println("course Name : "+listOfCourses.get(j).getAttribute("href"));
+										List<WebElement> listOfCourses = driver.findElements(By.xpath("//div[contains(@class,'CourseSection_courseResultContainer')]//div[@class='row g-3 mt-2']/div[contains(@class,'col')]//a"));
+										for(int j = 0; j < listOfCourses.size(); j++)
+										{
+											wait.until(ExpectedConditions.visibilityOf(listOfCourses.get(j)));
+											js.executeScript("arguments[0].scrollIntoView();", listOfCourses.get(j));
+											if(listOfCourses.get(j).isDisplayed())
+											{
+												System.out.println("course Name : "+listOfCourses.get(j).getAttribute("href"));
+											}
+											if(j == listOfCourses.size()-1)
+											{
+												status.add(this.checkNextPage());
+											}
+										}
 									}
-									if(j == listOfCourses.size()-1)
-									{
-										status.add(this.checkNextPage());
-									}
-								}
+							        break;
+							    } 
+							    catch (StaleElementReferenceException e)
+							    {
+							        retries--;
+							        if (retries == 0)
+							        {
+							        	status.add("courseFail");
+							            throw e;  // Re-throw the exception if all retries fail
+							        }
+							    }
 							}
-					        break;
-					    } 
-					    catch (StaleElementReferenceException e)
-					    {
-					        retries--;
-					        if (retries == 0)
-					        {
-					        	status.add("courseFail");
-					            throw e;  // Re-throw the exception if all retries fail
-					        }
-					    }
+						}
+						WebElement disableCategoryCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//div[contains(@class,'CourseSection_checkbox')] ["+loopCount+"+1]/input")));
+						js.executeScript("arguments[0].click();", disableCategoryCheckbox);
 					}
-					
 				}
-				WebElement disableCategoryCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//div[contains(@class,'CourseSection_checkbox')]["+loopCount+"+1]/input")));
-				js.executeScript("arguments[0].click();", disableCategoryCheckbox);
+				WebElement disableLevel = driver.findElement(By.xpath(
+						"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][2]//button"));
+				js.executeScript("arguments[0].scrollIntoView();", disableLevel);
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -435,16 +448,24 @@ public class ExploreAllLocator
 		int loopCount;
 		try
 		{
-			List<WebElement> categories = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//div[contains(@class,'CourseSection_checkbox')]/input"));
-			for(int i = 0; i < categories.size(); i++)
+			if(driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//button")).size()>0)
 			{
-				loopCount = i;
-				wait.until(ExpectedConditions.visibilityOf(categories.get(i)));
-				js.executeScript("arguments[0].scrollIntoView();", categories.get(i));
-				if(categories.get(i).isDisplayed())
+				WebElement clickPartner = driver.findElement(By.xpath(
+						"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//button"));
+				js.executeScript("arguments[0].scrollIntoView();", clickPartner);
+				if (clickPartner.isDisplayed())
 				{
-					js.executeScript("arguments[0].click()", categories.get(i));
-					System.out.println("category Name : "+categories.get(i).getAttribute("id"));
+					js.executeScript("arguments[0].click()", clickPartner);
+					List<WebElement> partners = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//div[contains(@class,'CourseSection_checkbox')]/input"));
+					for(int i = 0; i < partners.size(); i++)
+					{
+					loopCount = i;
+					wait.until(ExpectedConditions.visibilityOf(partners.get(i)));
+					js.executeScript("arguments[0].scrollIntoView();", partners.get(i));
+					if(partners.get(i).isDisplayed())
+					{
+					js.executeScript("arguments[0].click()", partners.get(i));
+					System.out.println("category Name : "+partners.get(i).getAttribute("id"));
 					int retries = 3;
 					while (retries > 0)
 					{
@@ -481,10 +502,15 @@ public class ExploreAllLocator
 					}
 					
 				}
-				WebElement disableCategoryCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//div[contains(@class,'CourseSection_checkbox')]["+loopCount+"+1]/input")));
-				js.executeScript("arguments[0].click();", disableCategoryCheckbox);
+					WebElement disableCategoryCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//div[contains(@class,'CourseSection_checkbox')] ["+loopCount+"+1]/input")));
+					js.executeScript("arguments[0].click();", disableCategoryCheckbox);
 			}
 		}
+				WebElement disablePartner = driver.findElement(By.xpath(
+						"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][3]//button"));
+				js.executeScript("arguments[0].scrollIntoView();", disablePartner);
+			}
+			}
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -503,16 +529,24 @@ public class ExploreAllLocator
 		int loopCount;
 		try
 		{
-			List<WebElement> categories = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//div[contains(@class,'CourseSection_checkbox')]/input"));
-			for(int i = 0; i < categories.size(); i++)
+			if(driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//button")).size()>0)
+			{
+				WebElement clickStyles = driver.findElement(By.xpath(
+						"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//button"));
+				js.executeScript("arguments[0].scrollIntoView();", clickStyles);
+				if (clickStyles.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", clickStyles);
+			List<WebElement> learningStyles = driver.findElements(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//input"));
+			for(int i = 0; i < learningStyles.size(); i++)
 			{
 				loopCount = i;
-				wait.until(ExpectedConditions.visibilityOf(categories.get(i)));
-				js.executeScript("arguments[0].scrollIntoView();", categories.get(i));
-				if(categories.get(i).isDisplayed())
+				wait.until(ExpectedConditions.visibilityOf(learningStyles.get(i)));
+				js.executeScript("arguments[0].scrollIntoView();", learningStyles.get(i));
+				if(learningStyles.get(i).isDisplayed())
 				{
-					js.executeScript("arguments[0].click()", categories.get(i));
-					System.out.println("category Name : "+categories.get(i).getAttribute("id"));
+					js.executeScript("arguments[0].click()", learningStyles.get(i));
+					System.out.println("category Name : "+learningStyles.get(i).getAttribute("id"));
 					int retries = 3;
 					while (retries > 0)
 					{
@@ -547,12 +581,16 @@ public class ExploreAllLocator
 					        }
 					    }
 					}
-					
 				}
-				WebElement disableCategoryCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//div[contains(@class,'CourseSection_checkbox')]["+loopCount+"+1]/input")));
-				js.executeScript("arguments[0].click();", disableCategoryCheckbox);
+					    WebElement disableStyleCheckbox = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//div[contains(@class,'CourseSection_checkbox')] ["+loopCount+"+1]/input")));
+						js.executeScript("arguments[0].click();", disableStyleCheckbox);
+				}
 			}
-		}
+					WebElement disableStyle = driver.findElement(By.xpath(
+							"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//button"));
+					js.executeScript("arguments[0].scrollIntoView();", disableStyle);
+				}
+				}
 		catch(Exception e)
 		{
 			e.printStackTrace();

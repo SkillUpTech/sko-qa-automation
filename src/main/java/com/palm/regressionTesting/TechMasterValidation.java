@@ -2,6 +2,7 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
@@ -98,7 +99,7 @@ public class TechMasterValidation implements Callable<String>
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(0).set(0, "url - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(0).set(0, "url - failed");
 		}
 	}
 	public void findOutMore_Button()
@@ -107,7 +108,7 @@ public class TechMasterValidation implements Callable<String>
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).set(0, "findOutMore_Button - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(1).set(0, "findOutMore_Button - failed");
 		}
 	}
 	public void learnmore_Button()
@@ -116,29 +117,39 @@ public class TechMasterValidation implements Callable<String>
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(2).set(0, "findOutMore_Button - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(2).set(0, "findOutMore_Button - failed");
 		}
 	}
-	public void Cards()
+	/*
+	 * public void Cards() { ArrayList<String> status = techMasterLocator.Cards();
+	 * if(status.size()>0) { for(int i = 0; i < status.size(); i++) { sheetStatus =
+	 * "Fail";
+	 * RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").
+	 * get(1).add(i+1, (status.get(i) + "Cards - failed")); } } }
+	 */
+	public void Cards() 
 	{
-		ArrayList<String> status = techMasterLocator.Cards();
-		if(status.size()>0)
-		{
-			for(int i = 0; i < status.size(); i++)
-			{
-				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(1).add(i+1, (status.get(i) + "Cards - failed"));
-			}
-		}
+	    if (techMasterLocator != null) 
+	    {
+	        ArrayList<String> status = techMasterLocator.Cards();
+	        if (status != null && status.size() > 0)
+	        {
+	            for (int i = 0; i < status.size(); i++)
+	            {
+	                sheetStatus = "Fail";
+	    			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(3).add(i+1, (status.get(i) + " failed"));
+
+	            }
+	        }
+	    }
 	}
-	
 	public void focusFAQ()
 	{
 		String status = techMasterLocator.CheckFAQFocus();
 		if(status.contains("fail"))
 		{
 			sheetStatus = "Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("TechMaster").get(3).set(0, "findOutMore_Button - failed");
+			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(3).set(0, "findOutMore_Button - failed");
 		}
 	}
 	public WebDriver openDriver(String browserName)

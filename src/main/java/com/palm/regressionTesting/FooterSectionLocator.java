@@ -826,13 +826,15 @@ public class FooterSectionLocator
 					status.add("pass");
 				}
 				String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
+				String url = blogs.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
 				blogs.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				String parentWindow = driver.getWindowHandle();
 				Set<String> windows = driver.getWindowHandles();
 				for(String allWindows : windows)
 				{
-					if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(getHost+"/"))
+					driver.switchTo().window(allWindows);
+					if(driver.getCurrentUrl().contains(url))
 					{
 						driver.switchTo().window(allWindows);
 						System.out.println(driver.getCurrentUrl());
@@ -843,6 +845,7 @@ public class FooterSectionLocator
 						.executeScript("window.scrollTo(0, document.body.scrollHeight)");
 						}
 					}
+				driver.switchTo().window(parentWindow);
 				}
 			}
 		return status;

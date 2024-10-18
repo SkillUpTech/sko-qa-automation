@@ -103,7 +103,7 @@ public class MicrosoftCourseValidation implements Callable<String>
 			for(int i = 0; i < getStatus.size(); i++)
 			{
 				sheetStatus = "Fail";
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + "failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("MicrosoftPage").get(1).add(i+1, (getStatus.get(i) + "MicrosftPage -failed"));
 			}
 		}
 	}

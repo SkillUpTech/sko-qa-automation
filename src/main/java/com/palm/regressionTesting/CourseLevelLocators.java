@@ -38,6 +38,7 @@ public class CourseLevelLocators
 				{
 					if(courseCards.size()>0)
 					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						WebElement checkCourseCardLevel = courseCards.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
 						js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevel);
 						if(checkCourseCardLevel.getText().contains("Self-Paced"))
@@ -115,17 +116,19 @@ public class CourseLevelLocators
 				}
 			}
 		
-			
-			List<WebElement> courseCardsVILT = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
-			for(int i = 0; i < courseCardsVILT.size(); i++)
+			if(driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]")).size()>0)
 			{
-				if(courseCardsVILT.size()>0)
-				{
-					WebElement checkCourseCardLevelVILT = driver.findElement(By.xpath("//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
-					js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelVILT);
-					if(checkCourseCardLevelVILT.getText().contains("vILT")||checkCourseCardLevelVILT.getText().contains("Instructor-Led"))
+					List<WebElement> courseCards = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
+					for(int i = 0; i < courseCards.size(); i++)
 					{
-						System.out.println("VILT paced course card");
+						if(courseCards.size()>0)
+						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+							WebElement checkCourseCardLevelVILT = courseCards.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
+							js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelVILT);
+						if(checkCourseCardLevelVILT.getText().contains("vILT")||checkCourseCardLevelVILT.getText().contains("Instructor-Led"))
+						{
+							System.out.println("VILT paced course card");
 						String parentWindow = driver.getWindowHandle();
 						WebElement VILTcardLink = checkCourseCardLevelVILT.findElement(By.xpath(".//ancestor::a"));
 						String url = VILTcardLink.getAttribute("href");
@@ -181,14 +184,17 @@ public class CourseLevelLocators
 						}
 					}
 				}
-
-			List<WebElement> courseCardsBlended = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
-			for(int i = 0; i < courseCardsBlended.size(); i++)
+			}
+			if(driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]")).size()>0)
 			{
-				if(courseCardsBlended.size()>0)
-				{
-					WebElement checkCourseCardLevelBlended = driver.findElement(By.xpath("//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
-					js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelBlended);
+					List<WebElement> courseCards = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
+					for(int i = 0; i < courseCards.size(); i++)
+					{
+						if(courseCards.size()>0)
+						{
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+							WebElement checkCourseCardLevelBlended = courseCards.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li[1]"));
+							js.executeScript("arguments[0].scrollIntoView();", checkCourseCardLevelBlended);
 					if(checkCourseCardLevelBlended.getText().contains("BLENDED"))
 					{
 						System.out.println("Blended  course card");
@@ -248,6 +254,7 @@ public class CourseLevelLocators
 					}
 				}
 		}
+		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
@@ -266,7 +273,7 @@ public class CourseLevelLocators
 		try
 		{
 			
-			WebElement clickDropdown = driver.findElement(By.xpath("//li[contains(@class,'nav-item dropdown Header_dropdown')]//img[@alt='icon']"));
+			WebElement clickDropdown = driver.findElement(By.xpath("//li[contains(@class,'nav-item dropdown Header_dropdown')]//a"));
 			
 			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
 			
@@ -274,7 +281,7 @@ public class CourseLevelLocators
 			{
 				js.executeScript("arguments[0].click()", clickDropdown);
 			}
-				
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 			List<WebElement> clickCategory = driver.findElements(By.xpath("//div[contains(@class,'Header_headerRight')]//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='MainCatE catcolumn divbox1']/ul/li/a"));
 		//list of categories 
 			for(int k = 0 ; k < clickCategory.size(); k++)
@@ -299,7 +306,7 @@ public class CourseLevelLocators
 						continue;
 					}
 					
-					if(!categoryName.equalsIgnoreCase("Modern Workplace"))
+					if(!categoryName.equalsIgnoreCase("Business Applications"))
 					{
 						String parentWindow = driver.getWindowHandle(); // mega menu section from drop down list
 						
@@ -533,7 +540,11 @@ public class CourseLevelLocators
 															      driver.getTitle().contains("null") ||
 															      driver.findElements(By.cssSelector("div[class*='PageNotFound_textSection']")).size() > 0))
 														{
-															WebElement checkLevelFromPage = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2"));
+
+															WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+															WebElement checkLevelFromPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2")));
+
+															//WebElement checkLevelFromPage = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2"));
 															
 															if(checkLevelFromPage.getText().toUpperCase().equalsIgnoreCase(CourseCardLevel))
 															{

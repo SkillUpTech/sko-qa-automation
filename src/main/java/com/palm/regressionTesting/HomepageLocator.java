@@ -127,8 +127,6 @@ public class HomepageLocator
 			List<WebElement> partnerList = driver.findElements(By.cssSelector("div[class='Collaborate_excollaborationInner__0u_r2'] ul li a"));
 			for(int i = 0; i < partnerList.size(); i++)
 			{
-				if(data.get(i+1).equalsIgnoreCase(partnerList.get(i).getText()))
-				{
 					String partnerURL = partnerList.get(i).getAttribute("href");
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
@@ -161,7 +159,6 @@ public class HomepageLocator
 					}
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				}
 			}
 		}
 		catch(Exception e)

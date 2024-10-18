@@ -120,6 +120,55 @@ public class HeaderFeatureValidation implements Callable<String>
 			}
 		}
 	}
+	
+	public void headerFeatureOnBlog(String data)
+	{
+		ArrayList<String> getStatus = headerFeatureLocators.headerFeatureOnBlog(data);
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFeature").get(7).add(i+2, (getStatus.get(i) + "failed"));
+			}
+		}
+	}
+	public void headerFeatureOnCourseAsProgram(String data)
+	{
+		ArrayList<String> getStatus = headerFeatureLocators.headerFeatureOnCourseAsProgram(data);
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFeature").get(8).add(i+2, (getStatus.get(i) + "failed"));
+			}
+		}
+	}
+	public void headerFeatureOnceLogin(ArrayList<String> data)
+	{
+		ArrayList<String> getStatus = headerFeatureLocators.headerFeatureOnceLogin(data);
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFeature").get(9).add(i+3, (getStatus.get(i) + "failed"));
+			}
+		}
+	}
+	public void headerFeatureOnceSignup(String data)
+	{
+		ArrayList<String> getStatus = headerFeatureLocators.headerFeatureOnceSignup(data);
+		if(getStatus.size()>0)
+		{
+			for(int i = 0; i < getStatus.size(); i++)
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFeature").get(10).add(i+2, (getStatus.get(i) + "failed"));
+			}
+		}
+	}
 	public WebDriver openDriver(String browserName)
 	{
 		WebDriver driver = null;
@@ -161,24 +210,25 @@ public class HeaderFeatureValidation implements Callable<String>
 			String firstColumn = row.get(0);
 			switch(firstColumn)
 			{
-				case "headerFeatureOnCategory":
-					headerFeatureOnCategory(row.get(1));
-					break;
-				case "headerFeatureOncourse":
-					headerFeatureOncourse(row.get(1));
-					break;
-				case "headerFeatureOnprogram":
-					headerFeatureOnprogram(row.get(1));
-					break;
-				case "headerFeatureOnpartner":
-					headerFeatureOnpartner(row.get(1));
-					break;
-				/*
-				 * case "headerFeatureOnAnyPage": headerFeatureOnAnyPage(row.get(1)); break;
-				 * case "headerFeatureOnLoginPage": headerFeatureOnLoginPage(row.get(1)); break;
-				 * case "headerFeatureOnSignupPage": headerFeatureOnSignupPage(row.get(1));
-				 * break;
-				 */
+			
+			
+			  case "headerFeatureOnCategory": headerFeatureOnCategory(row.get(1)); break;
+			  case "headerFeatureOncourse": headerFeatureOncourse(row.get(1)); break; case
+			  "headerFeatureOnprogram": headerFeatureOnprogram(row.get(1)); break; case
+			  "headerFeatureOnpartner": headerFeatureOnpartner(row.get(1)); break;
+			  
+			  case "headerFeatureOnAnyPage": headerFeatureOnAnyPage(row.get(1)); break;
+			  
+			  
+			  case "headerFeatureOnLoginPage": headerFeatureOnLoginPage(row.get(1)); break;
+			  
+			  case "headerFeatureOnBlog": headerFeatureOnBlog(row.get(1)); break; case
+			  "headerFeatureOnCourseAsProgram": headerFeatureOnCourseAsProgram(row.get(1));
+			  break;
+			 
+				  case "headerFeatureOnceLogin": 
+					  headerFeatureOnceLogin(row);
+				  break;
 			}
 		}
 		Set<String> windows = driver.getWindowHandles();
