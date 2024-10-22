@@ -108,7 +108,7 @@ public class RegressionTesting
 	@Test
 	public void startTesting()
 	{
-		ExecutorService service = Executors.newFixedThreadPool(5);
+		ExecutorService service = Executors.newFixedThreadPool(2);
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
@@ -215,7 +215,7 @@ public class RegressionTesting
 							 case "FAQ":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.FAQValidation(sheetData));
 								 break;
-							 case "HeaderFooterStagecourses":
+							 case "LinkInStagecourseAndHomepage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInStagecoursesValidation(sheetData));
 								 break;
 							 case "HeaderFooterErrorScreen":
@@ -392,6 +392,10 @@ public class RegressionTesting
 			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("qa"))
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "qa_US_result_" + formattedDateTime + ".xlsx");
+			}
+			else if(/* !driver.getCurrentUrl().contains("dev-in")|| */ENV_TO_USE.contains("prod"))
+			{
+				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodUS_result_" + formattedDateTime + ".xlsx");
 			}
 			service.shutdown();
 		}

@@ -268,402 +268,159 @@ public class CourseLevelLocators
 	public ArrayList<String> checkSelfPacedVILTOnCategory(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 		try
 		{
-			
-			WebElement clickDropdown = driver.findElement(By.xpath("//li[contains(@class,'nav-item dropdown Header_dropdown')]//a"));
-			
-			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
-			
-			if(clickDropdown.isDisplayed())
+			String dropDownSelector = "//li[contains(@class,'nav-item dropdown Header_dropdown')]//a";
+			if(driver.findElements(By.xpath(dropDownSelector)).size()>0)
 			{
-				js.executeScript("arguments[0].click()", clickDropdown);
-			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-			List<WebElement> clickCategory = driver.findElements(By.xpath("//div[contains(@class,'Header_headerRight')]//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='MainCatE catcolumn divbox1']/ul/li/a"));
-		//list of categories 
-			for(int k = 0 ; k < clickCategory.size(); k++)
-			{
-				js.executeScript("arguments[0].scrollIntoView();", clickCategory.get(k));
-					
-				if(k == 12)
+				WebElement clickDropdown = driver.findElement(By.xpath(dropDownSelector));
+				wait.until(ExpectedConditions.visibilityOf(clickDropdown));
+				js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+				if(clickDropdown.isDisplayed())
+					js.executeScript("arguments[0].click()", clickDropdown);
+
+				String parentWindow = driver.getWindowHandle();
+				List<WebElement> categoryList = driver.findElements(By.xpath("//ul[@class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show']//ul[@class='categorylist customscroll dropdown-submenu']/li/a"));
+				for (int i = 0; i < categoryList.size(); i++) 
 				{
-					continue;
-				}
-				
-				if(clickCategory.get(k).isDisplayed())
-				{
-					String url = clickCategory.get(k).getAttribute("href");
-					
-					String categoryName = clickCategory.get(k).getText();
-						
-					System.out.println("category name : "+categoryName);
-					
-					if(categoryName.equalsIgnoreCase("Azure"))
+					js.executeScript("arguments[0].scrollIntoView();", categoryList.get(i));
+					if (categoryList.get(i).isDisplayed()) 
 					{
-						continue;
-					}
-					
-					if(!categoryName.equalsIgnoreCase("Business Applications"))
-					{
-						String parentWindow = driver.getWindowHandle(); // mega menu section from drop down list
+						String categoryName = categoryList.get(i).getText();
+						String url = categoryList.get(i).getAttribute("href");
 						
-						driver.switchTo().newWindow(WindowType.TAB);
-							
-						driver.get(url);//opening a category page
-							
-						Set<String> allWindow = driver.getWindowHandles();
-							
-						for(String window : allWindow)
+						System.out.println("category name : "+categoryName);
+						
+						if(categoryName.equalsIgnoreCase("Azure") || categoryName.equalsIgnoreCase("Business Applications"))
+							continue;
+						
+						if(url.contains("?utm"))
 						{
-								
-							driver.switchTo().window(window);
-								
-							if(driver.getCurrentUrl().contains("?utm"))
+							String categoryStatus = ibmPageLocator.checkURLStatus(url);
+							if(categoryStatus.equals("pass"))
 							{
-								driver.switchTo().window(window);
-									
-								String categoryWindow = driver.getWindowHandle(); //category page
-									
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									//program cards verification
-								if(driver.findElements(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='ManageCardsLimit_showMoreSection']>button")).size()>0)
+								driver.switchTo().newWindow(WindowType.TAB);
+								driver.get(url);
+								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+								
+								String showMoreSelector = "div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='ManageCardsLimit_showMoreSection']>button";
+								List<WebElement> showMore = driver.findElements(By.cssSelector(showMoreSelector));
+								boolean hasShowMore = showMore.size() > 0;
+								while(hasShowMore)
 								{
-									System.out.println("Program card verification started");
-										
-									if(driver.findElements(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='ManageCardsLimit_showMoreSection']>button")).size()>0)
+									js.executeScript("arguments[0].scrollIntoView();", showMore.get(0));
+									js.executeScript("arguments[0].click()", showMore.get(0));
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+									
+									showMore = driver.findElements(By.cssSelector(showMoreSelector));
+									if(showMore.size() > 0)
 									{
-										
-										WebElement clickShowMoreIcon = driver.findElement(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='ManageCardsLimit_showMoreSection']>button"));
-										
-										js.executeScript("arguments[0].scrollIntoView();", clickShowMoreIcon);
-										
-										while(clickShowMoreIcon.isDisplayed() && clickShowMoreIcon.getText().contains("more"))
-										{
-											js.executeScript("arguments[0].click()", clickShowMoreIcon);
-										}
+										if (showMore.get(0).getText().contains("more"))
+											hasShowMore = true;
+										else
+											hasShowMore = false;
 									}
-									
-										
-									List<WebElement> programLinks = driver.findElements(By.cssSelector("section#scrollToTop>div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='LearningCatalog_cardRow'] div[class*='FlatCourseCard_FlatcardLinks']"));
-									
-									for(int a = 0; a < programLinks.size(); a++)
+								}
+								String cardsSelector = "section#scrollToTop>div[class*='container-fluid Courses_containerInner']>div:nth-child(3) div[class*='LearningCatalog_cardRow'] div[class*='FlatCourseCard_FlatcardLinks']";
+								List<WebElement> cards = driver.findElements(By.cssSelector(cardsSelector));
+								if(cards.size() > 0)
+								{
+									String categoryPage = driver.getWindowHandle();
+									for(WebElement card: cards)
 									{
-										
-										//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-										
-										 WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-										 
-							             WebElement label = wait.until(ExpectedConditions.visibilityOf(programLinks.get(a)));
-										
-										js.executeScript("arguments[0].scrollIntoView();", label);
-										
-										//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
-										
-										WebElement urlLink = label.findElement(By.cssSelector(" a"));
-										
-										WebElement programCardNameLocator = label.findElement(By.cssSelector(" h2"));
-										
-										String programCardName = programCardNameLocator.getText();
-										
-										String programURL = urlLink.getAttribute("href");
-										
-										//program card 1st level
-										
-										String checkProgramCardLevel = label.findElement(By.cssSelector(" div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1)")).getText();
-										
-										driver.switchTo().newWindow(WindowType.TAB);
-										
-										driver.get(programURL);
-											
-										Set<String> allWindows = driver.getWindowHandles();
-										
-										for(String nextWindow: allWindows)
+										js.executeScript("arguments[0].scrollIntoView();", card);
+										wait.until(ExpectedConditions.visibilityOf(card));
+										String href = card.findElement(By.cssSelector(" a")).getAttribute("href");
+										String name = card.findElement(By.cssSelector(" h2")).getText();
+										System.out.println("card name : "+name);
+										String label2 = "", label3 = "";
+										List<WebElement> lebels = card.findElements(By.cssSelector(" div[class*='FlatCourseCard_propertiesList']>ul>li"));
+										if (lebels.size() == 0)
+											continue;
+										else
 										{
-											driver.switchTo().window(nextWindow);
-												
-											if(!driver.getCurrentUrl().equalsIgnoreCase("data:,")&&!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/")&&!driver.getCurrentUrl().contains("?utm_source=websiteinternal"))
+											label2 = lebels.get(1).getText();
+											label3 = lebels.size() > 2 ? lebels.get(2).getText() : "";
+										}
+										
+										boolean isCardWorking = ibmPageLocator.checkURLStatus(href).equals("pass");
+										if(isCardWorking)
+										{
+											driver.switchTo().newWindow(WindowType.TAB);
+											driver.get(href);
+											driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+											
+											List<WebElement> level1 = driver.findElements(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2"));
+											List<WebElement> level2 = driver.findElements(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(2), div[class*='CourseDescription_levelSection']>h3:nth-child(2)"));
+											List<WebElement> level3 = driver.findElements(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(3), div[class*='CourseDescription_levelSection']>h3:nth-child(3)"));
+											
+											if(level1.size() > 0 && level2.size() > 0)
 											{
-												driver.switchTo().window(nextWindow);
-												
-												WebElement checkLevel = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2"));
-												
-												if(checkLevel.getText().equalsIgnoreCase(checkProgramCardLevel))
+												List<WebElement> firstCourseInfo = driver.findElements(By.cssSelector("div[class='d-flex gap-2']:nth-child(1) div[class*='CourseDescription_courseAboutTextSection']>h2"));
+												if(firstCourseInfo.size() > 0)
 												{
-													System.out.println("card and page level same");
-													
-													if(checkLevel.getText().equalsIgnoreCase("SELF-PACED"))
+													if(level1.get(0).getText().equalsIgnoreCase("SELF-PACED") || level1.get(0).getText().equalsIgnoreCase("BLENDED"))
 													{
-														if(driver.findElements(By.cssSelector("div[class*='CourseDescription_courseAboutTextSection']>h2")).size()>0)
-														{
-															
-															WebElement courseDuration1 = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(1) div[class*='CourseDescription_courseAboutTextSection']>h2"));
-															
-															if(courseDuration1.getText().equalsIgnoreCase("Starts on"))
-															{
-																status.add("starts on date is presented for self paced level : "+programCardName);
-																driver.close();
-																driver.switchTo().window(categoryWindow);
-															}
-															else
-															{
-																driver.close();
-																driver.switchTo().window(categoryWindow);
-															}
-														}
-														else
-														{
-															status.add("level is not presented for self paced : "+programCardName);
-															driver.close();
-															driver.switchTo().window(categoryWindow);
-														}
+														if (firstCourseInfo.get(0).getText().equalsIgnoreCase("Starts on"))
+															status.add("starts on date is presented for self paced level 1 : "+ name + " : " + categoryName);
 														
+                                                        if(!level2.get(0).getText().toLowerCase().equalsIgnoreCase(label2.toLowerCase()))
+                                                            status.add("level 2 from : "+name + " is not same as with program page : "+categoryName);
+                                                        
+														if (!label3.isEmpty() && !level3.get(0).getText().toLowerCase().equalsIgnoreCase(label3.toLowerCase()))
+															status.add("level 3 from : " + name + " is not same as with program page : "+ categoryName);
 													}
-													else if(checkLevel.getText().equalsIgnoreCase("vILT")||checkLevel.getText().equalsIgnoreCase("Instructor-Led"))
+													else if(level1.get(0).getText().equalsIgnoreCase("VILT") || level1.get(0).getText().equalsIgnoreCase("Instructor-Led"))
 													{
+														if (!firstCourseInfo.get(0).getText().equalsIgnoreCase("Starts on"))
+															status.add("starts on date is not presented for VILT and Instructor : "+ name + " : " + categoryName);
 														
-														if(driver.findElements(By.cssSelector("div[class*='CourseDescription_courseAboutTextSection']>h2")).size()>0)//VERIFYING starts on date is available or not
-														{
-															WebElement courseDuration = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(1) div[class*='CourseDescription_courseAboutTextSection']>h2"));
-															if(!courseDuration.getText().equalsIgnoreCase("Starts on"))
-															{
-																status.add("starts on date is not presented for VILT and Instructor : "+programCardName);
-																driver.close();
-																driver.switchTo().window(categoryWindow);
-															}
-															else
-															{
-																driver.close();
-																driver.switchTo().window(categoryWindow);
-															}
-														}
-														else
-														{
-															status.add("level is not presented for VILT and Instructor : "+programCardName);
-															driver.close();
-															driver.switchTo().window(categoryWindow);
-														}
-													}
-													else
-													{
-														System.out.println("Blended level");
-														driver.close();
-														driver.switchTo().window(categoryWindow);
+                                                        if(!level2.get(0).getText().toLowerCase().equalsIgnoreCase(label2.toLowerCase()))
+                                                            status.add("level 2 from : "+name + " is not same as with program page : "+categoryName);
+                                                        
+														if (!label3.isEmpty() && !level3.get(0).getText().toLowerCase().equalsIgnoreCase(label3.toLowerCase()))
+															status.add("level 3 from : " + name + " is not same as with program page : "+ categoryName);
 													}
 												}
 												else
-												{
-													System.out.println("card and page level not same");
-													status.add("card and page level not same " +programCardName+ " in "+ url +" category.");
-													driver.close();
-													driver.switchTo().window(categoryWindow);
-												}
-											
-											}
-											
-										}
-											
-											
-										if(a == programLinks.size()-1)
-										{
-											break;
-										}
-									}
-									
-								}
-								else
-								{
-									System.out.println("program card not available");
-									
-								}
-									
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									
-								if(driver.findElements(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(5) div[class*='ManageCardsLimit_showMoreSection']>button, div[class*='container-fluid Courses_containerInner']>div:nth-child(2) div[class*='ManageCardsLimit_showMoreSection']>button, div[class*='LearningCatalog_cardRow'] div[class*='RegularCourseCard_RegularcardLinks']")).size()>0)
-								{
-									System.out.println("Course card verification started");
-										
-									if(driver.findElements(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(5) div[class*='ManageCardsLimit_showMoreSection']>button, div[class*='container-fluid Courses_containerInner']>div:nth-child(2) div[class*='ManageCardsLimit_showMoreSection']>button")).size()>0)
-									{
-										
-										WebElement clickShowMore = driver.findElement(By.cssSelector("div[class*='container-fluid Courses_containerInner']>div:nth-child(5) div[class*='ManageCardsLimit_showMoreSection']>button, div[class*='container-fluid Courses_containerInner']>div:nth-child(2) div[class*='ManageCardsLimit_showMoreSection']>button"));
-										
-										js.executeScript("arguments[0].scrollIntoView();", clickShowMore);
-										
-										while(clickShowMore.isDisplayed() && clickShowMore.getText().contains("more"))
-										{
-											js.executeScript("arguments[0].click()", clickShowMore);
-										}
-									}
-										
-									List<WebElement> courseLinks = driver.findElements(By.cssSelector("div[class*='LearningCatalog_cardRow'] div[class*='RegularCourseCard_RegularcardLinks']"));
-									
-									for(int e = 0; e < courseLinks.size(); e++)
-									{
-										//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-										
-										if(courseLinks.get(e).isDisplayed())
-										{
-											js.executeScript("arguments[0].scrollIntoView();", courseLinks.get(e));
-											
-											WebElement courseUrlLink = courseLinks.get(e).findElement(By.cssSelector(" a"));
-											
-											String CourseURL = courseUrlLink.getAttribute("href");
-											
-											WebElement courseCardNameLocator = courseLinks.get(e).findElement(By.cssSelector(" div[class*='RegularCourseCard_courseHeading']>p"));
-											
-											String courseCardName = courseCardNameLocator.getText();
+													status.add("Invalid course info for self paced course for category: "+categoryName+" and program: "+name);
 												
-											String CourseCardLevel = courseLinks.get(e).findElement(By.cssSelector(" div[class*='RegularCourseCard_courseHeading']>ul>li:nth-child(1)")).getText();
-												
-											String checkURL = ibmPageLocator.checkURLStatus(CourseURL);
-											
-											if(!checkURL.contains("fail"))
-											{
-												driver.switchTo().newWindow(WindowType.TAB);
-												
-												driver.get(CourseURL);
-												
-												Set<String> allScreen = driver.getWindowHandles();
-												
-												for(String nextScreen : allScreen)
-												{
-													driver.switchTo().window(nextScreen);
-														
-													if(!driver.getCurrentUrl().equalsIgnoreCase("data:,")&&!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/")&&!driver.getCurrentUrl().contains("?utm"))
-													{
-														driver.switchTo().window(nextScreen);
-														
-														if(!(driver.getTitle().contains("undefined - SkillUp Online") ||
-															      driver.getTitle().contains("null") ||
-															      driver.findElements(By.cssSelector("div[class*='PageNotFound_textSection']")).size() > 0))
-														{
-
-															WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-															WebElement checkLevelFromPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2")));
-
-															//WebElement checkLevelFromPage = driver.findElement(By.cssSelector("div[class*='CourseDescription_TooltipAboutSection']>p:nth-child(1), div[class*='FlatCourseCard_propertiesList']>ul>li:nth-child(1), div[class*='CourseDescription_levelSection']>h2"));
-															
-															if(checkLevelFromPage.getText().toUpperCase().equalsIgnoreCase(CourseCardLevel))
-															{
-																System.out.println("card and page level same");
-																
-																if(checkLevelFromPage.getText().toUpperCase().equalsIgnoreCase("SELF-PACED"))
-																{
-																	if(driver.findElements(By.cssSelector("div[class*='CourseDescription_courseAboutTextSection']>h2")).size()>0)
-																	{
-																		
-																		WebElement courseDuration = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(1) div[class*='CourseDescription_courseAboutTextSection']>h2"));
-																		
-																		if(courseDuration.getText().equalsIgnoreCase("Starts on"))
-																		{
-																			status.add("starts on date is presented for self paced level - "+courseCardName);
-																			driver.close();
-																			driver.switchTo().window(categoryWindow);
-																		}
-																		else
-																		{
-																			driver.close();
-																			driver.switchTo().window(categoryWindow);
-																		}
-																	}
-																	else
-																	{
-																		status.add("level is not presented - "+courseCardName);
-																		driver.close();
-																		driver.switchTo().window(categoryWindow);
-																	}
-																}
-																else if(checkLevelFromPage.getText().toUpperCase().equalsIgnoreCase("vILT")||checkLevelFromPage.getText().equalsIgnoreCase("INSTRUCTOR"))
-																{
-																	if(driver.findElements(By.cssSelector("div[class*='CourseDescription_courseAboutTextSection']>h2")).size()>0)
-																	{
-																		WebElement courseDuration = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(1) div[class*='CourseDescription_courseAboutTextSection']>h2"));
-																		
-																		if(!courseDuration.getText().equalsIgnoreCase("Starts on"))
-																		{
-																			status.add("starts on date is not presented for VILT level - "+courseCardName);
-																			driver.close();
-																			driver.switchTo().window(categoryWindow);
-																		}
-																		else
-																		{
-																			driver.close();
-																			driver.switchTo().window(categoryWindow);
-																		}
-																	}
-																	else
-																	{
-																		status.add(" level is not presented - "+courseCardName);
-																		driver.close();
-																		driver.switchTo().window(categoryWindow);
-																	}
-																}
-																else
-																{
-																	System.out.println("course level is : "+checkLevelFromPage.getText().toUpperCase());
-																	driver.close();
-																	driver.switchTo().window(categoryWindow);
-																}
-															}
-															else
-															{
-																System.out.println("card and page level not same");
-																status.add(CourseURL+"card and page level not same "+ courseCardName +" cardname and page url is "+url);
-																driver.close();
-																driver.switchTo().window(categoryWindow);
-															}
-														}
-														else
-														{
-															status.add("page contains undefined or null or page not found in course url : "+CourseURL+" card name : "+courseCardName);
-															driver.close();
-															driver.switchTo().window(categoryWindow);
-														}
-													}
-													}
-													
-													
-													if(e == courseLinks.size()-1)
-													{
-														break;
-													}
 											}
 											else
 											{
-												status.add(CourseURL+" issue in page");
-												driver.close();
-												driver.switchTo().window(categoryWindow);
+												System.out.println("card level 1, 2 , 3 and page level 1 , 2, 3 are not same");
+												status.add(categoryName + " : "+ name + " : card level 1, 2 , 3 and page level 1 , 2, 3 are not same");
+												break;
 											}
+											driver.close();
+											driver.switchTo().window(categoryPage);
 										}
-										
-									
+										else
+											status.add("Card "+name+" is not working from category " + categoryName);
 									}
 								}
 								else
-								{
-									System.out.println("course card not available");
-									driver.close();
-									driver.switchTo().window(parentWindow);
-									break;
-								}
-								driver.close();
+									System.out.println("no program cards");
+								
 								driver.switchTo().window(parentWindow);
 							}
+							else
+							{
+								System.out.println(categoryName +" : category url facing issue : " + url);
+								status.add(url + " : issue on category url : " +categoryName );
+							}
 						}
-						driver.switchTo().window(parentWindow);
 					}
-				
+					else
+						System.out.println("no category on page");
 				}
-			}//category = for loop completion 
-			
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status.add("fail");
 		}
 		return status;
 	}

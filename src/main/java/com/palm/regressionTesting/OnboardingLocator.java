@@ -93,8 +93,8 @@ WebDriver driver;
 					if(checkPage.isDisplayed())
 					{
 						System.out.println(checkPage.getText());
-						WebElement submit = driver.findElement(By.cssSelector("div[class*='Personalized_PersContent']>a"));
-						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class*='Personalized_PersContent']>a")));
+						WebElement submit = driver.findElement(By.xpath("//div[contains(@class,'Personalized_PersContent')]//a[contains(text(),'Begin your profile')]"));
+						wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[contains(@class,'Personalized_PersContent')]//a[contains(text(),'Begin your profile')]")));
 						js.executeScript("arguments[0].scrollIntoView();", submit);
 						if(submit.isDisplayed())
 						{

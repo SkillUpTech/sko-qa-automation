@@ -27,84 +27,13 @@ public class SignUpValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		
-		
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-			  case "invalidFullname": 
-				  invalidFullname(row); 
-				  break; 
-			  case "invalidEmail":
-				  emailValidation(row); 
-				  break; 
-			  case "invalidPassword": 
-				  passwordValidation(row);
-				  break; 
-				/*
-				 * case "invalidMobile": mobileValidation(row); break;
-				 */
-			  case "validData":
-					validDataProcess(row);
-					break;
-				/*
-				 * case "addUser": addUser(row, i); break;
-				 */
-					
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
-	
 	
 	public void invalidFullname(ArrayList<String> dataFromExcel)
 	{
 		ArrayList<Integer> fieldValidationValue;
 		try
 		{
-			ArrayList<Integer> verifyFullName = signUpLocator.checkFullName(sheetData.get(0));
+			ArrayList<Integer> verifyFullName = signUpLocator.checkFullName(sheetData.get(4));
 			fieldValidationValue = verifyFullName;
 			ArrayList<String> status = new ArrayList<String>();
 			for(int i = 0; i < fieldValidationValue.size(); i++)
@@ -179,7 +108,7 @@ public class SignUpValidation implements Callable<String>
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			ArrayList<Integer> verifyEmail = signUpLocator.checkEmail(sheetData.get(1));
+			ArrayList<Integer> verifyEmail = signUpLocator.checkEmail(sheetData.get(5));
 			for(int i = 0; i < verifyEmail.size(); i++)
 			{
 				if(i == 0)
@@ -231,7 +160,7 @@ public class SignUpValidation implements Callable<String>
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			ArrayList<Integer> verifyPassword = signUpLocator.checkPassword(sheetData.get(2));
+			ArrayList<Integer> verifyPassword = signUpLocator.checkPassword(sheetData.get(6));
 			for(int i = 0; i < verifyPassword.size(); i++)
 			{
 				if(i == 0)
@@ -427,7 +356,7 @@ public class SignUpValidation implements Callable<String>
 	
 	public void validDataProcess(ArrayList<String> dataFromExcel)
 	{
-		this.verifyInsertedData(sheetData.get(3), 3);
+		this.verifyInsertedData(sheetData.get(7), 3);
 	}
 	
 	public void addUser(ArrayList<String> dataFromExcel, int index)
@@ -462,12 +391,15 @@ public class SignUpValidation implements Callable<String>
 	{
 		System.out.println("Sign up validation begins");
 		try {
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
+	
+	  driver = this.openDriver(RegressionTesting.nameOfBrowser);
+	  OpenWebsite.openSite(driver);
+			 
 		this.signUpLocator = new SignUpLocator(this.driver);
 		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
+		/*
+		 * driver.switchTo().newWindow(WindowType.TAB); OpenWebsite.openSite(driver);
+		 */
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);

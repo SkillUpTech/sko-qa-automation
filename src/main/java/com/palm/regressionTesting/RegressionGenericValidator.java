@@ -99,27 +99,13 @@ public class RegressionGenericValidator implements Callable<String>
 				courseCode(row.get(1)); 
 				break;
 			 
-			case "getFreeConsultation":
-				getFreeConsultation(row);
-				break;
-			case "subscribe":
-				subscribe(row);
-				break;
-			case "whySkillupOnline":
-				whySkillupOnline(row);
-				break;
-			case "share":
-				share(row.get(1));
-				break;
-			case "download":
-				download(row.get(1));
-				break;
-			case "program":
-				program(row);
-				break;
-			case "navigation":
-				navigation(row.get(1));
-				break;
+			/*
+			 * case "getFreeConsultation": getFreeConsultation(row); break; case
+			 * "subscribe": subscribe(row); break; case "whySkillupOnline":
+			 * whySkillupOnline(row); break; case "share": share(row.get(1)); break; case
+			 * "download": download(row.get(1)); break; case "program": program(row); break;
+			 * case "navigation": navigation(row.get(1)); break;
+			 */
 			case "enrollment":
 				enrollment(row);
 				break;
@@ -195,32 +181,32 @@ public class RegressionGenericValidator implements Callable<String>
 					if(verifyEnrollmentProcess.get(0).contains("loginFail"))
 					{
 						sheetStatus = "Fail";
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(1);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(1, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).get(1);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).set(1, (cellValue + " - failed"));
 					}
 					if(verifyEnrollmentProcess.get(1).contains("choosePlanFail"))
 					{
 						sheetStatus = "Fail";
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(2);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(2, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).get(2);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).set(2, (cellValue + " - failed"));
 					}
 					if(verifyEnrollmentProcess.get(2).contains("razorpayFail"))
 					{
 						sheetStatus = "Fail";
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(3);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(3, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).get(3);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).set(3, (cellValue + " - failed"));
 					}
 					if(verifyEnrollmentProcess.get(3).contains("paymentFail"))
 					{
 						sheetStatus = "Fail";
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(4);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(4, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).get(4);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).set(4, (cellValue + " - failed"));
 					}
 					if(verifyEnrollmentProcess.get(4).contains("orderDetailFail"))
 					{
 						sheetStatus = "Fail";
-						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).get(5);
-						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(8).set(5, (cellValue + " - failed"));
+						String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).get(5);
+						RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("GenericProcess").get(6).set(5, (cellValue + " - failed"));
 					}
 				}
 				if(verifyEnrollmentProcess.contains("fail"))

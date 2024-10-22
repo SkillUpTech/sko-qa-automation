@@ -87,6 +87,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("facebook page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -126,6 +127,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("google page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -165,6 +167,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("linkedIn page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -204,6 +207,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("Microsoft page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -243,6 +247,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+						System.out.println("login page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -281,6 +286,7 @@ public class SignUpPageLinksLocator
 					{
 						driver.switchTo().window(windows);
 						status = "pass";
+							System.out.println("Term of service page");
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.navigate().back();
 						driver.switchTo().window(parentWindow);
@@ -319,6 +325,7 @@ public class SignUpPageLinksLocator
 						{
 							driver.switchTo().window(windows);
 							status = "pass";
+							System.out.println("privacy policy");
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							driver.navigate().back();
 							driver.switchTo().window(parentWindow);

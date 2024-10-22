@@ -134,11 +134,11 @@ public class RegressionTestLogin implements Callable<String>
 					case "InvalidUsername":
 						InvalidUsername();
 						break;
-					/*
-					 * case "InvalidPassword": InvalidPassword(); break; case
-					 * "InvalidUserNameAndPassword": InvalidUserNameAndPassword(); break; case
-					 * "ValidCredentials": ValidCredentials(); break;
-					 */
+					
+					  case "InvalidPassword": InvalidPassword(); break; case
+					  "InvalidUserNameAndPassword": InvalidUserNameAndPassword(); break; case
+					  "ValidCredentials": ValidCredentials(); break;
+					 
 				}
 			}
 			Set<String> windows = driver.getWindowHandles();
@@ -163,14 +163,14 @@ public class RegressionTestLogin implements Callable<String>
 				}
 				
 			}
-			HashMap<String, String> resultStatus = new HashMap<String, String>();
-			ArrayList<String> sheetRow = sheetData.get(4);
-			String getExecutionStatus = "";
-			String getprocessStatus = "";
-			JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 			
 			if(jiraProcess.contains("Yes"))
 			{
+				HashMap<String, String> resultStatus = new HashMap<String, String>();
+				ArrayList<String> sheetRow = sheetData.get(4);
+				String getExecutionStatus = "";
+				String getprocessStatus = "";
+				JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 				
 				if(sheetStatus == "fail")
 				{

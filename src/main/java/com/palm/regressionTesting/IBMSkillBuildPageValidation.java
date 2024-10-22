@@ -116,14 +116,14 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 				}
 			}
 		}
-		HashMap<String, String> resultStatus = new HashMap<String, String>();
-		ArrayList<String> sheetRow = sheetData.get(1);
-		String getExecutionStatus = "";
-		String getprocessStatus = "";
-		JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 		
 		if(jiraProcess.contains("Yes"))
 		{
+			HashMap<String, String> resultStatus = new HashMap<String, String>();
+			ArrayList<String> sheetRow = sheetData.get(1);
+			String getExecutionStatus = "";
+			String getprocessStatus = "";
+			JiraTicketStatusUpdate jiraTicketStatusUpdate = new JiraTicketStatusUpdate();
 			
 			if(sheetStatus == "fail")
 			{

@@ -379,6 +379,7 @@ public class RegressionGenericLocator
 		 */
 		System.out.println("payment gateway process started");
 		String checkRazorpay = "razorpayFail";
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
 		try 
 		{
 		String amountWithTax[] = amountFromExcel.split("=");
@@ -387,7 +388,6 @@ public class RegressionGenericLocator
 		int excelValue = Integer.parseInt(value);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(500));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for (String window : allWindows)
 			{
@@ -403,6 +403,7 @@ public class RegressionGenericLocator
 					{
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 						WebElement checkoutAmount = driver.findElement(By.cssSelector("div[class='selected-plan'] span"));
+						wait.until(ExpectedConditions.visibilityOf(checkoutAmount));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 						if(checkoutAmount.isDisplayed())
 						{
@@ -434,6 +435,7 @@ public class RegressionGenericLocator
 								WebElement completePayment = driver
 										.findElement(By.cssSelector("div[class='payment-buttons']>button[id='razorpay']"));
 								//completePayment.click();
+								wait.until(ExpectedConditions.visibilityOf(completePayment));
 								js.executeScript("arguments[0].click()", completePayment);
 								checkRazorpay = "razorpayPass";
 							}
@@ -459,6 +461,7 @@ public class RegressionGenericLocator
 								WebElement completePayment = driver
 										.findElement(By.cssSelector("div[class='payment-buttons']>button[id='razorpay']"));
 								//completePayment.click();
+								wait.until(ExpectedConditions.visibilityOf(completePayment));
 								js.executeScript("arguments[0].click()", completePayment);
 								checkRazorpay = "razorpayPass";
 							}
@@ -477,12 +480,15 @@ public class RegressionGenericLocator
 						{
 							
 							WebElement clickPromoTab = driver.findElement(By.cssSelector("a#ui-collapse-729"));
+							wait.until(ExpectedConditions.visibilityOf(clickPromoTab));
 							clickPromoTab.click();
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 							WebElement enterPromo = driver.findElement(By.cssSelector("input#id_code"));
+							wait.until(ExpectedConditions.visibilityOf(enterPromo));
 							enterPromo.sendKeys("");
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 							WebElement clickApply = driver.findElement(By.cssSelector("button#apply-voucher-button"));
+							wait.until(ExpectedConditions.visibilityOf(clickApply));
 							clickApply.click();
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 						}
@@ -538,82 +544,117 @@ public class RegressionGenericLocator
 	public ArrayList<String> netBanking(String bankName, String orderAmount)
 	{
 		ArrayList<String> paymentAndOrderStatus = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+		boolean statusOfbankSelection = false;
 		try 
 		{
-			WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
-			driver.switchTo().frame(iFrame);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
-			WebElement label = driver.findElement(By.xpath("//*[contains(text(),'Netbanking')]"));////label[@class='relative cursor-pointer']//span[@class='truncate font-medium']
-			System.out.println(label.getText());
-			if(label.isDisplayed())
+			if(driver.findElements(By.cssSelector(".razorpay-checkout-frame")).size()>0)
 			{
-				label.click();
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				WebElement iFrame = driver.findElement(By.cssSelector(".razorpay-checkout-frame"));
+				wait.until(ExpectedConditions.visibilityOf(iFrame));
+				js.executeScript("arguments[0].scrollIntoView();", iFrame);
+				
+				driver.switchTo().frame(iFrame);
+				
+				Thread.sleep(1000);
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+				//js.executeScript("window.scrollBy(0,100)");
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			}
-			boolean statusOfbankSelection = false;
-			List<WebElement> listOfNetBanking = driver.findElements(By.xpath("//form[@class='flex flex-col gap-2 py-3'][2]//label[@class='relative cursor-pointer']"));
-			for(int j = 0; j < listOfNetBanking.size(); j++)
+			
+			if(driver.findElements(By.xpath("//div[@id='main-stack-container']//label[@class='relative cursor-pointer'][3]")).size()>0)
 			{
-				//to select bank
-				WebElement selectBankName = listOfNetBanking.get(j).findElement(By.xpath("//span[contains(normalize-space(text()),'IDBI')]"));
-				String netbankingName = selectBankName.getText();
-				System.out.println("net banking name : "+netbankingName);
-				if(listOfNetBanking.get(j).getText().equalsIgnoreCase(bankName))
+				
+				WebElement label = driver.findElement(By.xpath("//div[@id='main-stack-container']//label[@class='relative cursor-pointer'][3]//div[@data-value='netbanking']"));////label[@class='relative cursor-pointer']//span[@class='truncate font-medium']
+				wait.until(ExpectedConditions.visibilityOf(label));
+				js.executeScript("arguments[0].scrollIntoView();", label);
+				System.out.println(label.getText());
+				if(label.isDisplayed())
 				{
-					System.out.println("bank is selected : "+netbankingName);
-					statusOfbankSelection = true;
-					paymentAndOrderStatus.add("paymentPass");
-					WebElement clickBank = listOfNetBanking.get(j);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-					wait.until(ExpectedConditions.elementToBeClickable(clickBank)).click();
-					/*
-					 * WebElement clickPayNow =
-					 * driver.findElement(By.cssSelector("button#redesign-v15-cta"));
-					 * clickPayNow.click();
-					 */
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
-					System.out.println("amount paid through netbanking");
-					String parentWindow = driver.getWindowHandle();//https://stage-ecomm-in.skillup.online/basket/
-					Set<String> nextWindow = driver.getWindowHandles();
-					for(String window : nextWindow)
-					{
-						 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-						 driver.switchTo().window(window);
-						 Thread.sleep(1000);
-							if(driver.getCurrentUrl().contains("https://api.razorpay.com/"))
-							{
-								 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-								driver.switchTo().window(window);
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-								driver.findElement(By.cssSelector("button[class='success']")).click();
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
-								//paymentAndOrderStatus.add("pass");
-								System.out.println("success button clicked");
-							}
-					}
-					driver.switchTo().window(parentWindow);
-					System.out.println("parent window : "+driver.getCurrentUrl());
-					if(driver.findElements(By.xpath("//h4[contains(text(),'Payment successful. You are now enrolled!')]")).size()>0)
-					{
-						System.out.println("order details window");
-					}
-					paymentAndOrderStatus.add(this.indiaOrderDetails(orderAmount));
-					break;
+					 WebDriverWait wait1 = new WebDriverWait(driver, Duration.ofSeconds(10));
+				        wait1.until(ExpectedConditions.elementToBeClickable(label));
+				        js.executeScript("arguments[0].click();", label);
+				        System.out.println("netbanking option is clicked");
+				        Thread.sleep(1000);
+				        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+				        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));				
 				}
 			}
-			if(!(statusOfbankSelection == true))
+			
+				//to select bank
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+			if(driver.findElements(By.xpath("//div[@data-main-screen='netbanking']//form[2]//div[@data-value]")).size()>0)
 			{
-				paymentAndOrderStatus.add(this.diffBank(bankName));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				paymentAndOrderStatus.add(this.indiaOrderDetails(orderAmount));
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+				List<WebElement> chooseBank = driver.findElements(By.xpath("//div[@data-main-screen='netbanking']//form[2]//div[@data-value]"));
+				for (int i = 0; i < chooseBank.size(); i++) 
+				{
+					wait.until(ExpectedConditions.visibilityOf(chooseBank.get(i)));
+					js.executeScript("arguments[0].scrollIntoView();", chooseBank.get(i));
+					
+					System.out.println("net banking name : " + chooseBank.get(i).getAttribute("data-value"));
+					String netbankingName = chooseBank.get(i).getAttribute("data-value");
+					if(!netbankingName.equalsIgnoreCase(bankName))
+					{
+                        continue;
+					}
+					if(netbankingName.contains(bankName))
+					{
+						System.out.println("bank is selected : "+netbankingName);
+						statusOfbankSelection = true;
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+						wait.until(ExpectedConditions.elementToBeClickable(chooseBank.get(i)));
+						js.executeScript("arguments[0].click()", chooseBank.get(i));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
+						System.out.println("amount paid through netbanking");
+						String parentWindow = driver.getWindowHandle();//https://stage-ecomm-in.skillup.online/basket/
+						Set<String> nextWindow = driver.getWindowHandles();
+						for(String window : nextWindow)
+						{
+							 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+							 driver.switchTo().window(window);
+							 Thread.sleep(1000);
+								if(driver.getCurrentUrl().contains("https://api.razorpay.com/"))
+								{
+									 driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+									driver.switchTo().window(window);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+									WebElement clickSuccess = driver.findElement(By.cssSelector("button[class='success']"));
+									wait.until(ExpectedConditions.visibilityOf(clickSuccess));
+									js.executeScript("arguments[0].scrollIntoView();", clickSuccess);
+									js.executeScript("arguments[0].click()", clickSuccess);
+									Thread.sleep(1000);
+									driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+									driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(370));
+									paymentAndOrderStatus.add("paymentPass");
+									System.out.println("success button clicked");
+									break;
+								}
+						}
+						driver.switchTo().window(parentWindow);
+						System.out.println("parent window : "+driver.getCurrentUrl());
+						if(driver.findElements(By.xpath("//h4[contains(text(),'Payment successful. You are now enrolled!')]")).size()>0)
+						{
+							System.out.println("order details window");
+							Thread.sleep(1000);
+						}
+						paymentAndOrderStatus.add(this.indiaOrderDetails(orderAmount));
+						break;
+					}
+				}
 			}
+			
+			/*
+			 * if(!(statusOfbankSelection == true)) {
+			 * paymentAndOrderStatus.add(this.diffBank(bankName));
+			 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+			 * paymentAndOrderStatus.add(this.indiaOrderDetails(orderAmount));
+			 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+			 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70)); }
+			 */
 		}
 		catch (Exception e)
 		{
@@ -753,6 +794,7 @@ public class RegressionGenericLocator
 	public String indiaOrderDetails(String priceWOGSTFromExcel)
 	{
 		String checkOrderDetails = "orderDetailFail";
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		try {
 			int digit = Integer.parseInt(priceWOGSTFromExcel.replace(",", "").toString());
 			  driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(570));
@@ -764,6 +806,7 @@ public class RegressionGenericLocator
 			  
 			  driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+				Thread.sleep(1000);
 			  System.out.println("order details : " + getOrderDetails.getText());
 			  String amountOrderDetails = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr[class='first_3_rows'] td[class='row_text spacing-pr20 spacing-pl20  spacing-pb8 spacing-pt8  table_border_bottom text_table']"))
 					.getText().replace(",", "");
@@ -772,11 +815,12 @@ public class RegressionGenericLocator
 			  System.out.println("amount order details : " + amountOrderDetails.toString());
 			 
 			  WebElement getOrderNumber = driver.findElement(By.cssSelector("div[class*='order_info']:nth-child(2) div:nth-child(3) h4"));
-			 
+			  wait.until(ExpectedConditions.visibilityOf(getOrderNumber));
 			  orderNumber = getOrderNumber.getText();
 			  System.out.println("OrderNumber: " + orderNumber);
 			  
 			  WebElement nameOfcourse = driver.findElement(By.cssSelector("table[class=' spacing-pl8 spacing-pr8 spacing-pl20 spacing-pr20 mb table_border'] tr td>p"));
+			  wait.until(ExpectedConditions.visibilityOf(nameOfcourse));
 			  getEnrolledCourseName = nameOfcourse.getText();
 			  System.out.println("Enrolled course name : "+getEnrolledCourseName);
 			  if(digit == v)
@@ -989,6 +1033,8 @@ public class RegressionGenericLocator
 	public String loginProcess(String getData)
 	{
 		String status = "loginFail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 		try
 		{
 			String[] splitData = getData.split("-split-", 2);
@@ -1005,11 +1051,30 @@ public class RegressionGenericLocator
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					WebElement email = driver.findElement(By.cssSelector("input#email"));
-					email.sendKeys(splitData[0]);
+					wait.until(ExpectedConditions.visibilityOf(email));
+					js.executeScript("arguments[0].scrollIntoView()", email);
+					if(email.isDisplayed())
+					{
+						
+						email.sendKeys(splitData[0]);
+					}
 					WebElement pwd = driver.findElement(By.cssSelector("input#password"));
-					pwd.sendKeys(splitData[1]);
+					wait.until(ExpectedConditions.visibilityOf(pwd));
+					js.executeScript("arguments[0].scrollIntoView()", pwd);
+					if(pwd.isDisplayed())
+					{
+						
+						pwd.sendKeys(splitData[1]);
+					}
 					WebElement loginButton = driver.findElement(By.cssSelector("input#login_in"));
-					loginButton.click();
+					wait.until(ExpectedConditions.visibilityOf(loginButton));
+					js.executeScript("arguments[0].scrollIntoView()", loginButton);
+					if(loginButton.isDisplayed())
+					{
+
+						js.executeScript("arguments[0].click()", loginButton);
+						Thread.sleep(1000);
+					}
 					Thread.sleep(1000);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(400));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(500));
@@ -1026,73 +1091,87 @@ public class RegressionGenericLocator
 
 	public String choosePlan(String plan)
 	{
+		String getPlan[] = plan.split("=");
 		String checkPlanStatus = "choosePlanFail";
 		boolean checkProcess = false;
-		try {
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			String parentWindow2 = driver.getWindowHandle();
-			Set<String> allWindows = driver.getWindowHandles();
-			for (String windows : allWindows)
-			{
-				driver.switchTo().window(windows);
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				js.executeScript("window.scrollBy(0,300)");
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		if(!plan.contains("No"))
+		{
+			try {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				if (driver.getCurrentUrl().contains("choose-subscription"))
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+				String parentWindow2 = driver.getWindowHandle();
+				Set<String> allWindows = driver.getWindowHandles();
+				for (String windows : allWindows)
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					driver.switchTo().window(windows);
+					js.executeScript("window.scrollBy(0,300)");
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					List<WebElement> listOfPlan = driver
-							.findElements(By.cssSelector("div[id='custom-plans1'] div[class*='owl-item']"));// div[class=\"bttn\"]
-																											// a
-					for (int i = 0; i < listOfPlan.size(); i++)
+					if (driver.getCurrentUrl().contains("choose-subscription"))
 					{
-						WebElement selectPlan = listOfPlan.get(i)
-								.findElement(By.cssSelector(" div[class*='plan_heading']"));
-						String getPlanText = selectPlan.getText();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						if (getPlanText.contains(plan))
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+						List<WebElement> listOfPlan = driver
+								.findElements(By.cssSelector("div[id='custom-plans1'] div[class*='owl-item']"));// div[class=\"bttn\"]
+						for (int i = 0; i < listOfPlan.size(); i++)
 						{
-							System.out.println("Plan is : " + getPlanText);
-							WebElement clickPlan = listOfPlan.get(i)
-									.findElement(By.cssSelector(" div[class='bttn'] a"));
-							if (clickPlan.isDisplayed())
+							wait.until(ExpectedConditions.visibilityOf(listOfPlan.get(i)));
+							js.executeScript("arguments[0].scrollIntoView()", listOfPlan.get(i));																						// a
+							WebElement selectPlan = listOfPlan.get(i)
+									.findElement(By.cssSelector(" div[class*='plan_heading']"));
+							wait.until(ExpectedConditions.visibilityOf(selectPlan));
+							js.executeScript("arguments[0].scrollIntoView()", selectPlan);
+							if(selectPlan.isDisplayed())
 							{
-								js.executeScript("arguments[0].click()", clickPlan);
-								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
-								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(800));
-								checkPlanStatus = "choosePlanPass";
-								checkProcess = true;
-								break;
-							} 
-							else
+								String getPlanText = selectPlan.getText();
+								
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+							if (getPlanText.contains(getPlan[0]))
 							{
-								if (listOfPlan.get(i).findElement(By.cssSelector(" button[disabled]")).isDisplayed())
+								System.out.println("Plan is : " + getPlanText);
+								WebElement clickPlan = listOfPlan.get(i)
+										.findElement(By.cssSelector(" div[class='bttn'] a"));
+								wait.until(ExpectedConditions.visibilityOf(clickPlan));
+								if (clickPlan.isDisplayed())
 								{
-									System.out.println("button is disabled");
-									checkPlanStatus = "choosePlanFail";
+									js.executeScript("arguments[0].click()", clickPlan);
+									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(400));
+									driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(800));
+									checkPlanStatus = "choosePlanPass";
+									checkProcess = true;
 									break;
+								} 
+								else
+								{
+									if (listOfPlan.get(i).findElement(By.cssSelector(" button[disabled]")).isDisplayed())
+									{
+										System.out.println("button is disabled");
+										checkPlanStatus = "choosePlanFail";
+										break;
+									}
 								}
 							}
 						}
+						}
+						if(checkProcess != false)
+						{
+							checkPlanStatus = "choosePlanPass";
+							break;
+						}
 					}
-					if(checkProcess != false)
-					{
-						checkPlanStatus = "choosePlanPass";
-						break;
-					}
+					driver.switchTo().window(parentWindow2);
 				}
-				else
-				{
-					System.out.println("Plan is not available");
-					checkPlanStatus = "choosePlanPass";
-				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				checkPlanStatus= "choosePlanFail";
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			checkPlanStatus= "choosePlanFail";
+		}
+		else
+		{
+			System.out.println("no plan is available");
+			checkPlanStatus = "choosePlanPass";
+			
 		}
 
 		return checkPlanStatus;
@@ -1103,6 +1182,7 @@ public class RegressionGenericLocator
 		ArrayList<String> statusOfProcess = new ArrayList<String>();
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(200));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		
 		try 
 		{
 			js.executeScript("window.scrollBy(0,200)");
@@ -1110,11 +1190,14 @@ public class RegressionGenericLocator
 			if(getCurrentURL.contains("in"))// india site
 			{
 				WebElement checkEnrollButton = driver.findElement(By.cssSelector("button[class*='CourseDescription_enrollNowBtn']"));
+				wait.until(ExpectedConditions.visibilityOf(checkEnrollButton));
+				js.executeScript("arguments[0].scrollIntoView()", checkEnrollButton);
 				if(checkEnrollButton.isDisplayed())
 				{
 					if(checkEnrollButton.getText().equalsIgnoreCase("Enroll Now"))
 					{
 						System.out.println("Enroll Button is displayed");
+						Thread.sleep(1000);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						wait.until(ExpectedConditions.elementToBeClickable(checkEnrollButton));
 						js.executeScript("arguments[0].click()", checkEnrollButton);
@@ -1130,23 +1213,33 @@ public class RegressionGenericLocator
 					if(driver.getCurrentUrl().contains("register?"))
 					{
 						driver.switchTo().window(window);
+						Thread.sleep(1000);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						WebElement clickLoginIcon = driver.findElement(By.cssSelector("li#signinlink"));
-						clickLoginIcon.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-						break;
+						wait.until(ExpectedConditions.visibilityOf(clickLoginIcon));
+						if(clickLoginIcon.isDisplayed())
+						{
+							js.executeScript("arguments[0].scrollIntoView()", clickLoginIcon);
+							js.executeScript("arguments[0].click()", clickLoginIcon);
+							Thread.sleep(1000);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+							break;
+						}
 					}
 				}
 				statusOfProcess.add(this.loginProcess(enrollDataFromExcel.get(1)));
+				Thread.sleep(1000);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				statusOfProcess.add(this.choosePlan(enrollDataFromExcel.get(2)));
 				Thread.sleep(500);
 				statusOfProcess.add(this.checkOutRazorpay(enrollDataFromExcel.get(3)));
+				Thread.sleep(1000);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 				statusOfProcess.addAll(this.indiaPaymentProcess(enrollDataFromExcel.get(4), enrollDataFromExcel.get(5)));
+				Thread.sleep(1000);
 				Thread.sleep(100);	
 			}
 			else
@@ -1247,6 +1340,7 @@ public class RegressionGenericLocator
 			List<WebElement> share = driver.findElements(By.cssSelector("div[class*='shareSocialMedia_sociallist'] a[class*='shareSocialMedia_socialIcon']"));
 			for (int i = 0; i < share.size(); i++)
 			{
+				js.executeScript("arguments[0].scrollIntoView();", share.get(i));
 				if(share.get(i).isDisplayed())
 				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
@@ -1332,9 +1426,9 @@ public class RegressionGenericLocator
 
 	public ArrayList<String> programLocator(ArrayList<String> programFromExcel) {
 		ArrayList<String> checkProgramProcess = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try 
 		{
-			JavascriptExecutor js = (JavascriptExecutor) driver;
 			// js.executeScript("window.scrollBy(0,-150)");
 			String programText = driver
 					.findElement(By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a[href]"))
@@ -1347,7 +1441,6 @@ public class RegressionGenericLocator
 				if (programLocator.isDisplayed())
 				{
 					Thread.sleep(400);
-					JavascriptExecutor jse2 = (JavascriptExecutor) driver;
 					wait.until(ExpectedConditions.elementToBeClickable(
 							By.cssSelector("div[class='CourseDescription_infoBoxText__w49c3'] a")));
 					// jse2.executeScript("arguments[0].scrollIntoView()", programLocator);
