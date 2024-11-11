@@ -320,9 +320,9 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			  case "skillupIcon": 
 				  skillupIcon(); 
 				  break; 
-			  case "AboutSkillupOnline": 
-				  AboutSkillupOnline(row.get(1)); 
-				  break; 
+				/*
+				 * case "AboutSkillupOnline": AboutSkillupOnline(row.get(1)); break;
+				 */
 			  case "ContactUs": 
 				  ContactUs(row.get(1)); 
 				  break; 

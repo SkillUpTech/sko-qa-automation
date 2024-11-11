@@ -18,15 +18,22 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SearchPageLocator {
+public class SearchPageLocator
+{
 	WebDriver driver;
 	int respCode = 200;
 	HttpURLConnection huc = null;
 
-	public SearchPageLocator(WebDriver driver) {
+	public SearchPageLocator(WebDriver driver) 
+	{
 		this.driver = driver;
 	}
 
+	String searchField = "div[class*='Header_headerRight'] input[id='contentSearch']";
+	String searchButton = "div[class*='Header_headerRight'] button[id='btnCheck']";
+	
+	
+	
 	public void checkURL(String urlLink) {
 		try {
 			String addHosturl = urlLink;
@@ -417,5 +424,370 @@ public class SearchPageLocator {
 		}
 		
 		return getStatus;
+	}
+
+	public void enterTextInSearchBox(WebElement searchBox, String text) {
+	    Actions actions = new Actions(driver);
+	    searchBox.clear();
+	    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+	    actions.moveToElement(searchBox).sendKeys(Keys.ENTER).pause(Duration.ofMillis(500))
+	           .sendKeys(text).pause(Duration.ofMillis(500)).sendKeys(Keys.ENTER).perform();
+	    
+	}
+	
+public ArrayList<String> searchFunction(ArrayList<String> dataFromExcel, String nameOfProcess)
+{
+	 ArrayList<String> statusOfProcess = new ArrayList<String>();
+     JavascriptExecutor js = (JavascriptExecutor) driver;
+     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
+     
+	 try 
+     {
+         System.out.println("search category started");
+         
+         for (int i = 1; i < dataFromExcel.size(); i++) 
+         {
+         	WebElement searchBox = driver.findElement(By.cssSelector(searchField));
+         	js.executeScript("arguments[0].scrollIntoView()", searchBox);
+         	wait.until(ExpectedConditions.visibilityOf(searchBox));
+         	if(searchBox.isDisplayed())
+         	{
+         		if(nameOfProcess.equals("keyboard"))
+         		{
+         			 enterTextInSearchBox(searchBox, dataFromExcel.get(i));
+                     wait.until(ExpectedConditions.urlContains("/explore"));
+         		}
+         		else if(nameOfProcess.equals("mouse"))
+         		{
+         			
+         			 searchBox.sendKeys(dataFromExcel.get(i));
+                     WebElement searchButtonElement = driver.findElement(By.cssSelector(searchButton));
+                     wait.until(ExpectedConditions.elementToBeClickable(searchButtonElement));
+                     searchButtonElement.click();
+                     wait.until(ExpectedConditions.urlContains("/explore"));
+         		}
+         		
+         		if(dataFromExcel.get(i).contains("invalid"))
+         		{
+         			System.out.println("Invalid data search started");
+         			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+         	        if (driver.getCurrentUrl().contains("/explore")) 
+         	        {
+         	        	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+         	            System.out.println("Successfully navigated to /explore page");
+         	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+         	            WebElement checkTextFromExplorePage = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_topFilterResults']"));
+        	            js.executeScript("arguments[0].scrollIntoView()", checkTextFromExplorePage);
+        	            wait.until(ExpectedConditions.visibilityOf(checkTextFromExplorePage));
+
+        	            if(checkTextFromExplorePage.isDisplayed())
+        	            {
+        	            	if(checkTextFromExplorePage.getText().contains(dataFromExcel.get(i)))
+        	            	{
+        	            		System.out.println("Text is displayed on Explore All page" + checkTextFromExplorePage.getText());
+        	            	}
+        	            	else
+        	            	{
+								System.out.println("Text is not displayed on Explore All page");
+								statusOfProcess.add("searched text no available - fail");
+        	            	}
+        	            }
+        	            else
+        	            {
+        	            	System.out.println("searched text no available in explore all - fail");
+        	            	statusOfProcess.add("fail");
+        	            }
+        	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        	            if(driver.findElements(By.cssSelector("div[class*='CourseSection_containerInnerFilter']>div:nth-child(4) div[class*='CourseSection_checkbox'] input[checked]")).size()>0)
+        	            {
+        	            	System.out.println("search text is selected");
+        	            	System.out.println("searched text is available in explore all - fail");
+        	            }
+        	            if(driver.findElements(By.cssSelector("div[class*='CourseSection_alertContent'] h3")).size()>0)
+        	            {
+        	            	WebElement checkAlertText = driver.findElement(By.cssSelector("div[class*='CourseSection_alertContent'] h3"));
+        	            	 js.executeScript("arguments[0].scrollIntoView()", checkAlertText);
+        	            	 wait.until(ExpectedConditions.visibilityOf(checkAlertText));
+        	            	if (checkAlertText.getText().contains("Help us find the right course for you."))
+							{
+								System.out.println("No results found text is displayed");
+							} 
+							else
+							{
+								System.out.println("No results found text is not displayed");
+								statusOfProcess.add("no results found text not displayed - fail");
+							}
+        	            }
+        	            if(driver.findElements(By.cssSelector("div[class*='CourseSection_RecommCourse']>h2")).size()>0)
+        	            {
+        	            	
+        	            	WebElement checkRecommendCourseText = driver.findElement(By.cssSelector("div[class*='CourseSection_RecommCourse']>h2"));
+        	            	 js.executeScript("arguments[0].scrollIntoView()", checkRecommendCourseText);
+        	            	 wait.until(ExpectedConditions.visibilityOf(checkRecommendCourseText));
+        	            	if (checkRecommendCourseText.getText().contains("Recommended Courses"))
+							{
+								System.out.println("Recommended Courses text is displayed");
+							}
+							else 
+							{
+								System.out.println("Recommended Courses text is not displayed");
+								statusOfProcess.add("recommended courses text not displayed - fail");
+							}
+        	            }
+         	        }
+         	        else
+         	        {
+         	        	System.out.println("Navigation to /explore page failed");
+         	            statusOfProcess.add("explore all page not faced - fail");
+         	        }
+         		}
+         		else
+         		{
+         			 // Verify if the URL is as expected
+         			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+         	        if (driver.getCurrentUrl().contains("/explore")) 
+         	        {
+         	        	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+         	            System.out.println("Successfully navigated to /explore page");
+         	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
+         	            WebElement checkTextFromExplorePage = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_topFilterResults']"));
+         	            js.executeScript("arguments[0].scrollIntoView()", checkTextFromExplorePage);
+         	            wait.until(ExpectedConditions.visibilityOf(checkTextFromExplorePage));
+
+         	            if(checkTextFromExplorePage.isDisplayed())
+         	            {
+         	            	if(checkTextFromExplorePage.getText().contains(dataFromExcel.get(i)))
+         	            	{
+         	            		System.out.println("Text is displayed on Explore All page" + checkTextFromExplorePage.getText());
+         	            	}
+         	            	else
+         	            	{
+								System.out.println("Text is not displayed on Explore All page");
+								statusOfProcess.add("searched text no available - fail");
+         	            	}
+         	            }
+         	            else
+         	            {
+         	            	System.out.println("searched text no available in explore all - fail");
+         	            	statusOfProcess.add("fail");
+         	            }
+         	            
+         	            List<WebElement> checkCategory = driver.findElements(By.cssSelector("div[class*='CourseSection_containerInnerFilter']>div:nth-child(4) div[class*='CourseSection_checkbox']"));
+         	            
+         	            for(int j = 0; j < checkCategory.size(); j++)
+         	            {
+         	            	js.executeScript("arguments[0].scrollIntoView()", checkCategory.get(j));
+         	            	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+         	            	WebElement checkCategoryEnabled = checkCategory.get(j).findElement(By.cssSelector(" input[checked]"));
+         	            	 wait.until(ExpectedConditions.visibilityOf(checkCategoryEnabled));
+         	            	WebElement checkCategoryText = checkCategory.get(j).findElement(By.cssSelector(" label"));
+         	            	 wait.until(ExpectedConditions.visibilityOf(checkCategoryText));
+         	            	
+         	            	String getEnabledText = checkCategoryText.getText();
+         	            	if(checkCategoryEnabled.isSelected())
+         	            	{
+         	            		System.out.println("search text  is selected");
+         	            		
+									if (dataFromExcel.get(i).equals(getEnabledText))
+									{
+										System.out.println("search text  is selected");
+										break;
+									}
+									else
+									{
+										System.out.println("search text  is not selected");
+										statusOfProcess.add("search text is not selected - fail");
+										break;
+									}
+         	            	}
+         	            	else
+         	            	{
+         	            		System.out.println("search text is not selected");
+         	            		statusOfProcess.add("search text not selected - fail");
+         	            		break;
+         	            	}
+         	            }
+         	        } 
+         	        else 
+         	        {
+         	            System.out.println("Navigation to /explore page failed");
+         	            statusOfProcess.add("explore all page not faced - fail");
+         	        }
+         		}
+         	       
+         		if((dataFromExcel.size() - 1) == i)
+         		{
+         			break;
+         		}
+         	}
+         }
+         
+     }
+		catch (Exception e) 
+     {
+			e.printStackTrace();
+			statusOfProcess.add("exception");
+	}
+	return statusOfProcess;
+}
+
+public ArrayList<String> searchCategoryProcess(ArrayList<String> dataFromExcel) 
+{
+	System.out.println("search category process started");
+		String nameOfEvent = "";
+        ArrayList<String> validationStatus = new ArrayList<String>();
+        validationStatus.add("KeyBoardEvent");
+        validationStatus.add("MouseEvent");
+        try
+        {
+        	for(int i = 0; i < validationStatus.size(); i++)
+        	{
+				switch (validationStatus.get(i))
+				{
+				case "KeyBoardEvent":
+					System.out.println("KeyBoardEvent Validation Started");
+					nameOfEvent = "keyboard";
+					validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+					break;
+				case "MouseEvent":
+					System.out.println("MouseEvent Validation Started");
+					driver.findElement(By.cssSelector("div[class='navbar-brand']>a")).click();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					nameOfEvent = "mouse";
+					validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+					break;
+				default:
+					System.out.println("Validation End");
+					break;
+				}
+        	}
+        }
+		catch (Exception e) 
+        {
+			e.printStackTrace();
+			validationStatus.add("exception");
+		}
+        
+		return validationStatus;
+}
+
+public ArrayList<String> searchCourseProcess(ArrayList<String> dataFromExcel)
+{
+	System.out.println("search course process started");
+	String nameOfEvent = "";
+    ArrayList<String> validationStatus = new ArrayList<String>();
+    validationStatus.add("KeyBoardEvent");
+    validationStatus.add("MouseEvent");
+    try
+    {
+    	for(int i = 0; i < validationStatus.size(); i++)
+    	{
+			switch (validationStatus.get(i))
+			{
+			case "KeyBoardEvent":
+				System.out.println("KeyBoardEvent Validation Started");
+				nameOfEvent = "keyboard";
+				validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+				break;
+			case "MouseEvent":
+				System.out.println("MouseEvent Validation Started");
+				driver.findElement(By.cssSelector("div[class='navbar-brand']>a")).click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+				nameOfEvent = "mouse";
+				validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+				break;
+			default:
+				System.out.println("Validation End");
+				break;
+			}
+    	}
+    }
+	catch (Exception e) 
+    {
+		e.printStackTrace();
+		validationStatus.add("exception");
+	}
+    
+	return validationStatus;
+}
+
+public ArrayList<String> searchProgramProcess(ArrayList<String> dataFromExcel)
+{
+	System.out.println("search program process started");
+	String nameOfEvent = "";
+    ArrayList<String> validationStatus = new ArrayList<String>();
+    validationStatus.add("KeyBoardEvent");
+    validationStatus.add("MouseEvent");
+    try
+    {
+    	for(int i = 0; i < validationStatus.size(); i++)
+    	{
+			switch (validationStatus.get(i))
+			{
+			case "KeyBoardEvent":
+				System.out.println("KeyBoardEvent Validation Started");
+				nameOfEvent = "keyboard";
+				validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+				break;
+			case "MouseEvent":
+				System.out.println("MouseEvent Validation Started");
+				driver.findElement(By.cssSelector("div[class='navbar-brand']>a")).click();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+				nameOfEvent = "mouse";
+				validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+				break;
+			default:
+				System.out.println("Validation End");
+				break;
+			}
+    	}
+    }
+	catch (Exception e) 
+    {
+		e.printStackTrace();
+		validationStatus.add("exception");
+	}
+    
+	return validationStatus;
+}
+
+	public ArrayList<String> searchInvalidDataProcess(ArrayList<String> dataFromExcel) 
+	{
+		System.out.println("search Invalid process started");
+		String nameOfEvent = "";
+        ArrayList<String> validationStatus = new ArrayList<String>();
+        validationStatus.add("KeyBoardEvent");
+        validationStatus.add("MouseEvent");
+        try
+        {
+        	for(int i = 0; i < validationStatus.size(); i++)
+        	{
+				switch (validationStatus.get(i))
+				{
+				case "KeyBoardEvent":
+					System.out.println("KeyBoardEvent Validation Started");
+					nameOfEvent = "keyboard";
+					validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+					break;
+				case "MouseEvent":
+					System.out.println("MouseEvent Validation Started");
+					driver.findElement(By.cssSelector("div[class='navbar-brand']>a")).click();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
+					nameOfEvent = "mouse";
+					validationStatus.addAll(this.searchFunction(dataFromExcel, nameOfEvent));
+					break;
+				default:
+					System.out.println("Validation End");
+					break;
+				}
+        	}
+        }
+		catch (Exception e) 
+        {
+			e.printStackTrace();
+			validationStatus.add("exception");
+		}
+        
+		return validationStatus;
 	}
 }

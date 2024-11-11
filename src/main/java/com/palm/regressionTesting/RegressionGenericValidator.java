@@ -37,14 +37,13 @@ public class RegressionGenericValidator implements Callable<String>
 		
 	}
 	
-	public RegressionGenericValidator(WebDriver driver)
+	public WebDriver openDriver(String browserName)
 	{
-		this.driver = driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	
 	public String processSheetData()
 	{
-		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
@@ -58,33 +57,6 @@ public class RegressionGenericValidator implements Callable<String>
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
 		
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
 		return sheetStatus;
 	}
 	
@@ -95,17 +67,23 @@ public class RegressionGenericValidator implements Callable<String>
 			switch (process) 
 			{
 			
-			case "courseCode": 
+			  case "courseCode": 
 				courseCode(row.get(1)); 
 				break;
+			
+			  case "getFreeConsultation": 
+				  getFreeConsultation(row); 
+				  break;
+				  
+			  case "subscribe": 
+				  subscribe(row); break;
+				  
+			  case "whySkillupOnline": whySkillupOnline(row); break;
+			  case "share": share(row.get(1)); break; 
+			  case "download": download(row.get(1)); break; 
+			  case "program": program(row); break;
+			  case "navigation": navigation(row.get(1)); break;
 			 
-			/*
-			 * case "getFreeConsultation": getFreeConsultation(row); break; case
-			 * "subscribe": subscribe(row); break; case "whySkillupOnline":
-			 * whySkillupOnline(row); break; case "share": share(row.get(1)); break; case
-			 * "download": download(row.get(1)); break; case "program": program(row); break;
-			 * case "navigation": navigation(row.get(1)); break;
-			 */
 			case "enrollment":
 				enrollment(row);
 				break;
@@ -132,7 +110,7 @@ public class RegressionGenericValidator implements Callable<String>
 		try
 		{
 			String checkCourseCode = regressionGenericLocator.getCourseCodeText(courseCodeFromExcel);
-			if(!(courseCodestatus).equals(checkCourseCode))
+			if(checkCourseCode.contains("fail"))
 			{
 				sheetStatus = "Fail";
 				markProcessFailed();
@@ -507,36 +485,11 @@ public class RegressionGenericValidator implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get(SHEET_NAME).add(durationRow);
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
 	@Override
 	public String call() throws Exception 
 	{
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
 		this.regressionGenericLocator = new RegressionGenericLocator(driver);		
-		String BaseWindow = driver.getWindowHandle();
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
@@ -550,34 +503,7 @@ public class RegressionGenericValidator implements Callable<String>
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
 		
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		return sheetStatus;
 	
 	}

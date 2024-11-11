@@ -130,7 +130,7 @@ public class RegressionTesting
 			{
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
-			ArrayList<String> jiraExecution = master.get(2);
+			ArrayList<String> jiraExecution = master.get(1);
 			jiraStatusUpdation = jiraExecution.get(1);
 			ENV_TO_USE = getEnvironment;
 			
@@ -292,6 +292,10 @@ public class RegressionTesting
 								 break;
 							 case "SPOC":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.SPOC_DashboardValidation(sheetData));
+								 break;
+								 
+							 case "PageLinks":
+								 taskMap.put(sheetName, new com.palm.regressionTesting.PageLinksValidation(sheetData));
 								 break;
 							default:
 								System.out.println("Not class found to work with the sheet");

@@ -11,6 +11,8 @@ import org.openqa.selenium.WindowType;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.regression.utility.TestUtil;
 
@@ -27,76 +29,6 @@ public class ExploreAllValidator implements Callable<String>
 		
 	}
 	
-	public String start()
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "verifyExporeAll":
-					verifyExploreAllIcons();
-					break;
-				case "checkActiveCategoryFromHomePage":
-					verifyActiveCategory_HomePage();
-					break;
-				case "clearAll":
-					verify_clearAll();
-					break;
-				case "Categories":
-					verify_Categories();
-					break;
-				case "levels":
-					verify_Level();
-					break;
-				case "learningPartners":
-					verify_learningPartners();
-					break;
-				case "learningStyles":
-					verify_learningStyles();
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	
 	public void verifyExploreAllIcons()
@@ -113,6 +45,11 @@ public class ExploreAllValidator implements Callable<String>
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(2, "verifyExploreAll - failed");
+			}
+			if(getStatus.get(1).contains("mouseHover_Fail"))
+			{
+				sheetStatus = "Fail";
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(3, "verifyExploreAll - failed");
 			}
 		}
 	}
@@ -239,11 +176,13 @@ public class ExploreAllValidator implements Callable<String>
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
+			System.setProperty("webdriver.gecko.driver","D:\\geckodriver-v0.35.0-win64\\geckodriver.exe");
+			FirefoxOptions options = new FirefoxOptions();
+			 options.setAcceptInsecureCerts(true);
+		        driver = new FirefoxDriver(options);
+		        driver.manage().window().maximize();
+		        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
+		        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
 		}
 		return driver;
 	}
@@ -251,75 +190,65 @@ public class ExploreAllValidator implements Callable<String>
 	public String call() throws Exception {
 		System.out.println("Explore All validation Process started");
 
-		try
-		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
-		this.exploreAllLocator = new ExploreAllLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "verifyExporeAll":
-					verifyExploreAllIcons();
-					break;
-				case "checkActiveCategoryFromHomePage":
-					verifyActiveCategory_HomePage();
-					break;
-				case "clearAll":
-					verify_clearAll();
-					break;
-				case "Categories":
-					verify_Categories();
-					break;
-				case "levels":
-					verify_Level();
-					break;
-				case "learningPartners":
-					verify_learningPartners();
-					break;
-				case "learningStyles":
-					verify_learningStyles();
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	
+		String[] browsers = { "Firefox", "Chrome"};
+	    for (String browser : browsers) {
+	        try {
+	            driver = this.openDriver(browser);
+	            OpenWebsite.openSite(driver);
+	            this.exploreAllLocator = new ExploreAllLocator(driver);
+	            String BaseWindow = driver.getWindowHandle();
+	            for (int i = 0; i < this.sheetData.size(); i++) {
+	                ArrayList<String> row = this.sheetData.get(i);
+	                String firstColumn = row.get(0);
+	                switch (firstColumn) {
+	                    case "verifyExporeAll":
+	                        verifyExploreAllIcons();
+	                        break;
+	                    case "checkActiveCategoryFromHomePage":
+	                        verifyActiveCategory_HomePage();
+	                        break;
+	                    case "clearAll":
+	                        verify_clearAll();
+	                        break;
+	                    case "Categories":
+	                        verify_Categories();
+	                        break;
+	                    case "levels":
+	                        verify_Level();
+	                        break;
+	                    case "learningPartners":
+	                        verify_learningPartners();
+	                        break;
+	                    case "learningStyles":
+	                        verify_learningStyles();
+	                        break;
+	                }
+	            }
+	            Set<String> windows = driver.getWindowHandles();
+	            for (String win : windows) {
+	                driver.switchTo().window(win);
+	                if (!BaseWindow.equals(win)) {
+	                    driver.switchTo().window(win);
+	                    if (driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL + "/")) {
+	                        driver.switchTo().window(win);
+	                        driver.close();
+	                        driver.switchTo().window(BaseWindow);
+	                    } else if (driver.getCurrentUrl().contains("courses")) {
+	                        driver.switchTo().window(win);
+	                        driver.close();
+	                        driver.switchTo().window(BaseWindow);
+	                    } else if (!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL + "/")) {
+	                        driver.switchTo().window(win);
+	                        driver.close();
+	                        driver.switchTo().window(BaseWindow);
+	                    }
+	                }
+	            }
+	            driver.quit();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return sheetStatus;
 	}
 }

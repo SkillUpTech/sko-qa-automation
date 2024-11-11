@@ -24,36 +24,97 @@ public class HeaderFeatureLocators
 		this.driver = driver;
 	}
 	
-	public String checkURLStatus(String data)
+	public ArrayList<String> checkFooterPart()
 	{
-		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
+		String parentWindow = driver.getWindowHandle();
+		ArrayList<String> linkStatus = new ArrayList<String>();
+		ArrayList<String> data = new ArrayList<String>();
+		data.add("//a[contains(@href,'twitter')]");
+		data.add("//a[contains(@href,'facebook')]");
+		data.add("//a[contains(@href,'linked')]");
+		data.add("//a[contains(@href,'instagram')]");
+		data.add("//a[contains(@href,'youtube')]");
+		data.add("//a[contains(@href, '/about/?utm') and contains(@href, 'Footer')]");
+		data.add("//a[contains(@href, '/enterprise?utm') and contains(@href, 'Footer')]");
+		data.add("//a[contains(@href, '/faq/?utm') and contains(@href, 'Footer')]");
+		data.add("//a[contains(@href, '/privacy/?utm') and contains(@href, 'Footer')]");
+		data.add("//a[contains(@href, '/tos/?utm') and contains(@href, 'Footer')]");
+		data.add("//div[contains(@class,'Footer_FootMenu')]//li[1]/a[contains(@href, '/blog')]");
+		data.add("//div[contains(@class,'Footer_FootMenu')]//li[2]/a[contains(@href, '/prpage')]");
+		data.add("//div[contains(@class,'Footer_FootMenu')]//li[3]/a[contains(@href, '/events')]");
+		data.add("//div[contains(@class,'Footer_FootMenu')]//li[4]/a[contains(@href, '/newsletter')]");
+		data.add("//div[contains(@class,'Footer_FootMenu')]//li[5]/a[contains(@href, '/placement')]");
+		data.add("//div[contains(@class,'Footer_ContActUs_')]/a[contains(@href,'/contact/?')]");
+
+		
+		for(int i = 0; i < data.size(); i++)
+		{
+			String getLocator = data.get(i);
+			String getURL ="";
 			try
 			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
+				if(driver.findElements(By.xpath(getLocator)).size()>0)
 				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
+					WebElement checkTwitter = driver.findElement(By.xpath(getLocator));
+					getURL = checkTwitter.getAttribute("href");
+					String urlStatus = this.checkURLStatus(getURL);
+					if(urlStatus.contains("fail"))
+					{
+						linkStatus.add("error  in link");
+					}
+					else
+					{
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(getURL);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						driver.close();
+						driver.switchTo().window(parentWindow);
+					}
 				}
 				else
 				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
+					linkStatus.add("link not present : "+getURL);
 				}
 			}
-			catch(Exception e)
+			catch (Exception e) 
 			{
 				e.printStackTrace();
+				linkStatus.add("fail in footer part");
 			}
-			return status;
+		}
+		
+		return linkStatus;
+	}
+	
+	public String checkURLStatus(String data) {
+	    String status = "fail";
+	    HttpURLConnection huc = null;
+	    int respCode = 200;
+	    String addHosturl = data;
+	    try {
+	        huc = (HttpURLConnection) (new URL(addHosturl).openConnection());
+	        huc.setRequestMethod("HEAD");
+	        huc.connect();
+	        respCode = huc.getResponseCode();
+	        System.out.println("status code : " + respCode + " " + addHosturl);
+	        if (respCode == 403) {
+	            System.out.println("restricted link : " + addHosturl);
+	            status = "restricted";
+	        } else if (respCode == 502) {
+	            System.out.println("temporary issue link : " + addHosturl);
+	            status = "temporary issue";
+	        } else if (respCode > 200) {
+	            System.out.println("broken link : " + addHosturl);
+	            System.out.println("response code : " + respCode);
+	            status = "fail" + respCode;
+	        } else {
+	            System.out.println("unbroken link : " + " " + addHosturl + " " + respCode);
+	            status = "success";
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return status;
 	}
 	
 	public ArrayList<String> headerFeatureOnCategory(String data)
@@ -307,6 +368,7 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in category page");
 		}
+		
 		return datastatus;
 	}
 	public ArrayList<String> headerFeatureOncourse(String data)
@@ -559,6 +621,8 @@ public class HeaderFeatureLocators
 				e.printStackTrace();
 				datastatus.add("exception in course page");
 			}
+			
+			datastatus.addAll(this.checkFooterPart());
 			return datastatus;
 	}
 	public ArrayList<String> headerFeatureOnprogram(String data)
@@ -812,6 +876,7 @@ public class HeaderFeatureLocators
 				e.printStackTrace();
 				datastatus.add("exception in program page");
 			}
+			datastatus.addAll(this.checkFooterPart());
 			return datastatus;
 		
 			
@@ -1320,6 +1385,7 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in placement page");
 		}
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	}
 	public ArrayList<String> headerFeatureOnLoginPage(String data)
@@ -1574,6 +1640,7 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 				datastatus.add("exception in login page");
 		}
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	}
 	
@@ -1820,6 +1887,7 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in signup page");
 		}
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	}
 	
@@ -2067,6 +2135,7 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in signup page On Blog page");
 		}
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	
 	}
@@ -2326,6 +2395,8 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in signup page in CourseAsProgram page");
 		}
+		
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	
 	
@@ -2583,6 +2654,8 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in dashboard page");
 		}
+		
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	
 	
@@ -2819,6 +2892,8 @@ public class HeaderFeatureLocators
 			e.printStackTrace();
 			datastatus.add("exception in signup page");
 		}
+		
+		datastatus.addAll(this.checkFooterPart());
 		return datastatus;
 	
 	

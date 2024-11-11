@@ -1,17 +1,10 @@
 package com.palm.regressionTesting;
 
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import com.regression.utility.TestUtil;
 
 public class FooterSectionValidation implements Callable<String>
 {
@@ -26,27 +19,8 @@ public class FooterSectionValidation implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	String footerSectionURL ="success";
 	
 	public void checkSkillupLogo() throws InterruptedException
@@ -180,47 +154,41 @@ public class FooterSectionValidation implements Callable<String>
 			}
 		}
 	}
-	public void verifyPopularCategories(ArrayList<String> data) throws InterruptedException
+	public void verifyPopularCategories() throws InterruptedException
 	{
-		ArrayList<String> categories = footerSectionLocator.verifyPopularCategories(data);
+		ArrayList<String> categories = footerSectionLocator.verifyPopularCategories();
 		for(int i = 0; i < categories.size(); i++)
 		{
-			if(data.contains(categories.get(i)))
+			if(categories.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(categories.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(12).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(12).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(12).set(i+1, (categories.get(i) + " - failed"));
 			}
 		}
 	}
 	
-	public void verifyPopularCourses(ArrayList<String> data) throws InterruptedException
+	public void verifyPopularCourses() throws InterruptedException
 	{
-		ArrayList<String> popularCoursesStatus = footerSectionLocator.verifyPopularCourses(data);
+		ArrayList<String> popularCoursesStatus = footerSectionLocator.verifyPopularCourses();
 		for(int i = 0; i < popularCoursesStatus.size(); i++)
 		{
-			if(data.contains(popularCoursesStatus.get(i)))
+			if(popularCoursesStatus.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(popularCoursesStatus.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(13).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(13).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(13).set(i+1, (popularCoursesStatus.get(i) + " - failed"));
 			}
 		}
 	}
 	
-	public void verifyLatestBlogs(ArrayList<String> data) throws InterruptedException
+	public void verifyLatestBlogs() throws InterruptedException
 	{
-		ArrayList<String> latestBlogsStatus = footerSectionLocator.verifyLatestBlogs(data);
+		ArrayList<String> latestBlogsStatus = footerSectionLocator.verifyLatestBlogs();
 		for(int i = 0; i < latestBlogsStatus.size(); i++)
 		{
-			if(data.contains(latestBlogsStatus.get(i)))
+			if(latestBlogsStatus.contains("fail"))
 			{
 				sheetStatus = "Fail";
-				int position = data.indexOf(latestBlogsStatus.get(i));
-				String cellValue = RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(14).get(position);
-				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(14).set(position, (cellValue + " - failed"));
+				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FooterSection").get(14).set(i+1, (latestBlogsStatus.get(i) + " - failed"));
 			}
 		}
 	}
@@ -230,10 +198,7 @@ public class FooterSectionValidation implements Callable<String>
 		try
 		{
 		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
 		this.footerSectionLocator = new FooterSectionLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -278,44 +243,17 @@ public class FooterSectionValidation implements Callable<String>
 					verifyBlog(row);
 					break;
 				case "popularCategories":
-					verifyPopularCategories(row);
+					verifyPopularCategories();
 					break;
 				case "popularCourses":
-					verifyPopularCourses(row);
+					verifyPopularCourses();
 					break;
 				case "latestBlogs":
-					verifyLatestBlogs(row);
+					verifyLatestBlogs();
 					break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

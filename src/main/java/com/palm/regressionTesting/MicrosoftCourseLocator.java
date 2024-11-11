@@ -78,33 +78,36 @@ public class MicrosoftCourseLocator
 
 	public String checkURLStatus(String data)
 	{
-		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
-			try
-			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
-				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
-				}
-				else
-				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400) {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } else {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
 			return status;
 	}
 	
@@ -155,7 +158,7 @@ public class MicrosoftCourseLocator
 					else
 					{
 					
-						WebElement imageOnCards = listOfCourses.get(i).findElement(By.xpath(".//img[@alt='Course Banner']"));
+						WebElement imageOnCards = listOfCourses.get(i).findElement(By.xpath(".//div[contains(@class,'RegularCourseCard_customCard')]/span/child::img"));
 						js.executeScript("arguments[0].scrollIntoView();", imageOnCards);
 						
 						if(imageOnCards.isDisplayed())
@@ -291,14 +294,14 @@ public class MicrosoftCourseLocator
 					
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(courseURL);
-						Set<String> childWnidow = driver.getWindowHandles();
+						/*Set<String> childWnidow = driver.getWindowHandles();
 						for(String windows : childWnidow)
 						{
 							driver.switchTo().window(windows);
 								
 								if(driver.getCurrentUrl().contains("/courses/"))
 								{
-									driver.switchTo().window(windows);
+									driver.switchTo().window(windows);*/
 									
 									String checkCourseTab = driver.getTitle();
 									
@@ -323,10 +326,10 @@ public class MicrosoftCourseLocator
 									}
 									
 									WebElement coursePageBaseLocator = driver.findElement(By.cssSelector("section[class*='CourseDescription_mainSection']"));
-									
+									js.executeScript("arguments[0].scrollIntoView();", coursePageBaseLocator);
 									
 									WebElement pageImage = coursePageBaseLocator.findElement(By.cssSelector(" img[alt='course-icon']"));
-									
+									js.executeScript("arguments[0].scrollIntoView();", pageImage);
 									if(pageImage.isDisplayed())
 									{
 										pageProcessStatus.add("ImagePresent");
@@ -338,6 +341,7 @@ public class MicrosoftCourseLocator
 									
 									
 									WebElement pageCourseIcon = coursePageBaseLocator.findElement(By.cssSelector(" h4"));
+									js.executeScript("arguments[0].scrollIntoView();", pageCourseIcon);
 									if(pageCourseIcon.isDisplayed())
 									{
 										pageProcessStatus.add(pageCourseIcon.getText()+"Icon");
@@ -348,6 +352,7 @@ public class MicrosoftCourseLocator
 									}
 									
 									WebElement pageType = coursePageBaseLocator.findElement(By.cssSelector(" h4[class*='CourseDescription_courseLabel']"));
+									js.executeScript("arguments[0].scrollIntoView();", pageType);
 									if(pageType.isDisplayed())
 									{
 										pageProcessStatus.add(pageType.getText());
@@ -359,6 +364,7 @@ public class MicrosoftCourseLocator
 									
 									
 									WebElement pageName = coursePageBaseLocator.findElement(By.cssSelector(" h1"));
+									js.executeScript("arguments[0].scrollIntoView();", pageName);
 									if(pageName.isDisplayed())
 									{
 										pageProcessStatus.add(pageName.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
@@ -369,6 +375,7 @@ public class MicrosoftCourseLocator
 									}
 									
 									WebElement pageLevel = coursePageBaseLocator.findElement(By.cssSelector(" div[class*='CourseDescription_levelSection']"));
+									js.executeScript("arguments[0].scrollIntoView();", pageLevel);
 									if(pageLevel.isDisplayed())
 									{
 										pageProcessStatus.add(pageLevel.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
@@ -390,6 +397,7 @@ public class MicrosoftCourseLocator
 									}
 									
 									WebElement pageEnrollStatus = coursePageBaseLocator.findElement(By.cssSelector(" div[class*='CourseDescription_buttonsContent'] h6, button[class*='CourseDescription_enrollNowBtn']"));
+									js.executeScript("arguments[0].scrollIntoView();", pageEnrollStatus);
 									if(pageEnrollStatus.isDisplayed())
 									{
 										if(pageEnrollStatus.getText().contains("Closed"))
@@ -533,13 +541,15 @@ public class MicrosoftCourseLocator
 										}
 									}
 									
-									driver.close();
-									Thread.sleep(500);
-									driver.switchTo().window(parentWindow);
-									
-								}
-							}
+									/*
+									 * driver.close(); Thread.sleep(500); driver.switchTo().window(parentWindow);
+									 */									
+									/*
+									 * } }
+									 */
+							driver.close();		
 							driver.switchTo().window(parentWindow);
+							
 						}
 					}
 			}

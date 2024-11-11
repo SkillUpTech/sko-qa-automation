@@ -12,6 +12,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -107,6 +108,33 @@ public class ExploreAllLocator
 			{
 				e.printStackTrace();
 				status.add("homePage_Fail");
+			}
+			try
+			{
+				if(driver.findElements(By.xpath("//a[@id='navbarDropdown']//img[@alt='icon']")).size()>0)
+				{
+					WebElement megaMenuDropDown = driver.findElement(By.xpath("//a[@id='navbarDropdown']//img[@alt='icon']"));
+					js.executeScript("arguments[0].scrollIntoView();", megaMenuDropDown);
+					if(megaMenuDropDown.isDisplayed())
+					{
+						js.executeScript("arguments[0].click()", megaMenuDropDown);
+					
+					WebElement exploreAllLink = driver.findElement(By.xpath("//ul[@class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show']//li[contains(@class,'exploreAll')]/a"));
+					Actions actions = new Actions(driver);
+					actions.moveToElement(exploreAllLink).perform();
+					}
+					js.executeScript("arguments[0].click()", megaMenuDropDown);
+				}
+				else
+				{
+                    status.add("mouseHover_Fail");
+                }
+
+			}
+			catch (Exception e) 
+			{
+				e.printStackTrace();
+				status.add("mouseHover_Fail");
 			}
 		}
 		catch(Exception e)
