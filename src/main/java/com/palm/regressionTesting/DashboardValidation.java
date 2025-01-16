@@ -21,7 +21,6 @@ public class DashboardValidation implements Callable<String>
 	ArrayList<ArrayList<String>> sheetData = null;
 	WebDriver driver;
 	DashboardLocator dashboardLocator;
-	RegressionGenericValidator regressionGenericValidator;
 	String sheetStatus = "Pass";
 	private int CURRENT_ROW = 0;
 	
@@ -32,141 +31,9 @@ public class DashboardValidation implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "url": 
-					  url(row); 
-					  break;
-					  
-				case "EnrollFlatPrice": 
-					  EnrollFlatPrice(row); 
-					  break;
-					  
-				case "continueOnDashboard":
-					  continueOnDashboard(row.get(1));
-					  break;
-					  
-				case "courseSearchFeature":
-					  courseSearchFeature(row.get(1));
-					  break;
-					  
-				case "checkEnrolledCourse":
-					  checkEnrolledCourse(row.get(1));
-					  break;
-					
-				case "shareCourse": 
-					shareCourseFromDashboard(row); 
-					break;
-					 
-				case "checkSocialLinkFromCourse":
-					checkSocialLinkFromCourse(row);
-					break;
-					
-				case "checkRelatedProgram":
-					checkRelatedProgram(row.get(1));
-					break;
-					
-				case "checkSelfPacedCourse":
-					checkSelfPacedCourse(row.get(1));
-					break;
-					
-				case "checkVILTCourse":
-					checkVILTCourse(row.get(1));
-					break;
-					
-				case "checkPartnerIconRedirectionFromCourse":
-					checkPartnerIconRedirectionFromCourse(row.get(1));
-					break;
-					
-				case "checkCourseContentTabs":
-					checkCourseContentTabs(row.get(1));
-					break;
-					
-				case "checkProgramSection":
-					checkProgramSection(row.get(1));
-					break;
-					
-				case "checkEnrolledProgram":
-					checkEnrolledProgram(row.get(1));
-					break;
-					
-				case "checkProgramSocialLinks":
-					checkProgramSocialLinks(row);
-					break;
-					
-				case "checkIncludeCourses":
-					checkIncludeCourses(row);
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
+        return DriverManager.getDriver(browserName);
+    }
+	
 	
 	public void url(ArrayList<String> url)
 	{
@@ -485,10 +352,12 @@ public class DashboardValidation implements Callable<String>
 
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
-		this.dashboardLocator = new DashboardLocator(this.driver);
-		String BaseWindow = driver.getWindowHandle();
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+		    this.dashboardLocator = new DashboardLocator(driver);
+
 
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -561,34 +430,7 @@ public class DashboardValidation implements Callable<String>
 					break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

@@ -138,10 +138,10 @@ public class RegressionGenericLocator
 	public String navigateProcess() 
 	{
 		String navigationStatus = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver; // div[@class='d-flex
 		try {
-			JavascriptExecutor jse = (JavascriptExecutor) driver; // div[@class='d-flex
 																	// CourseDescription_navigationBar__Zg6b3']//button[contains(text(),'Overview')]
-			jse.executeScript("window.scrollBy(0,800)");
+			js.executeScript("window.scrollBy(0,800)");
 			List<WebElement> navigateFunctions = driver
 					.findElements(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"));
 			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
@@ -153,8 +153,12 @@ public class RegressionGenericLocator
 				{
 					WebElement overview = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"));
-					wait.until(ExpectedConditions.elementToBeClickable(overview));
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", overview);
+					js.executeScript("arguments[0].scrollIntoView();", overview);
+					if(overview.isDisplayed())
+					{
+						
+						js.executeScript("arguments[0].click(), overview");
+					}
 					Thread.sleep(1000);
 					System.out.println("Overview is displayed");
 					navigationStatus = "pass";
@@ -165,15 +169,15 @@ public class RegressionGenericLocator
 				{
 					WebElement detailsNavigation = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"));
-					
+					js.executeScript("arguments[0].scrollIntoView();", detailsNavigation);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					 if(detailsNavigation.isDisplayed())
 					 {
 						 wait.until(ExpectedConditions.elementToBeClickable(detailsNavigation));
 						 driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
 						 Thread.sleep(1000);
+						 js.executeScript("arguments[0].click();", detailsNavigation);
 					 }
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", detailsNavigation);
 					Thread.sleep(1000);
 					System.out.println("Details content is displayed");
 					navigationStatus = "pass";
@@ -182,15 +186,15 @@ public class RegressionGenericLocator
 				{
 					WebElement whySkillupNavigation = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"));
-					
+					js.executeScript("arguments[0].scrollIntoView();", whySkillupNavigation);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					 if(whySkillupNavigation.isDisplayed())
 					 {
 						 wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
 						 driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
 						 Thread.sleep(1000);
+						 js.executeScript("arguments[0].click();", whySkillupNavigation);
 					 }
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", whySkillupNavigation);
 					Thread.sleep(1000);
 					System.out.println("WhySkillUpOnline? content is displayed");
 					navigationStatus = "pass";
@@ -199,8 +203,12 @@ public class RegressionGenericLocator
 				{
 					WebElement FAQNavigation = driver.findElement(By.cssSelector(
 							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(4)"));
-					wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation));
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", FAQNavigation);
+					js.executeScript("arguments[0].scrollIntoView();", FAQNavigation);
+					if(FAQNavigation.isDisplayed())
+					{
+						wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation));
+					}
+					js.executeScript("arguments[0].click();", FAQNavigation);
 					Thread.sleep(1000);
 					System.out.println("FAQ is displayed");
 					navigationStatus = "pass";
@@ -1296,7 +1304,8 @@ public class RegressionGenericLocator
 				if (i == 1) 
 				{
 					WebElement navigationButton = driver
-							.findElement(By.cssSelector("div#why-skill-up h2[class*='_titleText']"));
+							.findElement(By.cssSelector("div#whySkillUp h2[class*='_titleText']"));
+					js.executeScript("arguments[0].scrollIntoView();", navigationButton);
 					String question = navigationButton.getText().replaceAll("\\s", "").replaceAll("\u00A0", "")
 							.replaceAll("[^\\p{ASCII}]", "");
 					if (question.equals(skillupOnlineFromExcel.get(i).replaceAll("\\s", "").replaceAll("\u00A0", "")
@@ -1543,6 +1552,7 @@ public class RegressionGenericLocator
 	public ArrayList<String> subscribeLocator(ArrayList<String> subscribeFromExcel)
 	{
 		ArrayList<String> checkSubscribeProcess = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			String getValue = subscribeFromExcel.get(1);
@@ -1552,28 +1562,34 @@ public class RegressionGenericLocator
 			String value = splitDetails[1];
 			System.out.println(value);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("window.scrollBy(0,800)");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			
-			WebElement fullName = driver.findElement(By.cssSelector("div[class*='Footer_FootFormInR'] div[class*='commonFormFields_inputBox']:nth-child(1)>input"));
-			fullName.clear();
-			fullName.sendKeys(key);
+			WebElement fullName = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] input[placeholder='Full Name']"));
+			js.executeScript("arguments[0].scrollIntoView();", fullName);
+			if (fullName.isDisplayed())
+			{
+				System.out.println("Full Name is displayed");
+				fullName.clear();
+				fullName.sendKeys(key);
+			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			checkSubscribeProcess.add(this.validationProcess());
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-			js.executeScript("window.scrollBy(0,-100)");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			WebElement email = driver.findElement(By.cssSelector("div[class*='Footer_FootFormInR'] div[class*='commonFormFields_inputBox']:nth-child(2)>input"));
-			email.clear();
-			email.sendKeys(value);
+			WebElement email = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] input[placeholder='Email']"));
+			js.executeScript("arguments[0].scrollIntoView();", email);
+			if (fullName.isDisplayed())
+			{
+				System.out.println("email is displayed");
+				email.clear();
+				email.sendKeys(value);
+			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			checkSubscribeProcess.add(this.validationProcess());
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-			js.executeScript("window.scrollBy(0,100)");
 			
-			WebElement clickSubscribe = driver.findElement(By.cssSelector("div[class*='Footer_FormBtN']>button"));
+			WebElement clickSubscribe = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] button"));
 			js.executeScript("arguments[0].scrollIntoView();", clickSubscribe);
 			if (clickSubscribe.isDisplayed())
 			{

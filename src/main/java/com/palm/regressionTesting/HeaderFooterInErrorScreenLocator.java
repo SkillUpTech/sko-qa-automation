@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,103 +19,104 @@ import org.openqa.selenium.support.PageFactory;
 
 public class HeaderFooterInErrorScreenLocator
 {
+	//https://qa-in.skillup.online/courses/
 	WebDriver driver;
-	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li[class='Header_loginBtn__3Xv3A']>a")
+	@FindBy(xpath = "//a[contains(text(),'LOGIN')]")
 	private WebElement clickLoginIcon;
 	
-	@FindBy(css = "li[class*='Header_signupBtn']>a[href*='register']") //Find out more
+	@FindBy(xpath = "//a[contains(text(),'SIGNUP ')]") //Find out more
 	private WebElement clickSignUpIcon;
 	
-	@FindBy(css = "div[class='navbar-brand']>a") //skillup icon
+	@FindBy(xpath = "//div[@class='navbar-brand']/a") //skillup icon
 	private WebElement clickSkillupIcon;
 	
-	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navLinks__aS6_P']>li:nth-child(1)>a")
-	private WebElement clickAboutSkillupIcon;
+	@FindBy(xpath = "//a[contains(text(),'About SkillUp')]")
+	private List<WebElement> clickAboutSkillupIcon;
 	
-	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navLinks__aS6_P']>li:nth-child(2)>a")
+	@FindBy(xpath = "//a[contains(text(),'Contact us')]")
 	private WebElement clickContactUSIcon;
 	
-	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navLinks__aS6_P']>li:nth-child(3)>a")
-	private WebElement clickBlogIcon;
+	@FindBy(xpath = "//a[contains(text(),'Blog')]")
+	private List<WebElement> clickBlogIcon;
 	
-	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(1)>a")
+	@FindBy(xpath = "//ul[contains(@class,'socialIconsSection')]//a[contains(@href,'twitter')]")
 	private WebElement clickTwitter;
 	
-	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(2)>a")
+	@FindBy(xpath = "//ul[contains(@class,'socialIconsSection')]//a[contains(@href,'facebook')]")
 	private WebElement clickFacebook;
 	
-	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(3)>a")
+	@FindBy(xpath = "//ul[contains(@class,'socialIconsSection')]//a[contains(@href,'linked')]")
 	private WebElement clickLinkedIn;
 	
-	@FindBy(css = "ul[class=' Footer_socialIconsSection__5DztA d-flex']>li:nth-child(4)>a")
+	@FindBy(xpath = "//ul[contains(@class,'socialIconsSection')]//a[contains(@href,'instagram')]")
 	private WebElement clickInstagram;
 	
-	@FindBy(css = "ul[class*=' Footer_socialIconsSection']>li:nth-child(5)>a")
+	@FindBy(xpath = "//ul[contains(@class,'socialIconsSection')]//a[contains(@href,'youtube')]")
 	private WebElement clickYoutube;
 	
-	@FindBy(css = "div[class*='Footer_FootLoGo'] img[alt*='logo']")
+	@FindBy(xpath = "//div[contains(@class,'FootLoGo')]/a")
 	private WebElement clickSkillupLogoOnFooter;
 	
-	@FindBy(css = "div[class='Footer_ContActUs__bZ1xZ']>a")
+	@FindBy(xpath = "//div[@class='ContActUs']/a[contains(@href,'contact?')]")
 	private WebElement clickContactUSFooter;
 	
-	@FindBy(css = "div[class*='Foot'] li:nth-child(1)>a[href*='about']")
+	@FindBy(xpath = "//div[@class='FootMenu']//li/a[contains(text(),'About SkillUp')]")
 	private WebElement clickAboutSkillupOnlineFooter;
 	
-	@FindBy(css = "div[class*='Foot'] li:nth-child(2)>a[href*='enterprise']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(text(),'SkillUp for Business')]")
 	private WebElement clickSkillupOnlineForBusiness;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(5) a[href*='placement']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(@href,'placement?')]")
 	private WebElement clickPlacement;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(3)>a[href*='faq']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(text(),'FAQ')]")
 	private WebElement clickFAQ;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(4) a[href*='privacy']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(text(),'Privacy Policy')]")
 	private WebElement clickPrivacyPolicy;
 	
-	@FindBy(css = "div[class*='Footer_FootMenu'] ul>li:nth-child(5)>a[href*='tos']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(text(),'Terms of Service')]")
 	private WebElement clickTermsOfService;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(1) a[href*='blog']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(@href,'blog')]")
 	private WebElement clickBlogFooter;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(4) a[href*='news']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(@href,'newsletterpage')]")
 	private WebElement clickNewsLetter;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(2) a[href*='prpage']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(@href,'prpage')]")
 	private WebElement clickPressRelease;
 	
-	@FindBy(css = "div[class*='Foot'] ul>li:nth-child(3) a[href*='events']")
+	@FindBy(xpath = "//div[contains(@class,'FootMenu')]//li/a[contains(@href,'events')]")
 	private WebElement clickEvents;
 	
 	@FindBy(xpath = "//li[contains(@class,'nav-item dropdown Header_dropdown')]//img[@alt='icon']")
 	private WebElement clickDropdown;
 	
-	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='CatMENUInR']/div[1]/div[@class='CatHeading']/h2")
-	private WebElement checkCategory;//Categories
-	
-	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='CatMENUInR']/div[2]/div[@class='CatHeading']/h2")
-	private WebElement checkCoursesBy;//Courses by
-	
-	
-	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='CatMENUInR']/div[3]/div[@class='CatHeading']/h2")
-	private WebElement checkPopularCourses;//Popular Courses
-	
-	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='CatMENUInR']/div[4]//h2")
-	private WebElement checkServices;//Popular Courses
+	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//ul[@class='categorylist customscroll dropdown-submenu']/li/a")
+	private List<WebElement> checkCategoryFromMegamenu;//Categories
 	
 	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//div[@class='CatMENUInR']/div[3]/div[2]//li[@class='exploreAll']/a")
 	private WebElement checkExploreAll;//Explore All
 	
-	@FindBy(xpath = "//div[contains(@class,'Footer_footerMiddleInR')]/div[1]//h2")
-	private WebElement checkPopularCategoriesOnFooter;//Popular Categories
+	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//ul[@class='learning-Partners']//a")
+	private List<WebElement> checkCoursesByFromMegamenu;
 	
-	@FindBy(xpath = "//div[contains(@class,'Footer_footerMiddleInR')]/div[2]//h2")
-	private WebElement checkPopularCoursesOnFooter;//Popular Courses
+	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//ul[@class='categorylist dropdown-submenu']//a")
+	private WebElement checkServicesFromMegamenu;
 	
-	@FindBy(xpath = "//div[contains(@class,'Footer_footerMiddleInR')]/div[3]//h2")
-	private WebElement checkLatestBlogsOnFooter;//Latest Blogs
+	@FindBy(xpath = "//ul[contains(@class,'dropdown-menu dropdown-cat Header_dropdownMenu')]//ul[@class='MegaMenu_PopularCourse']//a")
+	private List<WebElement> checkPopularCoursesFromMegamenu;//Popular Courses
+	
+	
+	@FindBy(xpath = "//div[contains(@class,'Footer_PopularCategories')]//ul/li/a")
+	private List<WebElement> checkPopularCategoriesOnFooter;//Popular Categories
+	
+	@FindBy(xpath = "//div[contains(@class,'Footer_PopularCourses')]//ul/li/a")
+	private List<WebElement> checkPopularCoursesOnFooter;//Popular Courses
+	
+	@FindBy(xpath = "//div[contains(@class,'Footer_LatestBlogs')]//a")
+	private List<WebElement> checkLatestBlogsOnFooter;//Latest Blogs
 	
 	public HeaderFooterInErrorScreenLocator(WebDriver driver)
 	{
@@ -121,107 +124,62 @@ public class HeaderFooterInErrorScreenLocator
 		PageFactory.initElements(driver, this);
 	}
 	
-	public String checkURL(String link)
+	
+	public String checkURLStatus(String data)
 	{
-		String url = link;
-		String urlStatus = "";
-		try
-		{
-			URL obj = new URL(url);
-			HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-			conn.setReadTimeout(5000);
-			conn.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
-			conn.addRequestProperty("User-Agent", "Mozilla");
-			conn.addRequestProperty("Referer", "google.com");
-
-			System.out.println("Request URL ... " + url);
-
-			boolean redirect = false;
-
-			// normally, 3xx is redirect
-			int status = conn.getResponseCode();
-			if (status != HttpURLConnection.HTTP_OK) {
-				if (status == HttpURLConnection.HTTP_MOVED_TEMP
-					|| status == HttpURLConnection.HTTP_MOVED_PERM
-						|| status == HttpURLConnection.HTTP_SEE_OTHER)
-				redirect = true;
-			}
-
-			System.out.println("Response Code ... " + status);
-
-			if (redirect) {
-
-				// get redirect url from "location" header field
-				String newUrl = conn.getHeaderField("Location");
-
-				// get the cookie if need, for login
-				String cookies = conn.getHeaderField("Set-Cookie");
-
-				conn = (HttpURLConnection) new URL(newUrl).openConnection();
-				conn.setRequestProperty("Cookie", cookies);
-				conn.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
-				conn.addRequestProperty("User-Agent", "Mozilla");
-				conn.addRequestProperty("Referer", "google.com");
-										
-				System.out.println("Redirect to URL : " + newUrl);
-
-			}
-
-			BufferedReader in = new BufferedReader(
-		                              new InputStreamReader(conn.getInputStream()));
-			String inputLine;
-			StringBuffer html = new StringBuffer();
-
-			while ((inputLine = in.readLine()) != null) {
-				html.append(inputLine);
-			}
-			in.close();
-
-			System.out.println("Done");
-			if(status>200)
-			{
-				urlStatus = "fail" + status;
-			}
-			else
-			{
-				urlStatus = "pass";
-			}
-		    } 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		return urlStatus;
-		
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
+			return status;
 	}
 	public String loginProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickLoginIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("login"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("Login page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickLoginIcon);
+			String statusURL = this.checkURLStatus(clickLoginIcon.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("Login Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -229,31 +187,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String signUpIconProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickSignUpIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("register"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("signup page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickSignUpIcon);
+			String statusURL = this.checkURLStatus(clickSignUpIcon.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("signup Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -261,63 +209,56 @@ public class HeaderFooterInErrorScreenLocator
 	public String skillupIconOnTopProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		
 		try
 		{
-			driver.get(OpenWebsite.setHost+"/courses/deep/");
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickSkillupIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().equals(OpenWebsite.setHost+"/"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("skillup logo page");
-						status = "pass";
-						driver.close();
-						
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get("https://qa-in.skillup.online/courses/");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			status = "exception";
+		}
+		try
+		{
+			js.executeScript("arguments[0].scrollIntoView();", clickSkillupIcon);
+			String statusURL = this.checkURLStatus(clickSkillupIcon.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("skillup icon on Top of page Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
+		
 		return status;
 	}
 	
 	public String AboutSkillupOnlineProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickAboutSkillupIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("about"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("About Skill up Online process page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickAboutSkillupIcon.get(0));
+			String statusURL = this.checkURLStatus(clickAboutSkillupIcon.get(0).getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("About skillup online on Top of page Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -325,31 +266,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String ContactUsProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickContactUSIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("contact"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("contact Us  page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickContactUSIcon);
+			String statusURL = this.checkURLStatus(clickContactUSIcon.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("contact Us on top of page Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -357,31 +288,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String BlogProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickBlogIcon).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("blog"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("Blog  page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickBlogIcon.get(0));
+			String statusURL = this.checkURLStatus(clickBlogIcon.get(0).getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("blog on top of page Process completed "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -392,28 +313,31 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
 			if(clickDropdown.isDisplayed())
 			{
 				js.executeScript("arguments[0].click();", clickDropdown);
-				js.executeScript("arguments[0].scrollIntoView(true);", checkCategory);
-				if(checkCategory.isDisplayed())
-				{
-					System.out.println("category is available");
-					status = "pass";
-				}
-				else
-				{
-					status = "fail";
-				}
-				js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-				js.executeScript("arguments[0].click();", clickDropdown);
+				if(checkCategoryFromMegamenu.size()>0)
+                {
+                    for (WebElement eachCategory : checkCategoryFromMegamenu) 
+                    {
+                        js.executeScript("arguments[0].scrollIntoView();", eachCategory);
+                        String url = eachCategory.getAttribute("href");
+                        String statusURL = this.checkURLStatus(url);
+                        if (statusURL.contains("fail"))
+                        {
+                            status = "fail";
+                        }
+                        System.out.println("catgepry Process completed  for" + " : " +  url+ " : "+statusURL);
+                    }
+                }
 			}
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status = "fail";
+			status = "exception";
 		}
 		return status;
 	}
@@ -424,28 +348,26 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-			if(clickDropdown.isDisplayed())
-			{
-				js.executeScript("arguments[0].click();", clickDropdown);
-				js.executeScript("arguments[0].scrollIntoView(true);", checkCoursesBy);
-				if(checkCoursesBy.isDisplayed())
-				{
-					System.out.println("partners is available");
-					status = "pass";
-				}
-				else
-				{
-					status = "fail";
-				}
-				js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-				js.executeScript("arguments[0].click();", clickDropdown);
-			}
+				if(checkCoursesByFromMegamenu.size()>0)
+                {
+                    for (WebElement eachPartner : checkCoursesByFromMegamenu) 
+                    {
+                        js.executeScript("arguments[0].scrollIntoView();", eachPartner);
+                        String url = eachPartner.getAttribute("href");
+                        String statusURL = this.checkURLStatus(url);
+                        if (statusURL.contains("fail"))
+                        {
+                            status = "fail";
+                        }
+                        System.out.println("partner Process completed  for" + " : " +  url+ " : "+statusURL);
+                    }
+                }
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status = "fail";
+			status = "exception";
 		}
 		return status;
 	}
@@ -456,28 +378,28 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-			if(clickDropdown.isDisplayed())
-			{
-				js.executeScript("arguments[0].click();", clickDropdown);
-				js.executeScript("arguments[0].scrollIntoView(true);", checkPopularCourses);
-				if(checkPopularCourses.isDisplayed())
-				{
-					System.out.println(" PopularCourses is available");
-					status = "pass";
-				}
-				else
-				{
-					status = "fail";
-				}
-				js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-				js.executeScript("arguments[0].click();", clickDropdown);
-			}
+
+				if(checkCoursesByFromMegamenu.size()>0)
+                {
+                    for (WebElement eachPartner : checkCoursesByFromMegamenu) 
+                    {
+                        js.executeScript("arguments[0].scrollIntoView();", eachPartner);
+                        String url = eachPartner.getAttribute("href");
+                        String statusURL = this.checkURLStatus(url);
+                        if (statusURL.contains("fail"))
+                        {
+                            status = "fail";
+                        }
+                        System.out.println("Popular courses Process completed  for" + " : " +  url+ " : "+statusURL);
+                    }
+                }
+			
+		
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status = "fail";
+			status = "exception";
 		}
 		return status;
 	}
@@ -488,27 +410,22 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-			if(clickDropdown.isDisplayed())
-			{
-				js.executeScript("arguments[0].click();", clickDropdown);
-				js.executeScript("arguments[0].scrollIntoView(true);", checkServices);
-				if(checkServices.isDisplayed())
-				{
-					System.out.println(" services is available");
-				}
-				else
-				{
-					status = "fail";
-				}
-				js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
-				js.executeScript("arguments[0].click();", clickDropdown);
-			}
+			js.executeScript("arguments[0].scrollIntoView();", checkServicesFromMegamenu);
+			if(checkServicesFromMegamenu.isDisplayed())
+            {
+                    String url = checkServicesFromMegamenu.getAttribute("href");
+                    String statusURL = this.checkURLStatus(url);
+                    if (statusURL.contains("fail"))
+                    {
+                        status = "fail";
+                    }
+                    System.out.println("service Process completed  for" + " : " +  url+ " : "+statusURL);
+                }
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status = "fail";
+			status = "exception";
 		}
 		return status;
 	}
@@ -519,44 +436,29 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView(true);", clickDropdown);
+			js.executeScript("arguments[0].scrollIntoView();", checkExploreAll);
+			if(checkExploreAll.isDisplayed())
+            {
+                    String url = checkExploreAll.getAttribute("href");
+                    String statusURL = this.checkURLStatus(url);
+                    if (statusURL.contains("fail"))
+                    {
+                        status = "fail";
+                    }
+                    Thread.sleep(1000);
+            }
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
 			if(clickDropdown.isDisplayed())
 			{
 				js.executeScript("arguments[0].click();", clickDropdown);
-				js.executeScript("arguments[0].scrollIntoView(true);",checkExploreAll);
-				if(checkExploreAll.isDisplayed())
-				{
-					System.out.println(" explore all is available");
-					String parentWindow = driver.getWindowHandle();
-					Actions action = new Actions(driver);
-					action.keyDown(Keys.CONTROL).click(checkExploreAll).keyUp(Keys.CONTROL).build().perform();
-					Set<String> allWindows = driver.getWindowHandles();
-					for(String windows : allWindows)
-					{
-						driver.switchTo().window(windows);
-						if(driver.getCurrentUrl().contains("explore"))
-						{
-							driver.switchTo().window(windows);
-							System.out.println("explore ALL page");
-							Thread.sleep(200);
-							driver.close();
-							Thread.sleep(200);
-							status = "pass";
-							driver.switchTo().window(parentWindow);
-							break;
-						}
-					}
-				}
-				else
-				{
-					status = "fail";
-				}
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+				System.out.println("explore all Process completed");
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			status = "fail";
+			status = "exception";
 		}
 		return status;
 	}
@@ -565,35 +467,20 @@ public class HeaderFooterInErrorScreenLocator
 	{
 		String status = "";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("window.scrollBy(0,document.body.scrollHeight)", "");
-		Thread.sleep(500);
-		js.executeScript("window.scrollBy(0,-400)", "");
-		Thread.sleep(500);
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickTwitter).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("x.com"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("twitter page");
-						status = "pass";
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickTwitter);
+			String statusURL = this.checkURLStatus(clickTwitter.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			 System.out.println("twitter Process completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -601,33 +488,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String facebookProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickFacebook).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("facebook"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("facebook page");
-						status = "pass";
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-					driver.switchTo().window(windows);
-				}
-				driver.switchTo().window(parentWindow);
+			js.executeScript("arguments[0].scrollIntoView();", clickFacebook);
+			String statusURL = this.checkURLStatus(clickFacebook.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("facebook Process completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -635,31 +510,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String linkedInProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickLinkedIn).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("linked"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("LinkedIn page");
-						status = "pass";
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickLinkedIn);
+			String statusURL = this.checkURLStatus(clickLinkedIn.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("linked in Process completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -670,32 +535,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-			
-				js.executeScript("arguments[0].scrollIntoView();", clickInstagram);
-				String instaLink = clickInstagram.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(instaLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("instagram"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("intagram page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickInstagram);
+			String statusURL = this.checkURLStatus(clickInstagram.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("instagram Process completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -706,31 +557,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickYoutube);
-				String YoutubeLink = clickYoutube.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(YoutubeLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("youtube"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("youtube  page");
-						status = "pass";
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickYoutube);
+			String statusURL = this.checkURLStatus(clickYoutube.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("youtube Process completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -741,31 +579,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-			js.executeScript("arguments[0].scrollIntoView();", clickContactUSFooter);
-			String ContactUSFooterLink = clickContactUSFooter.getAttribute("href");
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(ContactUSFooterLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("contact"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("contact US Page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickContactUSIcon);
+			String statusURL = this.checkURLStatus(clickContactUSIcon.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("contactUs  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -774,29 +599,21 @@ public class HeaderFooterInErrorScreenLocator
 	public String skillupLogoFooterProcess()
 	{
 		String status = "";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickSkillupLogoOnFooter).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().equals(OpenWebsite.setHost+"/"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("skillup logo page");
-						status = "pass";
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+			js.executeScript("arguments[0].scrollIntoView();", clickSkillupLogoOnFooter);
+			String statusURL = this.checkURLStatus(clickSkillupLogoOnFooter.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("skillup Logo  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -808,30 +625,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickAboutSkillupOnlineFooter);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickAboutSkillupOnlineFooter).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("about"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("About Skillup Online footer page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickAboutSkillupOnlineFooter);
+			String statusURL = this.checkURLStatus(clickAboutSkillupOnlineFooter.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("About Skillup  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -842,31 +647,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickSkillupOnlineForBusiness);
-				String SkillupOnlineForBusinessLink = clickSkillupOnlineForBusiness.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(SkillupOnlineForBusinessLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("enterprise"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("skill up online for business process page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickSkillupOnlineForBusiness);
+			String statusURL = this.checkURLStatus(clickSkillupOnlineForBusiness.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("business  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -877,31 +669,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickPlacement);
-				String PlacementLink = clickPlacement.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(PlacementLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("placement"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("placement page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickPlacement);
+			String statusURL = this.checkURLStatus(clickPlacement.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			}
+			System.out.println("placement  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -912,30 +691,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickFAQ);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickFAQ).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("faq"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("FAQ page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickFAQ);
+			String statusURL = this.checkURLStatus(clickFAQ.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("FAQ  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -946,31 +713,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicy);
-				String PrivacyPolicyLink = clickPrivacyPolicy.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(PrivacyPolicyLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("privacy"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("Privacy policy page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicy);
+			String statusURL = this.checkURLStatus(clickPrivacyPolicy.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("privacy  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -981,31 +735,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickTermsOfService);
-				String TermsOfServiceLink = clickTermsOfService.getAttribute("href");
-				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(TermsOfServiceLink);
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("tos"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("Terms of service page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickTermsOfService);
+			String statusURL = this.checkURLStatus(clickTermsOfService.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("TOS  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1016,30 +757,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickBlogFooter);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickBlogFooter).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("blog"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("blog footer page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickBlogFooter);
+			String statusURL = this.checkURLStatus(clickBlogFooter.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("Blog  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1050,30 +779,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickPressRelease);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickPressRelease).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("pr"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("pressRelease page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickPressRelease);
+			String statusURL = this.checkURLStatus(clickPressRelease.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("press Release  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1083,30 +800,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickEvents);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickEvents).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("events"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("events page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickEvents);
+			String statusURL = this.checkURLStatus(clickEvents.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("Event  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1116,31 +821,18 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			Thread.sleep(200);
-			String parentWindow = driver.getWindowHandle();
-				js.executeScript("arguments[0].scrollIntoView();", clickNewsLetter);
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickNewsLetter).keyUp(Keys.CONTROL).build().perform();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("news"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("newsLetter page");
-						Thread.sleep(200);
-						driver.close();
-						Thread.sleep(200);
-						status = "pass";
-						driver.switchTo().window(parentWindow);
-						break;
-					}
-				}
+			js.executeScript("arguments[0].scrollIntoView();", clickNewsLetter);
+			String statusURL = this.checkURLStatus(clickNewsLetter.getAttribute("href"));
+			if (statusURL.contains("fail"))
+			{
+				status = "fail";
+			} 
+			System.out.println("newsLetter  Process on Bottom completed  for "+statusURL);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1150,20 +842,24 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-				js.executeScript("arguments[0].scrollIntoView();", checkPopularCategoriesOnFooter);
-				if(checkPopularCategoriesOnFooter.isDisplayed())
-				{
-					System.out.println(" Popular Categories On Footer is available");
-					status = "pass";
-				}
-				else
+			 
+			for (WebElement eachCategoryFromFooter : checkPopularCategoriesOnFooter) 
+			{
+				js.executeScript("arguments[0].scrollIntoView();", eachCategoryFromFooter);
+				String url = eachCategoryFromFooter.getAttribute("href");
+				String statusURL = this.checkURLStatus(url);
+				if (statusURL.contains("fail"))
 				{
 					status = "fail";
 				}
+				System.out.println("Catgeory  Process on Bottom completed  for " +url +" : " + statusURL);
+			}
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1173,20 +869,22 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView();", checkPopularCoursesOnFooter);
-			if(checkPopularCoursesOnFooter.isDisplayed())
+			for (WebElement eachPopularCoursesFromFooter : checkPopularCoursesOnFooter) 
 			{
-				System.out.println(" Popular courses On Footer is available");
-				status = "pass";
-			}
-			else
-			{
-				status = "fail";
+				js.executeScript("arguments[0].scrollIntoView();", eachPopularCoursesFromFooter);
+				String url = eachPopularCoursesFromFooter.getAttribute("href");
+				String statusURL = this.checkURLStatus(url);
+				if (statusURL.contains("fail"))
+				{
+					status = "fail";
+				}
+				System.out.println("popukarCourse  Process on Bottom completed  for " +url +" : " + statusURL);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}
@@ -1196,20 +894,22 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			js.executeScript("arguments[0].scrollIntoView();", checkLatestBlogsOnFooter);
-			if(checkLatestBlogsOnFooter.isDisplayed())
+			for (WebElement eachBlogsFromFooter : checkLatestBlogsOnFooter) 
 			{
-				System.out.println(" Popular bolgs On Footer is available");
-				status = "pass";
-			}
-			else
-			{
-				status = "fail";
+				js.executeScript("arguments[0].scrollIntoView();", eachBlogsFromFooter);
+				String url = eachBlogsFromFooter.getAttribute("href");
+				String statusURL = this.checkURLStatus(url);
+				if (statusURL.contains("fail"))
+				{
+					status = "fail";
+				}
+				System.out.println("Latest Blogs  Process on Bottom completed  for " +url +" : " + statusURL);
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "exception";
 		}
 		return status;
 	}

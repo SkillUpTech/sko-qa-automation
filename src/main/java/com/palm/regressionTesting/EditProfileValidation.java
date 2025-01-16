@@ -424,12 +424,13 @@ public class EditProfileValidation implements Callable<String>
 		public String call() throws Exception {
 		    System.out.println("Onboarding Journey Process started");
 
-		    try {
-		        driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		    try 
+		    {
+		    	driver = this.openDriver(RegressionTesting.nameOfBrowser);
+				OpenWebsite.openSite(driver);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		        this.editProfileLocator = new EditProfileLocator(driver);
-		        String baseWindow = driver.getWindowHandle();
-		        driver.switchTo().newWindow(WindowType.TAB);
-		        OpenWebsite.openSite(driver);
 
 		        for (ArrayList<String> row : this.sheetData) {
 		            String firstColumn = row.get(0);

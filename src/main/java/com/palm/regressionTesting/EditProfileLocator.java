@@ -125,13 +125,13 @@ public class EditProfileLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-					WebElement clickDropDown = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons']>li:nth-child(2) img[alt='icon']"));
+					WebElement clickDropDown = driver.findElement(By.cssSelector("a[class='dropdown-toggle']>img"));
 					js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
 					if(clickDropDown.isDisplayed())
 					{
 						try
 						{
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons']>li:nth-child(2) img[alt='icon']")));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("a[class='dropdown-toggle']>img")));
 							js.executeScript("arguments[0].click()", clickDropDown);
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));Thread.sleep(1000);
 				        } 

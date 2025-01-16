@@ -29,6 +29,7 @@ public class SignUpPageLinksLocator
 		String status = "";
 		try
 		{
+			driver.get(OpenWebsite.setURL);
 			final String url = OpenWebsite.setURL;
 			String checkURL = url.replace("online", "online/");
 			String parent = driver.getWindowHandle();

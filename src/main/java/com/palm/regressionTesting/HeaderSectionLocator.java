@@ -8,18 +8,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HeaderSectionLocator
 {
 	WebDriver driver;
+	String parentWindow = "";
 	public HeaderSectionLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -27,20 +28,29 @@ public class HeaderSectionLocator
 	public String checkSkillupLogo() throws InterruptedException
 	{
 		String status = "fail";
+		parentWindow = driver.getWindowHandle();
+		String skillupLogoLocator = "div[class*='Header_headerLeft'] a img[alt='logo']";
+		JavascriptExecutor js = (JavascriptExecutor)driver;
 		try
 		{
-			WebElement clickLogo = driver.findElement(By.cssSelector("div[class*='Header_headerLeft'] a img[alt='logo']"));
-			//clickLogo.click();
-			JavascriptExecutor js = (JavascriptExecutor)driver;
-			js.executeScript("arguments[0].click()", clickLogo);
-			status = "pass";
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			if(driver.findElements(By.cssSelector(skillupLogoLocator)).size()>0)
+			{
+				WebElement clickLogo = driver.findElement(By.cssSelector(skillupLogoLocator));
+				js.executeScript("arguments[0].scrollIntoView();", clickLogo);
+				if(clickLogo.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", clickLogo);
+					status = "pass";
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+				}
+			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			status = "fail";
 		}
-		//String getHost = OpenWebsite.setURL;
 		
 		
 		return status;
@@ -49,44 +59,43 @@ public class HeaderSectionLocator
 	public String checkContactUs() throws InterruptedException 
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		String status = "fail";
+		String contactUsLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a";
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			WebElement clickContactUs = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a"));
-			js.executeScript("arguments[0].scrollIntoView();", clickContactUs);
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-			wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
-			String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-			clickContactUs.sendKeys(n);
-			String parentWindow = driver.getWindowHandle();
-			Set<String> nextWindow = driver.getWindowHandles();
-			for(String window : nextWindow)
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			if(driver.findElements(By.cssSelector(contactUsLocator)).size()>0)
 			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains("contact/"))
+				WebElement clickContactUs = driver.findElement(By.cssSelector(contactUsLocator));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+				js.executeScript("arguments[0].scrollIntoView();", clickContactUs);
+				String contactUsURL = clickContactUs.getAttribute("href");
+				if(clickContactUs.isDisplayed())
 				{
-					driver.switchTo().window(window);
-					System.out.println("contact window");
-					status = "pass";
-					driver.close();
-					status = "success";
-					break;
+					wait.until(ExpectedConditions.elementToBeClickable(clickContactUs));
+					String checkURLStatus = this.checkURLStatus(contactUsURL);
+					if(checkURLStatus.contains("fail"))
+					{
+						status = "fail";
+                    }
+                    else
+                    {
+                       driver.switchTo().newWindow(WindowType.TAB);
+                       driver.get(contactUsURL);
+                       driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+                       driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+                       status = "pass";
+                       driver.close();
+                       driver.switchTo().window(parentWindow);
+					}
 				}
-				else if(driver.getCurrentUrl().contains("data"))
-				{
-					driver.close();
-				}
-			}
-			driver.switchTo().window(parentWindow);
-			if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
-			{
-				status = "success";
 			}
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			status = "fail";
 		}
 		
 		return status;
@@ -95,101 +104,91 @@ public class HeaderSectionLocator
 	public String checkBusiness() 
 	{
 		String status = "fail";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickBusiness = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(1) a"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String businessLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(1) a";
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.elementToBeClickable(clickBusiness));
-		String getBusinessURL = clickBusiness.getAttribute("href");
-		this.checkURLStatus(getBusinessURL);
-		clickBusiness.click();
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		try
 		{
-			String childWindow = iterator.next();
-			driver.switchTo().window(childWindow);
-			if(parentWindow.equalsIgnoreCase(childWindow))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("enterprise"))
-				{
-					status = "success";
-					driver.get(OpenWebsite.setHost+"/");
-					break;
-				}
-			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("enterprise"))
-				{
-					driver.switchTo().window(childWindow);
-					System.out.println("business window");
-					status = "success";
-					driver.close();
-					driver.switchTo().window(parentWindow);
-				}
-				break;
-			}
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			if(driver.findElements(By.cssSelector(businessLocator)).size()>0)
+            {
+                System.out.println("business validation started");
+                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+                WebElement clickBusiness = driver.findElement(By.cssSelector(businessLocator));
+                js.executeScript("arguments[0].scrollIntoView();", clickBusiness);
+                String getBusinessURL = clickBusiness.getAttribute("href");
+                if (clickBusiness.isDisplayed()) 
+                {
+                	wait.until(ExpectedConditions.elementToBeClickable(clickBusiness));
+                	String statusOfBusiness = this.checkURLStatus(getBusinessURL);
+                	if(statusOfBusiness.contains("fail"))
+                	{
+                		status = "fail";
+                	}
+                	else
+                	{
+                		driver.switchTo().newWindow(WindowType.TAB);
+                		driver.get(getBusinessURL);
+                		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+                		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+                		status = "pass";
+                		driver.close();
+                		driver.switchTo().window(parentWindow);
+                	}
+                }
+            }
 		}
-		if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
+		catch (Exception e)
 		{
-			status = "success";
+			e.printStackTrace();
+			status = "fail";
 		}
+		
 		return status;
 	}
 
 	public String checkBlog() throws InterruptedException 
 	{
 		String status = "fail";
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickBlog = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(3) a"));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.elementToBeClickable(clickBlog));
-		String getBlogURL = clickBlog.getAttribute("href");
-		this.checkURLStatus(getBlogURL);
-		clickBlog.click();
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		String blogLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(3) a";
+		try
 		{
-			String childWindow = iterator.next();
-			if(parentWindow.equalsIgnoreCase(childWindow))
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+			if (driver.findElements(By.cssSelector(blogLocator)).size() > 0)
 			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("blog"))
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+				WebElement clickBlog = driver.findElement(By.cssSelector(blogLocator));
+				js.executeScript("arguments[0].scrollIntoView();", clickBlog);
+				if (clickBlog.isDisplayed())
 				{
-					driver.switchTo().window(childWindow);
-					System.out.println("blog window");
-					if(driver.getCurrentUrl().contains("blog"))
+					wait.until(ExpectedConditions.elementToBeClickable(clickBlog));
+					String getBlogURL = clickBlog.getAttribute("href");
+					String checkURLStatus = this.checkURLStatus(getBlogURL);
+					if (checkURLStatus.contains("fail"))
 					{
-						System.out.println("In blog window, url changed as stage to blog");
-						status = "success";
-						driver.get(OpenWebsite.setHost+"/");
-					//	Thread.sleep(1000);
-						break;
+						status = "fail";
+					} 
+					else
+					{
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(getBlogURL);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+						status = "pass";
+						driver.close();
+						driver.switchTo().window(parentWindow);
 					}
-				}	
-			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("blog"))
-				{
-					driver.switchTo().window(childWindow);
-					System.out.println("blog window");
-					status = "success";
-					driver.close();
-					driver.switchTo().window(parentWindow);
-				}
-				else if(driver.getCurrentUrl().contains("data"))
-				{
-					driver.close();
 				}
 			}
 		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			status = "fail";
+		}
+		
 		return status;
 	
 	}
@@ -197,66 +196,46 @@ public class HeaderSectionLocator
 	public ArrayList<String> checkCategories()
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		System.out.println("categories validation started");
+		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown";
+		String categoryLocator = "ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE catcolumn divbox1']>ul[class='categorylist customscroll dropdown-submenu']>li a";
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector("ul[class='navbar-nav nav '] a#navbarDropdown"));
-			clickCourseDropdown.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
-			List<WebElement> selectCourse = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE catcolumn divbox1']>ul[class='categorylist customscroll dropdown-submenu']>li"));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			for(int i = 0; i <selectCourse.size(); i++)
-			{	
-				if(i>0)
-				{
-					driver.findElement(By.cssSelector("a#navbarDropdown")).click();
-					Thread.sleep(3000);
-					if(driver.findElement(By.cssSelector("a#navbarDropdown")).getAttribute("aria-expanded").equalsIgnoreCase("false"))
+			WebElement  clickCourseDropdown = driver.findElement(By.cssSelector(megaMenuDropdownLocator));
+			js.executeScript("arguments[0].scrollIntoView();", clickCourseDropdown);
+			if(clickCourseDropdown.isDisplayed())
+			{
+				js.executeScript("arguments[0].click()", clickCourseDropdown);
+				List<WebElement> selectCourse = driver.findElements(By.cssSelector(categoryLocator));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+				for(int i = 0; i <selectCourse.size(); i++)
+				{	
+					js.executeScript("arguments[0].scrollIntoView();", selectCourse.get(i));
+					String getCatagoriesURL = selectCourse.get(i).getAttribute("href");
+					if(selectCourse.get(i).isDisplayed())
 					{
-						clickCourseDropdown.click();
-						Thread.sleep(300);
-					}
-				}
-				JavascriptExecutor js = (JavascriptExecutor) driver;
-				WebElement categoryElement = selectCourse.get(i).findElement(By.cssSelector(" a"));
-				js.executeScript("arguments[0].scrollIntoView();", categoryElement);
-			//	String categoryName = selectCourse.get(i).findElement(By.cssSelector(" a")).getText();
-				
-					String getCatagoriesURL = selectCourse.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
-					String urlLinkStatus = this.checkURLStatus(getCatagoriesURL);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-				//	Thread.sleep(1000);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					if(urlLinkStatus.equalsIgnoreCase("fail"))
-					{
-						status.add(selectCourse.get(i).getText());
-					}
-					else
-					{
-						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-						selectCourse.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						String parentWindow = driver.getWindowHandle();
-						Set<String> windows = driver.getWindowHandles();
-						for(String allWindows : windows)
+						String urlLinkStatus = this.checkURLStatus(getCatagoriesURL);
+						if(urlLinkStatus.contains("fail"))
 						{
-							driver.switchTo().window(allWindows);
-							if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-							{
-								driver.switchTo().window(allWindows);
-								System.out.println(driver.getCurrentUrl());
-								driver.close();
-								driver.switchTo().window(parentWindow);
-							}
-							else if(driver.getCurrentUrl().contains("data"))
-							{
-								driver.close();
-							}
-						}
+							status.add(selectCourse.get(i).getText());
+                        }
+                        else
+                        {
+                        	driver.switchTo().newWindow(WindowType.TAB);
+                        	driver.get(getCatagoriesURL);
+                        	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+                        	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+                        	driver.close();
+                        	driver.switchTo().window(parentWindow);
+                        }
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					}
 				}
+			}
+			js.executeScript("arguments[0].scrollIntoView();", clickCourseDropdown);
+			js.executeScript("arguments[0].click()", clickCourseDropdown);
 		}
 		catch(Exception e)
 		{
@@ -269,65 +248,43 @@ public class HeaderSectionLocator
 	public ArrayList<String> checkPopularCourses()
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown";
+		String popularCourseLocator = "ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn divbox3'] ul[class='MegaMenu_PopularCourse'] li a";
 		try
 		{
-			System.out.println("popular course validation started");
-			if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))
+			WebElement clickDropdown = driver.findElement(By.cssSelector(megaMenuDropdownLocator));
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+			if(clickDropdown.isDisplayed())
 			{
-				driver.get(OpenWebsite.setHost+"/");
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-			}
-			else
-			{
-				System.out.println("host is present");
-			}
-			WebElement clickDropdown = driver.findElement(By.cssSelector("a#navbarDropdown"));
-			clickDropdown.click();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			if(clickDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"))
-			{
-				clickDropdown.click();
-			}
-			List<WebElement> popularCourses = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn divbox3'] ul[class='MegaMenu_PopularCourse'] li"));
-			for(int i = 0; i < popularCourses.size(); i++)
-			{
-				if(i>0)
+				js.executeScript("arguments[0].click()", clickDropdown);
+				
+				List<WebElement> popularCourses = driver.findElements(By.cssSelector(popularCourseLocator));
+				
+				for (int i = 0; i < popularCourses.size(); i++) 
 				{
-					driver.findElement(By.cssSelector("a#navbarDropdown")).click();
-					if(driver.findElement(By.cssSelector("a#navbarDropdown")).getAttribute("aria-expanded").equalsIgnoreCase("false"))
-					{
-						clickDropdown.click();
-					}
-				}
-				String popularCourseName = popularCourses.get(i).findElement(By.cssSelector(" p")).getText();
+					String popularCourseName = popularCourses.get(i).getText();
 					
-					String getPopularCourseURL = popularCourses.get(i).findElement(By.cssSelector(" a")).getAttribute("href");
+					String getPopularCourseURL = popularCourses.get(i).getAttribute("href");
+					
 					String urlLinkStatus = this.checkURLStatus(getPopularCourseURL);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-					if(urlLinkStatus.equalsIgnoreCase("fail"))
+					if (urlLinkStatus.equalsIgnoreCase("fail"))
 					{
 						status.add(popularCourseName);
-					}
+					} 
 					else
 					{
-						String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-						popularCourses.get(i).findElement(By.cssSelector(" a")).sendKeys(n);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(getPopularCourseURL);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						String parentWindow = driver.getWindowHandle();
-						Set<String> windows = driver.getWindowHandles();
-						for(String allWindows : windows)
-						{
-							if(!parentWindow.equalsIgnoreCase(allWindows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-							{
-								driver.switchTo().window(allWindows);
-								System.out.println(driver.getCurrentUrl());
-								driver.close();
-								driver.switchTo().window(parentWindow);
-							}
-						}
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+						driver.close();
+						driver.switchTo().window(parentWindow);
 					}
 				}
+			}
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+			js.executeScript("arguments[0].click()", clickDropdown);
 				
 		}
 		catch(Exception e)
@@ -341,88 +298,84 @@ public class HeaderSectionLocator
 
 	public String checkLogin()
 	{
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickLogin = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_loginBtn'] a"));
-	
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_loginBtn'] a")));
-		wait.until(ExpectedConditions.elementToBeClickable(clickLogin));
-		String getLoginURL = clickLogin.getAttribute("href");
-		this.checkURLStatus(getLoginURL);
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		js.executeScript("arguments[0].click()", clickLogin);
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		String status = "fail";
+		String loginLocator = "div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_loginBtn'] a";
+		
+		try
 		{
-			String childWindow = iterator.next();
-			if(parentWindow.equalsIgnoreCase(childWindow))
+			if (driver.findElements(By.cssSelector(loginLocator)).size() > 0)
 			{
-				if(driver.getCurrentUrl().contains("login"))
+				WebElement clickLogin = driver.findElement(By.cssSelector(loginLocator));
+				js.executeScript("arguments[0].scrollIntoView();", clickLogin);
+				String getLoginURL = clickLogin.getAttribute("href");
+				if (clickLogin.isDisplayed()) 
 				{
-					System.out.println("login window");
-					OpenWebsite.openSite(driver);
-				}	
-				break;
-			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("login"))
-				{
-					driver.switchTo().window(childWindow);
-					System.out.println("login window");
-					driver.close();
-					driver.switchTo().window(parentWindow);
+					String checkURLStatus = this.checkURLStatus(getLoginURL);
+					if (checkURLStatus.contains("fail")) 
+					{
+						status = "fail";
+					} 
+					else
+					{
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(getLoginURL);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+						status = "pass";
+						driver.close();
+						driver.switchTo().window(parentWindow);
+					}
 				}
-				break;
 			}
 		}
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		return driver.getCurrentUrl();
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			status = "fail";
+		}
+		return status;
+	
 	}
 
 	public String checkSignUP() throws InterruptedException
 	{
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		WebElement clickSignUp = driver.findElement(By.cssSelector("div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_signupBtn'] a"));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		wait.until(ExpectedConditions.elementToBeClickable(clickSignUp));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		clickSignUp.click();
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
-		//Thread.sleep(3000);
-		String parentWindow = driver.getWindowHandle();
-		Set<String> nextWindow = driver.getWindowHandles();
-		Iterator<String> iterator = nextWindow.iterator();
-		while (iterator.hasNext()) 
+		String status = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String signUpLocator = "div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_signupBtn'] a";
+		try
 		{
-			String childWindow = iterator.next();
-			if(parentWindow.equalsIgnoreCase(childWindow))
+			if (driver.findElements(By.cssSelector(signUpLocator)).size() > 0)
 			{
-				if(driver.getCurrentUrl().contains("register"))
+				WebElement clickSignUp = driver.findElement(By.cssSelector(signUpLocator));
+				js.executeScript("arguments[0].scrollIntoView();", clickSignUp);
+				String getSignUpURL = clickSignUp.getAttribute("href");
+				
+				if (clickSignUp.isDisplayed()) 
 				{
-					System.out.println("signup window");
-					driver.get(OpenWebsite.setHost+"/");
-				}	
-				break;
-			}
-			else if(!parentWindow.equalsIgnoreCase(childWindow) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-			{
-				driver.switchTo().window(childWindow);
-				if(driver.getCurrentUrl().contains("register"))
-				{
-					driver.switchTo().window(childWindow);
-					System.out.println("contact window");
-					driver.close();
-					driver.switchTo().window(parentWindow);
+					String checkURLStatus = this.checkURLStatus(getSignUpURL);
+					if (checkURLStatus.contains("fail"))
+					{
+						status = "fail";
+					} 
+					else
+					{
+						driver.switchTo().newWindow(WindowType.TAB);
+						driver.get(getSignUpURL);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+						status = "pass";
+						driver.close();
+						driver.switchTo().window(parentWindow);
+					}
 				}
-				break;
 			}
 		}
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-		return driver.getCurrentUrl();
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			status = "fail";
+		}
+		return status;
 	}
 	
 	public String checkURLStatus(String getURL)
@@ -459,59 +412,48 @@ public class HeaderSectionLocator
 	public ArrayList<String> verifyLearningPartner()
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown";
+		String learningPartnerLocator = "ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] li a";
 		try
 		{
 			System.out.println("learning partner validation started");
-			WebElement clickDropdown = driver.findElement(By.cssSelector("a#navbarDropdown"));
-			clickDropdown.click();//Thread.sleep(4000);
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			if(clickDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"))
+			WebElement clickDropdown = driver.findElement(By.cssSelector(megaMenuDropdownLocator));
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+			if(clickDropdown.isDisplayed())
 			{
-				clickDropdown.click();
-			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-			List<WebElement> learningPartners = driver.findElements(By.cssSelector("ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='LearningPartners catcolumn divbox2'] li a"));
-			for(int i = 0; i < learningPartners.size();i++)
-			{
-				if(i>0)
+				js.executeScript("arguments[0].click()", clickDropdown);
+				
+				List<WebElement> learningPartners = driver.findElements(By.cssSelector(learningPartnerLocator));
+				
+				for (int i = 0; i < learningPartners.size(); i++) 
 				{
-					WebElement clickDropdown1 = driver.findElement(By.cssSelector("a#navbarDropdown"));
-					clickDropdown1.click();
-					if(clickDropdown.getAttribute("aria-expanded").equalsIgnoreCase("false"))
+					js.executeScript("arguments[0].scrollIntoView();", learningPartners.get(i));
+					
+					if(learningPartners.get(i).isDisplayed())
 					{
-						clickDropdown.click();
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					}
-				}
 						String getLearningPartnerURL = learningPartners.get(i).getAttribute("href");
+
 						String urlLinkStatus = this.checkURLStatus(getLearningPartnerURL);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						if(urlLinkStatus.equalsIgnoreCase("fail"))
+						
+						if (urlLinkStatus.equalsIgnoreCase("fail"))
 						{
 							status.add(getLearningPartnerURL);
-						}
-						else
+						} 
+						else 
 						{
-							String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
-							learningPartners.get(i).sendKeys(n);
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
-							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-							String parentWindow = driver.getWindowHandle();
-							Set<String> childWnidow = driver.getWindowHandles();
-							for(String windows : childWnidow)
-							{
-								if(!parentWindow.equalsIgnoreCase(windows) && !driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-								{
-									driver.switchTo().window(windows);
-									System.out.println(driver.getCurrentUrl());
-									driver.close();
-									driver.switchTo().window(parentWindow);
-									break;
-								}
-							}
+							driver.switchTo().newWindow(WindowType.TAB);
+							driver.get(getLearningPartnerURL);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
+							driver.close();
+							driver.switchTo().window(parentWindow);
 						}
 					}
+				}
+			}
+			js.executeScript("arguments[0].scrollIntoView();", clickDropdown);
+			js.executeScript("arguments[0].click()", clickDropdown);
 		}
 		catch(Exception e)
 		{

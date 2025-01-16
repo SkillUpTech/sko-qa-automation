@@ -32,46 +32,47 @@ public class PlacementPageLocator
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
-			List<WebElement> clickPlacementIcon = driver.findElements(By.cssSelector("div[class*='Footer_footertopmenu'] li[class='nav-item ']>a"));
-			for(int i = 0; i < clickPlacementIcon.size(); i++)
+			driver.switchTo().newWindow(WindowType.TAB);
+			String url = OpenWebsite.setHost;
+			driver.get(url);
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			//js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(9));
+			if(driver.findElements(By.xpath("//div[contains(@class,'Footer_FootcoliNR')]//div[3]//ul/li/a[contains(@href,'placement')]")).size()>0)
 			{
-				wait.until(ExpectedConditions.visibilityOfAllElements(clickPlacementIcon.get(i)));
-				js.executeScript("arguments[0].scrollIntoView();", clickPlacementIcon.get(i));
-				String url = clickPlacementIcon.get(i).getAttribute("href");
-				if(url.contains("placement"))
+				WebElement clickPlacementIcon = driver.findElement(By.xpath("//div[contains(@class,'Footer_FootcoliNR')]//div[3]//ul/li/a[contains(@href,'placement')]"));
+				js.executeScript("arguments[0].scrollIntoView();", clickPlacementIcon);		
+				String getPlacementURL = clickPlacementIcon.getAttribute("href");
+				if(clickPlacementIcon.isDisplayed())
+                {
+				System.out.println("we are in placement page");
+				
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(getPlacementURL);
+				
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+				
+				WebElement clickFocusForm = driver.findElement(By.xpath("//button[contains(text(),'Arrange a Chat')]"));
+				wait.until(ExpectedConditions.visibilityOfAllElements(clickFocusForm));
+				js.executeScript("arguments[0].scrollIntoView();", clickFocusForm);
+				
+				if(clickFocusForm.isDisplayed())
 				{
-					driver.switchTo().newWindow(WindowType.TAB);
-					driver.get(url);
-					Set<String> allWindows = driver.getWindowHandles();
-					for(String window : allWindows)
-					{
-						driver.switchTo().window(window);
-						if(driver.getCurrentUrl().contains("placement"))
-						{
-							driver.switchTo().window(window);
-							System.out.println("we are in placement page");
-							
-							WebElement clickFocusForm = driver.findElement(By.xpath("//button[contains(text(),'Arrange a Chat')]"));
-							wait.until(ExpectedConditions.visibilityOfAllElements(clickFocusForm));
-							js.executeScript("arguments[0].scrollIntoView();", clickFocusForm);
-							
-							if(clickFocusForm.isDisplayed())
-							{
-								js.executeScript("arguments[0].click()", clickFocusForm);
-								WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
-								driver.switchTo().frame(frameElement);
-								WebElement checkFormTitle = driver.findElement(By.cssSelector("div#live_survey_view h3[name='headerMsg']"));
-								wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
-								System.out.println("form title : "+checkFormTitle.getText());
-								status = "pass";
-								driver.switchTo().defaultContent();
-								break;
-							}
-						}
-					}
-					break;
+					js.executeScript("arguments[0].click()", clickFocusForm);
+					WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
+					driver.switchTo().frame(frameElement);
+					WebElement checkFormTitle = driver.findElement(By.cssSelector("div#live_survey_view h3[name='headerMsg']"));
+					wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
+					System.out.println("form title : "+checkFormTitle.getText());
+					status = "pass";
+					driver.switchTo().defaultContent();
 				}
 			}
+		}
 			
 		}
 		catch(Exception e)
@@ -88,20 +89,22 @@ public class PlacementPageLocator
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
-			WebElement clickButton = driver.findElement(By.xpath("//button[contains(text(),'Connect with our Placement Team')]"));
-			wait.until(ExpectedConditions.visibilityOfAllElements(clickButton));
-			js.executeScript("arguments[0].scrollIntoView();", clickButton);
-			
-			if(clickButton.isDisplayed())
+			if(driver.findElements(By.xpath("//button[contains(text(),'Connect with our Placement Team')]")).size()>0)
 			{
-				js.executeScript("arguments[0].click()", clickButton);
-				WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
-				driver.switchTo().frame(frameElement);
-				WebElement checkFormTitle = driver.findElement(By.cssSelector("h3[name='headerMsg']"));
-				wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
-				System.out.println("form title : "+checkFormTitle.getText());
-				status = "pass";
-				driver.switchTo().defaultContent();
+				WebElement clickButton = driver.findElement(By.xpath("//button[contains(text(),'Connect with our Placement Team')]"));
+				js.executeScript("arguments[0].scrollIntoView();", clickButton);
+				
+				if(clickButton.isDisplayed())
+				{
+					js.executeScript("arguments[0].click()", clickButton);
+					WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
+					driver.switchTo().frame(frameElement);
+					WebElement checkFormTitle = driver.findElement(By.cssSelector("h3[name='headerMsg']"));
+					wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
+					System.out.println("form title : "+checkFormTitle.getText());
+					status = "pass";
+					driver.switchTo().defaultContent();
+				}
 			}
 		}
 		catch(Exception e)
@@ -118,23 +121,26 @@ public class PlacementPageLocator
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		try
 		{
-			List<WebElement> clickButton = driver.findElements(By.xpath("//button[contains(text(),'Arrange a chat with our Placement Team')]"));
-			for(int i = 0; i < clickButton.size(); i++)
+			if(driver.findElements(By.xpath("//button[contains(text(),'Arrange a chat with our Placement Team')]")).size()>0)
 			{
-				wait.until(ExpectedConditions.visibilityOfAllElements(clickButton.get(i)));
-				js.executeScript("arguments[0].scrollIntoView();", clickButton.get(i));
-				if(clickButton.get(i).isDisplayed())
+				List<WebElement> clickButton = driver.findElements(By.xpath("//button[contains(text(),'Arrange a chat with our Placement Team')]"));
+				for(int i = 0; i < clickButton.size(); i++)
 				{
-					js.executeScript("arguments[0].click()", clickButton.get(i));
-					WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
-					driver.switchTo().frame(frameElement);
-					WebElement checkFormTitle = driver.findElement(By.cssSelector("h3[name='headerMsg']"));
-					wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
-					System.out.println("form title : "+checkFormTitle.getText());
-					status = "pass";
-					driver.switchTo().defaultContent();
+					wait.until(ExpectedConditions.visibilityOfAllElements(clickButton.get(i)));
+					js.executeScript("arguments[0].scrollIntoView();", clickButton.get(i));
+					if(clickButton.get(i).isDisplayed())
+					{
+						js.executeScript("arguments[0].click()", clickButton.get(i));
+						WebElement frameElement = driver.findElement(By.cssSelector("iframe[allow='geolocation']"));
+						driver.switchTo().frame(frameElement);
+						WebElement checkFormTitle = driver.findElement(By.cssSelector("h3[name='headerMsg']"));
+						wait.until(ExpectedConditions.visibilityOfAllElements(checkFormTitle));
+						System.out.println("form title : "+checkFormTitle.getText());
+						status = "pass";
+						driver.switchTo().defaultContent();
+					}
+					
 				}
-				
 			}
 			
 		}

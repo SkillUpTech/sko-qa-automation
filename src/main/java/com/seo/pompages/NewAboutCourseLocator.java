@@ -118,7 +118,6 @@ public class NewAboutCourseLocator
 	
 	public String getCourseCodeText(String code)
 	{
-		String courseIDFromBrowser = "";
 		String CourseCodeStatus = "false";
 		HttpURLConnection huc = null;
 		int respCode = 200;
@@ -127,7 +126,7 @@ public class NewAboutCourseLocator
 		{
 			if(code.contains("course-v1"))
 			{
-				addHosturl = this.setHost+"/courses/"+code;
+				addHosturl = this.setHost+code;
 			}
 			else
 			{
@@ -174,6 +173,7 @@ public class NewAboutCourseLocator
 			else
 			{
 				WebElement title = driver.findElement(By.cssSelector("div[class*='CourseDescription_courseText'] h1"));
+				
 				String getTitleFromBrowser = title.getAttribute("innerText").trim();
 				System.out.println("title from browser: "+title.getAttribute("innerText").trim());
 				if(courseTitleText.trim().equalsIgnoreCase(getTitleFromBrowser))
@@ -268,7 +268,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement courseType1Name = driver.findElement(By.cssSelector("section[class*=\"CourseDescription_mainSection\"] div[class*=\"CourseDescription_levelSection\"] h2"));
+				WebElement courseType1Name = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_levelSection')]/h2"));
 				String courseType1Text = courseType1Name.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("getCourseType1 from browser : "+courseType1Text);
 				if(courseType1FromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equals(courseType1Text))
@@ -299,7 +299,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement coursetype2Name = driver.findElement(By.xpath("(//div[@class='CourseDescription_levelSection__BiiUm']//h3)[1]"));
+				WebElement coursetype2Name = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_levelSection')]/h3[1]"));
 				String courseType2Text = coursetype2Name.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("Course Type 2 from browser : "+courseType2Text);
 				if(courseType2FromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equals(courseType2Text))
@@ -331,7 +331,7 @@ String addHosturl;
 			}
 			else
 			{
-				WebElement courseLevelName = driver.findElement(By.xpath("(//div[@class='CourseDescription_levelSection__BiiUm']//h3)[2]"));
+				WebElement courseLevelName = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_levelSection')]/h3[2]"));
 				String courseLevelText = courseLevelName.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 				System.out.println("courseLevelText from browser : "+courseLevelText);
 				if(courseLevelText.equals(courseLevelFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "")))
@@ -466,7 +466,6 @@ String addHosturl;
 			WebElement clickEarnCertificate = driver.findElement(By.cssSelector("div[class='certificate_wrap'] a[id='certificate-preview-btn']"));
 			js.executeScript("arguments[0].click();", clickEarnCertificate);
 			Thread.sleep(1000);
-			String AboutCourseWindow = driver.getWindowHandle(); 
 			Set<String> certificatePopup = driver.getWindowHandles(); 
 			Iterator<String> iterator = certificatePopup.iterator(); 
 			if(iterator.hasNext()) 
@@ -612,7 +611,7 @@ String addHosturl;
 					}
 				}
 				
-				List<WebElement> typeOfCertificate = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /h2"));
+				List<WebElement> typeOfCertificate = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /p"));
 				for(int j = 0; j < typeOfCertificate.size(); j++)
 				{
 					String getTypeOfCertificateText = typeOfCertificate.get(j).getText();
@@ -899,27 +898,27 @@ String addHosturl;
 	public HashMap<String, HashMap<String, String>> getExperts()
 	{
 		HashMap<String, HashMap<String, String>> experts = null;
-		String Base = this.addHosturl;
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		try
 		{
-			Thread.sleep(2000);
-			List<WebElement> expertsList = driver.findElements(By.cssSelector("div#stickyContent section[class='LearnWithExperts_mainSection__ZB7fa'] div[class='LearnWithExperts_expertInfoSection__2WO0a d-flex']"));
-			if(expertsList.size() > 0)
+			jse.executeScript("window.scrollBy(0, 500)");
+			if(driver.findElements(By.xpath("//div[@id='experts']/section//div[@class='LearnWithExperts_expertInfoSection__2WO0a d-flex']")).size() > 0)
 			{
+				List<WebElement> expertsList = driver.findElements(By.xpath("//div[@id='experts']/section//div[@class='LearnWithExperts_expertInfoSection__2WO0a d-flex']"));
 				experts = new HashMap<>();
 				for(int i = 0; i < expertsList.size(); i++)
 				{
 					HashMap<String, String> expert = new HashMap<>();
-					JavascriptExecutor jse = (JavascriptExecutor)driver;
 					WebElement expertElement = expertsList.get(i);
-					WebElement nameLocator = expertElement.findElement(By.cssSelector(" div[class='LearnWithExperts_expertInfo___z0Ug'] h2"));
+					jse.executeScript("arguments[0].scrollIntoView()", expertElement);
+					WebElement nameLocator = expertElement.findElement(By.xpath(".//h2"));
 					jse.executeScript("arguments[0].scrollIntoView()", nameLocator);
 					String name = nameLocator.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 					expert.put("name", name);
-					WebElement roleLocator = expertElement.findElement(By.cssSelector(" div[class='LearnWithExperts_expertInfo___z0Ug'] p"));
+					WebElement roleLocator = expertElement.findElement(By.xpath(".//p"));
 					String role = roleLocator.getText().replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 					expert.put(name, role);
-					WebElement linkedURLLocator = expertElement.findElement(By.cssSelector(" div[class='LearnWithExperts_expertInfo___z0Ug']  a"));
+					WebElement linkedURLLocator = expertElement.findElement(By.xpath(".//a"));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					Thread.sleep(300);
 					jse.executeScript("arguments[0].scrollIntoView()", linkedURLLocator);
@@ -958,7 +957,6 @@ String addHosturl;
 			e.printStackTrace();
 		}
 		
-		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollBy(0, -600)");
 		return experts;
 	}

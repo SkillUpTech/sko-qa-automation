@@ -18,6 +18,7 @@ public class ProcessLogin
 {
 	WebDriver driver;
 	String url = "";
+	String parentWindow = "";
 	public ProcessLogin(WebDriver driver) 
 	{
 		this.driver = driver;
@@ -39,14 +40,9 @@ public class ProcessLogin
 				wait.until(ExpectedConditions.elementToBeClickable(clickLogin));
 				if(clickLogin.isDisplayed())
 				{
-					js.executeScript("arguments[0].click()", clickLogin); 
-					  Set<String> nextWindow = driver.getWindowHandles();
-					  for(String window :  nextWindow) 
-					  {
-						  driver.switchTo().window(window);
-					  if(driver.getCurrentUrl().contains("login?")) 
-					  {
-					  driver.switchTo().window(window);
+					String loginURL = clickLogin.getAttribute("href");
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(loginURL);
 					  driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 					  js.executeScript("window.scrollBy(0, 200)", ""); WebElement userNameElement =
 					  driver.findElement(By.cssSelector("input#email"));
@@ -63,7 +59,7 @@ public class ProcessLogin
 						  js.executeScript("arguments[0].click()", clickSubmit); 
 					  } 
 					  loginStatus = this.ErrorMessage();
-					  if(loginStatus.equalsIgnoreCase("Failed"))
+					  if(loginStatus.equalsIgnoreCase("fail"))
 					  {
 						  loginStatus = "Failed"; 
 					  } 
@@ -71,11 +67,8 @@ public class ProcessLogin
 					  {
 					  loginStatus= this.checkUserAfterLoggedIn();
 					  } 
-					  break; 
 					  } 
-					  }
 					 
-				}
 			}
 		
 		}
@@ -89,34 +82,17 @@ public class ProcessLogin
 	public String ErrorMessage()
 	{
 		String loginStatus = null;
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-			List<WebElement> error = driver.findElements(By.xpath("//div[@class='NotificationTypeError spacing-mb16 status message submission-error is-shown']//div[@class='fiederror message-title']"));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-			if(error.size()>0)
+			if(driver.findElements(By.xpath("//div[contains(text(),'Email or password is incorrect.')]")).size()>0)
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				List<WebElement> errorMsg2 = driver.findElements(By.xpath("//div[@class='NotificationTypeError spacing-mb16 status message submission-error is-shown']//div[@class='fiederror message-title']"));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(200));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-				if(errorMsg2.size()>0)
-				{
-					if(errorMsg2.get(0).getText().equalsIgnoreCase("Email or password is incorrect.") || errorMsg2.get(0).getText().equalsIgnoreCase("In order to sign in, you need to activate your account."))
-					{
-						loginStatus = "Failed";
-					}
-					else
-					{
-						loginStatus = "Success";
-					}
-				}
-				else
-				{
-					loginStatus = "Success";
-				}
+				loginStatus = "fail";
+				System.out.println("error message displayed");
 			}
 			else
 			{
@@ -138,12 +114,10 @@ public class ProcessLogin
 	{
 		String loginStatus=null;
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 			try
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 				Thread.sleep(2000);
-				String parentWindow = driver.getWindowHandle();
 				Set<String> listOfWindow = driver.getWindowHandles();
 				for(String windows : listOfWindow)
 				{
@@ -152,30 +126,9 @@ public class ProcessLogin
 					if(driver.getCurrentUrl().contains("personalized/"))
 					{
 						driver.switchTo().window(windows);
-						WebElement clickBeginProfile = driver.findElement(By.cssSelector("div[class='col-md-12']:nth-child(2) div[class*='Personalized_PersContent'] a"));
-						js.executeScript("arguments[0].scrollIntoView();", clickBeginProfile);
-						WebDriverWait wait2 =  new WebDriverWait(driver, Duration.ofSeconds(30));
-						wait2.until(ExpectedConditions.elementToBeClickable(clickBeginProfile));
-						if(clickBeginProfile.isDisplayed())
-						{
-							js.executeScript("arguments[0].click()", clickBeginProfile);
-						}
-						Thread.sleep(3000);
-						WebElement clickDropdownIcon = driver.findElement(By.cssSelector("li[class='Header_SigNUP__cUzCw'] img[alt='icon']"));
-						js.executeScript("arguments[0].scrollIntoView();", clickDropdownIcon);
-						if(clickDropdownIcon.isDisplayed())
-						{
-							js.executeScript("arguments[0].click()", clickDropdownIcon);
-						}
-						Thread.sleep(2000);
-						WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary'] li:nth-child(5) a"));
-						js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
-						if(clickSignOut.isDisplayed())
-						{
-							js.executeScript("arguments[0].click()", clickSignOut);
-						}
-						Thread.sleep(2000);
-						
+						System.out.println("onboarding journey page");
+						loginStatus = "Success";
+						break;
 					 }
 					else if(driver.getCurrentUrl().contains("dashboard"))
 					{
@@ -196,7 +149,7 @@ public class ProcessLogin
 							loginStatus = "Success";
 							System.out.println("logged in successfully");
 							Thread.sleep(2000);
-							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary'] li:nth-child(5) a"));
+							WebElement clickSignOut = driver.findElement(By.cssSelector("div[class='headerRight']>ul:nth-child(4) ul[class*='dropdown-menu']>li:nth-child(5)>a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
 							if(clickSignOut.isDisplayed())
 							{
@@ -256,12 +209,14 @@ public class ProcessLogin
 		System.out.println("Invalid Email Process started");
 		try
 		{
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setURL+"/");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			parentWindow = driver.getWindowHandle();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			
 			InvalidUsername.add(this.loginFunction(uName, pwd));
 			driver.close();
-			driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			//driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -281,7 +236,8 @@ public class ProcessLogin
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			InvalidPassword.add(this.loginFunction(uName, pwd));
 			driver.close();
-			driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			//driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -301,7 +257,8 @@ public class ProcessLogin
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			InvalidUserNameAndPassword.add(this.loginFunction(uName, pwd));
 			driver.close();
-			driver.switchTo().window(driver.getWindowHandles().iterator().next());
+		//	driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{
@@ -321,7 +278,8 @@ public class ProcessLogin
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			ValidCredentials.add(this.loginFunction(uName, pwd));
 			driver.close();
-			driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			//driver.switchTo().window(driver.getWindowHandles().iterator().next());
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

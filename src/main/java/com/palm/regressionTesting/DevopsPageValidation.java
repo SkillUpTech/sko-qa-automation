@@ -56,39 +56,19 @@ public class DevopsPageValidation implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Devops Engg page process started");
-
+		WebDriver driver = null;
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.devopsPageLocator = new DevopsPageLocator(driver);
-		OpenWebsite.openSite(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -101,33 +81,6 @@ public class DevopsPageValidation implements Callable<String>
 				case "checkContent":
 					checkContent(row.get(1));
 					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
 			}
 		}
 		
@@ -159,7 +112,7 @@ public class DevopsPageValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ProgramURLandSlug").get(2).add(2, 
 					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

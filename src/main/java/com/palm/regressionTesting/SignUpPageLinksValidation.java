@@ -15,7 +15,7 @@ import com.regression.utility.TestUtil;
 
 public class SignUpPageLinksValidation implements Callable<String>
 {
-	WebDriver driver;
+	
 	ArrayList<ArrayList<String>> sheetData = null;
 	SignUpPageLinksLocator signUpPageLinksLocator;
 	String sheetStatus = "Pass";
@@ -106,39 +106,22 @@ public class SignUpPageLinksValidation implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	@Override
 	public String call() throws Exception {
+		 System.out.println("Test execution started for: " + this.getClass().getSimpleName());
 		System.out.println("Sign up Page links process started");
-
+		WebDriver driver = null;
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		this.signUpPageLinksLocator = new SignUpPageLinksLocator(driver);
-		OpenWebsite.openSite(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			System.out.println(driver.getCurrentUrl());
+			this.signUpPageLinksLocator = new SignUpPageLinksLocator(driver);
+		
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -171,7 +154,7 @@ public class SignUpPageLinksValidation implements Callable<String>
 					break;
 			}
 		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

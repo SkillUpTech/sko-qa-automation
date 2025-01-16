@@ -204,35 +204,42 @@ public class PLULocators
 		}
 		return status;
 	}
-	public String checkURLStatus(String getURL)
+	public String checkURLStatus(String data)
 	{
-		String status = "fail";
-		String addHosturl = getURL;
-		HttpURLConnection huc = null;
-		int respCode = 200;
-		try
-		{
-			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-			huc.setRequestMethod("HEAD");
-			huc.connect();
-			respCode = huc.getResponseCode();
-			System.out.println("status code : "+respCode + " " +addHosturl);
-			if(respCode > 200)
-			{
-				System.out.println("broken link"+addHosturl);
-				status = "fail"+respCode;
-			}
-			else
-			{
-				System.out.println("un broken link"+addHosturl);
-				status = "pass";
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
+			return status;
 	}
 	public ArrayList<String> programContent()
 	{

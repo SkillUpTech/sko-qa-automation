@@ -31,67 +31,6 @@ public class TechMasterValidation implements Callable<String>
 		
 	}
 
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "url":
-					launchSite(row.get(1));
-					break;
-				case "findOutMore_Button":
-					findOutMore_Button();
-					break;
-				case "learnmore_Button":
-					learnmore_Button();
-					break;
-				case "Cards":
-					Cards();
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	public void launchSite(String url)
 	{
@@ -152,39 +91,20 @@ public class TechMasterValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(3).set(0, "findOutMore_Button - failed");
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+	 public WebDriver openDriver(String browserName) {
+	        return DriverManager.getDriver(browserName);
+	    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Techmaster Process started");
 
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.techMasterLocator = new TechMasterLocator(driver);
-		OpenWebsite.openSite(driver);
-		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -205,34 +125,7 @@ public class TechMasterValidation implements Callable<String>
 					break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

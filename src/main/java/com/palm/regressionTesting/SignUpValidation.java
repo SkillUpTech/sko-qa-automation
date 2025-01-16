@@ -26,7 +26,10 @@ public class SignUpValidation implements Callable<String>
 		this.sheetData = sheetData;
 		
 	}
-	
+	public WebDriver openDriver(String browserName)
+	{
+        return DriverManager.getDriver(browserName);
+    }
 	
 	public void invalidFullname(ArrayList<String> dataFromExcel)
 	{
@@ -363,43 +366,18 @@ public class SignUpValidation implements Callable<String>
 	{
 		this.verifyInsertedData(dataFromExcel, index);
 	}
-	public WebDriver openDriver(String browserName)
-	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
 	@Override
 	public String call() throws Exception
 	{
 		System.out.println("Sign up validation begins");
 		try {
 	
-	  driver = this.openDriver(RegressionTesting.nameOfBrowser);
-	  OpenWebsite.openSite(driver);
-			 
-		this.signUpLocator = new SignUpLocator(this.driver);
-		String BaseWindow = driver.getWindowHandle();
-		/*
-		 * driver.switchTo().newWindow(WindowType.TAB); OpenWebsite.openSite(driver);
-		 */
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			this.signUpLocator = new SignUpLocator(this.driver);
+		
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -427,34 +405,7 @@ public class SignUpValidation implements Callable<String>
 					
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

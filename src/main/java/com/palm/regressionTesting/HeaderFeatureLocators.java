@@ -1999,7 +1999,7 @@ public class HeaderFeatureLocators
 					
 					try
 					{
-						if(driver.findElements(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'About SkillUp online')]")).size()>0)
+						if(driver.findElements(By.xpath("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'About SkillUp online')]")).size()>0)
 						{
 							WebElement checkAboutSkillup = driver.findElement(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'About SkillUp online')]"));
 							js.executeScript("arguments[0].scrollIntoView();", checkAboutSkillup);
@@ -2026,7 +2026,7 @@ public class HeaderFeatureLocators
 					
 					try
 					{
-						if(driver.findElements(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Contact us')]")).size()>0)
+						if(driver.findElements(By.xpath("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Contact us')]")).size()>0)
 						{
 						
 							WebElement checkContactUs = driver.findElement(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Contact us')]"));
@@ -2050,7 +2050,7 @@ public class HeaderFeatureLocators
 					
 					try
 					{
-						if(driver.findElements(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Blog')]")).size()>0)
+						if(driver.findElements(By.xpath("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Blog')]")).size()>0)
 						{
 						WebElement checkBlog = driver.findElement(By.cssSelector("//ul[@class='nav navbar-nav MobIlE_MenU']/li/a[contains(text(),'Blog')]"));
 						wait.until(ExpectedConditions.visibilityOfAllElements(checkBlog));
@@ -2077,7 +2077,7 @@ public class HeaderFeatureLocators
 					
 					try
 					{
-						if(driver.findElements(By.cssSelector("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'LOGIN')]")).size()>0)
+						if(driver.findElements(By.xpath("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'LOGIN')]")).size()>0)
 						{
 							WebElement checkLogin = driver.findElement(By.cssSelector("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'LOGIN')]"));
 							js.executeScript("arguments[0].scrollIntoView();", checkLogin);
@@ -2099,7 +2099,7 @@ public class HeaderFeatureLocators
 					
 					try
 					{
-						if(driver.findElements(By.cssSelector("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'SIGNUP ')]")).size()>0)
+						if(driver.findElements(By.xpath("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'SIGNUP ')]")).size()>0)
 						{
 						WebElement checkSignUp = driver.findElement(By.cssSelector("//ul[@class='nav navbar-nav LoGInMeNU']/li/a[contains(text(),'SIGNUP ')]"));
 						wait.until(ExpectedConditions.visibilityOfAllElements(checkSignUp));

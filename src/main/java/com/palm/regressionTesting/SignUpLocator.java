@@ -122,17 +122,18 @@ public class SignUpLocator
 		}
 		return errorMsgStatus;
 	}
-	
+	String parentWindow = "";
 	public ArrayList<Integer> checkFullName(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("FullName validation started");
+		parentWindow = driver.getWindowHandle();
+		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		Thread.sleep(1000);
-		String parentWindow = driver.getWindowHandle();
 		Set<String> allWindows = driver.getWindowHandles();
 		for(String window : allWindows)
 		{
@@ -159,6 +160,7 @@ public class SignUpLocator
 	public ArrayList<Integer> checkEmail(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println(" Invalid Email validation started");
+		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		/*
 		 * WebElement signupClick = driver.findElement(By.
@@ -167,7 +169,6 @@ public class SignUpLocator
 		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
-		String parentWindow = driver.getWindowHandle();
 		Set<String> allWindows = driver.getWindowHandles();
 		for(String window : allWindows)
 		{
@@ -192,6 +193,7 @@ public class SignUpLocator
 	public ArrayList<Integer> checkPassword(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid Password validation started");
+		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		/*
 		 * WebElement signupClick = driver.findElement(By.
@@ -200,7 +202,7 @@ public class SignUpLocator
 		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
-		String parentWindow = driver.getWindowHandle();
+		//String parentWindow = driver.getWindowHandle();
 		Set<String> allWindows = driver.getWindowHandles();
 		for(String window : allWindows)
 		{
@@ -224,6 +226,7 @@ public class SignUpLocator
 	public ArrayList<Integer> checkMobileNumber(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		System.out.println("Invalid mobile validation started");
+		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
 		/*
 		 * WebElement signupClick = driver.findElement(By.
@@ -232,7 +235,7 @@ public class SignUpLocator
 		 */
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
 		this.signUpPage();
-		String parentWindow = driver.getWindowHandle();
+		//String parentWindow = driver.getWindowHandle();
 		Set<String> allWindows = driver.getWindowHandles();
 		for(String window : allWindows)
 		{
@@ -264,7 +267,7 @@ public class SignUpLocator
 			
 			this.signUpPage();//click sign up icon
 			
-			String parentWindow = driver.getWindowHandle();
+			//String parentWindow = driver.getWindowHandle();
 			
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String window : allWindows)
@@ -315,7 +318,7 @@ public class SignUpLocator
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							}
 							Thread.sleep(1000);
-							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header_Primary']>li:nth-child(5)>a"));
+							WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Primary02_Blue'] li:nth-child(5) a"));
 							if(clickSignOut.isDisplayed())
 							{
 								clickSignOut.click();
@@ -341,6 +344,7 @@ public class SignUpLocator
 	public ArrayList<Integer> signUpFunction(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
 		ArrayList<Integer> statusOfTestCase = new ArrayList<Integer>();
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
 		try
 		{
 			WebElement fullName = driver.findElement(By.cssSelector("input#name"));
@@ -377,7 +381,7 @@ public class SignUpLocator
 			}
 			Thread.sleep(2000);
 			WebElement clickSignUp = driver.findElement(By.cssSelector("input#register_in"));
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(40));
+			
 			wait.until(ExpectedConditions.elementToBeClickable(clickSignUp));
 			clickSignUp.click();
 			if(driver.findElements(By.cssSelector("div[role='alert'][class*='status message submission-error ']")).size()>0)

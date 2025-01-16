@@ -19,7 +19,7 @@ public class OpenWebsite
 		WebDriver driver = null;
 		if(browserName.equalsIgnoreCase("Chrome"))
 		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
+			System.setProperty("webdriver.chrome.driver", com.palm.regressionTesting.RegressionTesting.driverPath);
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--remote-allow-origins=*");
 			options.addArguments("--disable notifications");
@@ -84,8 +84,8 @@ public class OpenWebsite
 	{
 		setURL = setEnvironment(com.palm.regressionTesting.RegressionTesting.ENV_TO_USE);
 		driver.get(setURL);
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(60));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		return setURL;
 	}
 	

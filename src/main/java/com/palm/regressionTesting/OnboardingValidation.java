@@ -16,7 +16,7 @@ import com.regression.utility.TestUtil;
 public class OnboardingValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
-	WebDriver driver;
+	
 	OnboardingLocator onboardingLocator;
 	String sheetStatus = "Pass";
 
@@ -109,15 +109,16 @@ public class OnboardingValidation implements Callable<String>
         return DriverManager.getDriver(browserName);
     }
     @Override
-	public String call() throws Exception {
+	public String call() throws Exception 
+    {
 	    System.out.println("Onboarding Journey Process started");
-
+	    WebDriver driver = null;
 	    try {
-	        driver = this.openDriver(RegressionTesting.nameOfBrowser);
+	    	driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	        this.onboardingLocator = new OnboardingLocator(driver);
-	        String baseWindow = driver.getWindowHandle();
-	        driver.switchTo().newWindow(WindowType.TAB);
-	        OpenWebsite.openSite(driver);
 
 	        for (ArrayList<String> row : this.sheetData) {
 	            String firstColumn = row.get(0);

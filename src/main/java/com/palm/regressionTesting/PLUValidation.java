@@ -27,76 +27,6 @@ public class PLUValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "courseTitle":
-					courseTitle(row.get(1));
-					break;
-				case "topBannerContent":
-					topBannerContent(row.get(1));
-					break;
-				case "description":
-					description(row.get(1));
-					break;
-				case "techPrograms":
-					techPrograms(row);
-					break;
-				case "PLUCourses":
-					PLUCourses(row);
-					break;
-				case "FAQ":
-					FAQ(row, i);
-					break;
-				case "BackGroundColor_certificateLeftContent":
-				BackGroundColor_certificateLeftContent(row);
-				break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	public void courseTitle(String titleName)
 	{
@@ -222,10 +152,11 @@ public class PLUValidation implements Callable<String>
 
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.PLUPageLocators = new PLULocators(driver);
-		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -255,34 +186,7 @@ public class PLUValidation implements Callable<String>
 				break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

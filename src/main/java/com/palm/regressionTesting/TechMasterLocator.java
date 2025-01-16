@@ -13,15 +13,69 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 public class TechMasterLocator
 {
 	WebDriver driver;
-	MicrosoftCourseLocator microsoftCourseLocator;
+String courseCardSection = "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]";
 	
+	@FindBy(xpath =  "//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//button[contains(text(),'Show more')]")
+	private List<WebElement> CourseCardShowmoreLocator;
+	
+	@FindBy(xpath = "//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//div[contains(@class,'LearningCatalog_customCard')]")
+	private List<WebElement> CourseCards;
+	
+	String courseCardURL = ".//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a";
+	
+	String CourseCardsName = ".//div[contains(@class,'RegularCourseCard_courseHeading')]/p";
+	
+	String CourseCardLevelSection = ".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul";
+	
+	String CourseCardsLevel1 = ".//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li[1]";
+	
+	String CourseCardsLevel2 = ".//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li[2]";
+	
+	String CourseCardsLevel3 = ".//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li[3]";
+	
+	String CourseCardsPartner = ".//div[contains(@class,'RegularCourseCard_courseCompany')]";
+	
+	String courseEnrollmentSection = ".//div[contains(@class,'RegularCourseCard_priceSection')]//div[contains(@class,'RegularCourseCard_priceLeft')]";
+	
+	String CourseCardsEnrollStatus = ".//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Enrollment Status')]/following-sibling::p";
+	
+	//String courseCardCourseStartedDate = "";
+	
+	String CourseCardsPrice = ".//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'From')]/following-sibling::p";
+	
+	String CoursePageLocator = "//section[contains(@class,'CourseDescription_mainSection')]";
+	
+	String CoursePageName = ".//h1";
+	
+	String CoursePageLevel1 = ".//div[contains(@class,'CourseDescription_levelSection')]/h2";
+	
+	String CoursePageLevel2 = ".//div[contains(@class,'CourseDescription_levelSection')]/h3[1]";
+	
+	String CoursePageLevel3 = ".//div[contains(@class,'CourseDescription_levelSection')]/h3[2]";
+	
+	String CoursePagePartner = ".//img[@alt='org-logo']";
+	
+	String CoursePageDurationSection = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]";
+	
+	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2";
+	
+	String CoursePageEnrollmentSection = ".//div[contains(@class,'CourseDescription_PreferredCohort')]|//div[contains(@class,'CourseDescription_buttonsContent')]";
+	
+	String CoursePageEnrollStatus = ".//div[contains(@class,'CourseDescription_PreferredCohort')]//div[contains(@class,'CourseDescription_CohortBox')]/button|//div[contains(@class,'CourseDescription_buttonsContent')]/h6|//div[contains(@class,'CourseDescription_buttonsContent')]/button[1]";
+	
+	String CoursePagePrice = ".//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p|//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'From')]/following-sibling::p";
+	String parentWindow = "";
 	public TechMasterLocator(WebDriver driver)
 	{
 		this.driver = driver;
+		PageFactory.initElements(driver, this);
 	}
 	
 	public String launchSite(String url)
@@ -78,6 +132,7 @@ public class TechMasterLocator
 				WebElement learnmore = driver.findElement(By.cssSelector("a[class*='EligibleForIncentive_knowMoreButton']"));
 				js.executeScript("arguments[0].click()", learnmore);
 				Status = "pass";
+				parentWindow = driver.getWindowHandle();
 			}
 		}
 		catch(Exception e)
@@ -90,388 +145,396 @@ public class TechMasterLocator
 	
 	public String checkURLStatus(String data)
 	{
-		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
-			try
-			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
-				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
-				}
-				else
-				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
 			return status;
 	}
 	public ArrayList<String> Cards()
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		ArrayList<String> cardStatus = new ArrayList<String>();
-		ArrayList<String> pageStatus = new ArrayList<String>();
-		ArrayList<String> cardLevelData = new ArrayList<String>();
-		ArrayList<String> pageLevelData = new ArrayList<String>();
+		ArrayList<String> cardLevelStatus = new ArrayList<String>();
+		ArrayList<String> cardPriceStatus = new ArrayList<String>();
+		ArrayList<String> cardEnrollmentStatus = new ArrayList<String>();
+		ArrayList<String> pageLevelStatus = new ArrayList<String>();
+		ArrayList<String> pagePriceStatus = new ArrayList<String>();
+		ArrayList<String> pageEnrollmentStatus = new ArrayList<String>();
 		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			while(driver.findElement(By.xpath("//div[contains(@class,'showMoreSection')]/button")).getText().equalsIgnoreCase("Show more"))
-			{
-				WebElement clickShowMore = driver.findElement(By.xpath("//div[contains(@class,'showMoreSection')]/button"));
-				js.executeScript("arguments[0].scrollIntoView();", clickShowMore);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-				if(clickShowMore.isDisplayed())
-				{
-					js.executeScript("arguments[0].click()", clickShowMore);
-				}
-			}
-			List<WebElement> courseCardLocator = driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div"));
-			for(int i = 0; i < courseCardLocator.size(); i++)
-			{
-				js.executeScript("arguments[0].scrollIntoView();", courseCardLocator.get(i));
-				WebElement locateURL = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]/div[contains(@class,'LearningCatalog_customCard')]/descendant::a"));
-				String cardURL = locateURL.getAttribute("href");
-				String urlStatus = this.checkURLStatus(cardURL);
-				if(!urlStatus.contains("fail"))
-				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_customCard')]/span/img")).size()>0)
-					{
-						cardStatus.add("Image");//1
-					}
-					else
-					{
-						cardStatus.add("nocardImage");
-						status.add("no image in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[@class='undefined']//div[contains(@class,'RegularCourseCard_courseType')]//img[@alt='icon']")).size()>0)
-					{
-						cardStatus.add("Icon");//2
-					}
-					else
-					{
-						cardStatus.add("nocardIcon");
-						//status.add("no icon in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_courseHeading')]/p")).size()>0)
-					{
-						WebElement cardTitle = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_courseHeading')]/p"));
-						
-						cardStatus.add(cardTitle.getText().replace(" ", "").trim());
-					}
-					else
-					{
-						cardStatus.add("nocardTitle");//3
-						//status.add("no title in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li")).size()>0)
-					{
-						List<WebElement> level = driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_courseDes')]//ul/li"));
-						for(int j = 0; j < level.size(); j++)
-						{
-							cardLevelData.add(level.get(j).getText().replace(" ", "").trim());//4
-						}
-						String levelData = Arrays.toString(cardLevelData.toArray());
-						
-						String checkLevelData = levelData.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim();
-						if(checkLevelData.contains("vILT")||checkLevelData.contains("Instructor"))
-						{
-							cardStatus.add("vILTorInstructor");
-						}
-						else
-						{
-							cardStatus.add(levelData.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());
-						}
-					}
-					else
-					{
-						cardStatus.add("nocardLevel");//4
-						//status.add("no level in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_orgGoi')]/div")).size()>0)
-					{
-						cardStatus.add("partnerPresent");//5
-					}
-					else
-					{
-						cardStatus.add("noPartner");
-						//status.add("no partner in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/p")).size()>0)
-					{
-						WebElement checkEnrollmentIsOpen = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/p"));
-						WebElement checkEnrollmentIsClose = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_priceLeft')]/h2"));
-						if(checkEnrollmentIsOpen.getText().equalsIgnoreCase("Open") && checkEnrollmentIsClose.getText().equalsIgnoreCase("Enrollment Status"))
-						{
-							cardStatus.add("Open");//6
-						}
-						else if(!checkEnrollmentIsClose.getText().equalsIgnoreCase("Enrollment Status"))
-						{
-							if(checkEnrollmentIsClose.getText().equalsIgnoreCase("Coming Soon"))//6
-							{
-								cardStatus.add("Close");
-							}
-						}
-						else if(checkEnrollmentIsClose.getText().equalsIgnoreCase("None"))
-						{
-								cardStatus.add("Close");
-						}
-					}
-					else
-					{
-						cardStatus.add("noEnrollStatus");
-						status.add("no enroll status in card "+cardURL);
-					}
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p[not(text()='RegularCourseCard_priceStrick')]")).size()>0)
-					{
-						WebElement cardPrice = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_cardRow')]/div[" + (i + 1) + "]//div[contains(@class,'RegularCourseCard_priceRight')]/p[not(text()='RegularCourseCard_priceStrick')]"));
-						
-						if(cardPrice.getText().equalsIgnoreCase("null"))
-						{
-							status.add("price mentioned as null " + " in " +cardURL);
-						}
-						else
-						{
-							cardStatus.add(cardPrice.getText().replaceAll("[^\\d.]", "").trim());
-						}
-						
-					}
-					else 
-					{
-						cardStatus.add("noPrice");
-						//status.add("no price in card "+cardURL);
-					}
-					
-					String parentWindow = driver.getWindowHandle();
-					driver.switchTo().newWindow(WindowType.TAB);
-					
-					driver.get(cardURL);
-					
-					Set<String> allWindow = driver.getWindowHandles();
-					
-					for(String window : allWindow)
-					{
-						driver.switchTo().window(window);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-						if(driver.getCurrentUrl().contains("/courses/"))
-						{
-							driver.switchTo().window(window);
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							if(driver.findElements(By.xpath("//div[contains(@class,'row CourseMain_mainRow')]/div[2]//a[contains(@class,'videosPopup_videoPlayButton')]|//a[contains(@class,'CourseMain_videoPlayButton')]//img")).size()>0)
-							{
-								pageStatus.add("Image");//1
-							}
-							else
-							{
-								pageStatus.add("noImage");
-								//status.add("no image in page"+cardURL);
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='course-icon']")).size()>0)
-							{
-								pageStatus.add("Icon");//2
-							}
-							else
-							{
-								pageStatus.add("noIcon");
-							//	status.add("no Icon in page "+cardURL);
-							}
-							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_courseText')]/h1")).size()>0)
-							{
-								WebElement pageTitle = driver.findElement(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_courseText')]/h1"));
-								
-								pageStatus.add(pageTitle.getText().replace(" ", "").trim());//3
-							}
-							else
-							{
-								pageStatus.add("noTitle");
-								status.add("no title in page "+cardURL);
-							}
-							
-							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_levelSection')]")).size()>0)
-							{
-								List<WebElement> pageLevels = driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_levelSection')]"));
-								for(int k = 0; k < pageLevels.size(); k++)
-								{
-									pageLevelData.add(pageLevels.get(k).getText());
-								}
-								String levelInfo = Arrays.toString(pageLevelData.toArray());
-								String checkLevelData = levelInfo.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim();
-								if(checkLevelData.contains("vILT")||checkLevelData.contains("Instructor"))
-								{
-									pageStatus.add("vILTorInstructor");
-								}
-								else
-								{
-									
-									pageStatus.add(levelInfo.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replace(" ", "").trim());//4
-								}
-							}
-							else
-							{
-								pageStatus.add("noLevel");
-							//	status.add("no level in page "+cardURL);
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='org-logo']")).size()>0)
-							{
-								pageStatus.add("partnerPresent");//5
-							}
-							else
-							{
-								pageStatus.add("noPartner");
-							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//button[contains(@class,'CourseDescription_enrollNowBtn')]")).size()>0)
-							{
-								WebElement enrollStatus = driver.findElement(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//button[contains(@class,'CourseDescription_enrollNowBtn')]"));
-								
-								if(enrollStatus.getText().equalsIgnoreCase("Enroll Now"))
-								{
-									pageStatus.add("Open");//6
-								}
-							}
-							else if(driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_buttonsContent')]//h6[contains(text(),'Enrollment is Closed')]")).size()>0)
-							{
-								WebElement enrollStatus = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_buttonsContent')]//h6[contains(text(),'Enrollment is Closed')]"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if (CourseCardShowmoreLocator.size() > 0)
+			{ // Check if the "Show More" button is present
+			    List<WebElement> showMore = CourseCardShowmoreLocator;
 
-								if(enrollStatus.getText().equalsIgnoreCase("Enrollment is Closed"))
-								{
-									pageStatus.add("Close");//6
-								}
+			    while (showMore.size() > 0) {
+			        WebElement showMoreButton = showMore.get(0); // Always interact with the first "Show More" button
+
+			        // Scroll into view of the "Show More" button
+			        js.executeScript("arguments[0].scrollIntoView();", showMoreButton);
+
+			        // Check if the button contains "more" and click if true
+			        if (showMoreButton.getText().contains("more")) {
+			            js.executeScript("arguments[0].click();", showMoreButton);
+
+			            // Refresh the list of "Show More" buttons after the click
+			            showMore = CourseCardShowmoreLocator;
+			        } else {
+			            break; // Exit the loop if the button does not contain "more"
+			        }
+			    }
+			}
+			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			if(CourseCards.size()>0)
+			{
+				List<WebElement> courseCard = CourseCards;
+				
+				for(WebElement card : courseCard)
+				{
+					js.executeScript("arguments[0].scrollIntoView();", card);
+					
+					String courseCardName = card.findElement(By.xpath(CourseCardsName)).getText();
+					
+					String getCourseCardURL = card.findElement(By.xpath(courseCardURL)).getAttribute("href");
+					
+					String courseCardImage = ".//img[@alt='"+courseCardName+"']";
+					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if(card.findElements(By.xpath(courseCardImage)).size()<=0)
+					{
+						status.add("image not present in " +courseCardName);
+					}
+					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if(card.findElements(By.xpath(CourseCardsPartner)).size()<=0)
+					{
+						status.add("partner name not present in "+courseCardName);
+					}
+					
+					
+					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if(card.findElements(By.xpath(CourseCardLevelSection)).size()>0)
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (card.findElements(By.xpath(CourseCardsLevel1)).size() > 0)
+						{
+							String cardLevel1 = card.findElement(By.xpath(CourseCardsLevel1)).getText();
+							cardLevelStatus.add(cardLevel1);
+						}
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (card.findElements(By.xpath(CourseCardsLevel2)).size() > 0)
+						{
+							String cardLevel2 = card.findElement(By.xpath(CourseCardsLevel2)).getText();
+							cardLevelStatus.add(cardLevel2);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (card.findElements(By.xpath(CourseCardsLevel3)).size() > 0)
+						{
+							String cardLevel3 = card.findElement(By.xpath(CourseCardsLevel3)).getText();
+							cardLevelStatus.add(cardLevel3);
+						}
+					}
+					else
+					{
+						status.add("level section not present in "+courseCardName);
+					}
+					
+					
+
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					if (card.findElements(By.xpath(CourseCardsPrice)).size() <= 0)
+					{
+						cardPriceStatus.add("price not present in " +courseCardName);
+					}
+					else
+					{
+						WebElement pElement = card.findElement(By.xpath(CourseCardsPrice));
+						String fullText = pElement.getText();
+						// Split text and extract only the desired part
+						String requiredText = pElement.getText().replace(pElement.findElement(By.tagName("span")).getText(), "").trim();
+						System.out.println(requiredText);
+						
+						//String cardPrice = card.findElement(By.xpath(CourseCardsPrice)).getText();
+						 String priceString = requiredText;
+						  String getPrice[] = priceString.split(" ");
+						  String priceOfCourseCard = "";
+						  if(getPrice.length>1)
+						  {
+							  priceOfCourseCard = getPrice[1].replaceAll("[^0-9]", "");
+						  }
+						  else
+						  {
+							  priceOfCourseCard =  getPrice[0].replaceAll("[^0-9]", "");
+						  }
+						  System.out.println("price on card : "+priceOfCourseCard);
+                        cardPriceStatus.add(priceOfCourseCard);
+                    }
+					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					if(card.findElements(By.xpath(courseEnrollmentSection)).size() > 0)
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (card.findElements(By.xpath(CourseCardsEnrollStatus)).size() > 0)
+						{
+							String cardEnrollStatus = card.findElement(By.xpath(CourseCardsEnrollStatus)).getText();
+							if(cardEnrollStatus.contains("Open"))
+							{
+								cardEnrollmentStatus.add("Open");
+							}
+							else if(cardEnrollStatus.contains("not reached"))
+							{
+								cardEnrollmentStatus.add("Closed");
+							}
+							else if(cardEnrollStatus.contains("Coming soon"))
+							{
+								cardEnrollmentStatus.add("Closed");
 							}
 							else
 							{
-								pageStatus.add("noEnrollStatus");
-								//status.add("no enroll status in page "+cardURL);
+								cardEnrollmentStatus.add("Closed");
 							}
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							
-							if(driver.findElements(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p")).size()>0)
+						}
+						/*
+						 * else if(card.findElements(By.xpath(courseCardCourseStartedDate)).size() > 0)
+						 * { String cardEnrollStartDateStatus =
+						 * card.findElement(By.xpath(programCardCourseStartedDate)).getText();
+						 * 
+						 * if(cardEnrollStartDateStatus.contains("Course starts on")) {
+						 * cardEnrollmentStatus.add("Open"); } else {
+						 * cardEnrollmentStatus.add("Closed"); } }
+						 */
+					}
+					else
+					{
+						cardEnrollmentStatus.add("enrollment section not present in " +courseCardName);
+					}
+					
+					//********************************************************************************************
+					if(!checkURLStatus(getCourseCardURL).contains("fail"))
+					{
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(getCourseCardURL);
+					
+					driver.manage().window().maximize();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
+					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					if (driver.getCurrentUrl().contains("404")) 
+					{
+						status.add("404 page is present in this card page  " + courseCardName);
+					}
+					else if(driver.getTitle().contains("null")|| driver.getTitle().contains("undefined"))
+					{
+						status.add("null or undefined  is present on page title  " + courseCardName);
+					}
+					else
+					{
+						WebElement CoursePageSection = driver.findElement(By.xpath(CoursePageLocator));
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePageName)).size() <= 0)
+						{
+							status.add("program name not present in this card page  " + courseCardName);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+						if (CoursePageSection.findElements(By.xpath(CoursePageLevel1)).size() > 0)
+						{
+							String level1 = CoursePageSection.findElement(By.xpath(CoursePageLevel1)).getText();
+							pageLevelStatus.add(level1);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePageLevel2)).size() > 0) 
+						{
+							String level2 = CoursePageSection.findElement(By.xpath(CoursePageLevel2)).getText();
+							pageLevelStatus.add(level2);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePageLevel3)).size() > 0) 
+						{
+							String level3 = CoursePageSection.findElement(By.xpath(CoursePageLevel3)).getText();
+							pageLevelStatus.add(level3);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePagePartner)).size() <= 0)
+						{
+							status.add("partner name not present in this card page  " + courseCardName);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePageEnrollmentSection)).size() <= 0) 
+						{
+							status.add("enroll status not present in this card page  " + courseCardName);
+						}
+						else
+						{
+							List<WebElement> enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
+							String getPageEnrollStatus = enrollButton.get(0).getText();
+							if(getPageEnrollStatus.contains("Enroll Now"))
 							{
-								WebElement price = driver.findElement(By.xpath("//div[@class='d-flex gap-2'][2]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p|//div[@class='d-flex gap-2'][3]//div[contains(@class,'CourseDescription_courseAboutTextSection')]//p"));
-								if(price.getText().replaceAll("[^\\d.]", "").trim().contains("null"))
+								pageEnrollmentStatus.add("Open");
+							}
+							else if(getPageEnrollStatus.contains("Enrollment is Closed"))
+							{
+								pageEnrollmentStatus.add("Closed");
+							}
+							else if(getPageEnrollStatus.contains("Enroll now"))
+							{
+								pageEnrollmentStatus.add("Closed");
+							}
+							else
+							{
+								pageEnrollmentStatus.add("Closed");
+							}
+						}
+						
+						if (cardEnrollmentStatus.size() == pageEnrollmentStatus.size())
+						{
+							if(!cardEnrollmentStatus.get(0).toLowerCase().equals(pageEnrollmentStatus.get(0).toLowerCase()))
+							{
+								status.add("enrollment status are not matching in card page and course page  "
+										+ courseCardName);
+							} 
+							
+						}
+						else 
+						{
+							status.add("enrollment status are not available in card page and course page  "
+									+ courseCardName);
+						}
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePageDurationSection)).size() <= 0) 
+						{
+							status.add("duration fee section not present in this card page  " + courseCardName);
+						}
+						else
+						{
+							if(cardLevelStatus.size() == pageLevelStatus.size())
+							{
+								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									status.add(price.getText().replaceAll("[^\\d.]", "").trim() +" in " +"cardURL");
+									String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
+									
+									if(pageLevelStatus.get(0).toLowerCase().contains("self"))//self paced
+									{
+										if(CoursePageSection.findElements(By.xpath(CoursePageSelfOrVilt)).size()>0)
+										{
+											status.add("starts on presented on self paced card page  " + courseCardName);
+										}
+									}
+									else if(pageLevelStatus.get(0).toLowerCase().contains("vilt")||pageLevelStatus.get(0).toLowerCase().contains("instructor-led"))//Instructor-Led
+									{
+										if(CoursePageSection.findElements(By.xpath(CoursePageSelfOrVilt)).size()<=0)
+										{
+											status.add("starts on not presented on Vilt card page  " + courseCardName);
+										}
+									}
 								}
 								else
 								{
-									pageStatus.add(price.getText().replaceAll("[^\\d.]", "").trim());//7
+									status.add("level 1 status are not matching in card page and course page  " + courseCardName);
 								}
+										
 							}
-							else
+							else 
 							{
-								pageStatus.add("noPrice");
-								//status.add("no price in page "+cardURL);
+								status.add("level status are not available in card page and course page  " + courseCardName);
 							}
-							if(!cardStatus.equals(pageStatus))
-							{
-								System.out.println("card and page data are not same");
-								for(int k = 0; k < cardStatus.size(); k++)
-								{
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 0)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Image issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 1)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Icon issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 2)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Title issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 3)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Level issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 4)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Partner issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 5)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("EnrollStatus issue compare with card and page in "+cardURL);
-										}
-									}
-									driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-									if(k == 6)
-									{
-										if(!cardStatus.get(k).equals(pageStatus.get(k)))
-										{
-											status.add("Price issue compare with card and page in "+cardURL);
-										}
-									}
-								}
-							}
-							else
-							{
-								System.out.println("card and page data are same");
-							}
-							cardLevelData.clear();
-							pageLevelData.clear();
-							cardStatus.clear();
-							pageStatus.clear();
-							driver.close();
-							driver.switchTo().window(parentWindow);
+						}
+						
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						if (CoursePageSection.findElements(By.xpath(CoursePagePrice)).size() <= 0) 
+						{
+							status.add("price  not present in this card page  " + courseCardName);
+						}
+						else
+						{
+							WebElement pElement = CoursePageSection.findElement(By.xpath(CoursePagePrice));
+							String fullText = pElement.getText();
+							// Split text and extract only the desired part
+							String requiredText = pElement.getText().replace(pElement.findElement(By.tagName("span")).getText(), "").trim();
+							System.out.println(requiredText);
+							
+							//String cardPrice = card.findElement(By.xpath(CourseCardsPrice)).getText();
+							 String priceString = requiredText;
+							  String getPrice[] = priceString.split(" ");
+							  String priceOfCourseCard = "";
+							  if(getPrice.length>1)
+							  {
+								  priceOfCourseCard = getPrice[0].replaceAll("[^0-9,]", "").replace(",", "");
+							  }
+							  else
+							  {
+								  priceOfCourseCard = getPrice[0].replaceAll("[^0-9,]", "").replace(",", "");
+							  }
+							  System.out.println("price on card : "+priceOfCourseCard);
+							pagePriceStatus.add(priceOfCourseCard);
+						}
+						
+						if(!cardPriceStatus.equals(pagePriceStatus))
+						{
+							status.add("price status are not matching in card page and course page  " + courseCardName);
 						}
 					}
-					driver.switchTo().window(parentWindow);
+					cardLevelStatus.clear();
+					cardPriceStatus.clear();
+					cardEnrollmentStatus.clear();
+					pageLevelStatus.clear();
+					pagePriceStatus.clear();
+					pageEnrollmentStatus.clear();
+				driver.close();
+				driver.switchTo().window(parentWindow);
 				}
-				else
-				{
-					System.out.println("Issue in course status");
 				}
-			
 			}
+			else
+			{
+				System.out.println("course cards are not available in google cloud partner page");
+			}
+			
 		}
-		catch(Exception e)
+		catch (Exception e) 
 		{
 			e.printStackTrace();
+			status.add("fail");
 		}
 		return status;
 	}

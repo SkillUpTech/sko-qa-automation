@@ -2,14 +2,9 @@ package com.palm.regressionTesting;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.regression.utility.TestUtil;
 import com.seo.regression.testing.RegressionTesting;
 
 public class HeaderSectionValidation implements Callable<String>
@@ -24,29 +19,12 @@ public class HeaderSectionValidation implements Callable<String>
 		this.sheetData = sheetData;
 		
 	}
+	
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
+	
 	
 	public void checkSkillupLogo(String data) throws InterruptedException
 	{
@@ -151,10 +129,11 @@ public class HeaderSectionValidation implements Callable<String>
 		System.out.println("header process started");
 		try
 		{
-		driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
+			driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
 		int j = 1;
 		while(j<=1)
 		{
@@ -193,34 +172,7 @@ public class HeaderSectionValidation implements Callable<String>
 			}
 			j++;
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

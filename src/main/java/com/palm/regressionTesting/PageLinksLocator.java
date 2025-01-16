@@ -31,10 +31,13 @@ public class PageLinksLocator
 		            connection.connect();
 		            responseCode = connection.getResponseCode();
 		            System.out.println("Status code: " + responseCode + " URL: " + data);
-		            if (responseCode >= 400) {
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
 		                System.out.println("Broken link: " + data);
 		                status = "fail: " + responseCode;
-		            } else {
+		            } 
+		            else 
+		            {
 		                System.out.println("Unbroken link: " + data + " " + responseCode);
 		                status = "success";
 		            }

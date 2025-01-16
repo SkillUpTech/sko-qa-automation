@@ -26,91 +26,6 @@ public class FAQValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "login":
-					login(row);
-					break;
-				case "verifyFAQ":
-					verifyFAQ();
-					break;
-				case "invalidfullname":
-					invalidfullname(row);
-					break;
-				case "EmptyFullname":
-					EmptyFullname(row);
-					break;
-				case "validFullname":
-					validFullname(row);
-					break;
-				case "invalidEmail":
-					invalidEmail(row); 
-					  break;
-				case "EmptyEmail":
-					EmptyEmail(row); 
-					  break;
-				case "validEmail":
-					validEmail(row); 
-					  break;
-				case "InvalidContact":
-					InvalidContact(row); 
-					  break;
-				case "EmptyContact":
-					EmptyContact(row); 
-					  break;
-				case "validContact":
-					validContact(row); 
-					  break;
-				case "EmptyQuery":
-					EmptyQuery(row); 
-					  break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	public void login(ArrayList<String> data)
 	{
 		if(!data.contains("NA"))
@@ -419,27 +334,8 @@ public class FAQValidation implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("FAQ process started");
@@ -447,11 +343,10 @@ public class FAQValidation implements Callable<String>
 		try
 		{
 			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			this.faqLocator = new FAQLocator(driver);
 			OpenWebsite.openSite(driver);
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			this.faqLocator = new FAQLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -496,34 +391,7 @@ public class FAQValidation implements Callable<String>
 					  break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

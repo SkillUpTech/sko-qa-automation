@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,7 +43,7 @@ public class RegressionTesting
 	public String nameOfEnvironment = "";
 	public String jiraStatusUpdation = "";
 	public static LinkedHashMap<String, ArrayList<ArrayList<String>>> EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP;
-	private HashMap<String, String> sheetsResult = new HashMap<String, String>();
+	private ConcurrentHashMap<String, String> sheetsResult = new ConcurrentHashMap<String, String>();
 	NewAboutCourseValidator newAboutCourseValidator;
 	RegressionGenericValidator regressionGenericValidator;
 	AboutProgramValidation aboutProgramValidation;
@@ -51,7 +52,7 @@ public class RegressionTesting
 	WebDriver driver;
 	String sheetStatus = "";
 	String sheetName = "";
-	public static String  driverPath = "D:\\chromedriver_129\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "D:\\chromedriver131\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
@@ -104,11 +105,14 @@ public class RegressionTesting
 	    	throw new Exception("Browser is not correct");
 	    }
 	}
-	
+	public WebDriver openDriver(String browserName)
+	{
+        return DriverManager.getDriver(browserName);
+    }
 	@Test
 	public void startTesting()
 	{
-		ExecutorService service = Executors.newFixedThreadPool(2);
+		ExecutorService service = Executors.newFixedThreadPool(1);
 		
 		CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
@@ -120,9 +124,13 @@ public class RegressionTesting
 		
 		try
 		{
+			
+			
 			LinkedHashMap<String, ArrayList<ArrayList<String>>> data = ProcessExcel.readExcelFileAsRows(excelPath);
 			
-			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);
+			//EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);//old code
+			
+			EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.putAll(data); // new code
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			ArrayList<String> environment = master.get(1);// Environment row in excel
@@ -133,6 +141,7 @@ public class RegressionTesting
 			ArrayList<String> jiraExecution = master.get(1);
 			jiraStatusUpdation = jiraExecution.get(1);
 			ENV_TO_USE = getEnvironment;
+			
 			
 			ArrayList<String> pages = master.get(0);// Pages row in excel
 			
@@ -224,9 +233,6 @@ public class RegressionTesting
 							 case "BlogPage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.BlogPageValidation(sheetData));
 								 break;
-							 case "InviteOnlyCourse":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.InviteOnlyValidation(sheetData));
-								 break;
 							 case "SignUpPageLinks":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.SignUpPageLinksValidation(sheetData));
 								 break;
@@ -254,9 +260,6 @@ public class RegressionTesting
 							 case "CheckVILTSelfPacedCourse":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.CourseLevelValidation(sheetData));
 								 break;
-							 case "AccountPage":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.AccountPageValidation(sheetData));
-								 break;
 							 case "DevopsPage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.DevopsPageValidation(sheetData, jiraStatusUpdation));
 								 break;
@@ -279,10 +282,7 @@ public class RegressionTesting
 								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(sheetData, jiraStatusUpdation));
 								 break;
 							 case "URLValidation":
-									 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
-									 break;
-							 case "LoginSocialAccount":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.LoginSocialAccountValidation(sheetData));
+								 taskMap.put(sheetName, new com.palm.regressionTesting.ErrorCodeValidation(sheetData));
 								 break;
 							 case "TNSDC1":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.TNSDC_Phase1Validation(sheetData));
@@ -293,10 +293,24 @@ public class RegressionTesting
 							 case "SPOC":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.SPOC_DashboardValidation(sheetData));
 								 break;
-								 
 							 case "PageLinks":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.PageLinksValidation(sheetData));
 								 break;
+							 case "CoursePurchaseActivationHandler":
+									taskMap.put(sheetName,	new com.palm.regressionTesting.CoursePurchaseActivationHandlerValidation(sheetData));
+									break;
+							 case "Login if mail id not verified":
+								 taskMap.put(sheetName,	new com.palm.regressionTesting.CheckLoginValidation(sheetData));
+									break;
+							 case "FinancialAssistance":
+								 taskMap.put(sheetName,	new com.palm.regressionTesting.FinancialAssistancePageValidation(sheetData));
+									break;
+							 case "FaviconVerification":
+								 taskMap.put(sheetName,	new com.palm.regressionTesting.FaviconValidation(sheetData));
+									break;
+							 case "GoogleCloudPartnerPage":
+								 taskMap.put(sheetName,	new com.palm.regressionTesting.GoogleCloudPartnerPageValidation(sheetData));
+									break;
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
@@ -309,14 +323,16 @@ public class RegressionTesting
 			}
 			// Map to store the results
 	        // Create a list to keep the tasks in order
+			// List and submission of tasks
 	        List<Map.Entry<String, Callable<String>>> taskList = new ArrayList<>(taskMap.entrySet());
-
+	        Map<Future<String>, String> futureToSheetMap = new HashMap<>();
 	        // Submit the initial set of tasks up to the pool size (3)
 	        int submittedTasks = 0;
 	        for (int i = 0; i < Math.min(5, taskList.size()); i++)
 	        {
 	            Map.Entry<String, Callable<String>> entry = taskList.get(i);
-	            completionService.submit(entry.getValue());
+	            Future<String> future = completionService.submit(entry.getValue());
+	            futureToSheetMap.put(future, entry.getKey());
 	            System.out.println("Submitting task: " + entry.getKey());
 	            submittedTasks++;
 	        }
@@ -328,15 +344,20 @@ public class RegressionTesting
 	            {
 	                Future<String> completedFuture = completionService.take(); // This will block until a task completes
 	                String result = completedFuture.get();
+	                String sheetName = futureToSheetMap.remove(completedFuture);
 	                System.out.println("Result: " + result); // Handle potential exceptions here
 	                Map.Entry<String, Callable<String>> completedEntry = taskList.get(i);
 	                sheetsResult.put(completedEntry.getKey(), result);//we get status of sheetname
-
+	                
+	                System.out.println("Completed task: " + sheetName + " with result: " + result);
+	                sheetsResult.put(sheetName, result);
+	                
 	                // Submit the next task if there are remaining tasks to be submitted
 	                if (submittedTasks < taskList.size())
 	                {
 	                    Map.Entry<String, Callable<String>> nextEntry = taskList.get(submittedTasks);
-	                    completionService.submit(nextEntry.getValue());
+	                    Future<String> future = completionService.submit(nextEntry.getValue());
+	                    futureToSheetMap.put(future, nextEntry.getKey());
 	                    System.out.println("Submitting task: " + nextEntry.getKey());
 	                    submittedTasks++;
 	                }
@@ -402,7 +423,9 @@ public class RegressionTesting
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodUS_result_" + formattedDateTime + ".xlsx");
 			}
 			service.shutdown();
+	        System.out.println("All tasks completed.");
 		}
+		
 	}
 	
 	private void prepareConsolidatedSheet() 

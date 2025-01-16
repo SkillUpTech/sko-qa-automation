@@ -18,7 +18,7 @@ import com.seo.utility.TestUtil;
 
 public class RegressionTestLogin implements Callable<String>
 {
-	WebDriver driver;
+	//WebDriver driver;
 	String result = "failed";
 	String jiraProcess ="";
 	ArrayList<ArrayList<String>> sheetData = null;
@@ -45,7 +45,7 @@ public class RegressionTestLogin implements Callable<String>
 		String userName = credsRow.get(1);
 		String passWord = credsRow.get(2);
 		ArrayList<String> status = this.processLogin.checkInvalidUsername(userName, passWord);
-		if(status.contains("success") || status.contains("exception")|| status.contains("failed"))
+		if(status.contains("success") || status.contains("exception"))
 		{
 			sheetStatus = "Fail";
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(0).set(0, "InvalidUsername - failed");
@@ -92,21 +92,23 @@ public class RegressionTestLogin implements Callable<String>
 		}
 	}
 	
-	private void checkLogout()throws InterruptedException
-	{
-		this.processLogin.logOutFunction();
-	}
+	/*
+	 * private void checkLogout()throws InterruptedException {
+	 * this.processLogin.logOutFunction(); }
+	 */
 
 	@Override
 	public String call() throws Exception
 	{
 		System.out.println("login process started");
+		WebDriver driver = null; 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			this.processLogin = new ProcessLogin(driver);
-			driver.switchTo().newWindow(WindowType.TAB);
-	        OpenWebsite.openSite(driver);
+			driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+	        this.processLogin = new ProcessLogin(driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
 				row = this.sheetData.get(i);
@@ -117,9 +119,15 @@ public class RegressionTestLogin implements Callable<String>
 						InvalidUsername();
 						break;
 					
-					  case "InvalidPassword": InvalidPassword(); break; case
-					  "InvalidUserNameAndPassword": InvalidUserNameAndPassword(); break; case
-					  "ValidCredentials": ValidCredentials(); break;
+					  case "InvalidPassword": 
+						  InvalidPassword(); 
+						  break; 
+					  case "InvalidUserNameAndPassword": 
+						  InvalidUserNameAndPassword();
+						  break; 
+					  case "ValidCredentials": 
+						  ValidCredentials(); 
+						  break;
 					 
 				}
 			}
@@ -153,14 +161,14 @@ public class RegressionTestLogin implements Callable<String>
 				 * "ProgramURLandSlug").get(4).add(2, (getExecutionStatus)+ Utils.DELIMITTER +
 				 * "bold" + Utils.DELIMITTER + "color" +
 				 * (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
-				 */			}
-			 DriverManager.quitDriver();
+				 */			
+				}
+			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
 		return sheetStatus;
 	}
 }

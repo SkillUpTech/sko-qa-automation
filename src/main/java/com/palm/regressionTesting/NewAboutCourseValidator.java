@@ -65,7 +65,12 @@ public class NewAboutCourseValidator implements Callable<String>
 	}
 	public String processSheetData()
 	{
-		
+		/*
+		 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		 * OpenWebsite.openSite(driver);
+		 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+		 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+		 */
 		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
 		driver.switchTo().newWindow(WindowType.TAB);
 		OpenWebsite.openSite(driver);
@@ -548,11 +553,13 @@ public class NewAboutCourseValidator implements Callable<String>
 	{
 		HashMap<String, HashMap<String, String>> experts = newAboutCourseLocators.getExperts();
 		System.out.println("expertsFromExcel : " + expertsFromExcel);
-		if (experts != null) {
+		if (experts != null)
+		{
 			for (int i = 0; i < expertsFromExcel.size(); i++) {
 				String cellData = expertsFromExcel.get(i).replaceAll("\\s", "").replaceAll("\u00A0", "")
 						.replaceAll("[^\\p{ASCII}]", "");
-				try {
+				try 
+				{
 					if (cellData.equalsIgnoreCase("experts"))
 						continue;
 					String[] expertData = cellData.split("-split-");
@@ -593,7 +600,9 @@ public class NewAboutCourseValidator implements Callable<String>
 					e.printStackTrace();
 				}
 			}
-		} else {
+		} 
+		else 
+		{
 			markProcessFailed();
 		}
 	}

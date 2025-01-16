@@ -1,12 +1,13 @@
 package com.palm.regressionTesting;
 
+import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
 
-public class CheckLoginValidation
+public class CheckLoginValidation implements Callable<String>
 {
 	String result = "failed";
 	ArrayList<ArrayList<String>> sheetData = null;
@@ -15,64 +16,14 @@ public class CheckLoginValidation
 	ProcessLogin processLogin;
 	String sheetStatus = "Pass";
 	
-	public CheckLoginValidation(ArrayList<ArrayList<String>> sheetData, WebDriver driver) throws InterruptedException
+	public CheckLoginValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		this.driver = driver;
-		this.signUpLocator = new SignUpLocator(this.driver);
-		this.processLogin = new ProcessLogin(this.driver);
-		System.out.println("Sign up validation begins");
+		this.signUpLocator = new SignUpLocator(driver);
+		this.processLogin = new ProcessLogin(driver);
+		System.out.println("Login if mail id not verified ");
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-			  case "validData":
-					validData(row);
-					break;
-			  case "verifyLogin":
-				  InvalidPassword();
-				  	break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else
-				{
-					driver.switchTo().window(win);
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-			
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	public void validData(ArrayList<String> dataFromExcel)
 	{
@@ -146,5 +97,42 @@ public class CheckLoginValidation
 		{
 			e.printStackTrace();
 		}
+	}
+	public WebDriver openDriver(String browserName)
+	{
+        return DriverManager.getDriver(browserName);
+    }
+	@Override
+	public String call() throws Exception 
+	{
+
+		try
+		{
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+		for(int i = 0; i < this.sheetData.size(); i++)
+		{
+			ArrayList<String> row = this.sheetData.get(i);
+			String firstColumn = row.get(0);
+			switch(firstColumn)
+			{
+			  case "validData":
+					validData(row);
+					break;
+			  case "verifyLogin":
+				  InvalidPassword();
+				  	break;
+			}
+		}
+		DriverManager.quitDriver();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return sheetStatus;
+	
 	}
 }

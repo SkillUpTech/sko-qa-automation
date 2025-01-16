@@ -25,7 +25,7 @@ public class IBMSkillBuildPageLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{	
-			driver.switchTo().newWindow(WindowType.TAB);
+			//driver.switchTo().newWindow(WindowType.TAB);
 			String url = OpenWebsite.setHost+data;
 			driver.get(url);
 			Set<String> windows = driver.getWindowHandles();

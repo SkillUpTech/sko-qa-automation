@@ -337,12 +337,16 @@ public class FAQLocator
 		  WebElement dropdownIcon =
 		  driver.findElement(By.cssSelector("li[class*='Header_SigNUP']>a"));
 		  js.executeScript("arguments[0].scrollIntoView();", dropdownIcon);
-		  if(dropdownIcon.isDisplayed()) { js.executeScript("arguments[0].click()",
-		  dropdownIcon); WebElement clickSignOut = driver.findElement(By.
-		  cssSelector("ul[class*='dropdown-menu Header']>li:nth-child(5)>a"));
-		  js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
-		  if(clickSignOut.isDisplayed()) { js.executeScript("arguments[0].click()",
-		  clickSignOut); } }
+		  if(dropdownIcon.isDisplayed())
+		  { 
+			  js.executeScript("arguments[0].click()",  dropdownIcon); 
+			  WebElement clickSignOut = driver.findElement(By.cssSelector("ul[class*='dropdown-menu Header']>li:nth-child(5)>a"));
+			  js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
+			  if(clickSignOut.isDisplayed())
+			  { 
+				  js.executeScript("arguments[0].click()", clickSignOut); 
+			  }
+		 }
 		 
 		
 		

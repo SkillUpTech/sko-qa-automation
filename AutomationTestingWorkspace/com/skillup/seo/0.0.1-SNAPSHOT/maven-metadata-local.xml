@@ -3,7 +3,7 @@
   <groupId>com.skillup</groupId>
   <artifactId>seo</artifactId>
   <versioning>
-    <lastUpdated>20241018051803</lastUpdated>
+    <lastUpdated>20241209141544</lastUpdated>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
@@ -11,12 +11,12 @@
       <snapshotVersion>
         <extension>jar</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20241018051803</updated>
+        <updated>20241209141544</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20241018051803</updated>
+        <updated>20241209141544</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

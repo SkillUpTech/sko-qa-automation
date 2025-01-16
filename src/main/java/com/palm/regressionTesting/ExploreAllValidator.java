@@ -36,17 +36,17 @@ public class ExploreAllValidator implements Callable<String>
 		ArrayList<String> getStatus = exploreAllLocator.checkExploreAllLinks();
 		for(int i = 0; i < getStatus.size(); i++)
 		{
-			if(getStatus.get(0).contains("megaMenu_Fail"))
+			if(getStatus.contains("megaMenu_Fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(1, "verifyExploreAll - failed");
 			}
-			if(getStatus.get(1).contains("HomePage_Fail"))
+			if(getStatus.contains("HomePage_Fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(2, "verifyExploreAll - failed");
 			}
-			if(getStatus.get(1).contains("mouseHover_Fail"))
+			if(getStatus.contains("mouseHover_Fail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(0).set(3, "verifyExploreAll - failed");
@@ -75,12 +75,12 @@ public class ExploreAllValidator implements Callable<String>
 		{
 			for(int i = 0; i < getStatus.size(); i++)
 			{
-				if(getStatus.get(0).contains("ResultsFail"))
+				if(getStatus.contains("ResultsFail"))
 				{
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(2).set(1, "clearAll - failed");
 				}
-				if(getStatus.get(1).contains("ContentFail"))
+				if(getStatus.contains("ContentFail"))
 				{
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(2).set(2, "clearAll - failed");
@@ -96,12 +96,12 @@ public class ExploreAllValidator implements Callable<String>
 		{
 			for(int i = 0; i < getStatus.size(); i++)
 			{
-				if(getStatus.get(i).contains("courseFail"))
+				if(getStatus.contains("courseFail"))
 				{
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(3).set(2, "Categories - failed");
 				}
-				else if(getStatus.get(i).contains("CategoryFail"))
+				else if(getStatus.contains("CategoryFail"))
 				{
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(3).set(1, "Categories - failed");
@@ -115,12 +115,12 @@ public class ExploreAllValidator implements Callable<String>
 		ArrayList<String> getStatus = exploreAllLocator.verify_LevelFromExploreAll();
 		for(int i = 0; i < getStatus.size(); i++)
 		{
-			if(getStatus.get(i).contains("levelsFail"))
+			if(getStatus.contains("levelsFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(4).set(1, "levels - failed");
 			}
-			if(getStatus.get(i).contains("courseFail"))
+			if(getStatus.contains("courseFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(4).set(2, "levels - failed");
@@ -132,12 +132,12 @@ public class ExploreAllValidator implements Callable<String>
 		ArrayList<String> getStatus = exploreAllLocator.verify_learningPartnersFromExploreAll();
 		for(int i = 0; i < getStatus.size(); i++)
 		{
-			if(getStatus.get(i).contains("partnerFail"))
+			if(getStatus.contains("partnerFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(5).set(1, "learningPartners - failed");
 			}
-			if(getStatus.get(i).contains("courseFail"))
+			if(getStatus.contains("courseFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(5).set(2, "learningPartners - failed");
@@ -149,12 +149,12 @@ public class ExploreAllValidator implements Callable<String>
 		ArrayList<String> getStatus = exploreAllLocator.verify_learningStylesFromExploreAll();
 		for(int i = 0; i < getStatus.size(); i++)
 		{
-			if(getStatus.get(i).contains("styleFail"))
+			if(getStatus.contains("styleFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(6).set(1, "learningStyles - failed");
 			}
-			if(getStatus.get(i).contains("courseFail"))
+			if(getStatus.contains("courseFail"))
 			{
 				sheetStatus = "Fail";
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreAll").get(6).set(2, "learningStyles - failed");
@@ -163,40 +163,21 @@ public class ExploreAllValidator implements Callable<String>
 	}
 	public WebDriver openDriver(String browserName)
 	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","D:\\geckodriver-v0.35.0-win64\\geckodriver.exe");
-			FirefoxOptions options = new FirefoxOptions();
-			 options.setAcceptInsecureCerts(true);
-		        driver = new FirefoxDriver(options);
-		        driver.manage().window().maximize();
-		        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-		        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
+        return DriverManager.getDriver(browserName);
+    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Explore All validation Process started");
 
-		String[] browsers = { "Firefox", "Chrome"};
-	    for (String browser : browsers) {
+		String[] browsers = { "firefox", "Chrome"};
+	    for (String browser : browsers) 
+	    {
 	        try {
-	            driver = this.openDriver(browser);
-	            OpenWebsite.openSite(driver);
+	        	driver = this.openDriver(browser);
+				OpenWebsite.openSite(driver);
+				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	            this.exploreAllLocator = new ExploreAllLocator(driver);
-	            String BaseWindow = driver.getWindowHandle();
 	            for (int i = 0; i < this.sheetData.size(); i++) {
 	                ArrayList<String> row = this.sheetData.get(i);
 	                String firstColumn = row.get(0);
@@ -224,27 +205,7 @@ public class ExploreAllValidator implements Callable<String>
 	                        break;
 	                }
 	            }
-	            Set<String> windows = driver.getWindowHandles();
-	            for (String win : windows) {
-	                driver.switchTo().window(win);
-	                if (!BaseWindow.equals(win)) {
-	                    driver.switchTo().window(win);
-	                    if (driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL + "/")) {
-	                        driver.switchTo().window(win);
-	                        driver.close();
-	                        driver.switchTo().window(BaseWindow);
-	                    } else if (driver.getCurrentUrl().contains("courses")) {
-	                        driver.switchTo().window(win);
-	                        driver.close();
-	                        driver.switchTo().window(BaseWindow);
-	                    } else if (!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL + "/")) {
-	                        driver.switchTo().window(win);
-	                        driver.close();
-	                        driver.switchTo().window(BaseWindow);
-	                    }
-	                }
-	            }
-	            driver.quit();
+	            DriverManager.quitDriver();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

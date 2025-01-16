@@ -26,85 +26,6 @@ public class ContactUsValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "InvalidFullname":
-					InvalidFullname(row);
-					break;
-				case "InvalidEmail":
-					InvalidEmail(row);
-					break;
-				case "InvalidMobile":
-					InvalidMobile(row);
-					break;
-				case"WithoutData":
-					WithoutData(row);
-					break;
-				case "WithoutEnquiry":
-					WithoutEnquiry(row);
-					break;
-				case"WithoutFullname":
-					WithoutFullname(row);
-					break;
-				case"WithoutEmail":
-					WithoutEmail(row);
-					break;
-				case"WithoutMobile":
-					WithoutMobile(row);
-					break;
-				case"WithoutSkills":
-					WithoutSkills(row);
-					break;
-				case"ValidData":
-					ValidData(row);
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/") && !BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/")&& !BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	public void InvalidFullname(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
@@ -557,10 +478,11 @@ public class ContactUsValidation implements Callable<String>
 
 		try
 		{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
+			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.contactUSLocator = new ContactUSLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -599,34 +521,7 @@ public class ContactUsValidation implements Callable<String>
 					break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/") && !BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/")&& !BaseWindow.equals(win))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

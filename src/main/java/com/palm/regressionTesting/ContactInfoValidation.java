@@ -26,121 +26,6 @@ public class ContactInfoValidation implements Callable<String>
 		
 	}
 	
-	public String start() throws InterruptedException
-	{
-		try
-		{
-		String BaseWindow = driver.getWindowHandle();
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
-		for(int i = 0; i < this.sheetData.size(); i++)
-		{
-			ArrayList<String> row = this.sheetData.get(i);
-			String firstColumn = row.get(0);
-			switch(firstColumn)
-			{
-				case "individual_InvalidName":
-					verifyIndividual_InvalidName(row);
-					break;
-				case "individual_InvalidEmail":
-					verifyIndividual_InvalidEmail(row); 
-					break;
-				case "individual_InvalidMobile": 
-					verifyIndividual_InvalidMobile(row); 
-					break; 
-				case "individual_WithoutSkill": 
-					verifyIndividual_WithoutSkill(row); 
-					break;
-				case "individual_WithoutData": 
-					verifyIndividual_WithoutData(row); 
-					break;
-				case "individual_ValidData": 
-					verifyIndividual_ValidData(row); 
-					break; 
-				case "academic_InvalidName":
-					verifyAcademic_InvalidName(row);
-					break;
-				case "academic_InvalidEmail":
-					verifyAcademic_InvalidEmail(row); 
-					break;
-				case "academic_InvalidMobile": 
-					verifyAcademic_InvalidMobile(row); 
-					break; 
-				case "academic_InvalidInstitution": 
-					verifyAcademic_InvalidInstitution(row); 
-					break;
-				case "academic_WithoutJob": 
-					verifyAcademic_WithoutJob(row); 
-					break;
-				case "academic_WithoutMessage": 
-					verifyAcademic_WithoutMessage(row); 
-					break; 
-				case "academic_WithoutData":
-					verifyAcademic_WithoutData(row);
-					break;
-				case "academic_ValidData":
-					verifyAcademic_ValidData(row);
-					break;
-				case "business_InvalidName":
-					verifyBusiness_InvalidName(row);
-					break;
-				case "business_InvalidEmail":
-					verifyBusiness_InvalidEmail(row); 
-					break;
-				case "business_InvalidMobile": 
-					verifyBusiness_InvalidMobile(row); 
-					break; 
-				case "business_WithoutOrganization": 
-					verifyBusiness_WithoutOrganization(row); 
-					break;
-				case "business_WithoutJob": 
-					verifyBusiness_WithoutJob(row); 
-					break;
-				case "business_WithoutMessage": 
-					verifyBusiness_WithoutMessage(row); 
-					break; 
-				case "business_WithoutData":
-					verifyBusiness_WithoutData(row);
-					break;
-				case "business_ValidData":
-					verifyBusiness_ValidData(row);
-					break;
-			}
-		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return sheetStatus;
-	}
 	
 	public void verifyIndividual_InvalidName(ArrayList<String> dataFromExcel) throws InterruptedException
 	{
@@ -1352,8 +1237,9 @@ public class ContactInfoValidation implements Callable<String>
 		{
 			driver = this.openDriver(RegressionTesting.nameOfBrowser);
 			OpenWebsite.openSite(driver);
+			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.contactInfoLocator = new ContactInfoLocator(driver);
-		String BaseWindow = driver.getWindowHandle();
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -1428,34 +1314,7 @@ public class ContactInfoValidation implements Callable<String>
 					break;
 			}
 		}
-		Set<String> windows = driver.getWindowHandles();
-		for(String win : windows)
-		{
-			driver.switchTo().window(win);
-			if(!BaseWindow.equals(win))
-			{
-				driver.switchTo().window(win);
-				if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(driver.getCurrentUrl().contains("courses"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-				else if(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-				{
-					driver.switchTo().window(win);
-					driver.close();
-					driver.switchTo().window(BaseWindow);
-				}
-			}
-		}
-		driver.quit();
+		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{
