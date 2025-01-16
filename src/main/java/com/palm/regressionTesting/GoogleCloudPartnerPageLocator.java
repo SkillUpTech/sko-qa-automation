@@ -359,7 +359,6 @@ public class GoogleCloudPartnerPageLocator
 					//********************************************************************************************
 					if (!checkURLStatus(getProgramCardURL).contains("fail"))
 					{
-						status.add("URL is not working in this card page  " + programCardName);
 					driver.switchTo().newWindow(WindowType.TAB);
 					driver.get(getProgramCardURL);
 					
