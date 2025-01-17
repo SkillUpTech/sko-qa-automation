@@ -86,13 +86,13 @@ public class CourseLevelValidation implements Callable<String>
 				 * case "HomePage": checkHomePage(); break;
 				 */
 				
-				  case "categoryPagesProgramCards": 
-					  checkCategoryPagesForProgramCards(); 
-					  break;
+				/*
+				 * case "categoryPagesProgramCards": checkCategoryPagesForProgramCards(); break;
+				 */
 				 
-					/*
-					 * case "categoryPagesCourseCards": checkCategoryPagesForCourseCards(); break;
-					 */
+					
+					  case "categoryPagesCourseCards": checkCategoryPagesForCourseCards(); break;
+					 
 				}
 			}
 			DriverManager.quitDriver();
