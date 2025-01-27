@@ -42,7 +42,7 @@ public class SignUpPageLinksLocator
 				{
 					driver.switchTo().window(eachWindow);
 					
-					WebElement clickSignup = driver.findElement(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons']>li:nth-child(3)>a"));
+					WebElement clickSignup = driver.findElement(By.cssSelector("div[class*='Header_signupBtn']>a"));
 					js.executeScript("arguments[0].scrollIntoView();", clickSignup);
 					if(clickSignup.isDisplayed())
 					{

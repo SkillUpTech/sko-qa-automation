@@ -82,13 +82,14 @@ public class CourseLevelValidation implements Callable<String>
 				String firstColumn = row.get(0);
 				switch(firstColumn)
 				{
+				
 				/*
 				 * case "HomePage": checkHomePage(); break;
 				 */
 				
-				/*
-				 * case "categoryPagesProgramCards": checkCategoryPagesForProgramCards(); break;
-				 */
+				
+				  case "categoryPagesProgramCards": checkCategoryPagesForProgramCards(); break;
+				 
 				 
 					
 					  case "categoryPagesCourseCards": checkCategoryPagesForCourseCards(); break;

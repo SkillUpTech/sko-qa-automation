@@ -2,16 +2,16 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Testing Google Apps]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Regression(failed)">
-    <parameter name="browser" value="Chrome"/>
-    <parameter name="env" value="dev-in"/>
+    <parameter name="browser" value="LambdaTest"/>
+    <parameter name="env" value="qa-in"/>
     <classes>
-      <class name="com.palm.sanityTesting.RegressionTesting">
+      <class name="lamdaAutomation.RegressionTesting">
         <methods>
-          <include name="startTest"/>
+          <include name="startTesting"/>
           <include name="setup"/>
           <include name="afterMethod"/>
         </methods>
-      </class> <!-- com.palm.sanityTesting.RegressionTesting -->
+      </class> <!-- lamdaAutomation.RegressionTesting -->
     </classes>
   </test> <!-- Regression(failed) -->
 </suite> <!-- Failed suite [Testing Google Apps] -->

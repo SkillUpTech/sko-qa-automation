@@ -18,7 +18,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class EditProfileLocator
 {
 	WebDriver driver;
-	
 	public EditProfileLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -26,28 +25,33 @@ public class EditProfileLocator
 	
 	public ArrayList<String> checkLogin(ArrayList<String> data)
 	{
+		String loginURL = "";
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			WebElement clickLogin = driver.findElement(By.cssSelector("li[class*='Header_loginBtn'] a"));
-			js.executeScript("arguments[0].scrollIntoView();", clickLogin);
-			if(clickLogin.isDisplayed())
-			{
-				try
-				{
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("li[class*='Header_loginBtn'] a")));
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));Thread.sleep(1000);
-		        } 
-				catch (StaleElementReferenceException e)
-				{
-					wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("li[class*='Header_loginBtn'] a")));
-				}
+			WebElement clickLogin = null;
+			try {
+			    // Locate the login button
+			    clickLogin = driver.findElement(By.cssSelector("div[class*='Header_headerBodyBlock'] div[class*='Header_loginBtn']>a"));
+
+			    // Scroll into view
+			    js.executeScript("arguments[0].scrollIntoView();", clickLogin);
+
+			    // Wait until the login button is visible
+			    wait.until(ExpectedConditions.visibilityOf(clickLogin));
+
+			    // Retrieve the 'href' attribute
+			    loginURL = clickLogin.getAttribute("href");
+			} 
+			catch (StaleElementReferenceException e) {
+			    // Handle stale element by re-locating the element
+			    clickLogin = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class*='Header_headerBodyBlock'] div[class*='Header_loginBtn']>a")));
+
+			    // Retrieve the 'href' attribute again
+			    loginURL = clickLogin.getAttribute("href");
 			}
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			String loginURL = clickLogin.getAttribute("href");
-			
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(loginURL);
 			
@@ -125,7 +129,7 @@ public class EditProfileLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-					WebElement clickDropDown = driver.findElement(By.cssSelector("a[class='dropdown-toggle']>img"));
+					WebElement clickDropDown = driver.findElement(By.cssSelector("a[class='dropdown-toggle']"));
 					js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
 					if(clickDropDown.isDisplayed())
 					{
@@ -1481,8 +1485,6 @@ public class EditProfileLocator
 			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[contains(text(),'Yes, continue')]")));
 
 			js.executeScript("arguments[0].scrollIntoView();", clickYesFromAlert);
-			if(clickYesFromAlert.isDisplayed())
-			{
 				try 
 				{
 					js.executeScript("arguments[0].click()", clickYesFromAlert);
@@ -1495,7 +1497,6 @@ public class EditProfileLocator
 					clickYesFromAlert.click(); 
 		        }
 				Thread.sleep(1000);
-			}
 		}
 		catch(Exception e)
 		{

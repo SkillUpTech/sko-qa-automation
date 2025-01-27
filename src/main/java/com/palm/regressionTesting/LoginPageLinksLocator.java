@@ -20,7 +20,7 @@ public class LoginPageLinksLocator {
 	String parentWindow = "";
 	//OpenWebsite openWebsite;
 	
-	@FindBy(css = "ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp']>li[class='Header_loginBtn__3Xv3A']>a")
+	@FindBy(css = "div[class*='Header_loginBtn']>a")
 	private List<WebElement> clickLoginIcon;
 	
 	@FindBy(css = "div[class='form-group spacing-mb40'] a")

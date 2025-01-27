@@ -124,7 +124,7 @@ public class IBMPageLocator
 	
 	String CoursePageDurationSection = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]";
 	
-	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2";
+	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Starts on')]";
 	
 	String CoursePageEnrollmentSection = ".//div[contains(@class,'CourseDescription_PreferredCohort')]|//div[contains(@class,'CourseDescription_buttonsContent')]";
 	
@@ -185,7 +185,6 @@ public class IBMPageLocator
 			String IBMURL = driver.getCurrentUrl()+"ibm-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA";
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(IBMURL);
-			driver.manage().window().maximize();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 			
@@ -371,10 +370,9 @@ public class IBMPageLocator
 					driver.switchTo().newWindow(WindowType.TAB);
 					driver.get(getProgramCardURL);
 					
-					driver.manage().window().maximize();
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
-					
+					Thread.sleep(400);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if (driver.getCurrentUrl().contains("404")) 
 					{
@@ -670,15 +668,19 @@ public class IBMPageLocator
 						  }
 						  System.out.println("price on card : "+priceOfCourseCard);
                         cardPriceStatus.add(priceOfCourseCard);
+                        Thread.sleep(100);
                     }
-					
+					Thread.sleep(100);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 					if(card.findElements(By.xpath(courseEnrollmentSection)).size() > 0)
 					{
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 						if (card.findElements(By.xpath(CourseCardsEnrollStatus)).size() > 0)
 						{
-							String cardEnrollStatus = card.findElement(By.xpath(CourseCardsEnrollStatus)).getText();
+							WebElement getPrice = card.findElement(By.xpath(CourseCardsEnrollStatus));
+							js.executeScript("arguments[0].scrollIntoView();", getPrice);
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+							String cardEnrollStatus = getPrice.getText();
 							if(cardEnrollStatus.contains("Open"))
 							{
 								cardEnrollmentStatus.add("Open");
@@ -695,6 +697,7 @@ public class IBMPageLocator
 							{
 								cardEnrollmentStatus.add("Closed");
 							}
+							System.out.println("cardEnrollStatus : "+cardEnrollStatus);
 						}
 						/*
 						 * else if(card.findElements(By.xpath(courseCardCourseStartedDate)).size() > 0)
@@ -717,10 +720,9 @@ public class IBMPageLocator
 					driver.switchTo().newWindow(WindowType.TAB);
 					driver.get(getCourseCardURL);
 					
-					driver.manage().window().maximize();
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
-					
+					Thread.sleep(400);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 					if (driver.getCurrentUrl().contains("404")) 
 					{
@@ -766,7 +768,6 @@ public class IBMPageLocator
 						{
 							status.add("partner name not present in this card page  " + courseCardName);
 						}
-						
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 						if (CoursePageSection.findElements(By.xpath(CoursePageEnrollmentSection)).size() <= 0) 
 						{
@@ -774,7 +775,11 @@ public class IBMPageLocator
 						}
 						else
 						{
+							Thread.sleep(100);
 							List<WebElement> enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
+							js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
+							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							Thread.sleep(100);
 							String getPageEnrollStatus = enrollButton.get(0).getText();
 							if(getPageEnrollStatus.contains("Enroll Now"))
 							{
@@ -792,6 +797,7 @@ public class IBMPageLocator
 							{
 								pageEnrollmentStatus.add("Closed");
 							}
+							System.out.println("pageEnrollStatus : "+getPageEnrollStatus);
 						}
 						
 						if (cardEnrollmentStatus.size() == pageEnrollmentStatus.size())
@@ -819,10 +825,11 @@ public class IBMPageLocator
 							{
 								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
+								//	String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
 									
 									if(pageLevelStatus.get(0).toLowerCase().contains("self"))//self paced
 									{
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 										if(CoursePageSection.findElements(By.xpath(CoursePageSelfOrVilt)).size()>0)
 										{
 											status.add("starts on presented on self paced card page  " + courseCardName);
@@ -830,6 +837,7 @@ public class IBMPageLocator
 									}
 									else if(pageLevelStatus.get(0).toLowerCase().contains("vilt")||pageLevelStatus.get(0).toLowerCase().contains("instructor-led"))//Instructor-Led
 									{
+										driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 										if(CoursePageSection.findElements(By.xpath(CoursePageSelfOrVilt)).size()<=0)
 										{
 											status.add("starts on not presented on Vilt card page  " + courseCardName);
@@ -856,9 +864,11 @@ public class IBMPageLocator
 						else
 						{
 							WebElement pElement = CoursePageSection.findElement(By.xpath(CoursePagePrice));
+							js.executeScript("arguments[0].scrollIntoView();", pElement);
+							
 							String fullText = pElement.getText();
 							// Split text and extract only the desired part
-							String requiredText = pElement.getText().replace(pElement.findElement(By.tagName("span")).getText(), "").trim();
+							String requiredText = fullText.replace(pElement.findElement(By.tagName("span")).getText(), "").trim();
 							System.out.println(requiredText);
 							
 							//String cardPrice = card.findElement(By.xpath(CourseCardsPrice)).getText();

@@ -49,7 +49,7 @@ public class GoogleCloudPartnerPageLocator
 	
 	String ProgramCardsEnrollStatus = ".//div[contains(@class,'FlatCourseCard_courseStartSection')]//h6[contains(text(),'Enrollment Status')]/following-sibling::h4";
 	
-	String programCardCourseStartedDate = ".//div[contains(@class,'FlatCourseCard_courseStartSection')]//h6[contains(text(),'Course starts on')]";///following-sibling::h4
+	String programCardCourseStartedDate = ".//div[contains(@class,'FlatCourseCard_courseStartSection')]//h6[contains(text(),'Course starts on')]/following-sibling::h4";///following-sibling::h4
 	
 	String programCardPriceSection = ".//div[contains(@class,'FlatCourseCard_priceSection')]";
 	
@@ -103,9 +103,9 @@ public class GoogleCloudPartnerPageLocator
 	
 	String CourseCardsEnrollStatus = ".//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Enrollment Status')]/following-sibling::p";
 	
-	//String courseCardCourseStartedDate = "";
+	String courseCardCourseStartedDate = ".//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Coming soon')]/following-sibling::p|//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Course start')]/following-sibling::p";
 	
-	String CourseCardsPrice = ".//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'From')]/following-sibling::p";
+	String CourseCardsPrice = ".//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'From')]/following-sibling::p|//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'Fee')]/following-sibling::p";
 	
 	String CoursePageLocator = "//section[contains(@class,'CourseDescription_mainSection')]";
 	
@@ -117,11 +117,11 @@ public class GoogleCloudPartnerPageLocator
 	
 	String CoursePageLevel3 = ".//div[contains(@class,'CourseDescription_levelSection')]/h3[2]";
 	
-	String CoursePagePartner = ".//img[@alt='Skillup']";
+	String CoursePagePartner = ".//img[@alt='Skillup']|//img[@alt='org-logo']";
 	
 	String CoursePageDurationSection = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]";
 	
-	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2";
+	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Starts on')]";
 	
 	String CoursePageEnrollmentSection = ".//div[contains(@class,'CourseDescription_PreferredCohort')]|//div[contains(@class,'CourseDescription_buttonsContent')]";
 	
@@ -211,7 +211,7 @@ public class GoogleCloudPartnerPageLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if (programCardShowmoreLocator.size() > 0) { // Check if the "Show More" button is present
 			    List<WebElement> showMore = programCardShowmoreLocator;
 
@@ -233,7 +233,7 @@ public class GoogleCloudPartnerPageLocator
 			    }
 			}
 			
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(programCards.size()>0)
 			{
 				List<WebElement> programCard = programCards;
@@ -246,40 +246,55 @@ public class GoogleCloudPartnerPageLocator
 					
 					String getProgramCardURL = card.findElement(By.xpath(programCardsURL)).getAttribute("href");
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(programCardsImage)).size()<=0)
 					{
 						status.add("image not present in " +programCardName);
 					}
+					else
+					{
+						WebElement image = card.findElement(By.xpath(programCardsImage));
+                        js.executeScript("arguments[0].scrollIntoView();", image);
+                    }
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(ProgramCardsPartner)).size()<=0)
 					{
 						status.add("partner name not present in "+programCardName);
 					}
+					else
+					{
+						WebElement partner = card.findElement(By.xpath(ProgramCardsPartner));
+						js.executeScript("arguments[0].scrollIntoView();", partner);
+					}
 					
 					
-					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(programCardLevelSection)).size()>0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(ProgramCardsLevel1)).size() > 0)
 						{
-							String cardLevel1 = card.findElement(By.xpath(ProgramCardsLevel1)).getText();
+							WebElement level1 = card.findElement(By.xpath(ProgramCardsLevel1));
+							js.executeScript("arguments[0].scrollIntoView();", level1);
+							String cardLevel1 = level1.getText();
 							cardLevelStatus.add(cardLevel1);
 						}
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(ProgramCardsLevel2)).size() > 0)
 						{
-							String cardLevel2 = card.findElement(By.xpath(ProgramCardsLevel2)).getText();
+							WebElement level2 = card.findElement(By.xpath(ProgramCardsLevel2));
+							js.executeScript("arguments[0].scrollIntoView();", level2);
+							String cardLevel2 = level2.getText();
 							cardLevelStatus.add(cardLevel2);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(ProgramCardsLevel3)).size() > 0)
 						{
-							String cardLevel3 = card.findElement(By.xpath(ProgramCardsLevel3)).getText();
+							WebElement level3 = card.findElement(By.xpath(ProgramCardsLevel3));
+							js.executeScript("arguments[0].scrollIntoView();", level3);
+							String cardLevel3 = level3.getText();
 							cardLevelStatus.add(cardLevel3);
 						}
 					}
@@ -290,14 +305,16 @@ public class GoogleCloudPartnerPageLocator
 					
 					
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if (card.findElements(By.xpath(ProgramCardsPrice)).size() <= 0)
 					{
 						cardPriceStatus.add("price not present in " +programCardName);
 					}
 					else
 					{
-						String cardPrice = card.findElement(By.xpath(ProgramCardsPrice)).getText();
+						WebElement getPrices = card.findElement(By.xpath(ProgramCardsPrice));
+						js.executeScript("arguments[0].scrollIntoView();", getPrices);
+						String cardPrice = getPrices.getText();
 						 String priceString = cardPrice;
 						  String getPrice[] = priceString.split(" ");
 						  String priceOfCourseCard = "";
@@ -316,9 +333,11 @@ public class GoogleCloudPartnerPageLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 					if(card.findElements(By.xpath(programEnrollmentSection)).size() > 0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(ProgramCardsEnrollStatus)).size() > 0)
 						{
+							WebElement enrollStatus = card.findElement(By.xpath(ProgramCardsEnrollStatus));
+							js.executeScript("arguments[0].scrollIntoView();", enrollStatus);
 							String cardEnrollStatus = card.findElement(By.xpath(ProgramCardsEnrollStatus)).getText();
 							if(cardEnrollStatus.contains("Open"))
 							{
@@ -339,11 +358,17 @@ public class GoogleCloudPartnerPageLocator
 						}
 						else if(card.findElements(By.xpath(programCardCourseStartedDate)).size() > 0)
 						{
-							String cardEnrollStartDateStatus = card.findElement(By.xpath(programCardCourseStartedDate)).getText();
+							WebElement enrollStartDate = card.findElement(By.xpath(programCardCourseStartedDate));
+							js.executeScript("arguments[0].scrollIntoView();", enrollStartDate);
+							String cardEnrollStartDateStatus = enrollStartDate.getText();
 							
 							if(cardEnrollStartDateStatus.contains("Course starts on"))
 							{
 								cardEnrollmentStatus.add("Open");
+							}
+							else if(cardEnrollStartDateStatus.contains("Coming soon"))
+							{
+								cardEnrollmentStatus.add("Closed");
 							}
 							else
 							{
@@ -363,10 +388,11 @@ public class GoogleCloudPartnerPageLocator
 					driver.get(getProgramCardURL);
 					
 					driver.manage().window().maximize();
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+					Thread.sleep(100);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if (driver.getCurrentUrl().contains("404")) 
 					{
 						status.add("404 page is present in this card page  " + programCardName);
@@ -379,7 +405,7 @@ public class GoogleCloudPartnerPageLocator
 					{
 						WebElement programPageSection = driver.findElement(By.xpath(programPageLocator));
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPageName)).size() <= 0)
 						{
 							status.add("program name not present in this card page  " + programCardName);
@@ -388,31 +414,37 @@ public class GoogleCloudPartnerPageLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 						if (programPageSection.findElements(By.xpath(programPageLevel1)).size() > 0)
 						{
-							String level1 = programPageSection.findElement(By.xpath(programPageLevel1)).getText();
+							WebElement locatelevel1 = programPageSection.findElement(By.xpath(programPageLevel1));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel1);
+							String level1 = locatelevel1.getText();
 							pageLevelStatus.add(level1);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPageLevel2)).size() > 0) 
 						{
-							String level2 = programPageSection.findElement(By.xpath(programPageLevel2)).getText();
+							WebElement locatelevel2 = programPageSection.findElement(By.xpath(programPageLevel2));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel2);
+							String level2 = locatelevel2.getText();
 							pageLevelStatus.add(level2);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPageLevel3)).size() > 0) 
 						{
-							String level3 = programPageSection.findElement(By.xpath(programPageLevel3)).getText();
+							WebElement locatelevel3 = programPageSection.findElement(By.xpath(programPageLevel3));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel3);
+							String level3 = locatelevel3.getText();
 							pageLevelStatus.add(level3);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPagePartner)).size() <= 0)
 						{
 							status.add("partner name not present in this card page  " + programCardName);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPageEnrollStatus)).size() <= 0) 
 						{
 							status.add("enroll status not present in this card page  " + programCardName);
@@ -420,6 +452,7 @@ public class GoogleCloudPartnerPageLocator
 						else
 						{
 							List<WebElement> enrollButton = programPageSection.findElements(By.xpath(programPageEnrollStatus));
+							js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
 							String getPageEnrollStatus = enrollButton.get(0).getText();
 							if(getPageEnrollStatus.contains("Enroll now")||getPageEnrollStatus.contains("Enroll Now"))
 							{
@@ -445,7 +478,7 @@ public class GoogleCloudPartnerPageLocator
 							status.add("enrollment status are not matching in card page and program page  "
 									+ programCardName);
 						}
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPageDurationSection)).size() <= 0) 
 						{
 							status.add("duration fee section not present in this card page  " + programCardName);
@@ -456,7 +489,6 @@ public class GoogleCloudPartnerPageLocator
 							{
 								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									String getDurationText = programPageSection.findElement(By.xpath(ProgramPageSelfOrVilt)).getText(); //Starts on
 									
 									if(pageLevelStatus.get(0).toLowerCase().contains("Self-Paced"))//self paced
 									{
@@ -485,14 +517,16 @@ public class GoogleCloudPartnerPageLocator
 							}
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (programPageSection.findElements(By.xpath(programPagePrice)).size() <= 0) 
 						{
 							status.add("price  not present in this card page  " + programCardName);
 						}
 						else
 						{
-							String getPagePrice = programPageSection.findElement(By.xpath(programPagePrice)).getText();
+							WebElement getPrices = programPageSection.findElement(By.xpath(programPagePrice));
+							js.executeScript("arguments[0].scrollIntoView();", getPrices);
+							String getPagePrice = getPrices.getText();
 							 String priceString = getPagePrice;
 							  String getPrice[] = priceString.split(" ");
 							  String priceOfCourseCard = "";
@@ -511,6 +545,10 @@ public class GoogleCloudPartnerPageLocator
 						if(!cardPriceStatus.equals(pagePriceStatus))
 						{
 							status.add("price status are not matching in card page and program page  " + programCardName);
+						}
+						else
+						{
+							System.out.println("price are same");
 						}
 					}
 				}
@@ -551,7 +589,7 @@ public class GoogleCloudPartnerPageLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if (CourseCardShowmoreLocator.size() > 0)
 			{ // Check if the "Show More" button is present
 			    List<WebElement> showMore = CourseCardShowmoreLocator;
@@ -574,7 +612,7 @@ public class GoogleCloudPartnerPageLocator
 			    }
 			}
 			
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(CourseCards.size()>0)
 			{
 				List<WebElement> courseCard = CourseCards;
@@ -589,13 +627,13 @@ public class GoogleCloudPartnerPageLocator
 					
 					String courseCardImage = ".//img[@alt='"+courseCardName+"']";
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(courseCardImage)).size()<=0)
 					{
 						status.add("image not present in " +courseCardName);
 					}
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(CourseCardsPartner)).size()<=0)
 					{
 						status.add("partner name not present in "+courseCardName);
@@ -603,23 +641,23 @@ public class GoogleCloudPartnerPageLocator
 					
 					
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(CourseCardLevelSection)).size()>0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(CourseCardsLevel1)).size() > 0)
 						{
 							String cardLevel1 = card.findElement(By.xpath(CourseCardsLevel1)).getText();
 							cardLevelStatus.add(cardLevel1);
 						}
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(CourseCardsLevel2)).size() > 0)
 						{
 							String cardLevel2 = card.findElement(By.xpath(CourseCardsLevel2)).getText();
 							cardLevelStatus.add(cardLevel2);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(CourseCardsLevel3)).size() > 0)
 						{
 							String cardLevel3 = card.findElement(By.xpath(CourseCardsLevel3)).getText();
@@ -633,7 +671,7 @@ public class GoogleCloudPartnerPageLocator
 					
 					
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if (card.findElements(By.xpath(CourseCardsPrice)).size() <= 0)
 					{
 						cardPriceStatus.add("price not present in " +courseCardName);
@@ -659,7 +697,7 @@ public class GoogleCloudPartnerPageLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 					if(card.findElements(By.xpath(courseEnrollmentSection)).size() > 0)
 					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (card.findElements(By.xpath(CourseCardsEnrollStatus)).size() > 0)
 						{
 							String cardEnrollStatus = card.findElement(By.xpath(CourseCardsEnrollStatus)).getText();
@@ -680,15 +718,16 @@ public class GoogleCloudPartnerPageLocator
 								cardEnrollmentStatus.add("Closed");
 							}
 						}
-						/*
-						 * else if(card.findElements(By.xpath(courseCardCourseStartedDate)).size() > 0)
-						 * { String cardEnrollStartDateStatus =
-						 * card.findElement(By.xpath(programCardCourseStartedDate)).getText();
-						 * 
-						 * if(cardEnrollStartDateStatus.contains("Course starts on")) {
-						 * cardEnrollmentStatus.add("Open"); } else {
-						 * cardEnrollmentStatus.add("Closed"); } }
-						 */
+						
+						  else if(card.findElements(By.xpath(courseCardCourseStartedDate)).size() > 0)
+						  { 
+							  String cardEnrollStartDateStatus =
+						  card.findElement(By.xpath(programCardCourseStartedDate)).getText();
+						  
+						  if(cardEnrollStartDateStatus.contains("Course starts on")) {
+						  cardEnrollmentStatus.add("Open"); } else {
+						  cardEnrollmentStatus.add("Closed"); } }
+						 
 					}
 					else
 					{
@@ -705,7 +744,7 @@ public class GoogleCloudPartnerPageLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if (driver.getCurrentUrl().contains("404")) 
 					{
 						status.add("404 page is present in this card page  " + courseCardName);
@@ -718,7 +757,7 @@ public class GoogleCloudPartnerPageLocator
 					{
 						WebElement CoursePageSection = driver.findElement(By.xpath(CoursePageLocator));
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePageName)).size() <= 0)
 						{
 							status.add("program name not present in this card page  " + courseCardName);
@@ -727,31 +766,37 @@ public class GoogleCloudPartnerPageLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 						if (CoursePageSection.findElements(By.xpath(CoursePageLevel1)).size() > 0)
 						{
-							String level1 = CoursePageSection.findElement(By.xpath(CoursePageLevel1)).getText();
+							WebElement locatelevel1 = CoursePageSection.findElement(By.xpath(CoursePageLevel1));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel1);
+							String level1 = locatelevel1.getText();
 							pageLevelStatus.add(level1);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePageLevel2)).size() > 0) 
 						{
-							String level2 = CoursePageSection.findElement(By.xpath(CoursePageLevel2)).getText();
+							WebElement locatelevel2 = CoursePageSection.findElement(By.xpath(CoursePageLevel2));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel2);
+							String level2 = locatelevel2.getText();
 							pageLevelStatus.add(level2);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePageLevel3)).size() > 0) 
 						{
-							String level3 = CoursePageSection.findElement(By.xpath(CoursePageLevel3)).getText();
+							WebElement locatelevel3 = CoursePageSection.findElement(By.xpath(CoursePageLevel3));
+							js.executeScript("arguments[0].scrollIntoView();", locatelevel3);
+							String level3 = locatelevel3.getText();
 							pageLevelStatus.add(level3);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePagePartner)).size() <= 0)
 						{
 							status.add("partner name not present in this card page  " + courseCardName);
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePageEnrollmentSection)).size() <= 0) 
 						{
 							status.add("enroll status not present in this card page  " + courseCardName);
@@ -759,6 +804,7 @@ public class GoogleCloudPartnerPageLocator
 						else
 						{
 							List<WebElement> enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
+							js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
 							String getPageEnrollStatus = enrollButton.get(0).getText();
 							if(getPageEnrollStatus.contains("Enroll Now"))
 							{
@@ -792,7 +838,7 @@ public class GoogleCloudPartnerPageLocator
 							status.add("enrollment status are not available in card page and program page  "
 									+ courseCardName);
 						}
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePageDurationSection)).size() <= 0) 
 						{
 							status.add("duration fee section not present in this card page  " + courseCardName);
@@ -803,7 +849,6 @@ public class GoogleCloudPartnerPageLocator
 							{
 								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
 									
 									if(pageLevelStatus.get(0).toLowerCase().contains("self"))//self paced
 									{
@@ -832,14 +877,16 @@ public class GoogleCloudPartnerPageLocator
 							}
 						}
 						
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 						if (CoursePageSection.findElements(By.xpath(CoursePagePrice)).size() <= 0) 
 						{
 							status.add("price  not present in this card page  " + courseCardName);
 						}
 						else
 						{
-							String getPagePrice = CoursePageSection.findElement(By.xpath(CoursePagePrice)).getText();
+							WebElement getPrices = CoursePageSection.findElement(By.xpath(CoursePagePrice));
+							js.executeScript("arguments[0].scrollIntoView();", getPrices);
+							String getPagePrice = getPrices.getText();
 							 String priceString = getPagePrice;
 							  String getPrice[] = priceString.split(" ");
 							  String priceOfCourseCard = "";
@@ -847,6 +894,10 @@ public class GoogleCloudPartnerPageLocator
 							  {
 								  priceOfCourseCard = getPrice[0].replaceAll("[^0-9,]", "").replace(",", "");
 							  }
+							  else
+							  {                                
+                                    priceOfCourseCard =  getPrice[0].replaceAll("[^0-9,]", "").replace(",", "");
+                                }
 							 
 							  System.out.println("price on card : "+priceOfCourseCard);
 							pagePriceStatus.add(priceOfCourseCard);
@@ -855,6 +906,10 @@ public class GoogleCloudPartnerPageLocator
 						if(!cardPriceStatus.equals(pagePriceStatus))
 						{
 							status.add("price status are not matching in card page and program page  " + courseCardName);
+						}
+						else
+						{
+							System.out.println("price are same");
 						}
 					}
 					cardLevelStatus.clear();

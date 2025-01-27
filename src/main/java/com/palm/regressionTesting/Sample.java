@@ -1,6 +1,7 @@
 package com.palm.regressionTesting;
 
-public class Sample {
+public class Sample
+{
 	public static void main(String args[])
 	{
 		 String zephyrToken = System.getenv("ZEPHYR_API_TOKEN");

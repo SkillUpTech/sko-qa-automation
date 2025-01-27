@@ -48,7 +48,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 	
 	//String courseCardCourseStartedDate = "";
 	
-	String CourseCardsPrice = ".//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'From')]/following-sibling::p";
+	String CourseCardsPrice = ".//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'From')]/following-sibling::p|//div[contains(@class,'RegularCourseCard_priceRight')]//h2[contains(text(),'Fee')]/following-sibling::p";
 	
 	String CoursePageLocator = "//section[contains(@class,'CourseDescription_mainSection')]";
 	

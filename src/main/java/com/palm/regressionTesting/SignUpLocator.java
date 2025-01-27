@@ -27,7 +27,7 @@ public class SignUpLocator
 	}
 	public void signUpPage() throws InterruptedException
 	{
-		WebElement clickSignUp = driver.findElement(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li:nth-child(3) a"));
+		WebElement clickSignUp = driver.findElement(By.cssSelector("div[class*='Header_signupBtn']>a"));
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 		String n = Keys.chord(Keys.CONTROL, Keys.ENTER);
 		clickSignUp.sendKeys(n);

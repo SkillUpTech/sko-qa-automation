@@ -13,18 +13,25 @@ public class DriverManager
 
     public static WebDriver getDriver(String browserName) 
     {
-        if (driverThreadLocal.get() == null) {
+        if (driverThreadLocal.get() == null)
+        {
             WebDriver driver;
-            if (browserName.equalsIgnoreCase("Chrome")) {
+            if (browserName.equalsIgnoreCase("Chrome"))
+            {
                 System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
                 ChromeOptions options = new ChromeOptions();
-                options.addArguments("--remote-allow-origins=*");
-                options.addArguments("--disable-notifications");
+                options.addArguments("--disable-infobars");
+                options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+                options.setExperimentalOption("useAutomationExtension", false);
                 driver = new ChromeDriver(options);
-            } else if (browserName.equalsIgnoreCase("firefox")) {
+            }
+            else if (browserName.equalsIgnoreCase("firefox"))
+            {
                 System.setProperty("webdriver.gecko.driver", "C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.34.0-win64\\geckodriver.exe");
                 driver = new FirefoxDriver();
-            } else {
+            } 
+            else
+            {
                 throw new IllegalArgumentException("Unsupported browser: " + browserName);
             }
 

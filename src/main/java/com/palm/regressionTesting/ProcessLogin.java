@@ -32,17 +32,17 @@ public class ProcessLogin
 		try
 		{
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-			if(driver.findElements(By.cssSelector("ul[class*='list-unstyled navbar-nav nav Header_navButtons'] li[class*='Header_loginBtn'] a")).size()>0)
+			if(driver.findElements(By.cssSelector("div[class*='Header_loginBtn']>a")).size()>0)
 			{
 				
-				WebElement clickLogin = driver.findElement(By.cssSelector("ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li[class='Header_loginBtn__3Xv3A'] a"));
+				WebElement clickLogin = driver.findElement(By.cssSelector("div[class*='Header_loginBtn']>a"));
 				js.executeScript("arguments[0].scrollIntoView();", clickLogin);
-				wait.until(ExpectedConditions.elementToBeClickable(clickLogin));
+				//wait.until(ExpectedConditions.visibilityOf(clickLogin));
 				if(clickLogin.isDisplayed())
 				{
-					String loginURL = clickLogin.getAttribute("href");
-					driver.switchTo().newWindow(WindowType.TAB);
-					driver.get(loginURL);
+					  String loginURL = clickLogin.getAttribute("href");
+					  driver.switchTo().newWindow(WindowType.TAB);
+					  driver.get(loginURL);
 					  driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 					  js.executeScript("window.scrollBy(0, 200)", ""); WebElement userNameElement =
 					  driver.findElement(By.cssSelector("input#email"));
@@ -67,7 +67,7 @@ public class ProcessLogin
 					  {
 					  loginStatus= this.checkUserAfterLoggedIn();
 					  } 
-					  } 
+				 } 
 					 
 			}
 		

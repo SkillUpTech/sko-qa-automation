@@ -106,7 +106,6 @@ public class verifyProgramURLValidation implements Callable<String>
 		{
 			e.printStackTrace();
 		}
-		driver.quit();
 		return sheetStatus;
 	
 	}

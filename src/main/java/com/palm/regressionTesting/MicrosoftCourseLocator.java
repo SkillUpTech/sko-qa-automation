@@ -299,7 +299,7 @@ public class MicrosoftCourseLocator
 						}
 						else
 						{
-							cardEnrollmentStatus.add("enrollment section not present in " +courseCardName);
+							cardEnrollmentStatus.add("enrollment section not present in " +courseCardNames);
 						}
 						
 						//********************************************************************************************
@@ -315,7 +315,7 @@ public class MicrosoftCourseLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if(driver.getTitle().contains("null")|| driver.getTitle().contains("undefined")||driver.getTitle().contains("500")||driver.getTitle().contains("404"))
 							{
-								status.add("null or undefined  is present on page title  " + courseCardName);
+								status.add("null or undefined  is present on page title  " + courseCardNames);
 							}
 						else
 						{
@@ -324,7 +324,7 @@ public class MicrosoftCourseLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if (CoursePageSection.findElements(By.xpath(pageHeading)).size() <= 0)
 							{
-								status.add("program name not present in this card page  " + courseCardName);
+								status.add("program name not present in this card page  " + courseCardNames);
 							}
 							
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -386,14 +386,14 @@ public class MicrosoftCourseLocator
 								if(!cardEnrollmentStatus.get(0).toLowerCase().equals(pageEnrollmentStatus.get(0).toLowerCase()))
 								{
 									status.add("enrollment status are not matching in card page and program page  "
-											+ courseCardName);
+											+ courseCardNames);
 								} 
 								
 							}
 							else 
 							{
 								status.add("enrollment status are not available in card page and program page  "
-										+ courseCardName);
+										+ courseCardNames);
 							}
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if (CoursePageSection.findElements(By.xpath(pageLevelSection)).size() <= 0) 

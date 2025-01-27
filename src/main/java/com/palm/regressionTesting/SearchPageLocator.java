@@ -28,8 +28,8 @@ public class SearchPageLocator
 		
 	}
 
-	String searchField = "div[class*='Header_headerRight'] input[id='contentSearch']";
-	String searchButton = "div[class*='Header_headerRight'] button[id='btnCheck']";
+	String searchField = "div[class*='Header_headerRight'] input[id='contentSearch'],[class*='Header_searchInput']";
+	String searchButton = "div[class*='Header_headerRight'] button[id='btnCheck'],[class*='Header_searchButton']";
 	String listOfCourseCardInExploreAllPage = "//div[contains(@class,'CourseSection_courseResultContainer')]//div[contains(@class,'CourseSection_courseResult')]";
    
 	

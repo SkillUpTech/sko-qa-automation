@@ -61,7 +61,7 @@ public class HeaderSectionLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		String status = "fail";
-		String contactUsLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(2) a";
+		String contactUsLocator = "header[class*='Header_headerBody']>ul[class*='Header_navLinks']>li:nth-child(2)>a[href*='contact']";
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
