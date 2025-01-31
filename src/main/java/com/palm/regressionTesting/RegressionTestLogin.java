@@ -18,7 +18,7 @@ import com.seo.utility.TestUtil;
 
 public class RegressionTestLogin implements Callable<String>
 {
-	//WebDriver driver;
+	WebDriver driver;
 	String result = "failed";
 	String jiraProcess ="";
 	ArrayList<ArrayList<String>> sheetData = null;
@@ -29,16 +29,17 @@ public class RegressionTestLogin implements Callable<String>
 	ArrayList<String> row = new ArrayList<String>();
 	ArrayList<String> ticketStatus = new ArrayList<String>();
 	
-	public RegressionTestLogin(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws Exception
+	public RegressionTestLogin(WebDriver driver, ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws Exception
 	{		
-		 	this.sheetData = sheetData;
+			this.driver = driver;
+			this.sheetData = sheetData;
 		 	this.jiraProcess = jiraProcessStatus;
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
-	
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	public void InvalidUsername() throws InterruptedException
 	{
 		ArrayList<String> credsRow = sheetData.get(0);
@@ -101,13 +102,8 @@ public class RegressionTestLogin implements Callable<String>
 	public String call() throws Exception
 	{
 		System.out.println("login process started");
-		WebDriver driver = null; 
 		try
 		{
-			driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	        this.processLogin = new ProcessLogin(driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
@@ -163,7 +159,6 @@ public class RegressionTestLogin implements Callable<String>
 				 * (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 				 */			
 				}
-			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

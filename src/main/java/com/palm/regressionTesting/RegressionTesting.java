@@ -62,11 +62,11 @@ public class RegressionTesting
 		nameOfEnvironment = env;
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
-	    	driver = OpenWebsite.openDriver(browserName);
+	    	driver = this.openDriver(browserName);
 	    }
 	    else if (browserName.equalsIgnoreCase("Chrome"))
 	    {
-	    //	driver = OpenWebsite.openDriver(browserName);
+	        driver = OpenWebsite.openDriver(browserName);
 	    	if(env.equalsIgnoreCase("stage"))
 	    	{
 	    		getEnvironment = "stage";
@@ -125,7 +125,6 @@ public class RegressionTesting
 		try
 		{
 			
-			
 			LinkedHashMap<String, ArrayList<ArrayList<String>>> data = ProcessExcel.readExcelFileAsRows(excelPath);
 			
 			//EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = ProcessExcel.readExcelFileAsRows(excelPath);//old code
@@ -161,7 +160,7 @@ public class RegressionTesting
 						switch(sheetName)
 						{
 							case "Login":
-								taskMap.put(sheetName,  new RegressionTestLogin(sheetData, jiraStatusUpdation));
+								taskMap.put(sheetName,  new RegressionTestLogin(driver, sheetData, jiraStatusUpdation));
 								break;
 							case "AboutCourse":
 							{
@@ -368,7 +367,7 @@ public class RegressionTesting
 	                e.printStackTrace();
 	            }
 	        }
-
+	        DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

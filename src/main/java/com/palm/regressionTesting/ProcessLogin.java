@@ -19,6 +19,7 @@ public class ProcessLogin
 	WebDriver driver;
 	String url = "";
 	String parentWindow = "";
+	
 	public ProcessLogin(WebDriver driver) 
 	{
 		this.driver = driver;
@@ -132,7 +133,6 @@ public class ProcessLogin
 					 }
 					else if(driver.getCurrentUrl().contains("dashboard"))
 					{
-						Thread.sleep(1000);
 						driver.switchTo().window(windows);
 						WebElement clickDropDown = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[alt='icon']"));
 						js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
@@ -140,7 +140,6 @@ public class ProcessLogin
 						{
 							js.executeScript("arguments[0].click()", clickDropDown);
 						}
-						Thread.sleep(1000);
 						WebElement checkLoggedName = driver.findElement(By.cssSelector("li[class*='SigNUP'] ul[class*='dropdown-menu'] li:nth-child(1) a"));
 						js.executeScript("arguments[0].scrollIntoView();", checkLoggedName);
 						String checkText = checkLoggedName.getText();
@@ -148,7 +147,6 @@ public class ProcessLogin
 						{
 							loginStatus = "Success";
 							System.out.println("logged in successfully");
-							Thread.sleep(2000);
 							WebElement clickSignOut = driver.findElement(By.cssSelector("div[class='headerRight']>ul:nth-child(4) ul[class*='dropdown-menu']>li:nth-child(5)>a"));
 							js.executeScript("arguments[0].scrollIntoView();", clickSignOut);
 							if(clickSignOut.isDisplayed())
@@ -156,7 +154,6 @@ public class ProcessLogin
 								js.executeScript("arguments[0].click()", clickSignOut);
 							}
 							System.out.println("log out successfully");
-							Thread.sleep(1000);
 							
 						}
 						else
@@ -209,9 +206,7 @@ public class ProcessLogin
 		System.out.println("Invalid Email Process started");
 		try
 		{
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			parentWindow = driver.getWindowHandle();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 			
 			InvalidUsername.add(this.loginFunction(uName, pwd));
 			driver.close();
@@ -231,12 +226,13 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("Invalid password Process started");
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setURL+"/");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			/*
+			 * driver.switchTo().newWindow(WindowType.TAB);
+			 * driver.get(OpenWebsite.setURL+"/");
+			 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			 */
 			InvalidPassword.add(this.loginFunction(uName, pwd));
 			driver.close();
-			//driver.switchTo().window(driver.getWindowHandles().iterator().next());
 			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
@@ -252,12 +248,13 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("InvalidEmail and Password process started");
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setURL+"/");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			/*
+			 * driver.switchTo().newWindow(WindowType.TAB);
+			 * driver.get(OpenWebsite.setURL+"/");
+			 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			 */
 			InvalidUserNameAndPassword.add(this.loginFunction(uName, pwd));
 			driver.close();
-		//	driver.switchTo().window(driver.getWindowHandles().iterator().next());
 			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
@@ -273,12 +270,13 @@ public class ProcessLogin
 		try
 		{
 			System.out.println("valid data process started");
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setURL+"/");
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			/*
+			 * driver.switchTo().newWindow(WindowType.TAB);
+			 * driver.get(OpenWebsite.setURL+"/");
+			 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+			 */
 			ValidCredentials.add(this.loginFunction(uName, pwd));
 			driver.close();
-			//driver.switchTo().window(driver.getWindowHandles().iterator().next());
 			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
