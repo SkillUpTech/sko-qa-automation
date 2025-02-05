@@ -28,6 +28,7 @@ public class MicrosoftCourseLocator
 	int respCode = 200;
 	HttpURLConnection huc = null;
 	String parentWindow = "";
+	String microsoftPage = "";
 	
 	@FindBy(xpath = "//div[contains(@class,'Collaborate_excollaborationInner')]/ul/li/a")
 	private List<WebElement> locatePartnerName;
@@ -50,16 +51,15 @@ public class MicrosoftCourseLocator
 	public ArrayList<String> verifyMicrosftPage()
 	{
 		ArrayList<String> processStatus = new ArrayList<String>();
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			parentWindow = driver.getWindowHandle();
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			String url = driver.getCurrentUrl()+"microsoft-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA";
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(url);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
-			parentWindow = driver.getWindowHandle();
-			
+			microsoftPage = driver.getWindowHandle();
 		}
 		catch(Exception e)
 		{
@@ -320,7 +320,7 @@ public class MicrosoftCourseLocator
 						else
 						{
 							WebElement CoursePageSection = driver.findElement(By.xpath(pageBaseLocator));
-							
+							js.executeScript("arguments[0].scrollIntoView();", CoursePageSection);
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 							if (CoursePageSection.findElements(By.xpath(pageHeading)).size() <= 0)
 							{
@@ -470,14 +470,15 @@ public class MicrosoftCourseLocator
 						pagePriceStatus.clear();
 						pageEnrollmentStatus.clear();
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(microsoftPage);
 					}
 				}
 				else
 				{
 					System.out.println("Course cards are not available in google cloud partner page");
 				}
-				
+				driver.close();
+				driver.switchTo().window(parentWindow);
 			}
 			catch (Exception e) 
 			{

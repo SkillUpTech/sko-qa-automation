@@ -20,25 +20,17 @@ public class LoginSocialAccountValidation implements Callable<String>
 	WebDriver driver;
 	OpenWebsite openWebsite;
 	
-	public LoginSocialAccountValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public LoginSocialAccountValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
-	public WebDriver openDriver(String browserName) 
-	 {
-	        return DriverManager.getDriver(browserName);
-	 }
 	@Override
 	public String call() throws Exception {
 		System.out.println("PLU process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.loginSocialAccountLocator = new LoginSocialAccountLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -60,7 +52,6 @@ public class LoginSocialAccountValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

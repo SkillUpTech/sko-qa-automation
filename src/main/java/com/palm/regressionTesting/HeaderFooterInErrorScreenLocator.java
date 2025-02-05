@@ -21,13 +21,14 @@ public class HeaderFooterInErrorScreenLocator
 {
 	//https://qa-in.skillup.online/courses/
 	WebDriver driver;
+	String parentWindow = "";
 	@FindBy(xpath = "//a[contains(text(),'LOGIN')]")
 	private WebElement clickLoginIcon;
 	
 	@FindBy(xpath = "//a[contains(text(),'SIGNUP ')]") //Find out more
 	private WebElement clickSignUpIcon;
 	
-	@FindBy(xpath = "//div[@class='navbar-brand']/a") //skillup icon
+	@FindBy(xpath = "//div[@class='navbar-brand']/a|//div[contains(@class,'Header_headerLeft')]") //skillup icon
 	private WebElement clickSkillupIcon;
 	
 	@FindBy(xpath = "//a[contains(text(),'About SkillUp')]")
@@ -210,7 +211,7 @@ public class HeaderFooterInErrorScreenLocator
 	{
 		String status = "";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		
+		parentWindow = driver.getWindowHandle();
 		try
 		{
 			driver.switchTo().newWindow(WindowType.TAB);
@@ -905,6 +906,8 @@ public class HeaderFooterInErrorScreenLocator
 				}
 				System.out.println("Latest Blogs  Process on Bottom completed  for " +url +" : " + statusURL);
 			}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

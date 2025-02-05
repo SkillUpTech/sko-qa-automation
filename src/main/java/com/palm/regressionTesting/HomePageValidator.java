@@ -14,9 +14,10 @@ public class HomePageValidator implements Callable<String>
 	HomepageLocator homepageLocator;
 	String sheetStatus;
 	
-	public HomePageValidator(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public HomePageValidator(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
+		this.driver = driver;
 	}
 
 	public void homePage(WebDriver driver)
@@ -125,10 +126,7 @@ public class HomePageValidator implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
 	@Override
 	public String call() throws Exception
 	{
@@ -137,8 +135,6 @@ public class HomePageValidator implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.homepageLocator = new HomepageLocator(this.driver);
@@ -169,7 +165,6 @@ public class HomePageValidator implements Callable<String>
 					break;	
 				}
 			}
-		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

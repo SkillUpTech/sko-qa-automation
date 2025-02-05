@@ -81,7 +81,7 @@ public class TestNewAboutCourse
 				String sheetName = entry.getKey();
 				ArrayList<ArrayList<String>> sheetData = entry.getValue();
 				try {
-					NewAboutCourseValidator newAboutCourseValidator = new NewAboutCourseValidator(sheetData, sheetName);
+					NewAboutCourseValidator newAboutCourseValidator = new NewAboutCourseValidator(driver, sheetData, sheetName);
 					String sheetStatus = newAboutCourseValidator.processSheetData();
 					sheetsResult.put(sheetName, sheetStatus);
 				} catch (Exception e) {

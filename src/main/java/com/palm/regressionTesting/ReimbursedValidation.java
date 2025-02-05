@@ -20,10 +20,10 @@ public class ReimbursedValidation implements Callable<String>
 	ReimbursedLocator reimbursedLocator;
 	String sheetStatus = "Pass";
 	
-	public ReimbursedValidation(ArrayList<ArrayList<String>> sheetData)
+	public ReimbursedValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -56,10 +56,6 @@ public class ReimbursedValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ReimbursedProcess").get(2).set(0, "checkLinkFromReimbursedPage - failed");
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	@Override
 	public String call() throws Exception 
 	{
@@ -67,8 +63,6 @@ public class ReimbursedValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.reimbursedLocator = new ReimbursedLocator(driver);
@@ -89,7 +83,6 @@ public class ReimbursedValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

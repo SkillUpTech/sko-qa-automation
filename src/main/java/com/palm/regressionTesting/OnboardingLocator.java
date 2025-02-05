@@ -357,7 +357,8 @@ WebDriver driver;
 				}
 				System.out.println("job opportunities selection success");
 			}
-			
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

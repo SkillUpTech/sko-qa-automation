@@ -20,11 +20,11 @@ public class EditProfileValidation implements Callable<String>
 	EditProfileLocator editProfileLocator;
 	String sheetStatus = "Pass";
 
-	public EditProfileValidation(ArrayList<ArrayList<String>> sheetData)
+	public EditProfileValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		
 		this.sheetData = sheetData;
-
+		this.driver = driver;
 	}
 
 
@@ -416,18 +416,20 @@ public class EditProfileValidation implements Callable<String>
 		}
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	 @Override
 		public String call() throws Exception {
 		    System.out.println("Onboarding Journey Process started");
 
 		    try 
 		    {
-		    	driver = this.openDriver(RegressionTesting.nameOfBrowser);
-				OpenWebsite.openSite(driver);
+				/*
+				 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+				 * OpenWebsite.openSite(driver);
+				 */
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		        this.editProfileLocator = new EditProfileLocator(driver);
@@ -517,7 +519,7 @@ public class EditProfileValidation implements Callable<String>
 		            }
 		        }
 
-		        DriverManager.quitDriver();
+		        //DriverManager.quitDriver();
 		    } catch (Exception e) {
 		        e.printStackTrace();
 		    }

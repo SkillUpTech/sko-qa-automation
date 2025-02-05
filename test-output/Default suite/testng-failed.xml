@@ -5,9 +5,10 @@
     <classes>
       <class name="com.palm.regressionTesting.RegressionTesting">
         <methods>
+          <include name="tearDown"/>
           <include name="setup"/>
-          <include name="afterMethod"/>
           <include name="startTesting"/>
+          <include name="getResult"/>
         </methods>
       </class> <!-- com.palm.regressionTesting.RegressionTesting -->
     </classes>

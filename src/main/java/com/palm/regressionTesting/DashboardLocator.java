@@ -21,6 +21,7 @@ public class DashboardLocator
 	MicrosoftCourseLocator microsoftCourseLocator;
 	RegressionGenericLocator regressionGenericLocator;
 	String courseName = "";
+	String parentWindow  = "";
 	public DashboardLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -34,7 +35,7 @@ public class DashboardLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			String parent  = driver.getWindowHandle();
+			parentWindow = driver.getWindowHandle();
 			Set<String> windows = driver.getWindowHandles();
 			for(String window : windows)
 			{

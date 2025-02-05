@@ -13,15 +13,12 @@ public class CoursePurchaseActivationHandlerValidation implements Callable<Strin
 	CoursePurchaseActivationHandlerLocator coursePurchaseActivationHandlerLocator;
 	String sheetStatus = "Pass";
 	
-	public CoursePurchaseActivationHandlerValidation(ArrayList<ArrayList<String>> sheetData)
+	public CoursePurchaseActivationHandlerValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
+		this.driver = driver;
 		
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	@Override
 	public String call() throws Exception 
@@ -29,10 +26,6 @@ public class CoursePurchaseActivationHandlerValidation implements Callable<Strin
 		System.out.println("Course Purchase Activation Handler Validation");
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.coursePurchaseActivationHandlerLocator = new CoursePurchaseActivationHandlerLocator(driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
@@ -61,7 +54,6 @@ public class CoursePurchaseActivationHandlerValidation implements Callable<Strin
 					
 				}
 			}
-			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

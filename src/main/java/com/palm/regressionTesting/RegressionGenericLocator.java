@@ -36,8 +36,7 @@ public class RegressionGenericLocator
 	String amountWithTax;
 	String amountWithOutTax;
 	String checkPaymentProcess;
-	String parentWindow;
-	
+	String coursePage = "";
 	public WebDriver getDriver()
 	{
 		return driver;
@@ -49,33 +48,6 @@ public class RegressionGenericLocator
 
 	
 
-	public String setEnvironment(String host) 
-	{
-		if (host.equalsIgnoreCase("prod-in")) {
-			setHost = "https://in.skillup.online";
-		} else if (host.equalsIgnoreCase("stage-in")) {
-			setHost = "https://" + host + ".skillup.online";
-		} else if (host.equalsIgnoreCase("qa-in")) {
-			setHost = "https://" + host + ".skillup.online";
-		} else if (host.equalsIgnoreCase("qa")) {
-			setHost = "https://" + host + ".skillup.online";
-		} else if (host.equalsIgnoreCase("stage")) {
-			setHost = "https://" + host + ".skillup.online";
-		} else if (host.equalsIgnoreCase("prod")) {
-			setHost = "https://skillup.online";
-		}
-		else if (host.equalsIgnoreCase("dev-in")) {
-			setHost = "https://" + host + ".skillup.online";
-		}
-		return setHost;
-	}
-
-	public String setMetaHostURL()
-	{
-		setMetaHost = setHost;
-		setLoginURL = setMetaHost;
-		return setMetaHost;
-	}
 	public String checkURLStatus(String getURL) {
 	    String URLStatus = "failed";
 	    HttpURLConnection huc = null;
@@ -113,7 +85,7 @@ public class RegressionGenericLocator
 		String CourseCodeStatus = "fail";
 		try
 		{
-			String addHosturl = this.setEnvironment(RegressionTesting.ENV_TO_USE) + code;
+			String addHosturl = driver.getCurrentUrl() + code;
 			String checkURL = this.checkURLStatus(addHosturl);
 			if(checkURL.contains("fail"))
 			{
@@ -124,7 +96,7 @@ public class RegressionGenericLocator
 				CourseCodeStatus = "success";
 				driver.switchTo().newWindow(WindowType.TAB);
 				driver.get(addHosturl);
-				parentWindow = driver.getWindowHandle();
+				coursePage = driver.getWindowHandle();
 			}
 		} 
 		catch (Exception e)
@@ -135,93 +107,127 @@ public class RegressionGenericLocator
 		return CourseCodeStatus;
 	}
 
-	public String navigateProcess() 
-	{
-		String navigationStatus = "fail";
-		JavascriptExecutor js = (JavascriptExecutor) driver; // div[@class='d-flex
-		try {
-																	// CourseDescription_navigationBar__Zg6b3']//button[contains(text(),'Overview')]
-			js.executeScript("window.scrollBy(0,800)");
-			List<WebElement> navigateFunctions = driver
-					.findElements(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"));
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
-			wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(
-					By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button")));
-			for (int i = 0; i < navigateFunctions.size(); i++) 
-			{
-				if (i == 0) 
-				{
-					WebElement overview = driver.findElement(By.cssSelector(
-							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"));
-					js.executeScript("arguments[0].scrollIntoView();", overview);
-					if(overview.isDisplayed())
-					{
-						
-						js.executeScript("arguments[0].click(), overview");
-					}
-					Thread.sleep(1000);
-					System.out.println("Overview is displayed");
-					navigationStatus = "pass";
-				}
-				driver.navigate().refresh();
-				Thread.sleep(1000);
-				if (i == 1)
-				{
-					WebElement detailsNavigation = driver.findElement(By.cssSelector(
-							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"));
-					js.executeScript("arguments[0].scrollIntoView();", detailsNavigation);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					 if(detailsNavigation.isDisplayed())
-					 {
-						 wait.until(ExpectedConditions.elementToBeClickable(detailsNavigation));
-						 driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-						 Thread.sleep(1000);
-						 js.executeScript("arguments[0].click();", detailsNavigation);
-					 }
-					Thread.sleep(1000);
-					System.out.println("Details content is displayed");
-					navigationStatus = "pass";
-				}
-				if (i == 2)
-				{
-					WebElement whySkillupNavigation = driver.findElement(By.cssSelector(
-							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"));
-					js.executeScript("arguments[0].scrollIntoView();", whySkillupNavigation);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-					 if(whySkillupNavigation.isDisplayed())
-					 {
-						 wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
-						 driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-						 Thread.sleep(1000);
-						 js.executeScript("arguments[0].click();", whySkillupNavigation);
-					 }
-					Thread.sleep(1000);
-					System.out.println("WhySkillUpOnline? content is displayed");
-					navigationStatus = "pass";
-				}
-				if (i == 3) 
-				{
-					WebElement FAQNavigation = driver.findElement(By.cssSelector(
-							"div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(4)"));
-					js.executeScript("arguments[0].scrollIntoView();", FAQNavigation);
-					if(FAQNavigation.isDisplayed())
-					{
-						wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation));
-					}
-					js.executeScript("arguments[0].click();", FAQNavigation);
-					Thread.sleep(1000);
-					System.out.println("FAQ is displayed");
-					navigationStatus = "pass";
-				}
-			}
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			navigationStatus = "fail";
-		}
-		return navigationStatus;
-	}
+	/*
+	 * public String navigateProcess() { String navigationStatus = "fail";
+	 * JavascriptExecutor js = (JavascriptExecutor) driver; // div[@class='d-flex
+	 * try { //
+	 * CourseDescription_navigationBar__Zg6b3']//button[contains(text(),'Overview')]
+	 * js.executeScript("window.scrollBy(0,800)"); List<WebElement>
+	 * navigateFunctions = driver .findElements(By.
+	 * cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"
+	 * )); WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
+	 * wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy( By.
+	 * cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"
+	 * ))); for (int i = 0; i < navigateFunctions.size(); i++) { if (i == 0) {
+	 * WebElement overview = driver.findElement(By.cssSelector(
+	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"
+	 * )); js.executeScript("arguments[0].scrollIntoView();", overview);
+	 * if(overview.isDisplayed()) {
+	 * 
+	 * js.executeScript("arguments[0].click(), overview"); } Thread.sleep(1000);
+	 * System.out.println("Overview is displayed"); navigationStatus = "pass"; }
+	 * driver.navigate().refresh(); Thread.sleep(1000); if (i == 1) { WebElement
+	 * detailsNavigation = driver.findElement(By.cssSelector(
+	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"
+	 * )); js.executeScript("arguments[0].scrollIntoView();", detailsNavigation);
+	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+	 * if(detailsNavigation.isDisplayed()) {
+	 * wait.until(ExpectedConditions.elementToBeClickable(detailsNavigation));
+	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+	 * Thread.sleep(1000); js.executeScript("arguments[0].click();",
+	 * detailsNavigation); } Thread.sleep(1000);
+	 * System.out.println("Details content is displayed"); navigationStatus =
+	 * "pass"; } if (i == 2) { WebElement whySkillupNavigation =
+	 * driver.findElement(By.cssSelector(
+	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"
+	 * )); js.executeScript("arguments[0].scrollIntoView();", whySkillupNavigation);
+	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+	 * if(whySkillupNavigation.isDisplayed()) {
+	 * wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
+	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+	 * Thread.sleep(1000); js.executeScript("arguments[0].click();",
+	 * whySkillupNavigation); } Thread.sleep(1000);
+	 * System.out.println("WhySkillUpOnline? content is displayed");
+	 * navigationStatus = "pass"; } if (i == 3) { WebElement FAQNavigation =
+	 * driver.findElement(By.cssSelector(
+	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(4)"
+	 * )); js.executeScript("arguments[0].scrollIntoView();", FAQNavigation);
+	 * if(FAQNavigation.isDisplayed()) {
+	 * wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation)); }
+	 * js.executeScript("arguments[0].click();", FAQNavigation); Thread.sleep(1000);
+	 * System.out.println("FAQ is displayed"); navigationStatus = "pass"; } } }
+	 * catch (Exception e) { e.printStackTrace(); navigationStatus = "fail"; }
+	 * return navigationStatus; }
+	 */
+
+public String navigateProcess() {
+    String navigationStatus = "fail";
+    JavascriptExecutor js = (JavascriptExecutor) driver;
+    try {
+        js.executeScript("window.scrollBy(0,800)");
+        List<WebElement> navigateFunctions = driver.findElements(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button")));
+
+        for (int i = 0; i < navigateFunctions.size(); i++) {
+            if (i == 0) {
+                WebElement overview = driver.findElement(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"));
+                js.executeScript("arguments[0].scrollIntoView();", overview);
+                if (overview.isDisplayed()) {
+                    js.executeScript("arguments[0].click();", overview);
+                }
+                Thread.sleep(1000);
+                System.out.println("Overview is displayed");
+                navigationStatus = "pass";
+            }
+            driver.navigate().refresh();
+            Thread.sleep(1000);
+            if (i == 1) {
+                WebElement detailsNavigation = driver.findElement(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"));
+                js.executeScript("arguments[0].scrollIntoView();", detailsNavigation);
+                driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+                if (detailsNavigation.isDisplayed()) {
+                    wait.until(ExpectedConditions.elementToBeClickable(detailsNavigation));
+                    driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+                    Thread.sleep(1000);
+                    js.executeScript("arguments[0].click();", detailsNavigation);
+                }
+                Thread.sleep(1000);
+                System.out.println("Details content is displayed");
+                navigationStatus = "pass";
+            }
+            if (i == 2) {
+                WebElement whySkillupNavigation = driver.findElement(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"));
+                js.executeScript("arguments[0].scrollIntoView();", whySkillupNavigation);
+                driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
+                if (whySkillupNavigation.isDisplayed()) {
+                    wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
+                    driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
+                    Thread.sleep(1000);
+                    js.executeScript("arguments[0].click();", whySkillupNavigation);
+                }
+                Thread.sleep(1000);
+                System.out.println("WhySkillUpOnline? content is displayed");
+                navigationStatus = "pass";
+            }
+            if (i == 3) {
+                WebElement FAQNavigation = driver.findElement(By.cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(4)"));
+                js.executeScript("arguments[0].scrollIntoView();", FAQNavigation);
+                if (FAQNavigation.isDisplayed()) {
+                    wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation));
+                    js.executeScript("arguments[0].click();", FAQNavigation);
+                }
+                Thread.sleep(1000);
+                System.out.println("FAQ is displayed");
+                navigationStatus = "pass";
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        navigationStatus = "fail";
+    }
+    return navigationStatus;
+}
 
 	public ArrayList<String> freeConsultationProcess(ArrayList<String> getFreeConsultation)
 	{
@@ -1282,6 +1288,9 @@ public class RegressionGenericLocator
 				System.out.println("US Enroll Process");
 			}
 			
+			driver.close();
+			driver.switchTo().window(coursePage);
+			
 		} 
 		catch (Exception e) 
 		{
@@ -1366,6 +1375,7 @@ public class RegressionGenericLocator
 		String checkShareProcess ="";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+		
 		try
 		{
 			js.executeScript("window.scrollBy(0,-2000)", "");
@@ -1409,7 +1419,7 @@ public class RegressionGenericLocator
                         driver.get(getShareURL);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(coursePage);
 						
                     }
                     else if(getShareURL.contains("twitter"))
@@ -1419,7 +1429,7 @@ public class RegressionGenericLocator
                          driver.get(getShareURL);
  						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
  						driver.close();
- 						driver.switchTo().window(parentWindow);
+ 						driver.switchTo().window(coursePage);
 					}
                     else if(getShareURL.contains("twitter"))
                     {
@@ -1428,7 +1438,7 @@ public class RegressionGenericLocator
                          driver.get(getShareURL);
  						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
  						driver.close();
- 						driver.switchTo().window(parentWindow);
+ 						driver.switchTo().window(coursePage);
                     }
                     else if(getShareURL.contains("linkedin"))
                     {
@@ -1437,7 +1447,7 @@ public class RegressionGenericLocator
 	                     driver.get(getShareURL);
  						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
  						driver.close();
- 						driver.switchTo().window(parentWindow);
+ 						driver.switchTo().window(coursePage);
                     }
                     else if(getShareURL.contains("facebook"))
                     {
@@ -1446,7 +1456,7 @@ public class RegressionGenericLocator
 	                     driver.get(getShareURL);
  						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
  						driver.close();
- 						driver.switchTo().window(parentWindow);
+ 						driver.switchTo().window(coursePage);
                     }
 						
 					}

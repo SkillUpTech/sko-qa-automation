@@ -30,22 +30,18 @@ public class RegressionGenericValidator implements Callable<String>
 	private String endTime = "";
 	private String duration = "";
 	WebDriver driver;
-	public RegressionGenericValidator(String sheetName, ArrayList<ArrayList<String>> rows)
+	String parentWindow = "";
+	public RegressionGenericValidator(WebDriver driver, String sheetName, ArrayList<ArrayList<String>> rows)
 	{
 		this.SHEET_NAME = sheetName; 
 		this.ROWS = rows;
-		
+		this.driver = driver;
+		parentWindow = driver.getWindowHandle();
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	public String processSheetData()
 	{
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{
@@ -94,19 +90,20 @@ public class RegressionGenericValidator implements Callable<String>
 				markCellAsHeader();
 				break;
 			}
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 			markProcessFailed();
 		}
+		
 		return sheetStatus;
 	}
 	String loginURL;
 	
 	private void courseCode(String courseCodeFromExcel)
 	{
-		String courseCodestatus = "true";
 		try
 		{
 			String checkCourseCode = regressionGenericLocator.getCourseCodeText(courseCodeFromExcel);
@@ -488,10 +485,7 @@ public class RegressionGenericValidator implements Callable<String>
 	@Override
 	public String call() throws Exception 
 	{
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
 		this.regressionGenericLocator = new RegressionGenericLocator(driver);		
-		driver.switchTo().newWindow(WindowType.TAB);
-		OpenWebsite.openSite(driver);
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{
@@ -501,9 +495,10 @@ public class RegressionGenericValidator implements Callable<String>
 		}
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
+		driver.close();
+		driver.switchTo().window(parentWindow);
 		collectSheetResult();
 		
-		DriverManager.quitDriver();
 		return sheetStatus;
 	
 	}

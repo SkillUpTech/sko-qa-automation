@@ -1,6 +1,7 @@
 package com.palm.regressionTesting;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -11,7 +12,7 @@ import org.openqa.selenium.WindowType;
 public class VerifyProgramURLLocator
 {
 	WebDriver driver;
-	
+	String parentWindow = "";
 	public VerifyProgramURLLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -19,63 +20,38 @@ public class VerifyProgramURLLocator
 	
 	public ArrayList<String> verifyProgramURL(ArrayList<String> data)
 	{
-		String URL = "";
+		parentWindow = driver.getWindowHandle();//base window
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
-			for(int i = 1; i < data.size(); i++)
-			{
+			String url = driver.getCurrentUrl()+data.get(0);
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(url);
+			String coursePage = driver.getWindowHandle();
+			
+			List<WebElement> programURL = driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_infoBoxText')]//ul/li/a"));
+			js.executeScript("arguments[0].scrollIntoView();", programURL);
+			for(WebElement getURL : programURL)
+            {
+				String programURLText = getURL.getAttribute("href");
+				String getProgramName = getURL.getText();
 				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(OpenWebsite.setHost+data.get(i));
-				Set<String> windows = driver.getWindowHandles();
-				for(String window : windows)
+				driver.get(programURLText);
+				WebElement getProgramPageName = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_courseText')]/h1"));
+				String programPageName = getProgramPageName.getText();
+				if(getProgramName.equalsIgnoreCase(programPageName))
 				{
-					driver.switchTo().window(window);
-					
-					if(driver.getCurrentUrl().contains("/courses/"))
-					{
-						driver.switchTo().window(window);
-						
-						WebElement programURL = driver.findElement(By.xpath("//div[contains(@class,'CourseDescription_infoBoxText')]//a"));
-						js.executeScript("arguments[0].scrollIntoView();", programURL);
-						if(programURL.isDisplayed())
-						{
-							URL = programURL.getAttribute("href");
-							driver.switchTo().newWindow(WindowType.TAB);
-							driver.get(URL);
-							Set<String> nextWindows = driver.getWindowHandles();
-							for(String newWindow : nextWindows)
-							{
-								driver.switchTo().window(newWindow);
-								
-								if((!driver.getCurrentUrl().contains("courses"))&&(!driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setHost+"/"))&&(!driver.getCurrentUrl().equalsIgnoreCase("data:,"))) 
-								{
-									driver.switchTo().window(newWindow);
-									
-									if(URL.equalsIgnoreCase(driver.getCurrentUrl()))
-									{
-										System.out.println("Program link from the course about page is same as program about page URL"); 
-										driver.close();
-										driver.switchTo().window(window);
-									}
-									else
-									{
-										System.out.println("Program link from the course about page is not same as program about page URL"); 
-										status.add("program url : "+URL+ "is not same as program link mentioned on course : "+data.get(i));
-										driver.close();
-										driver.switchTo().window(window);
-									}
-								}
-								
-							}
-						}
-						driver.close();
-					}
+					System.out.println("Program URL is matching with the program name");
+				} else
+				{
+					System.out.println("Program URL is not matching with the program name");
+					status.add("Program URL is not matching with the program name");
 				}
-				driver.switchTo().window(parentWindow);
-			}
+				driver.close();
+				driver.switchTo().window(coursePage);
+            }
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

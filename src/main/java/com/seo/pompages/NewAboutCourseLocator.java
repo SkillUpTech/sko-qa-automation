@@ -44,7 +44,6 @@ public class NewAboutCourseLocator
 	String setLoginURL ;
 	String setMetaHost;
 	String imageHost;
-	
 	public WebDriver getDriver()
 	{
 		return driver;
@@ -54,66 +53,6 @@ public class NewAboutCourseLocator
 	{
 		this.driver = driver;
 		
-	}
-	public void openDriver()
-	{
-		System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("--remote-allow-origins=*");
-		options.addArguments("--disable notifications");
-		driver = new ChromeDriver(options);
-		driver.manage().window().maximize();
-		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		wait = new WebDriverWait(driver, Duration.ofSeconds(5000));
-	}
-	
-	public String setEnvironment(String host)
-	{
-		if(host.equalsIgnoreCase("prod-in"))
-		{
-			setHost = "https://in.skillup.online";
-		}
-		else if(host.equalsIgnoreCase("stagecourses-in"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("qa-in"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("qa"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("stagecourses"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("prod"))
-		{
-			setHost = "https://skillup.online";
-		}
-		else if(host.equalsIgnoreCase("stage-in"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("stage"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		else if(host.equalsIgnoreCase("dev-in"))
-		{
-			setHost = "https://"+host+".skillup.online";
-		}
-		return setHost;
-	}
-	
-	public String setMetaHostURL()
-	{
-		setMetaHost = setHost;
-		setLoginURL = setMetaHost;
-		return setMetaHost;
 	}
 	
 	public String getCourseCodeText(String code)
@@ -126,11 +65,11 @@ public class NewAboutCourseLocator
 		{
 			if(code.contains("course-v1"))
 			{
-				addHosturl = this.setHost+code;
+				addHosturl = driver.getCurrentUrl()+code;
 			}
 			else
 			{
-				addHosturl = this.setHost+code;
+				addHosturl = driver.getCurrentUrl()+code;
 			}
 			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
 			huc.setRequestMethod("HEAD");
@@ -397,9 +336,9 @@ String addHosturl;
 	public ArrayList<String> processCourseOutLineSection()
 	{
 		ArrayList<String> getStatus = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor)driver;
 		try
 		{
-			JavascriptExecutor js = (JavascriptExecutor)driver;
 			WebElement programOutLine = driver.findElement(By.cssSelector("section[class*='CourseMain_courseDetailsAndCertificateMain']>div[class*='CourseMain_courseOutlineDetails'] h2"));
 			System.out.println(programOutLine.getText());
 			List<WebElement> header = driver.findElements(By.cssSelector("div[class*='CourseOutline_accordionMain'] h2 button"));
@@ -462,7 +401,6 @@ String addHosturl;
 				errorCells.add(1);
 			}
 			
-			WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 			WebElement clickEarnCertificate = driver.findElement(By.cssSelector("div[class='certificate_wrap'] a[id='certificate-preview-btn']"));
 			js.executeScript("arguments[0].click();", clickEarnCertificate);
 			Thread.sleep(1000);

@@ -27,10 +27,11 @@ public class verifyProgramURLValidation implements Callable<String>
 	VerifyProgramURLLocator verifyProgramURLLocator;
 	String sheetStatus = "Pass";
 	
-	public verifyProgramURLValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws InterruptedException
+	public verifyProgramURLValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		this.jiraProcess = jiraProcessStatus;
+		this.driver = driver;
 	}
 	
 	
@@ -46,20 +47,12 @@ public class verifyProgramURLValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName) 
-	 {
-	        return DriverManager.getDriver(browserName);
-	 }
 	@Override
 	public String call() throws Exception {
 		System.out.println("ProgramURL and SLUG verification started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.verifyProgramURLLocator = new VerifyProgramURLLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -100,7 +93,6 @@ public class verifyProgramURLValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("Login").get(1).add(2, 
 					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

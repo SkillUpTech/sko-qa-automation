@@ -19,6 +19,7 @@ public class HeaderFeatureLocators
 	WebDriver driver;
 	int respCode = 200;
 	HttpURLConnection huc = null;
+	String parentWindow = "";
 	public HeaderFeatureLocators(WebDriver driver)
 	{
 		this.driver = driver;
@@ -26,7 +27,7 @@ public class HeaderFeatureLocators
 	
 	public ArrayList<String> checkFooterPart()
 	{
-		String parentWindow = driver.getWindowHandle();
+		parentWindow = driver.getWindowHandle();
 		ArrayList<String> linkStatus = new ArrayList<String>();
 		ArrayList<String> data = new ArrayList<String>();
 		data.add("//a[contains(@href,'twitter')]");

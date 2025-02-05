@@ -19,6 +19,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class ExploreAllLocator
 {
 	WebDriver driver;
+	String parentWindow = "";
+	String HomePage = "";
 	public ExploreAllLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -34,6 +36,7 @@ public class ExploreAllLocator
 			//Mega menu Link
 			try
 			{
+				parentWindow = driver.getWindowHandle();
 				if(driver.findElements(By.xpath("//a[@id='navbarDropdown']//img[@alt='icon']")).size()>0)
 				{
 					WebElement megaMenuDropDown = driver.findElement(By.xpath("//a[@id='navbarDropdown']//img[@alt=\"icon\"]"));
@@ -151,6 +154,12 @@ public class ExploreAllLocator
 		String activeCategory = "";
 		try
 		{
+			parentWindow = driver.getWindowHandle();
+			String getURL = driver.getCurrentUrl();
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(getURL);
+			HomePage = driver.getWindowHandle();
+			
 			WebElement clickExploreAllFromHomePage = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_navAndTab_')]//button[contains(text(),'Explore All')]"));
 			js.executeScript("arguments[0].scrollIntoView();", clickExploreAllFromHomePage);
 			if(clickExploreAllFromHomePage.isDisplayed())
@@ -618,6 +627,8 @@ public class ExploreAllLocator
 							"//div[not(@id='mobileFilter') and contains(@class,'CourseSection_filterMain')]//div[@class='col-12']/div[@class='accordion'][4]//button"));
 					js.executeScript("arguments[0].scrollIntoView();", disableStyle);
 				}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 				}
 		catch(Exception e)
 		{

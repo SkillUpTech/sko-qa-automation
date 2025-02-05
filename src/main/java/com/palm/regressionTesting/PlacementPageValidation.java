@@ -14,16 +14,11 @@ public class PlacementPageValidation implements Callable<String>
 	PlacementPageLocator placementPageLocator;
 	String sheetStatus = "Pass";
 	
-	public PlacementPageValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public PlacementPageValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
-	
 	public void ArrangeAChatIcon()
 	{
 		String getStatus = placementPageLocator.verifyArrangeAChatIcon();
@@ -233,8 +228,6 @@ public class PlacementPageValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.placementPageLocator = new PlacementPageLocator(driver);
@@ -267,7 +260,6 @@ public class PlacementPageValidation implements Callable<String>
 						break;
 				}
 		}
-			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

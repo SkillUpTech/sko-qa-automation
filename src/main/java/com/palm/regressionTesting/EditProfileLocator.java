@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class EditProfileLocator
 {
 	WebDriver driver;
+	String parentWindow = "";
 	public EditProfileLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -25,6 +26,7 @@ public class EditProfileLocator
 	
 	public ArrayList<String> checkLogin(ArrayList<String> data)
 	{
+		parentWindow = driver.getWindowHandle();
 		String loginURL = "";
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		ArrayList<String> status = new ArrayList<String>();

@@ -4,11 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 
 public class DevopsPageLocator
 {
 	WebDriver driver;
-	
+	String parentWindow = "";
 	public DevopsPageLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -17,11 +18,12 @@ public class DevopsPageLocator
 	public String checkDownloadForm()
 	{
 		String data = "";
-		
 		try
 		{
-			String url = OpenWebsite.setHost;
-			driver.get(url+"/devops/");
+			parentWindow = driver.getWindowHandle();
+			String url = driver.getCurrentUrl()+"devops/";
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(url);
 			if(driver.findElements(By.cssSelector("div[class*='TopSection_TopSecRgt'] div[class*='DownloadForm_downloadFromBottom']>iframe")).size()>0)
 			{
 				System.out.println("Form is present on Devops Engg page");
@@ -56,6 +58,8 @@ public class DevopsPageLocator
 			{
 				data = "false";
 			}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

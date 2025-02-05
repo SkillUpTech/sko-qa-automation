@@ -13,15 +13,12 @@ public class FooterSectionValidation implements Callable<String>
 	FooterSectionLocator footerSectionLocator;
 	String sheetStatus = "Pass";
 	
-	public FooterSectionValidation(ArrayList<ArrayList<String>> sheetData)
+	public FooterSectionValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
 	String footerSectionURL ="success";
 	
 	public void checkSkillupLogo() throws InterruptedException
@@ -187,10 +184,6 @@ public class FooterSectionValidation implements Callable<String>
 		System.out.println("footer section process started");	
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.footerSectionLocator = new FooterSectionLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -225,7 +218,7 @@ public class FooterSectionValidation implements Callable<String>
 					break;
 			}
 		}
-		 DriverManager.quitDriver();
+		// DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

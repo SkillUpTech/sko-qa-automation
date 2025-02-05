@@ -20,10 +20,10 @@ public class ExploreCourseByNewUserValidation implements Callable<String>
 	ExploreCourseByNewUserLocator exploreCourseByNewUserLocator;
 	String sheetStatus = "Pass";
 	
-	public ExploreCourseByNewUserValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public ExploreCourseByNewUserValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	public void Signup(ArrayList<String> data)
 	{
@@ -44,18 +44,12 @@ public class ExploreCourseByNewUserValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreCourseByNewUser").get(1).set(0, "CheckExploreCourse - failed");
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Sign up Page links process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.exploreCourseByNewUserLocator = new ExploreCourseByNewUserLocator(driver);
@@ -73,7 +67,6 @@ public class ExploreCourseByNewUserValidation implements Callable<String>
 					break;
 			}
 		}
-		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

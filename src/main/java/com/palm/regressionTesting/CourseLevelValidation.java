@@ -13,10 +13,10 @@ public class CourseLevelValidation implements Callable<String>
 	CourseLevelLocators courseLevelLocators;
 	String sheetStatus = "Pass";
 	
-	public CourseLevelValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public CourseLevelValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	public void checkHomePage()
@@ -59,10 +59,6 @@ public class CourseLevelValidation implements Callable<String>
 		}
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	@Override
 	public String call() throws Exception
@@ -71,10 +67,6 @@ public class CourseLevelValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.courseLevelLocators = new CourseLevelLocators(driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
@@ -83,9 +75,8 @@ public class CourseLevelValidation implements Callable<String>
 				switch(firstColumn)
 				{
 				
-				/*
-				 * case "HomePage": checkHomePage(); break;
-				 */
+				
+				 
 				
 				
 				  case "categoryPagesProgramCards": checkCategoryPagesForProgramCards(); break;

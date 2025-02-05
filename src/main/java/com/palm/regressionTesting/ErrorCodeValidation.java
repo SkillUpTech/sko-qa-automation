@@ -24,20 +24,12 @@ public class ErrorCodeValidation implements Callable<String>
 	{
 		this.sheetData = sheetData;
 	}
-	public WebDriver openDriver(String browserName) 
-	 {
-	        return DriverManager.getDriver(browserName);
-	 }
 	@Override
 	public String call() throws Exception {
 		System.out.println("ProgramURL and SLUG verification started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.errorCodeLocator = new ErrorCodeLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{

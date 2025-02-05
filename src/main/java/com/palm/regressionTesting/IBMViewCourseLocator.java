@@ -19,7 +19,7 @@ import com.palm.regressionTesting.RegressionTesting;
 public class IBMViewCourseLocator
 {
 	WebDriver driver;
-	
+	String parentWindow = "";
 	public IBMViewCourseLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -27,12 +27,13 @@ public class IBMViewCourseLocator
 	
 	public String checkLogin(String userName, String passWord)
 	{
+		parentWindow = driver.getWindowHandle();
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 		try
 		{
-			WebElement clickLogin = driver.findElement(By.cssSelector("ul[class='list-unstyled navbar-nav nav Header_navButtons__3h4Rp'] li[class='Header_loginBtn__3Xv3A'] a"));
+			WebElement clickLogin = driver.findElement(By.cssSelector("div[class*='Header_loginBtn']>a"));
 			js.executeScript("arguments[0].scrollIntoView();", clickLogin);
 			wait.until(ExpectedConditions.elementToBeClickable(clickLogin));
 			if(clickLogin.isDisplayed())
@@ -136,6 +137,7 @@ public class IBMViewCourseLocator
 	public String checkDashboard()
 	{
 		String status = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			Set<String> listOfWindow = driver.getWindowHandles();
@@ -150,6 +152,27 @@ public class IBMViewCourseLocator
 					driver.switchTo().window(windows);
 					System.out.println("logged in successfully");
 					status = "pass";
+					System.out.println("Navigated to dashboard page");
+					WebElement clickDropDown = driver.findElement(By.cssSelector("li[class*='SigNUP'] img[alt='icon']"));
+					js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
+					if(clickDropDown.isDisplayed())
+					{
+						js.executeScript("arguments[0].click()", clickDropDown);
+					}
+					WebElement checkLoggedName = driver.findElement(By.cssSelector("li[class*='SigNUP'] ul[class*='dropdown-menu'] li:nth-child(1) a"));
+					js.executeScript("arguments[0].scrollIntoView();", checkLoggedName);
+					String checkText = checkLoggedName.getText();
+					if(checkText.contains("Hello"))
+					{
+						System.out.println("logged in successfully");
+						WebElement signout = driver.findElement(By.cssSelector("div[class='headerRight']>ul:nth-child(4) ul[class*='dropdown-menu']>li:nth-child(5)>a"));
+						js.executeScript("arguments[0].scrollIntoView();", signout);
+						if(signout.isDisplayed())
+						{
+							js.executeScript("arguments[0].click()", signout);
+							System.out.println("logged out successfully");
+						}
+					}
 				}
 			}
 			
@@ -165,13 +188,16 @@ public class IBMViewCourseLocator
 	public ArrayList<String> verifyIBMCourse()
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			List<WebElement> ibmCourse = driver.findElements(By.xpath("//a[contains(text(),'IBM')]"));////a[contains(text(),'IBM')]//preceding::a[@class='dashboardCourseCards_spanLink__TuRN5'][@href]
-			
 			for(int i = 0; i < ibmCourse.size(); i++)
 			{
-				WebElement getIBMURL = ibmCourse.get(i).findElement(By.xpath("//preceding::a[@class='dashboardCourseCards_spanLink__TuRN5'][@href]"));
+				js.executeScript("arguments[0].scrollIntoView();", ibmCourse.get(i));
+				
+				WebElement getIBMURL = ibmCourse.get(i);
+				js.executeScript("arguments[0].scrollIntoView();", getIBMURL);
 				String getURL = getIBMURL.getAttribute("href");
 				String parentWindow = driver.getWindowHandle();
 				driver.switchTo().newWindow(WindowType.TAB);

@@ -22,20 +22,19 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class FooterSectionLocator
 {
 	WebDriver driver;
-	String parentWindow;
+	String parentWindow="";
+	String footerValidationPage = "";
 	public FooterSectionLocator(WebDriver driver)
 	{
 		this.driver = driver;
 	}
-	public String getDriverDetails()
-	{
-		String driverName =	OpenWebsite.openSite(driver)+"/";
-		return driverName;
-	}
 	public String verifySkillupLogo() throws InterruptedException
 	{
 		parentWindow = driver.getWindowHandle();
-		
+		String getURL = driver.getCurrentUrl();
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(getURL);
+		footerValidationPage = driver.getWindowHandle();
 		String status = "fail";
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -61,7 +60,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					status = "pass";
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
 				}
 			} 
 			
@@ -97,7 +96,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					status = "success";
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
                 }
 	        }
 		}
@@ -132,7 +131,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
 					status = "success";
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
@@ -172,7 +171,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					status = "success";
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			} 
@@ -208,7 +207,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
 					status = "success";
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
@@ -247,7 +246,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					driver.close();
-					driver.switchTo().window(parentWindow);
+					driver.switchTo().window(footerValidationPage);
 					status = "success";
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
@@ -284,7 +283,7 @@ public class FooterSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -323,7 +322,7 @@ public class FooterSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -364,7 +363,7 @@ public class FooterSectionLocator
 						driver.get(getFAQURL);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -408,7 +407,7 @@ public class FooterSectionLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -449,7 +448,7 @@ public class FooterSectionLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -491,7 +490,7 @@ public class FooterSectionLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						status = "success";
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						break;
@@ -542,7 +541,7 @@ public class FooterSectionLocator
 							} 
 						}
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					}
 				}
@@ -630,7 +629,7 @@ public class FooterSectionLocator
 							} 
 						}
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(footerValidationPage);
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					}
 				}
@@ -678,11 +677,13 @@ public class FooterSectionLocator
 	    				} 
 	    			}	
 	                driver.close();
-	                driver.switchTo().window(parentWindow);
+	                driver.switchTo().window(footerValidationPage);
 	                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 	            }
 			}
-			
+			driver.switchTo().window(footerValidationPage);
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch (Exception e)
 		{

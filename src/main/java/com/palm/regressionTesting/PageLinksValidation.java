@@ -21,15 +21,12 @@ public class PageLinksValidation implements Callable<String>
 	ArrayList<ArrayList<String>> sheetData = null;
 	PageLinksLocator pageLinksLocator;
 	String sheetStatus = "Pass";
-	public PageLinksValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public PageLinksValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
+		this.driver = driver;
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	@Override
 	public String call() throws Exception
@@ -38,10 +35,6 @@ public class PageLinksValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.pageLinksLocator = new PageLinksLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -62,7 +55,6 @@ public class PageLinksValidation implements Callable<String>
 		{
 			e.printStackTrace();
 		}
-		driver.quit();
 		return sheetStatus;
 	
 	}

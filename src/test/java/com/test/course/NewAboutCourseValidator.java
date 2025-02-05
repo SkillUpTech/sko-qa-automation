@@ -34,7 +34,7 @@ public class NewAboutCourseValidator
 
 	public String processSheetData() {
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
-		newAboutCourseLocators.openDriver();
+		//newAboutCourseLocators.openDriver();
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) {
 			ArrayList<String> currentRow = ROWS.get(CURRENT_ROW);
 			String process = currentRow.get(0);
@@ -53,9 +53,9 @@ public class NewAboutCourseValidator
 		{
 			switch (process)
 			{
-			case "environment":
-				environment(row.get(1));
-				break;
+			/*
+			 * case "environment": environment(row.get(1)); break;
+			 */
 			case "courseCode":
 				courseCode(row.get(1));
 				break;
@@ -160,19 +160,14 @@ public class NewAboutCourseValidator
 
 	String loginURL, getImageHost;
 
-	private void environment(String environmentFromExcel)
-	{
-		try
-		{
-			String checkEnvironment = newAboutCourseLocators.setEnvironment(environmentFromExcel);
-			getMetaHost = newAboutCourseLocators.setMetaHostURL();
-		//	getImageHost = newAboutCourseLocators.setImageEndpoint(environmentFromExcel);
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * private void environment(String environmentFromExcel) { try { String
+	 * checkEnvironment =
+	 * newAboutCourseLocators.setEnvironment(environmentFromExcel); getMetaHost =
+	 * newAboutCourseLocators.setMetaHostURL(); // getImageHost =
+	 * newAboutCourseLocators.setImageEndpoint(environmentFromExcel); }
+	 * catch(Exception e) { e.printStackTrace(); } }
+	 */
 	private void courseCode(String courseCodeFromExcel) {
 		String courseCodestatus = "true";
 		try {

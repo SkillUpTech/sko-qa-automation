@@ -56,7 +56,7 @@ public class TestRegressionGenericProcess
 				ArrayList<ArrayList<String>> sheetData = entry.getValue();
 				try
 				{
-					RegressionGenericValidator regressionGenericValidator = new RegressionGenericValidator(sheetName, sheetData);
+					RegressionGenericValidator regressionGenericValidator = new RegressionGenericValidator(driver, sheetName, sheetData);
 					String sheetStatus = regressionGenericValidator.processSheetData();
 					sheetsResult.put(sheetName, sheetStatus);
 				}

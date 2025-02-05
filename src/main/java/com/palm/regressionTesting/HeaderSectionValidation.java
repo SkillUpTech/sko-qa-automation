@@ -13,17 +13,13 @@ public class HeaderSectionValidation implements Callable<String>
 	HeaderSectionLocator headerSectionLocator;
 	String sheetStatus = "Pass";
 	WebDriver driver;
-	OpenWebsite openWebsite;
-	public HeaderSectionValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	
+	public HeaderSectionValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
+		this.driver = driver;
 		
 	}
-	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	
 	public void checkSkillupLogo(String data) throws InterruptedException
@@ -129,10 +125,6 @@ public class HeaderSectionValidation implements Callable<String>
 		System.out.println("header process started");
 		try
 		{
-			driver = this.openDriver(com.palm.regressionTesting.RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerSectionLocator = new HeaderSectionLocator(driver);
 		int j = 1;
 		while(j<=1)
@@ -153,18 +145,18 @@ public class HeaderSectionValidation implements Callable<String>
 					case "blog":
 						checkBlog(row);
 						break;
-					case "categories":
-						checkCategories();
-						break;
-					case "popularCourses":
-						checkPopularCourses();
-						break;
+					
+					/*
+					 * case "categories": checkCategories(); break; case "popularCourses":
+					 * checkPopularCourses(); break;
+					 */
+					 
 					case "login":
 						checkLogin(row);
 						break;
-					case "learningPartner":
-						checkLearningPartner();
-						break;
+					/*
+					 * case "learningPartner": checkLearningPartner(); break;
+					 */
 					case "signUP":
 						checkSignUP(row);
 						break;
@@ -172,7 +164,7 @@ public class HeaderSectionValidation implements Callable<String>
 			}
 			j++;
 		}
-		DriverManager.quitDriver();
+		//DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

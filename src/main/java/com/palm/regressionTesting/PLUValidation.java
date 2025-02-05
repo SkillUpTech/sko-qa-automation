@@ -21,10 +21,10 @@ public class PLUValidation implements Callable<String>
 	WebDriver driver;
 	OpenWebsite openWebsite;
 	
-	public PLUValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public PLUValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -123,37 +123,16 @@ public class PLUValidation implements Callable<String>
 		}
 	}
 
-	public WebDriver openDriver(String browserName)
-	{
-		WebDriver driver = null;
-		if(browserName.equalsIgnoreCase("Chrome"))
-		{
-			System.setProperty("webdriver.chrome.driver", RegressionTesting.driverPath);
-			ChromeOptions options = new ChromeOptions();
-			options.addArguments("--remote-allow-origins=*");
-			options.addArguments("--disable notifications");
-			driver = new ChromeDriver(options);
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		else if(browserName.equalsIgnoreCase("firefox"))
-		{
-			System.setProperty("webdriver.gecko.driver","C:\\Users\\Hemamalini\\Downloads\\geckodriver-v0.33.0-win64\\geckodriver.exe");
-			driver = new FirefoxDriver(); 
-			driver.manage().window().maximize();
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(TestUtil.PAGE_LOAD_TIMEOUT));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-		}
-		return driver;
-	}
 	@Override
 	public String call() throws Exception {
 		System.out.println("PLU process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.PLUPageLocators = new PLULocators(driver);
@@ -186,7 +165,7 @@ public class PLUValidation implements Callable<String>
 				break;
 			}
 		}
-		 DriverManager.quitDriver();
+		// DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

@@ -83,6 +83,7 @@ public class HeaderFooterInStagecoursesLocator
 	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'placement?')]")
 	private List<WebElement> clickPlacementFooter;
 	
+	String parentWindow = "";
 	
 	public HeaderFooterInStagecoursesLocator(WebDriver driver)
 	{
@@ -90,7 +91,6 @@ public class HeaderFooterInStagecoursesLocator
 		PageFactory.initElements(driver, this);
 	}
 	
-	String parentWindow = "";
 	
 	public String FindOutMoreProcess(String data)
 	{
@@ -138,7 +138,7 @@ public class HeaderFooterInStagecoursesLocator
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		
+		parentWindow = driver.getWindowHandle();
 		try
 		{
 			if ((clickLoginIcon).size() > 0)

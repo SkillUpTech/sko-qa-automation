@@ -21,11 +21,12 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 	String jiraProcess ="";
 	IBMSkillBuildPageLocator ibmSkillBuildPageLocator;
 	String sheetStatus = "Pass";
-	
-	public IBMSkillBuildPageValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
+	WebDriver driver;
+	public IBMSkillBuildPageValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
 	{
 		this.sheetData = sheetData;
 		this.jiraProcess = jiraProcessStatus;
+		this.driver = driver;
 	}
 	
 		
@@ -41,21 +42,13 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 			}
 		}
 	}
-	 public WebDriver openDriver(String browserName) {
-	        return DriverManager.getDriver(browserName);
-	    }
 	@Override
 	public String call() throws Exception
 	{
 		System.out.println("IBM Skills build page validation Process started");
 
-		WebDriver driver = null; 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.ibmSkillBuildPageLocator = new IBMSkillBuildPageLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{

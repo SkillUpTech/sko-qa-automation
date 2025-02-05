@@ -20,12 +20,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class TechMasterLocator
 {
 	WebDriver driver;
-String courseCardSection = "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]";
+String courseCardSection = "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]|//div[contains(@class,'container-fluid Courses_containerInner')]/div[2]";
 	
-	@FindBy(xpath =  "//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//button[contains(text(),'Show more')]")
+	@FindBy(xpath =  "//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//button[contains(text(),'Show more')]|//button[contains(text(),'Show more')]")
 	private List<WebElement> CourseCardShowmoreLocator;
 	
-	@FindBy(xpath = "//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//div[contains(@class,'LearningCatalog_customCard')]")
+	@FindBy(xpath = "//div[contains(@class,'container-fluid Courses_containerInner')]/div[2]/div[3]/div[contains(@class,'LearningCatalog_cardRow')]/div|//div[contains(@class,'container-fluid FutureSkillPrimeCourses_containerInner')]/div[3]//div[contains(@class,'LearningCatalog_customCard')]")
 	private List<WebElement> CourseCards;
 	
 	String courseCardURL = ".//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a";
@@ -44,7 +44,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 	
 	String courseEnrollmentSection = ".//div[contains(@class,'RegularCourseCard_priceSection')]//div[contains(@class,'RegularCourseCard_priceLeft')]";
 	
-	String CourseCardsEnrollStatus = ".//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Enrollment Status')]/following-sibling::p";
+	String CourseCardsEnrollStatus = ".//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Enrollment Status')]/following-sibling::p|//div[contains(@class,'RegularCourseCard_priceSectionInner')]//h2[contains(text(),'Coming soon')]/following-sibling::p";
 	
 	//String courseCardCourseStartedDate = "";
 	
@@ -64,7 +64,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 	
 	String CoursePageDurationSection = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]";
 	
-	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2";
+	String CoursePageSelfOrVilt = ".//div[contains(@class,'d-flex gap-2')][1]/div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Starts')]";
 	
 	String CoursePageEnrollmentSection = ".//div[contains(@class,'CourseDescription_PreferredCohort')]|//div[contains(@class,'CourseDescription_buttonsContent')]";
 	
@@ -72,6 +72,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 	
 	String CoursePagePrice = ".//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p|//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'From')]/following-sibling::p";
 	String parentWindow = "";
+	String futureSkillPage = "";
 	public TechMasterLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -83,8 +84,11 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 		String Status = "";
 		try
 		{
+			parentWindow = driver.getWindowHandle();
+			String urllaunch = driver.getCurrentUrl()+url;
 			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setHost+url);
+			driver.get(urllaunch);
+			futureSkillPage = driver.getWindowHandle();
 			Status = "pass";
 		}
 		catch(Exception e)
@@ -132,7 +136,6 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 				WebElement learnmore = driver.findElement(By.cssSelector("a[class*='EligibleForIncentive_knowMoreButton']"));
 				js.executeScript("arguments[0].click()", learnmore);
 				Status = "pass";
-				parentWindow = driver.getWindowHandle();
 			}
 		}
 		catch(Exception e)
@@ -180,6 +183,23 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 			 }
 			return status;
 	}
+	private static final int MAX_RETRY_COUNT = 3;
+	private WebElement retryFindElement(By by) {
+        int attempts = 0;
+        while (attempts < MAX_RETRY_COUNT) {
+            try {
+                return driver.findElement(by);
+            } catch (Exception e) {
+                attempts++;
+                try {
+                    Thread.sleep(500); // Wait before retrying
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }
+        return null; // Return null if element is not found after retries
+    }
 	public ArrayList<String> Cards()
 	{
 		ArrayList<String> status = new ArrayList<String>();
@@ -215,16 +235,20 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 			        }
 			    }
 			}
-			
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			futureSkillPage = driver.getWindowHandle();
+			//js.executeScript("arguments[0].scrollIntoView();", courseCardSection);
+			//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			//driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(80));
 			if(CourseCards.size()>0)
 			{
 				List<WebElement> courseCard = CourseCards;
 				
 				for(WebElement card : courseCard)
 				{
+					Thread.sleep(50);
+					//js.executeScript("arguments[0].scrollIntoView();", courseCardSection);
 					js.executeScript("arguments[0].scrollIntoView();", card);
-					
+					WebElement courseCardNameElement = retryFindElement(By.xpath(CourseCardsName));
 					String courseCardName = card.findElement(By.xpath(CourseCardsName)).getText();
 					
 					String getCourseCardURL = card.findElement(By.xpath(courseCardURL)).getAttribute("href");
@@ -353,7 +377,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if (driver.getCurrentUrl().contains("404")) 
 					{
 						status.add("404 page is present in this card page  " + courseCardName);
@@ -406,24 +430,50 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 						}
 						else
 						{
-							List<WebElement> enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
-							String getPageEnrollStatus = enrollButton.get(0).getText();
-							if(getPageEnrollStatus.contains("Enroll Now"))
-							{
-								pageEnrollmentStatus.add("Open");
-							}
-							else if(getPageEnrollStatus.contains("Enrollment is Closed"))
-							{
-								pageEnrollmentStatus.add("Closed");
-							}
-							else if(getPageEnrollStatus.contains("Enroll now"))
-							{
-								pageEnrollmentStatus.add("Closed");
-							}
-							else
-							{
-								pageEnrollmentStatus.add("Closed");
-							}
+							/*
+							 * List<WebElement> enrollButton =
+							 * CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus)); String
+							 * getPageEnrollStatus = enrollButton.get(0).getText();
+							 * if(getPageEnrollStatus.contains("Enroll Now")) {
+							 * pageEnrollmentStatus.add("Open"); } else
+							 * if(getPageEnrollStatus.contains("Enrollment is Closed")) {
+							 * pageEnrollmentStatus.add("Closed"); } else
+							 * if(getPageEnrollStatus.contains("Enroll now")) {
+							 * pageEnrollmentStatus.add("Open"); } else {
+							 * pageEnrollmentStatus.add("Closed"); }
+							 */
+							WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+							 List<WebElement> enrollButton;
+
+							    for (int attempt = 0; attempt < 3; attempt++) {  // Retry mechanism
+							        try {
+							            enrollButton = wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath(CoursePageEnrollStatus)));
+							            
+							            if (!enrollButton.isEmpty()) {
+							                String getPageEnrollStatus = enrollButton.get(0).getText();
+
+							                if (getPageEnrollStatus.contains("Enroll Now"))
+							                {
+							                    pageEnrollmentStatus.add("Open");
+							                } 
+											else if (getPageEnrollStatus.contains("Enrollment is Closed"))
+											{
+												pageEnrollmentStatus.add("Closed");
+											} 
+											else if (getPageEnrollStatus.contains("Enroll now"))
+											{
+												pageEnrollmentStatus.add("Open");
+											}
+							                else
+							                {
+							                    pageEnrollmentStatus.add("Closed");
+							                }
+							                break; // Exit loop if successful
+							            }
+							        } catch (Exception e) {
+							            System.out.println("StaleElementReferenceException encountered. Retrying... Attempt " + (attempt + 1));
+							        }
+							    }
 						}
 						
 						if (cardEnrollmentStatus.size() == pageEnrollmentStatus.size())
@@ -451,7 +501,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 							{
 								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
+									//String getDurationText = CoursePageSection.findElement(By.xpath(CoursePageSelfOrVilt)).getText(); //Starts on
 									
 									if(pageLevelStatus.get(0).toLowerCase().contains("self"))//self paced
 									{
@@ -521,7 +571,7 @@ String courseCardSection = "//div[contains(@class,'container-fluid Courses_conta
 					pagePriceStatus.clear();
 					pageEnrollmentStatus.clear();
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(futureSkillPage);
 				}
 				}
 			}

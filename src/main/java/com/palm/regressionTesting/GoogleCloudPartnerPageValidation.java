@@ -14,15 +14,12 @@ public class GoogleCloudPartnerPageValidation implements Callable<String>
 	String sheetStatus = "Pass";
 	String checkGoogleCloudPage = "";
 	
-	public GoogleCloudPartnerPageValidation(ArrayList<ArrayList<String>> sheetData)
+	public GoogleCloudPartnerPageValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
+		this.driver = driver;
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
 	@Override
 	public String call() throws Exception 
@@ -31,12 +28,6 @@ public class GoogleCloudPartnerPageValidation implements Callable<String>
 		
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
-			
 			this.googleCloudPartnerPageLocator = new GoogleCloudPartnerPageLocator(driver);
 			
 			for(int i = 0; i < this.sheetData.size(); i++)
@@ -56,13 +47,11 @@ public class GoogleCloudPartnerPageValidation implements Callable<String>
 					  	break; 
 				}
 			}
-			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		driver.quit();
 		return sheetStatus;
 	
 	}

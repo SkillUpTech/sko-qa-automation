@@ -24,32 +24,23 @@ public class ReimbursedLocator
 		this.driver = driver;
 		this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
-	
+	String parentWindow = "";
 	public String checkLaunchCourse(String data)
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		String status = "";
 		try
 		{
-			url = OpenWebsite.setURL+data;
+			parentWindow = driver.getWindowHandle();
+			url = driver.getCurrentUrl()+data;
 			String urlStatus = microsoftCourseLocator.checkURLStatus(url);
 			if(!urlStatus.contains("fail"))
 			{
 				driver.switchTo().newWindow(WindowType.TAB);
 				driver.get(url);
-				Set<String> allWindow = driver.getWindowHandles();
-				for(String window : allWindow)
-				{
-					driver.switchTo().window(window);
-					if(driver.getCurrentUrl().contains(url))
-					{
-						driver.switchTo().window(window);
-						System.out.println("course opened : "+url);
-						courseTitle = driver.findElement(By.xpath("//h1")).getText();
-						status = "pass";
-						break;
-					}
-				}
+				System.out.println("course opened : "+url);
+				courseTitle = driver.findElement(By.xpath("//h1")).getText();
+				status = "pass";
 			}
 			else
 			{
@@ -93,7 +84,6 @@ public class ReimbursedLocator
 		String status = "";
 		try
 		{
-			String parentWindow = driver.getCurrentUrl();
 			Set<String> allWindow = driver.getWindowHandles();
 			for(String window : allWindow)
 			{
@@ -124,6 +114,8 @@ public class ReimbursedLocator
 				}
 				driver.switchTo().window(window);
 			}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

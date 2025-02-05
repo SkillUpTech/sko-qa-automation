@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2025-01-30T13:49:22 IST" name="Testing Google Apps" finished-at="2025-01-30T13:51:43 IST" duration-ms="141278">
+  <suite started-at="2025-02-05T19:17:15 IST" name="Testing Google Apps" finished-at="2025-02-05T19:23:00 IST" duration-ms="345607">
     <groups>
     </groups>
-    <test started-at="2025-01-30T13:49:22 IST" name="Regression" finished-at="2025-01-30T13:51:43 IST" duration-ms="141278">
-      <class name="com.formValidation.testing.RegressionTesting">
-        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.formValidation.testing.RegressionTesting@548d708a]" started-at="2025-01-30T13:49:22 IST" name="setup" finished-at="2025-01-30T13:49:23 IST" duration-ms="1370" status="PASS">
+    <test started-at="2025-02-05T19:17:15 IST" name="Regression" finished-at="2025-02-05T19:23:00 IST" duration-ms="345607">
+      <class name="com.palm.regressionTesting.RegressionTesting">
+        <test-method is-config="true" signature="setup(java.lang.String,java.lang.String)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@53fb3dab]" started-at="2025-02-05T19:17:15 IST" name="setup" finished-at="2025-02-05T19:17:21 IST" duration-ms="6319" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -16,29 +16,33 @@
             </param>
             <param index="1">
               <value>
-                <![CDATA[qa-in]]>
+                <![CDATA[prod-in]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setup -->
-        <test-method signature="startTesting()[pri:0, instance:com.formValidation.testing.RegressionTesting@548d708a]" started-at="2025-01-30T13:49:23 IST" name="startTesting" finished-at="2025-01-30T13:51:43 IST" duration-ms="139883" status="PASS">
+        <test-method signature="startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@53fb3dab]" started-at="2025-02-05T19:17:21 IST" name="startTesting" finished-at="2025-02-05T19:23:00 IST" duration-ms="338832" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- startTesting -->
-        <test-method is-config="true" signature="afterMethod(org.testng.ITestResult)[pri:0, instance:com.formValidation.testing.RegressionTesting@548d708a]" started-at="2025-01-30T13:51:43 IST" name="afterMethod" finished-at="2025-01-30T13:51:43 IST" duration-ms="1" status="PASS">
+        <test-method is-config="true" signature="getResult(org.testng.ITestResult)[pri:0, instance:com.palm.regressionTesting.RegressionTesting@53fb3dab]" started-at="2025-02-05T19:23:00 IST" name="getResult" finished-at="2025-02-05T19:23:00 IST" duration-ms="3" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.formValidation.testing.RegressionTesting@548d708a] output={null}]]]>
+                <![CDATA[[TestResult name=startTesting status=SUCCESS method=RegressionTesting.startTesting()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@53fb3dab] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- afterMethod -->
-      </class> <!-- com.formValidation.testing.RegressionTesting -->
+        </test-method> <!-- getResult -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.palm.regressionTesting.RegressionTesting@53fb3dab]" started-at="2025-02-05T19:23:00 IST" name="tearDown" finished-at="2025-02-05T19:23:00 IST" duration-ms="374" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- com.palm.regressionTesting.RegressionTesting -->
     </test> <!-- Regression -->
   </suite> <!-- Testing Google Apps -->
 </testng-results>

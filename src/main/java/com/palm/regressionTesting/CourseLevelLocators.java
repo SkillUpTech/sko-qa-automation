@@ -157,9 +157,10 @@ public class CourseLevelLocators
 		
 		try
 		{
-			if(driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]")).size()>0)
+			parentWindow = driver.getWindowHandle();
+			if(driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]//div[@id='learningCatalog2']//div[contains(@class,'LearningCatalog_cardRow')]/div")).size()>0)////section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]
 			{
-				List<WebElement> courseCards = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]"));
+				List<WebElement> courseCards = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]//div[@id='learningCatalog2']//div[contains(@class,'LearningCatalog_cardRow')]/div"));
 				for(int i = 0; i < courseCards.size(); i++)
 				{
 					if(courseCards.size()>0)
@@ -171,7 +172,7 @@ public class CourseLevelLocators
 						{
 							System.out.println("self paced course card");
 							
-							parentWindow = driver.getWindowHandle();
+							//parentWindow = driver.getWindowHandle();
 							WebElement cardLink = checkCourseCardLevel.findElement(By.xpath(".//ancestor::a"));
 							String url = cardLink.getAttribute("href");
 							js.executeScript("arguments[0].scrollIntoView();", cardLink);

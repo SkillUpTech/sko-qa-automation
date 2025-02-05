@@ -13,82 +13,16 @@ public class SearchPageValidation implements Callable<String>
 	WebDriver driver;
 	SearchPageLocator searchPageLocator;
 	String sheetStatus = "Pass";
+	String parentWindow = "";
 	
-	
-	public SearchPageValidation(ArrayList<ArrayList<String>> sheetData)
+	public SearchPageValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	
-	public void validDataSearch(ArrayList<String> dataFromExcel)
-	{
-		if(!dataFromExcel.contains("NA"))
-		{
-			ArrayList<String> getStatus = searchPageLocator.validDataSearchProcess(dataFromExcel);
-			for(int i = 0; i < getStatus.size(); i++)
-			{
-				if(getStatus.contains("fail"))
-				{
-					sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(0).set(0, "validDataSearch - failed");
-				}
-				else if(getStatus.contains("not"))
-				{
-					sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(0).add(i+2, (getStatus.get(i) + " - failed"));
-				}
-			}
-		}
-	}
 	
-	public void invalidDataSearch(ArrayList<String> dataFromExcel)
-	{
-		if(!dataFromExcel.contains("NA"))
-		{
-			ArrayList<String> getStatus = searchPageLocator.invalidDataSearchProcess(dataFromExcel);
-			for(int i = 0; i < getStatus.size(); i++)
-			{
-				if(getStatus.contains("fail"))
-				{sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(1).set(0, "invalidDataSearch - failed");
-				}
-				else if(getStatus.contains("not"))
-				{
-					sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(1).add(i+2, (getStatus.get(i) + " - failed"));
-				}
-			}
-		}
-	}
-	
-	public void emptySeach(ArrayList<String> dataFromExcel)
-	{
-		if(!dataFromExcel.contains("NA"))
-		{
-			ArrayList<String> getStatus = searchPageLocator.emptySearchProcess(dataFromExcel);
-			for(int i = 0; i < getStatus.size(); i++)
-			{
-				if(getStatus.contains(""))
-				{sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(2).set(0, "emptySeach - failed");
-				}
-				else if(getStatus.contains("not"))
-				{
-					sheetStatus="Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(2).add(i+2, (getStatus.get(i) + " - failed"));
-				}
-			}
-		}
-	}
-
-	
-
 
 
 	@Override
@@ -97,10 +31,6 @@ public class SearchPageValidation implements Callable<String>
 		System.out.println("Search  process started");
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.searchPageLocator = new SearchPageLocator(driver);
 			for(int i = 0; i < this.sheetData.size(); i++)
 			{
@@ -109,11 +39,10 @@ public class SearchPageValidation implements Callable<String>
 				switch(firstColumn)
 				{
 				
-				  case "searchCategory": searchCategory(row); break; case "searchCourse":
-				  searchCourse(row); break; case "searchProgram": searchProgram(row); break;
+				  case "searchCategory": searchCategory(row); break; 
+				  case "searchCourse": searchCourse(row); break; 
+				  case "searchProgram": searchProgram(row); break;
 				  case "searchInvalidData": searchInvalidData(row); break;
-				 
-				
 				  case "BlankResultValidation": BlankResultValidation(row); break;
 				 
 				
@@ -121,7 +50,6 @@ public class SearchPageValidation implements Callable<String>
 				 
 				}
 			}
-			DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{
@@ -219,7 +147,7 @@ public class SearchPageValidation implements Callable<String>
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(7).set(0,	" - failed");
 				} 
-				else if (getStatus.size()>0)
+				else if (getStatus.contains("fail"))
 				{
 					sheetStatus = "Fail";
 					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SearchProcess").get(7).add((getStatus.size() + 1),	(getStatus.get(i) + " - failed"));

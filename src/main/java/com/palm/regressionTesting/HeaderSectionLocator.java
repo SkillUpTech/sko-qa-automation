@@ -1,6 +1,7 @@
 package com.palm.regressionTesting;
 
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class HeaderSectionLocator
 {
 	WebDriver driver;
 	String parentWindow = "";
+	String HeaderPage = "";
 	public HeaderSectionLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -29,6 +31,12 @@ public class HeaderSectionLocator
 	{
 		String status = "fail";
 		parentWindow = driver.getWindowHandle();
+		String getParentURL = driver.getCurrentUrl();
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(getParentURL);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+		HeaderPage = driver.getWindowHandle();
+		
 		String skillupLogoLocator = "div[class*='Header_headerLeft'] a img[alt='logo']";
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		try
@@ -87,7 +95,7 @@ public class HeaderSectionLocator
                        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
                        status = "pass";
                        driver.close();
-                       driver.switchTo().window(parentWindow);
+                       driver.switchTo().window(HeaderPage);
 					}
 				}
 			}
@@ -105,7 +113,7 @@ public class HeaderSectionLocator
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String businessLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(1) a";
+		String businessLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(1) a,ul[class*='Header_navLinks'] li:nth-child(1) a";
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
 		try
 		{
@@ -133,7 +141,7 @@ public class HeaderSectionLocator
                 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
                 		status = "pass";
                 		driver.close();
-                		driver.switchTo().window(parentWindow);
+                		driver.switchTo().window(HeaderPage);
                 	}
                 }
             }
@@ -152,14 +160,14 @@ public class HeaderSectionLocator
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(70));
-		String blogLocator = "div[class*='Header_headerRight'] ul[class*='Header_navLinks'] li:nth-child(3) a";
+		String blogLocator = "//header[@id='headerBody']/ul[contains(@class,'Header_navLinks')]/li[3]/a";
 		try
 		{
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-			if (driver.findElements(By.cssSelector(blogLocator)).size() > 0)
+			if (driver.findElements(By.xpath(blogLocator)).size() > 0)
 			{
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				WebElement clickBlog = driver.findElement(By.cssSelector(blogLocator));
+				WebElement clickBlog = driver.findElement(By.xpath(blogLocator));
 				js.executeScript("arguments[0].scrollIntoView();", clickBlog);
 				if (clickBlog.isDisplayed())
 				{
@@ -178,7 +186,7 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 						status = "pass";
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HeaderPage);
 					}
 				}
 			}
@@ -198,7 +206,7 @@ public class HeaderSectionLocator
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		System.out.println("categories validation started");
-		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown";
+		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown,div[class*='Header_mainNavBtn'] img[alt='icon']";
 		String categoryLocator = "ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='MainCatE catcolumn divbox1']>ul[class='categorylist customscroll dropdown-submenu']>li a";
 		try
 		{
@@ -228,7 +236,7 @@ public class HeaderSectionLocator
                         	driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
                         	driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
                         	driver.close();
-                        	driver.switchTo().window(parentWindow);
+                        	driver.switchTo().window(HeaderPage);
                         }
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 					}
@@ -249,7 +257,7 @@ public class HeaderSectionLocator
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String megaMenuDropdownLocator = "ul[class*='navbar-nav nav '] a#navbarDropdown";
+		String megaMenuDropdownLocator = "//div[contains(@class,'Header_mainNavBtn')]//img[@alt='icon']";
 		String popularCourseLocator = "ul[class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show'] div[class='PolularCourSE catcolumn divbox3'] ul[class='MegaMenu_PopularCourse'] li a";
 		try
 		{
@@ -279,7 +287,11 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HeaderPage);
+						WebElement againClickDropdown = driver.findElement(By.cssSelector(megaMenuDropdownLocator));
+						js.executeScript("arguments[0].scrollIntoView();", againClickDropdown);
+						js.executeScript("arguments[0].click()", againClickDropdown);
+						
 					}
 				}
 			}
@@ -300,13 +312,13 @@ public class HeaderSectionLocator
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		String status = "fail";
-		String loginLocator = "div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_loginBtn'] a";
+		String loginLocator = "//header[@id='headerBody']/div[4]//div[contains(@class,'Header_loginBtn')]/a";
 		
 		try
 		{
-			if (driver.findElements(By.cssSelector(loginLocator)).size() > 0)
+			if (driver.findElements(By.xpath(loginLocator)).size() > 0)
 			{
-				WebElement clickLogin = driver.findElement(By.cssSelector(loginLocator));
+				WebElement clickLogin = driver.findElement(By.xpath(loginLocator));
 				js.executeScript("arguments[0].scrollIntoView();", clickLogin);
 				String getLoginURL = clickLogin.getAttribute("href");
 				if (clickLogin.isDisplayed()) 
@@ -323,7 +335,7 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 						status = "pass";
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HeaderPage);
 					}
 				}
 			}
@@ -341,12 +353,12 @@ public class HeaderSectionLocator
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String signUpLocator = "div[class*='Header_headerRight'] ul[class*='Header_navButtons'] li[class*='Header_signupBtn'] a";
+		String signUpLocator = "//header[@id='headerBody']/div[4]//div[contains(@class,'Header_signupBtn')]/a";
 		try
 		{
-			if (driver.findElements(By.cssSelector(signUpLocator)).size() > 0)
+			if (driver.findElements(By.xpath(signUpLocator)).size() > 0)
 			{
-				WebElement clickSignUp = driver.findElement(By.cssSelector(signUpLocator));
+				WebElement clickSignUp = driver.findElement(By.xpath(signUpLocator));
 				js.executeScript("arguments[0].scrollIntoView();", clickSignUp);
 				String getSignUpURL = clickSignUp.getAttribute("href");
 				
@@ -365,7 +377,7 @@ public class HeaderSectionLocator
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 						status = "pass";
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HeaderPage);
 					}
 				}
 			}
@@ -378,36 +390,44 @@ public class HeaderSectionLocator
 		return status;
 	}
 	
-	public String checkURLStatus(String getURL)
+	public String checkURLStatus(String data)
 	{
-		String urlStatus = "fail";
-		String addHosturl = getURL;
-		HttpURLConnection huc = null;
-		int respCode = 200;
-		try
-		{
-			huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-			huc.setRequestMethod("HEAD");
-			huc.connect();
-			respCode = huc.getResponseCode();
-			System.out.println("status code : "+respCode + " " +addHosturl);
-			if(respCode > 200)
-			{
-				System.out.println("broken link"+addHosturl);
-				urlStatus = "fail";
-			}
-			else
-			{
-				System.out.println("un broken link"+addHosturl);
-				urlStatus = "pass";
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			urlStatus = "fail";
-		}
-		return urlStatus;
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+				 	URI uri = new URI(data);
+			        URL url = uri.toURL(); 
+			        connection = (HttpURLConnection) url.openConnection();
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
+			return status;
 	}
 	public ArrayList<String> verifyLearningPartner()
 	{
@@ -447,7 +467,7 @@ public class HeaderSectionLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(300));
 							driver.close();
-							driver.switchTo().window(parentWindow);
+							driver.switchTo().window(HeaderPage);
 						}
 					}
 				}

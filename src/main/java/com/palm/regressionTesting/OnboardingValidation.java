@@ -16,15 +16,15 @@ import com.regression.utility.TestUtil;
 public class OnboardingValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
-	
+	WebDriver driver;
 	OnboardingLocator onboardingLocator;
 	String sheetStatus = "Pass";
 
-	public OnboardingValidation(ArrayList<ArrayList<String>> sheetData)
+	public OnboardingValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 
 	
@@ -105,19 +105,11 @@ public class OnboardingValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("OnboardingJourney").get(7).set(0, "jobOpportunites - failed");
 		}
 	}
-    public WebDriver openDriver(String browserName) {
-        return DriverManager.getDriver(browserName);
-    }
     @Override
 	public String call() throws Exception 
     {
 	    System.out.println("Onboarding Journey Process started");
-	    WebDriver driver = null;
 	    try {
-	    	driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	        this.onboardingLocator = new OnboardingLocator(driver);
 
 	        for (ArrayList<String> row : this.sheetData) {
@@ -150,7 +142,6 @@ public class OnboardingValidation implements Callable<String>
 	            }
 	        }
 
-	        DriverManager.quitDriver();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }

@@ -63,6 +63,7 @@ public class LoginPageLinksLocator {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			
 			if(clickLoginIcon.size()>0)
 			{
 				js.executeScript("arguments[0].scrollIntoView();", clickLoginIcon.get(0));

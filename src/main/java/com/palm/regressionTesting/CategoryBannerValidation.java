@@ -20,10 +20,10 @@ public class CategoryBannerValidation implements Callable<String>
 	CategoryBannerLocator categoryBannerLocator;
 	String sheetStatus = "Pass";
 	
-	public CategoryBannerValidation(ArrayList<ArrayList<String>> sheetData)
+	public CategoryBannerValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	public void checkBanner(ArrayList<String> data)
@@ -36,9 +36,6 @@ public class CategoryBannerValidation implements Callable<String>
 
 		}
 	}
-	 public WebDriver openDriver(String browserName) {
-	        return DriverManager.getDriver(browserName);
-	    }
 	@Override
 	public String call() throws Exception 
 	{
@@ -46,10 +43,6 @@ public class CategoryBannerValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.categoryBannerLocator = new CategoryBannerLocator(driver);
 		
 		for(int i = 0; i < this.sheetData.size(); i++)
@@ -63,7 +56,6 @@ public class CategoryBannerValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

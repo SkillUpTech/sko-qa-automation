@@ -1,11 +1,14 @@
 package com.palm.regressionTesting;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,47 +20,40 @@ import org.openqa.selenium.interactions.Actions;
 
 public class FluidEducationLocator
 {
-	MicrosoftCourseLocator microsoftCourseLocator;
 	WebDriver driver;
+	String parentWindow = "";
+	String FluideducationPage = "";
 	public FluidEducationLocator(WebDriver driver)
 	{
 		this.driver = driver;
-		this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
 	
+	
+	public void openFluidEducation()
+	{
+		parentWindow = driver.getWindowHandle();
+		String url = driver.getCurrentUrl()+"fluideducation/";
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(url);
+		FluideducationPage = driver.getWindowHandle();
+	}
 	public String facebookProcess()
 	{
+		this.openFluidEducation();
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		if(driver.getCurrentUrl().contains("skillup"))
-		{
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(OpenWebsite.setURL+"/fluideducation");
-		}
 		try
 		{
 			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='facebook']"));
 			js.executeScript("arguments[0].scrollIntoView();", facebookIcon);
 			if(facebookIcon.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("facebook"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("facebook verified");
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = facebookIcon.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(FluideducationPage);
 		}
 		catch(Exception e)
 		{
@@ -72,27 +68,15 @@ public class FluidEducationLocator
 		String status = "fail";
 		try
 		{
-			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='instagram']"));
-			if(facebookIcon.isDisplayed())
+			WebElement insta = driver.findElement(By.cssSelector("img[alt='instagram']"));
+			if(insta.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("instagram"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("instagram verified");
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = insta.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(FluideducationPage);
 		}
 		catch(Exception e)
 		{
@@ -108,27 +92,15 @@ public class FluidEducationLocator
 		String status = "fail";
 		try
 		{
-			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='twitter']"));
-			if(facebookIcon.isDisplayed())
+			WebElement twitter = driver.findElement(By.cssSelector("img[alt='twitter']"));
+			if(twitter.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("x.com"))
-					{
-						driver.switchTo().window(windows);
-						System.out.println("twitter verified");
-						status = "pass";
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = twitter.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(FluideducationPage);
 		}
 		catch(Exception e)
 		{
@@ -190,7 +162,43 @@ public class FluidEducationLocator
 		return status;
 	}
 	
-	
+	public String checkURLStatus(String data)
+	{
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
+			return status;
+	}
 	
 	public ArrayList<String> verifyFluidEducationProgram()
 	{
@@ -270,8 +278,9 @@ public class FluidEducationLocator
 				
 				try
 				{
-					WebElement programCardLevel = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramList']>ul"));
-					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+					WebElement programCardLevel = driver.findElement(By.xpath("//div[contains(@class,'DiscountSection_ProgramList')]/ul/li"));
+					js.executeScript("arguments[0].scrollIntoView();", programCardLevel);
 					if(!programCardLevel.isDisplayed())
 					{
 						processStatus.add(programCardName.concat(" programCard Level not present"));
@@ -290,7 +299,7 @@ public class FluidEducationLocator
 				
 				try
 				{
-					WebElement programCardEnrollmentStatus = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardBott']>div[class*='DiscountSection_programEnroll']>span"));
+					WebElement programCardEnrollmentStatus = ListOfProgram.get(i).findElement(By.xpath("//div[contains(@class,'DiscountSection_programEnroll')][contains(text(),'Enrollment Status')]/child::span"));
 					
 					if(!programCardEnrollmentStatus.isDisplayed())
 					{
@@ -301,15 +310,15 @@ public class FluidEducationLocator
 						String enrollStatus = programCardEnrollmentStatus.getText();
 						if(enrollStatus.contains("Open"))
 						{
-							cardData.add("EnrollOpen");//enrollment status from card
+							cardData.add("Open");//enrollment status from card
 						}
 						else if(enrollStatus.contains("Coming Soon"))
 						{
-							cardData.add("EnrollClose");
+							cardData.add("Close");
 						}
-						else if(enrollStatus.contains("Close"))
+						else if(enrollStatus.contains("Closed"))
 						{
-							cardData.add("EnrollClose");
+							cardData.add("Close");
 						}
 					}
 				}
@@ -350,7 +359,7 @@ public class FluidEducationLocator
 				}
 				
 				WebElement urlLink = ListOfProgram.get(i).findElement(By.cssSelector(" a"));
-				String statusOfURL = microsoftCourseLocator.checkURLStatus(urlLink.getAttribute("href"));
+				String statusOfURL = this.checkURLStatus(urlLink.getAttribute("href"));
 				if(!statusOfURL.contains("fail"))
 				{
 					String parentwindow = driver.getWindowHandle();
@@ -433,16 +442,16 @@ public class FluidEducationLocator
 					
 					try
 					{
-						WebElement programPageLevels = programPageLocator.findElement(By.cssSelector(" div[class*='CourseDescription_levelSection']"));
-						
-						if(!programPageLevels.isDisplayed())
+						ArrayList<String> addLevel = new ArrayList<String>();
+						List<WebElement> programPageLevels = driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_TooltipAboutSection')]/h2|//div[contains(@class,'CourseDescription_levelSection')]|//div[contains(@class,'DiscountSection_ProgramList')]/ul/li"));
+						for(WebElement level : programPageLevels)
 						{
-							processStatus.add(programPageName.concat(" program has no Ibm levels page"));
+							String getLevel = level.getText();
+							addLevel.add(getLevel);
 						}
-						else
-						{
-							pageData.add(programPageLevels.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from program page
-						}
+						String result = addLevel.stream().collect(Collectors.joining(""));
+				        System.out.println(result);
+						pageData.add(result.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
 					}
 					catch(Exception e)
 					{
@@ -450,61 +459,20 @@ public class FluidEducationLocator
 						pageData.add("programPageLevels not present");
 						//processStatus.add(programPageName.concat(" program has no Ibm levels page"));
 					}
-					ArrayList<String> cohortData = new ArrayList<String>();
 					try
 					{
-						List<WebElement> checkEnrollmentStatus = programPageLocator.findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent'],  div#Cohort>div[class*='CourseDescription_CohortBoxDiv']>button"));
-						Thread.sleep(1000);
-						for(int k = 0; k < checkEnrollmentStatus.size();k++)
+						if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//*[contains(text(),'No open cohorts available, Please consult with our team using “get free consultation “ form.')]")).size()>0)
 						{
-							
-							if(checkEnrollmentStatus.size() == 1)
-							{
-								Thread.sleep(1000);
-								if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-									break;
-								}
-								else if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
-								{
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-									break;
-								}
-								else if(checkEnrollmentStatus.get(k).getText().equalsIgnoreCase("Enroll now"))
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-									break;
-								}
-								else
-								{
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-									break;
-								}
-							}
-							else if(checkEnrollmentStatus.size()>1)
-							{
-								System.out.println("Enroll cohort status displayed");
-								Thread.sleep(1000);
-								cohortData.add(checkEnrollmentStatus.get(k).getText());
-								Thread.sleep(1000);
-								System.out.println("Enroll cohort data displayed : "+cohortData);
-								if(cohortData.contains("Enroll close"))
-								{
-									System.out.println("Enroll cohort status has close");
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-								}
-								else
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-								}
-							}
+							pageData.add("Close");
+						}
+						else if (driver.findElements(By.xpath("//*[contains(text(),'Enrollment is Closed')]"))
+								.size() > 0) 
+						{
+							pageData.add("Close");
+						}
+						else if(driver.findElements(By.xpath("//*[contains(text(),'Enroll Now')]")).size()>0)
+						{
+							pageData.add("Open");
 						}
 						
 					}

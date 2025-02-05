@@ -20,10 +20,10 @@ public class ContactUsValidation implements Callable<String>
 	WebDriver driver;
 	ContactUSLocator contactUSLocator;
 	String sheetStatus = "Pass";
-	public ContactUsValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public ContactUsValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	

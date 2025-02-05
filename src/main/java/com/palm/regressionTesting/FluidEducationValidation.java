@@ -13,15 +13,16 @@ public class FluidEducationValidation implements Callable<String>
 	FluidEducationLocator fluidEducationLocator;
 	String sheetStatus = "Pass";
 	
-	public FluidEducationValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public FluidEducationValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
 	public void facebook()
 	{
+		
 		String status = fluidEducationLocator.facebookProcess();
 		if(status.equalsIgnoreCase("fail"))
 		{
@@ -83,19 +84,12 @@ public class FluidEducationValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
 	@Override
 	public String call() throws Exception {
 		System.out.println("fluidEducation process started");
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.fluidEducationLocator = new FluidEducationLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -123,7 +117,7 @@ public class FluidEducationValidation implements Callable<String>
 					  break;
 			}
 		}
-		DriverManager.quitDriver();
+	//	DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

@@ -21,7 +21,7 @@ public class ApplyCouponValidation implements Callable<String>
 	String sheetStatus = "Pass";
 	WebDriver driver;
 	
-	public ApplyCouponValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public ApplyCouponValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		
@@ -65,10 +65,11 @@ public class ApplyCouponValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	@Override
 	public String call() throws Exception
 	{
@@ -76,7 +77,7 @@ public class ApplyCouponValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
+		//	driver = this.openDriver(RegressionTesting.nameOfBrowser);
 			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));

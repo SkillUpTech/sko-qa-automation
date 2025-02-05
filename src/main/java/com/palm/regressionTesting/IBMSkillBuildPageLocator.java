@@ -19,6 +19,7 @@ public class IBMSkillBuildPageLocator
 	{
 		this.driver = driver;
 	}
+	String parentWindow = "";
 	
 	public ArrayList<String> headerFeatureOnCategory(String data)
 	{
@@ -26,17 +27,11 @@ public class IBMSkillBuildPageLocator
 		try
 		{	
 			//driver.switchTo().newWindow(WindowType.TAB);
-			String url = OpenWebsite.setHost+data;
+			parentWindow = driver.getWindowHandle();
+			String url = driver.getCurrentUrl()+data;
+			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(url);
-			Set<String> windows = driver.getWindowHandles();
-			for(String window : windows)
-			{
-				driver.switchTo().window(window);
-				if(driver.getCurrentUrl().contains(url))
-				{
-					driver.switchTo().window(window);
-					
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			
 					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']")).size()>0)
 					{
 						System.out.println("header present");
@@ -58,9 +53,8 @@ public class IBMSkillBuildPageLocator
 					{
 						System.out.println("footer not present");
 					}
-				}
-				
-			}
+					driver.close();
+					driver.switchTo().window(parentWindow);
 			
 		}
 		catch(Exception e)

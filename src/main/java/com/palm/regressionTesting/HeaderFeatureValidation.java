@@ -23,10 +23,11 @@ public class HeaderFeatureValidation implements Callable<String>
 	HeaderFeatureLocators headerFeatureLocators;
 	String sheetStatus = "Pass";
 	
-	public HeaderFeatureValidation(ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
+	public HeaderFeatureValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData, String jiraProcessStatus)
 	{
 		this.sheetData = sheetData;
 		this.jiraProcess = jiraProcessStatus;
+		this.driver = driver;
 	}
 	
 	
@@ -169,10 +170,6 @@ public class HeaderFeatureValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	@Override
 	public String call() throws Exception 
 	{
@@ -180,8 +177,6 @@ public class HeaderFeatureValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerFeatureLocators = new HeaderFeatureLocators(driver);

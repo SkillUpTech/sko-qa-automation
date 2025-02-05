@@ -1,8 +1,6 @@
 package com.palm.regressionTesting;
 
-import java.net.URL;
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
@@ -10,50 +8,38 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.WindowType;
 
 public class SignUpPageLinksLocator 
 {
 	WebDriver driver;
-	MicrosoftCourseLocator microsoftCourseLocator;
-	
+	//MicrosoftCourseLocator microsoftCourseLocator;
+	String parentWindow = "";
+	String signUpPage = "";
 	public SignUpPageLinksLocator(WebDriver driver)
 	{
 		this.driver = driver;
-		this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
+		//this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
 	
 	public String checkSignupLink()
 	{
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		String status = "";
+		parentWindow = driver.getWindowHandle();
 		try
 		{
-			driver.get(OpenWebsite.setURL);
-			final String url = OpenWebsite.setURL;
-			String checkURL = url.replace("online", "online/");
-			String parent = driver.getWindowHandle();
-			Set<String> windows =driver.getWindowHandles();
-			for(String eachWindow : windows)
+			WebElement topElement = driver.findElement(By.tagName("body")); // Or any top element
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", topElement);
+			WebElement clickSignup = driver.findElement(By.cssSelector("div[class*='Header_signupBtn']>a"));
+			js.executeScript("arguments[0].scrollIntoView();", clickSignup);
+			if(clickSignup.isDisplayed())
 			{
-				driver.switchTo().window(eachWindow);
-				
-				if(driver.getCurrentUrl().equalsIgnoreCase(checkURL))
-				{
-					driver.switchTo().window(eachWindow);
-					
-					WebElement clickSignup = driver.findElement(By.cssSelector("div[class*='Header_signupBtn']>a"));
-					js.executeScript("arguments[0].scrollIntoView();", clickSignup);
-					if(clickSignup.isDisplayed())
-					{
-						js.executeScript("arguments[0].click()", clickSignup);
-						if(driver.getCurrentUrl().contains("register"))
-						{
-							status = "pass";
-						}
-					}
-				}
-				
+					String signupURL = clickSignup.getAttribute("href");
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(signupURL);
+					signUpPage = driver.getWindowHandle();
+					status = "pass";
 			}
 		}
 		catch(Exception e)
@@ -75,26 +61,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", facebook);
 			if(facebook.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				facebook.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("facebook"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("facebook page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String fbURL = facebook.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(fbURL);
+				System.out.println("facebook page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -115,26 +87,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", google);
 			if(google.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				google.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("google"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("google page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String googleURL = google.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(googleURL);
+				System.out.println("google page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -155,26 +113,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", linkedIn);
 			if(linkedIn.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				linkedIn.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("linkedin"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("linkedIn page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String linkedInURL = linkedIn.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(linkedInURL);
+				System.out.println("linkedIn page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -195,26 +139,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", microsoftLink);
 			if(microsoftLink.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				microsoftLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("microsoftonline"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("Microsoft page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String microsoftURL = microsoftLink.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(microsoftURL);
+				System.out.println("microsoft page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -235,26 +165,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", clickLoginLink);
 			if(clickLoginLink.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				clickLoginLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("login"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						System.out.println("login page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String loginURL = clickLoginLink.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(loginURL);
+				System.out.println("login page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -274,26 +190,12 @@ public class SignUpPageLinksLocator
 			js.executeScript("arguments[0].scrollIntoView();", clickTermOfServiceLink);
 			if(clickTermOfServiceLink.isDisplayed())
 			{
-				String parentWindow = driver.getWindowHandle();
-				String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-				clickTermOfServiceLink.sendKeys(selectLinkOpeninNewTab);
-				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("tos"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-							System.out.println("Term of service page");
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						driver.navigate().back();
-						driver.switchTo().window(parentWindow);
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					}
-				}
+				String TOSURL = clickTermOfServiceLink.getAttribute("href");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(TOSURL);
+				System.out.println("TOS page");
+				driver.close();
+				driver.switchTo().window(signUpPage);
 			}
 		}
 		catch(Exception e)
@@ -313,27 +215,15 @@ public class SignUpPageLinksLocator
 				js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicyLink);
 				if(clickPrivacyPolicyLink.isDisplayed())
 				{
-					String parentWindow = driver.getWindowHandle();
-					String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-					clickPrivacyPolicyLink.sendKeys(selectLinkOpeninNewTab);
-					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
-					Set<String> allWindows = driver.getWindowHandles();
-					for(String windows : allWindows)
-					{
-						driver.switchTo().window(windows);
-						if(driver.getCurrentUrl().contains("privacy"))
-						{
-							driver.switchTo().window(windows);
-							status = "pass";
-							System.out.println("privacy policy");
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-							driver.navigate().back();
-							driver.switchTo().window(parentWindow);
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
-						}
-					}
+					String privacyPolicyURL = clickPrivacyPolicyLink.getAttribute("href");
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(privacyPolicyURL);
+					System.out.println("Privacy Policy page");
+					driver.close();
+					driver.switchTo().window(signUpPage);
 				}
+				driver.close();
+				driver.switchTo().window(parentWindow);
 			}
 			catch(Exception e)
 			{

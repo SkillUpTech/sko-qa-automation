@@ -20,13 +20,20 @@ public class HomepageLocator
 	{
 		this.driver = driver;
 	}
-	String parentWindow = "";
+	String baseWindow = "";
+	String HomePage = "";
 	public ArrayList<String> checkSliderLink() throws InterruptedException
 	{
+		baseWindow = driver.getWindowHandle();
+		String getURL = driver.getCurrentUrl();
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(getURL);
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
+		HomePage = driver.getWindowHandle();
+				
 		ArrayList<String> statusOfSliderScreen = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		String BannerLocator = "div[class*='bannersliderhome_Mainslider'] div[class*='bannersliderhome_bannerContainer']>div[class*='bannersliderhome_bannerSliderHDesktOP'] div[class*='slick-track']>div[class*='slick-slide']  a";
-		parentWindow = driver.getWindowHandle();
 		
 		try
 		{
@@ -52,7 +59,7 @@ public class HomepageLocator
 								driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 								driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 								driver.close();
-								driver.switchTo().window(parentWindow);
+								driver.switchTo().window(HomePage);
 							}
 						}
 					}
@@ -136,7 +143,7 @@ public class HomepageLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 							driver.close();
-							driver.switchTo().window(parentWindow);
+							driver.switchTo().window(HomePage);
 						}
 					}
 					
@@ -179,7 +186,7 @@ public class HomepageLocator
                         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
                         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
                         driver.close();
-                        driver.switchTo().window(parentWindow);
+                        driver.switchTo().window(HomePage);
                     }
                 }
 			}	
@@ -222,7 +229,7 @@ public class HomepageLocator
                         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
                         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
                         driver.close();
-                        driver.switchTo().window(parentWindow);
+                        driver.switchTo().window(HomePage);
 				}
 			}
 		}
@@ -264,7 +271,7 @@ public class HomepageLocator
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HomePage);
 					}
 				}
 			}
@@ -284,7 +291,6 @@ public class HomepageLocator
 		String partnerPageWindow = "";
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
 			if(driver.findElements(By.xpath("//div[contains(@class,'Collaborate_excollaborationInner')]/ul/li/a")).size()>0)
 			{
 				List<WebElement> partnerLocator = driver.findElements(By.xpath("//div[contains(@class,'Collaborate_excollaborationInner')]/ul/li/a"));
@@ -415,7 +421,7 @@ public class HomepageLocator
 							System.out.println("no course : "+partnerLink);
 						}
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HomePage);
 					}
 				}
 			}
@@ -434,7 +440,6 @@ public class HomepageLocator
 		String categoryPageWindow = "";
 		try
 		{
-			String parentWindow = driver.getWindowHandle();
 			if(driver.findElements(By.xpath("//div[contains(@class,'TechCategories_exCollaborationInner')]//ul/li/a")).size()>0)
 			{
 				List<WebElement> categoryLocator = driver.findElements(By.xpath("//div[contains(@class,'TechCategories_exCollaborationInner')]//ul/li/a"));
@@ -565,10 +570,13 @@ public class HomepageLocator
 							System.out.println("no course : "+categoryLink);
 						}
 						driver.close();
-						driver.switchTo().window(parentWindow);
+						driver.switchTo().window(HomePage);
 					}
 				}
 			}
+			driver.switchTo().window(HomePage);
+			driver.close();
+			driver.switchTo().window(baseWindow);
 		}
 		catch(Exception e)
 		{

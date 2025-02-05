@@ -20,10 +20,10 @@ public class FAQValidation implements Callable<String>
 	FAQLocator faqLocator;
 	String sheetStatus = "Pass";
 	
-	public FAQValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public FAQValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	public void login(ArrayList<String> data)
@@ -332,18 +332,21 @@ public class FAQValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	@Override
 	public String call() throws Exception {
 		System.out.println("FAQ process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.faqLocator = new FAQLocator(driver);
@@ -391,7 +394,7 @@ public class FAQValidation implements Callable<String>
 					  break;
 			}
 		}
-		DriverManager.quitDriver();
+		//DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

@@ -26,11 +26,6 @@ public class SignUpValidation implements Callable<String>
 		this.sheetData = sheetData;
 		
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
-	
 	public void invalidFullname(ArrayList<String> dataFromExcel)
 	{
 		ArrayList<Integer> fieldValidationValue;
@@ -372,10 +367,6 @@ public class SignUpValidation implements Callable<String>
 		System.out.println("Sign up validation begins");
 		try {
 	
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.signUpLocator = new SignUpLocator(this.driver);
 		
 		for(int i = 0; i < this.sheetData.size(); i++)
@@ -405,7 +396,6 @@ public class SignUpValidation implements Callable<String>
 					
 			}
 		}
-		 DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

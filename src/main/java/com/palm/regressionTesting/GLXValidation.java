@@ -15,10 +15,10 @@ public class GLXValidation implements Callable<String>
 	GLXLocator glxLocator;
 	String sheetStatus = "Pass";
 	
-	public GLXValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public GLXValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -85,18 +85,21 @@ public class GLXValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	@Override
 	public String call() throws Exception {
 		System.out.println("GLX process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.glxLocator = new GLXLocator(driver);
@@ -126,7 +129,7 @@ public class GLXValidation implements Callable<String>
 					  break;
 			}
 		}
-		DriverManager.quitDriver();
+	//	DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

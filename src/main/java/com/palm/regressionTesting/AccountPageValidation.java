@@ -54,20 +54,12 @@ public class AccountPageValidation implements Callable<String>
 
 		}	
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Account page process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.accountPageLocator = new AccountPageLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -83,7 +75,6 @@ public class AccountPageValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

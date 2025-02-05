@@ -12,11 +12,14 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class IBMPageLocator 
 {
@@ -775,27 +778,71 @@ public class IBMPageLocator
 						}
 						else
 						{
-							Thread.sleep(100);
-							List<WebElement> enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
-							js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
-							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-							Thread.sleep(100);
-							String getPageEnrollStatus = enrollButton.get(0).getText();
-							if(getPageEnrollStatus.contains("Enroll Now"))
-							{
-								pageEnrollmentStatus.add("Open");
-							}
-							else if(getPageEnrollStatus.contains("Enrollment is Closed"))
-							{
-								pageEnrollmentStatus.add("Closed");
-							}
-							else if(getPageEnrollStatus.contains("Enroll now"))
-							{
-								pageEnrollmentStatus.add("Closed");
-							}
-							else
-							{
-								pageEnrollmentStatus.add("Closed");
+							/*
+							 * Thread.sleep(100); List<WebElement> enrollButton =
+							 * CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
+							 * js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
+							 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+							 * Thread.sleep(100);
+							 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50)); String
+							 * getPageEnrollStatus = enrollButton.get(0).getText();
+							 * if(getPageEnrollStatus.contains("Enroll Now")) {
+							 * pageEnrollmentStatus.add("Open"); } else
+							 * if(getPageEnrollStatus.contains("Enrollment is Closed")) {
+							 * pageEnrollmentStatus.add("Closed"); } else
+							 * if(getPageEnrollStatus.contains("Enroll now")) {
+							 * pageEnrollmentStatus.add("Closed"); } else {
+							 * pageEnrollmentStatus.add("Closed"); }
+							 */
+							 String getPageEnrollStatus = "";
+							try {
+							    // Retry mechanism for stale elements
+							    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+							    
+							    List<WebElement> enrollmentSections = CoursePageSection.findElements(By.xpath(CoursePageEnrollmentSection));
+
+							    if (enrollmentSections.size() <= 0) {
+							        status.add("Enroll status not present in this card page " + courseCardName);
+							    } else {
+							        int retryCount = 3; // Number of retries
+							        boolean elementFound = false;
+							        List<WebElement> enrollButton = null;
+
+							        while (retryCount > 0) 
+							        {
+							            try {
+							                enrollButton = CoursePageSection.findElements(By.xpath(CoursePageEnrollStatus));
+							                
+							                // Scroll into view
+							                js.executeScript("arguments[0].scrollIntoView();", enrollButton.get(0));
+							                
+							                // Wait for the element to be visible
+							                wait.until(ExpectedConditions.visibilityOf(enrollButton.get(0)));
+							                
+							                // Extract text after waiting
+							                getPageEnrollStatus = enrollButton.get(0).getText();
+							                
+							                if (getPageEnrollStatus.contains("Enroll Now")) {
+							                    pageEnrollmentStatus.add("Open");
+							                } else {
+							                    pageEnrollmentStatus.add("Closed");
+							                }
+
+							                System.out.println("Page Enrollment Status: " + getPageEnrollStatus);
+							                elementFound = true;
+							                break; // Exit loop if successful
+							            } catch (StaleElementReferenceException e) {
+							                retryCount--;
+							                System.out.println("Retrying due to StaleElementException... Attempts left: " + retryCount);
+							            }
+							        }
+
+							        if (!elementFound) {
+							            status.add("Failed to retrieve enrollment status for " + courseCardName);
+							        }
+							    }
+							} catch (Exception e) {
+							    System.out.println("Exception occurred: " + e.getMessage());
 							}
 							System.out.println("pageEnrollStatus : "+getPageEnrollStatus);
 						}

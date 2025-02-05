@@ -24,11 +24,11 @@ public class TechMasterValidation implements Callable<String>
 	TechMasterLocator techMasterLocator;
 	String sheetStatus = "Pass";
 
-	public TechMasterValidation(ArrayList<ArrayList<String>> sheetData)
+	public TechMasterValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 
 	
@@ -91,19 +91,12 @@ public class TechMasterValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("FutureSkill").get(3).set(0, "findOutMore_Button - failed");
 		}
 	}
-	 public WebDriver openDriver(String browserName) {
-	        return DriverManager.getDriver(browserName);
-	    }
 	@Override
 	public String call() throws Exception {
 		System.out.println("Techmaster Process started");
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.techMasterLocator = new TechMasterLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -125,7 +118,6 @@ public class TechMasterValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

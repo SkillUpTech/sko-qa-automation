@@ -16,12 +16,13 @@ public class CheckLoginValidation implements Callable<String>
 	ProcessLogin processLogin;
 	String sheetStatus = "Pass";
 	
-	public CheckLoginValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public CheckLoginValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		this.signUpLocator = new SignUpLocator(driver);
 		this.processLogin = new ProcessLogin(driver);
 		System.out.println("Login if mail id not verified ");
+		this.driver = driver;
 	}
 	
 	
@@ -98,20 +99,12 @@ public class CheckLoginValidation implements Callable<String>
 			e.printStackTrace();
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
 	@Override
 	public String call() throws Exception 
 	{
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
 			ArrayList<String> row = this.sheetData.get(i);
@@ -126,7 +119,6 @@ public class CheckLoginValidation implements Callable<String>
 				  	break;
 			}
 		}
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

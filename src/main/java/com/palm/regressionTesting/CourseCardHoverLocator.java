@@ -20,36 +20,42 @@ public class CourseCardHoverLocator
 	{
 		this.driver = driver;
 	}
-	
+	String parentWindow = "";
 	public String checkURLStatus(String data)
 	{
-		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
-			try
-			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
-				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
-				}
-				else
-				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
 			return status;
 	}
 	public ArrayList<String> checkCourseCard(ArrayList<String> data)
@@ -57,6 +63,11 @@ public class CourseCardHoverLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
+			parentWindow = driver.getWindowHandle();
+			/*
+			 * String url = driver.getCurrentUrl()+data.get(1);
+			 * driver.switchTo().newWindow(WindowType.TAB); driver.get(url);
+			 */
 			if(data.size()==1)
 			{
 				List<WebElement> cards = driver.findElements(By.xpath("//div[@class='col-12 undefined d-xl-block false']//div[contains(@class,'LearningCatalog_customCard')]//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a"));
@@ -74,7 +85,7 @@ public class CourseCardHoverLocator
 				String parent = driver.getWindowHandle();
 				for(int j = 1; j < data.size(); j++)
 				{
-					String getURL = OpenWebsite.setHost+data.get(j);
+					String getURL = driver.getCurrentUrl()+data.get(j);
 					String checkSite = this.checkURLStatus(getURL);
 					if(!checkSite.contains("fail"))
 					{

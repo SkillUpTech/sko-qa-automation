@@ -22,15 +22,15 @@ public class LoginPageLinksValidation implements Callable<String>
 	LoginPageLinksLocator loginPageLinksLocator;
 	String sheetStatus = "Pass";
 	
-	public LoginPageLinksValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public LoginPageLinksValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	
 	public void LoginIcon()
 	{
@@ -130,8 +130,10 @@ public class LoginPageLinksValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.loginPageLinksLocator = new LoginPageLinksLocator(this.driver);
@@ -176,7 +178,7 @@ public class LoginPageLinksValidation implements Callable<String>
 			}
 		}
 		
-		 DriverManager.quitDriver();
+		// DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

@@ -14,15 +14,16 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 	HeaderFooterInStagecoursesLocator headerFooterInStagecoursesLocator;
 	String sheetStatus = "Pass";
 	
-	public HeaderFooterInStagecoursesValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public HeaderFooterInStagecoursesValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	public void AboutSkillupOnline(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.AboutSkillupOnlineProcess(data);
@@ -250,8 +251,10 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerFooterInStagecoursesLocator = new HeaderFooterInStagecoursesLocator(driver);
@@ -323,7 +326,7 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 				  break; 
 			}
 		}
-		DriverManager.quitDriver();
+		//DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

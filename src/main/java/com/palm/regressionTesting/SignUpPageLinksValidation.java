@@ -19,11 +19,11 @@ public class SignUpPageLinksValidation implements Callable<String>
 	ArrayList<ArrayList<String>> sheetData = null;
 	SignUpPageLinksLocator signUpPageLinksLocator;
 	String sheetStatus = "Pass";
-	
-	public SignUpPageLinksValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	WebDriver driver;
+	public SignUpPageLinksValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	public void signup()
@@ -104,23 +104,23 @@ public class SignUpPageLinksValidation implements Callable<String>
 			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("SignUpPageLinks").get(7).set(0, "PrivacyPolicy - failed");
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	@Override
-	public String call() throws Exception {
+	public String call() throws Exception
+	{
 		 System.out.println("Test execution started for: " + this.getClass().getSimpleName());
 		System.out.println("Sign up Page links process started");
-		WebDriver driver = null;
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
-			System.out.println(driver.getCurrentUrl());
-			this.signUpPageLinksLocator = new SignUpPageLinksLocator(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
+		this.signUpPageLinksLocator = new SignUpPageLinksLocator(driver);
 		
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -154,7 +154,7 @@ public class SignUpPageLinksValidation implements Callable<String>
 					break;
 			}
 		}
-		DriverManager.quitDriver();
+		//DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

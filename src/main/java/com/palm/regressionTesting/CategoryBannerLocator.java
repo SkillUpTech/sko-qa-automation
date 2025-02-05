@@ -16,7 +16,7 @@ import org.openqa.selenium.WebElement;
 public class CategoryBannerLocator
 {
 	WebDriver driver;
-	
+	String parentWindow = "";
 	public CategoryBannerLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -59,11 +59,13 @@ public class CategoryBannerLocator
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		boolean checkStatus = false;
+		parentWindow = driver.getWindowHandle();
 		try
 		{
 			for(int i = 1; i < data.size(); i++)
 			{
-				String urlStatus = this.checkURLStatus(OpenWebsite.setHost+data.get(i));
+				String urlLink = driver.getCurrentUrl()+data.get(i);
+				String urlStatus = this.checkURLStatus(urlLink);
 				
 				if(!urlStatus.contains("fail"))
 				{

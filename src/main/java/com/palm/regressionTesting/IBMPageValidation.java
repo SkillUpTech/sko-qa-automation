@@ -13,10 +13,10 @@ public class IBMPageValidation implements Callable<String>
 	IBMPageLocator ibmPageLocator;
 	String sheetStatus = "Pass";
 	
-	public IBMPageValidation(ArrayList<ArrayList<String>> sheetData)
+	public IBMPageValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -58,10 +58,11 @@ public class IBMPageValidation implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	@Override
 	public String call() throws Exception 
 	{
@@ -69,8 +70,10 @@ public class IBMPageValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			this.ibmPageLocator = new IBMPageLocator(driver);
@@ -95,7 +98,7 @@ public class IBMPageValidation implements Callable<String>
 					break;
 			}
 		}
-		 DriverManager.quitDriver();
+		// DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

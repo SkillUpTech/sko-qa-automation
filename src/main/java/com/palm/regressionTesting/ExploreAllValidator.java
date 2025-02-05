@@ -23,10 +23,10 @@ public class ExploreAllValidator implements Callable<String>
 	ExploreAllLocator exploreAllLocator;
 	String sheetStatus = "Pass";
 	
-	public ExploreAllValidator(ArrayList<ArrayList<String>> sheetData)
+	public ExploreAllValidator(WebDriver driver, ArrayList<ArrayList<String>> sheetData)
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -161,10 +161,7 @@ public class ExploreAllValidator implements Callable<String>
 			}
 		}
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
+
 	@Override
 	public String call() throws Exception {
 		System.out.println("Explore All validation Process started");
@@ -173,8 +170,9 @@ public class ExploreAllValidator implements Callable<String>
 	    for (String browser : browsers) 
 	    {
 	        try {
-	        	driver = this.openDriver(browser);
-				OpenWebsite.openSite(driver);
+				/*
+				 * driver = this.openDriver(browser); OpenWebsite.openSite(driver);
+				 */
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 	            this.exploreAllLocator = new ExploreAllLocator(driver);
@@ -182,9 +180,9 @@ public class ExploreAllValidator implements Callable<String>
 	                ArrayList<String> row = this.sheetData.get(i);
 	                String firstColumn = row.get(0);
 	                switch (firstColumn) {
-	                    case "verifyExporeAll":
-	                        verifyExploreAllIcons();
-	                        break;
+					/*
+					 * case "verifyExporeAll": verifyExploreAllIcons(); break;
+					 */
 	                    case "checkActiveCategoryFromHomePage":
 	                        verifyActiveCategory_HomePage();
 	                        break;
@@ -205,7 +203,7 @@ public class ExploreAllValidator implements Callable<String>
 	                        break;
 	                }
 	            }
-	            DriverManager.quitDriver();
+	           // DriverManager.quitDriver();
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }

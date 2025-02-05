@@ -11,7 +11,7 @@ public class DriverManager
 {
     private static final ThreadLocal<WebDriver> driverThreadLocal = new ThreadLocal<>();
 
-    public static WebDriver getDriver(String browserName) 
+    public static WebDriver getDriver(String browserName, String env) 
     {
         if (driverThreadLocal.get() == null)
         {
@@ -37,8 +37,9 @@ public class DriverManager
 
             driver.manage().window().maximize();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-
-            driverThreadLocal.set(driver); // Assign the driver to the current thread
+            driver.get("https://" + env + ".skillup.online/");
+			System.out.println(driver.getTitle());
+			driverThreadLocal.set(driver);
         }
         return driverThreadLocal.get();
     }

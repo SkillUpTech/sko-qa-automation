@@ -12,10 +12,10 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 	ArrayList<ArrayList<String>> sheetData = null;
 	HeaderFooterInErrorScreenLocator headerFooterInErrorScreenLocator;
 	String sheetStatus = "Pass";
-	public HeaderFooterInErrorScreenValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public HeaderFooterInErrorScreenValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
-		
+		this.driver = driver;
 	}
 	
 	
@@ -466,19 +466,22 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 				RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("HeaderFooterErrorScreen").get(33).add(1, ("locator issue" + " - failed"));
 			}
 	  }
-		public WebDriver openDriver(String browserName)
-		{
-	        return DriverManager.getDriver(browserName);
-	    }
+
+		/*
+		 * public WebDriver openDriver(String browserName) { return
+		 * DriverManager.getDriver(browserName); }
+		 */
 	@Override
 	public String call() throws Exception
 	{
 		try
 		{
 			
-		System.out.println("Header and Footer error page validation");
-		driver = this.openDriver(RegressionTesting.nameOfBrowser);
-		OpenWebsite.openSite(driver);
+			/*
+			 * System.out.println("Header and Footer error page validation"); driver =
+			 * this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerFooterInErrorScreenLocator = new HeaderFooterInErrorScreenLocator(driver);
@@ -510,21 +513,15 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 				  Blog();
 				  break; 
 				  
-			  case "Categories": 
-				  Categories(); 
-				  break; 
-				  
-			   case "PartnerPage": 
-				   PartnerPage(); 
-				   break;
-				   
-			   case "PopularCourses": 
-					   PopularCourses(); 
-					   break; 
-			   
-			   case "ExploreAll":
-				  ExploreAll();
-				  break;
+				/*
+				 * case "Categories": Categories(); break;
+				 * 
+				 * case "PartnerPage": PartnerPage(); break;
+				 * 
+				 * case "PopularCourses": PopularCourses(); break;
+				 * 
+				 * case "ExploreAll": ExploreAll(); break;
+				 */
 				  
 			   case "twitter": 
 				   twitter(); 
@@ -597,7 +594,7 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 				   break;
 			}
 		}
-		 DriverManager.quitDriver();
+		 //DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

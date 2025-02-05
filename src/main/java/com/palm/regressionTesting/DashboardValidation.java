@@ -24,16 +24,15 @@ public class DashboardValidation implements Callable<String>
 	String sheetStatus = "Pass";
 	private int CURRENT_ROW = 0;
 	
-	public DashboardValidation(ArrayList<ArrayList<String>> sheetData) throws InterruptedException
+	public DashboardValidation(WebDriver driver, ArrayList<ArrayList<String>> sheetData) throws InterruptedException
 	{
 		this.sheetData = sheetData;
 		
 	}
-	public WebDriver openDriver(String browserName)
-	{
-        return DriverManager.getDriver(browserName);
-    }
-	
+	/*
+	 * public WebDriver openDriver(String browserName) { return
+	 * DriverManager.getDriver(browserName); }
+	 */
 	
 	public void url(ArrayList<String> url)
 	{
@@ -352,8 +351,10 @@ public class DashboardValidation implements Callable<String>
 
 		try
 		{
-			driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			OpenWebsite.openSite(driver);
+			/*
+			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
+			 * OpenWebsite.openSite(driver);
+			 */
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		    this.dashboardLocator = new DashboardLocator(driver);

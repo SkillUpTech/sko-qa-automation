@@ -178,8 +178,10 @@ public class GoogleCloudPartnerPageLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
+			//parentWindow = driver.getWindowHandle();
 			//google cloud = google-cloud-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA
 			//ibm = ibm-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA
+			
 			String googleCloudURL = driver.getCurrentUrl()+"google-cloud-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA";
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(googleCloudURL);
