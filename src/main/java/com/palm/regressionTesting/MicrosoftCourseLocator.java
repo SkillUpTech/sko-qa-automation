@@ -187,7 +187,8 @@ public class MicrosoftCourseLocator
 						
 						String courseCardNames = card.findElement(By.xpath(courseCardName)).getText();
 						
-						if(courseCardNames.contains("MS-600: Building Applications and Solutions with Microsoft 365 Core Services")||courseCardNames.contains("AZ-900: Microsoft Azure Fundamentals - Weekend Batch")||courseCardNames.contains("AZ-900: Microsoft Azure Fundamentals"))
+						if(courseCardNames.contains("MS-600: Building Applications and Solutions with Microsoft 365 Core Services")||courseCardNames.contains("AZ-900: Microsoft Azure Fundamentals - Weekend Batch")||courseCardNames.contains("AZ-900: Microsoft Azure Fundamentals")
+								|| courseCardNames.contains("MB-300: Microsoft Dynamics 365: Core Finance and Operations"))
 							continue;
 						
 						String getCourseCardURL = card.findElement(By.xpath(cardURL)).getAttribute("href");

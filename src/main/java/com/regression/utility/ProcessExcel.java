@@ -71,23 +71,31 @@ public class ProcessExcel
 					{
 						ArrayList<String> rowData = new ArrayList<String>();// this is for iterating elements in row
 						XSSFRow excelRow =  excelSheet.getRow(i);//we getting each row in sheet
-						for(int j = 0; j < excelRow.getLastCellNum(); j++)
-						{
-							DataFormatter formatter = new DataFormatter();
-							String value = formatter.formatCellValue(excelRow.getCell(j));
-							if(!value.trim().isEmpty())
+						/*
+						 * for(int j = 0; j < excelRow.getLastCellNum(); j++) { DataFormatter formatter
+						 * = new DataFormatter(); String value =
+						 * formatter.formatCellValue(excelRow.getCell(j)); if(!value.trim().isEmpty()) {
+						 * rowData.add(value); } } if(rowData.size() > 0) { rows.add(rowData); }
+						 */
+						if (excelRow != null) 
+						{ 
+							for (int j = 0; j < excelRow.getLastCellNum(); j++)
 							{
-								rowData.add(value);
-							}
+			                    DataFormatter formatter = new DataFormatter();
+			                    String value = formatter.formatCellValue(excelRow.getCell(j));
+			                    if (!value.trim().isEmpty())
+			                    {
+			                        rowData.add(value);
+			                    }
 						}
-						if(rowData.size() > 0)
-						{
-							rows.add(rowData);
-						}
+							 if (rowData.size() > 0) {
+				                    rows.add(rowData);
+				                }
 					}
 					data.put(excelSheet.getSheetName(), rows);
 				}
 			}
+		}
 		}
 		catch(Exception e)
 		{

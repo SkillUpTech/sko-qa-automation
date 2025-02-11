@@ -8,51 +8,51 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.interactions.Actions;
 public class GLXLocator {
 	MicrosoftCourseLocator microsoftCourseLocator;
 	WebDriver driver;
+	String parentWindow = "";
+	String GLXPage = "";
 	public GLXLocator(WebDriver driver)
 	{
 		this.driver = driver;
 		this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
-	
+
+	public void openGLX()
+	{
+		parentWindow = driver.getWindowHandle();
+		String url = driver.getCurrentUrl()+"fluideducation/";
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(url);
+		GLXPage = driver.getWindowHandle();
+	}
 	public String facebookProcess()
 	{
+		this.openGLX();
 		String status = "fail";
-		if(driver.getCurrentUrl().contains("skillup"))
-		{
-			driver.get(driver.getCurrentUrl()+"/glx");
-		}
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='facebook']"));
+			js.executeScript("arguments[0].scrollIntoView();", facebookIcon);
 			if(facebookIcon.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("facebook"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = facebookIcon.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(GLXPage);
 		}
 		catch(Exception e)
 		{
@@ -67,26 +67,15 @@ public class GLXLocator {
 		String status = "fail";
 		try
 		{
-			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='instagram']"));
-			if(facebookIcon.isDisplayed())
+			WebElement insta = driver.findElement(By.cssSelector("img[alt='instagram']"));
+			if(insta.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("instagram"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = insta.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(GLXPage);
 		}
 		catch(Exception e)
 		{
@@ -102,26 +91,15 @@ public class GLXLocator {
 		String status = "fail";
 		try
 		{
-			WebElement facebookIcon = driver.findElement(By.cssSelector("img[alt='twitter']"));
-			if(facebookIcon.isDisplayed())
+			WebElement twitter = driver.findElement(By.cssSelector("img[alt='twitter']"));
+			if(twitter.isDisplayed())
 			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(facebookIcon).keyUp(Keys.CONTROL).build().perform();
-				String parentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("x.com"))
-					{
-						driver.switchTo().window(windows);
-						status = "pass";
-						driver.close();
-						break;
-					}
-				}
-				driver.switchTo().window(parentWindow);
+				String url = twitter.getAttribute("src");
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
 			}
+			driver.close();
+			driver.switchTo().window(GLXPage);
 		}
 		catch(Exception e)
 		{
@@ -137,18 +115,14 @@ public class GLXLocator {
 		String status = "";
 		try
 		{
-			driver.get(driver.getCurrentUrl()+"/glx");
-			JavascriptExecutor js = (JavascriptExecutor) driver;
-			js.executeScript("window.scrollBy(0, 2000)", "");
-			List<WebElement> downloadIcons = driver.findElements(By.cssSelector("div[class*='TechMasterCertificate_TechmasterMain'] div[class*='TechMasterCertificate_TechmasterCert'] div[class*='TechMasterCertificate_TechmasterDownldBtn']>button"));
+			List<WebElement> downloadIcons = driver.findElements(By.cssSelector("div[class*='TechMasterCertificate_TechmasterMain'] div[class='TechMasterCertificate_TechmasterCert__VwWJa'] div[class='TechMasterCertificate_TechmasterDownldBtn__qPr8H']>button"));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 			try
 			{
 				if(downloadIcons.get(1).isDisplayed())
 				{
-					
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-					//downloadIcons.get(1).sendKeys(Keys.TAB);
+					downloadIcons.get(1).sendKeys(Keys.TAB);
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 					Thread.sleep(1000);
 					Actions action = new Actions(driver);
@@ -167,7 +141,7 @@ public class GLXLocator {
 				downloadIcons.get(1).click();
 				Thread.sleep(1000);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-				WebElement iframeLocator = driver.findElement(By.cssSelector("iframe[src='https://survey.zohopublic.in/zs/HXDwQB']"));
+				WebElement iframeLocator = driver.findElement(By.cssSelector("iframe[src='https://survey.zohopublic.in/zs/D6C0lL']"));
 				driver.switchTo().frame(iframeLocator);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				WebElement CTAdownloadForm = driver.findElement(By.cssSelector("div#form_page section#form_body div#form_container div#page_header p[name='descMsg']"));
@@ -197,6 +171,7 @@ public class GLXLocator {
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();
+			
 			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"));
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
@@ -265,8 +240,9 @@ public class GLXLocator {
 				
 				try
 				{
-					WebElement programCardLevel = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardTop'] div[class*='DiscountSection_ProgramList']>ul"));
-					
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+					WebElement programCardLevel = driver.findElement(By.xpath("//div[contains(@class,'DiscountSection_ProgramList')]/ul/li"));
+					js.executeScript("arguments[0].scrollIntoView();", programCardLevel);
 					if(!programCardLevel.isDisplayed())
 					{
 						processStatus.add(programCardName.concat(" programCard Level not present"));
@@ -285,7 +261,7 @@ public class GLXLocator {
 				
 				try
 				{
-					WebElement programCardEnrollmentStatus = ListOfProgram.get(i).findElement(By.cssSelector(" div[class*='DiscountSection_programcardBott']>div[class*='DiscountSection_programEnroll']>span"));
+					WebElement programCardEnrollmentStatus = ListOfProgram.get(i).findElement(By.xpath("//div[contains(@class,'DiscountSection_programEnroll')][contains(text(),'Enrollment Status')]/child::span"));
 					
 					if(!programCardEnrollmentStatus.isDisplayed())
 					{
@@ -296,15 +272,15 @@ public class GLXLocator {
 						String enrollStatus = programCardEnrollmentStatus.getText();
 						if(enrollStatus.contains("Open"))
 						{
-							cardData.add("EnrollOpen");//enrollment status from card
+							cardData.add("Open");//enrollment status from card
 						}
 						else if(enrollStatus.contains("Coming Soon"))
 						{
-							cardData.add("EnrollClose");
+							cardData.add("Close");
 						}
-						else if(enrollStatus.contains("Close"))
+						else if(enrollStatus.contains("Closed"))
 						{
-							cardData.add("EnrollClose");
+							cardData.add("Close");
 						}
 					}
 				}
@@ -428,16 +404,16 @@ public class GLXLocator {
 					
 					try
 					{
-						WebElement programPageLevels = programPageLocator.findElement(By.cssSelector(" div[class*='CourseDescription_levelSection']"));
-						
-						if(!programPageLevels.isDisplayed())
+						ArrayList<String> addLevel = new ArrayList<String>();
+						List<WebElement> programPageLevels = driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_TooltipAboutSection')]/h2|//div[contains(@class,'CourseDescription_levelSection')]|//div[contains(@class,'DiscountSection_ProgramList')]/ul/li"));
+						for(WebElement level : programPageLevels)
 						{
-							processStatus.add(programPageName.concat(" program has no Ibm levels page"));
+							String getLevel = level.getText();
+							addLevel.add(getLevel);
 						}
-						else
-						{
-							pageData.add(programPageLevels.getText().toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());// levels from program page
-						}
+						String result = addLevel.stream().collect(Collectors.joining(""));
+				        System.out.println(result);
+						pageData.add(result.toLowerCase().replaceAll("[^a-zA-Z0-9]", " ").replaceAll("\\s", "").trim());
 					}
 					catch(Exception e)
 					{
@@ -445,61 +421,20 @@ public class GLXLocator {
 						pageData.add("programPageLevels not present");
 						//processStatus.add(programPageName.concat(" program has no Ibm levels page"));
 					}
-					ArrayList<String> cohortData = new ArrayList<String>();
 					try
 					{
-						List<WebElement> checkEnrollmentStatus = programPageLocator.findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent'], div#Cohort>div[class*='CourseDescription_CohortBoxDiv']>button"));
-						Thread.sleep(1000);
-						for(int k = 0; k < checkEnrollmentStatus.size();k++)
+						if(driver.findElements(By.xpath("//section[contains(@class,'CourseDescription_mainSection')]//*[contains(text(),'No open cohorts available, Please consult with our team using “get free consultation “ form.')]")).size()>0)
 						{
-							
-							if(checkEnrollmentStatus.size() == 1)
-							{
-								Thread.sleep(1000);
-								if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>button:nth-child(1)")).size()>0)
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-									break;
-								}
-								else if(checkEnrollmentStatus.get(k).findElements(By.cssSelector(" div[class*='CourseDescription_buttonsContent']>h6")).size()>0)
-								{
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-									break;
-								}
-								else if(checkEnrollmentStatus.get(k).getText().equalsIgnoreCase("Enroll now"))
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-									break;
-								}
-								else
-								{
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-									break;
-								}
-							}
-							else if(checkEnrollmentStatus.size()>1)
-							{
-								System.out.println("Enroll cohort status displayed");
-								Thread.sleep(1000);
-								cohortData.add(checkEnrollmentStatus.get(k).getText());
-								Thread.sleep(1000);
-								System.out.println("Enroll cohort data displayed : "+cohortData);
-								if(cohortData.contains("Enroll close"))
-								{
-									System.out.println("Enroll cohort status has close");
-									pageData.add("EnrollClose");
-									Thread.sleep(1000);
-								}
-								else
-								{
-									pageData.add("EnrollOpen");
-									Thread.sleep(1000);
-								}
-							}
+							pageData.add("Close");
+						}
+						else if (driver.findElements(By.xpath("//*[contains(text(),'Enrollment is Closed')]"))
+								.size() > 0) 
+						{
+							pageData.add("Close");
+						}
+						else if(driver.findElements(By.xpath("//*[contains(text(),'Enroll Now')]")).size()>0)
+						{
+							pageData.add("Open");
 						}
 						
 					}
@@ -601,7 +536,6 @@ public class GLXLocator {
 								{
 									if(pageData.size()>6)
 									{
-										ArrayList<String> checkEnroll = new ArrayList<String>();
 										for(int m = 0; m < pageData.size(); m++)
 										{
 											if(!cardData.get(j).equals(pageData.get(4)))
@@ -644,8 +578,11 @@ public class GLXLocator {
 						cardData.clear();
 						pageData.clear();
 						driver.close();
-						driver.switchTo().window(parentwindow);
+						driver.switchTo().window(GLXPage);
 						System.out.println("tech program card verification done for "+programPageName);
+						/*
+						 * driver.close(); driver.switchTo().window(parentwindow);
+						 */
 					}
 					catch(Exception e)
 					{
@@ -662,72 +599,59 @@ public class GLXLocator {
 		{
 			e.printStackTrace();
 		}
-		driver.close();
-		Set<String> allScreen = driver.getWindowHandles();
-		 for (String handle : allScreen) 
-		 {
-			 driver.switchTo().window(handle);
-	            if(handle.equals(driver.getWindowHandle()))
-	            {
-	                driver.switchTo().window(handle);
-	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-	                {
-	                	 driver.switchTo().window(handle);
-	                	 break;
-	                }
-	            }
-	            driver.switchTo().window(handle);
-	      }
 		return processStatus;
 		
 	}
 	public String checkURLStatus(String data)
 	{
-		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
-			try
-			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
-				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
-				}
-				else
-				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
+		  String status = "fail";
+	        HttpURLConnection connection = null;
+	        int responseCode = 200;
+			 try 
+			 {
+		            connection = (HttpURLConnection) (new URL(data).openConnection());
+		            connection.setRequestMethod("GET");
+		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+		            connection.connect();
+		            responseCode = connection.getResponseCode();
+		            System.out.println("Status code: " + responseCode + " URL: " + data);
+		            if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >=500 && responseCode <= 505) 
+		            {
+		                System.out.println("Broken link: " + data);
+		                status = "fail: " + responseCode;
+		            } 
+		            else 
+		            {
+		                System.out.println("Unbroken link: " + data + " " + responseCode);
+		                status = "success";
+		            }
+		        } 
+			 catch (Exception e) 
+			 {
+		            e.printStackTrace();
+		     }
+			 finally
+			 {
+		            if (connection != null)
+		            {
+		                connection.disconnect();
+		            }
+			 }
 			return status;
 	}
 	public String ExploreCourseProcess() throws InterruptedException
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		//js.executeScript("window.scrollBy(0, 400);");
-		WebElement clickExploreAll = driver.findElement(By.cssSelector("div[class*='DiscountSection_ExploreOther']>a"));
-		js.executeScript("arguments[0].scrollIntoView();", clickExploreAll);
+		WebElement clickExploreAll = driver.findElement(By.cssSelector("div[class='DiscountSection_ExploreOther__FDssj']>a"));
 		if(clickExploreAll.isDisplayed())
 		{
-			//Actions actions = new Actions(driver);
-			WebElement clickExploreAll1 = driver.findElement(By.cssSelector("div[class*='DiscountSection_ExploreOther']>a"));
-			js.executeScript("arguments[0].scrollIntoView();", clickExploreAll1);
-			js.executeScript("window.scrollBy(0, -100);");
-			//actions.keyDown(Keys.CONTROL).click(clickExploreAll1).keyUp(Keys.CONTROL).build().perform();
-			clickExploreAll1.click();
-			String parentWindow = driver.getWindowHandle();
+			WebElement clickExploreAll1 = driver.findElement(By.cssSelector("div[class='DiscountSection_ExploreOther__FDssj']>a"));
+			 js.executeScript("window.scrollBy(0, 200);");
+			 js.executeScript("arguments[0].scrollIntoView();", clickExploreAll1);
+			 driver.switchTo().newWindow(WindowType.TAB);
+			 driver.get(clickExploreAll.getAttribute("href"));
+			 Thread.sleep(500);
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String windows : allWindows)
 			{
@@ -740,8 +664,11 @@ public class GLXLocator {
 					break;
 				}
 			}
-			driver.switchTo().window(parentWindow);
+			driver.switchTo().window(GLXPage);
 		}
+		
+		driver.close();
+		driver.switchTo().window(parentWindow);
 		return status;
 	}
 }

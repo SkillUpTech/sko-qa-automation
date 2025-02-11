@@ -98,11 +98,14 @@ public class FaviconLocator
 	@FindBy(css = "div[class*='Footer_PopularCourses'] ul li a")
 	private List<WebElement> PopularCoursesFooterIcon;
 	
-	@FindBy(xpath = "//li[contains(@class,'nav-item dropdown Header_dropdown')]//a")
+	@FindBy(xpath = "//div[contains(@class,'Footer_LatestBlogs')]/div[2]/div//a[contains(@class,'Footer_linkblogpost')]")
 	private List<WebElement> LatestBlogFooterIcon;
 	
-	@FindBy(xpath = "//li[contains(@class,'nav-item dropdown Header_dropdown')]//a")
-	private List<WebElement> dropDownSelector;
+	/*
+	 * @FindBy(xpath =
+	 * "//li[contains(@class,'nav-item dropdown Header_dropdown')]//a") private
+	 * List<WebElement> dropDownSelector;
+	 */
 	
 	@FindBy(xpath = "//ul[@class='dropdown-menu dropdown-cat Header_dropdownMenu__oDZ7V show']//ul[@class='categorylist customscroll dropdown-submenu']/li/a")
 	private List<WebElement> categoryListLocator;
@@ -966,7 +969,6 @@ public class FaviconLocator
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 		try
 		{
 			js.executeScript("window.scrollTo(0, document.body.scrollHeight / 2)");

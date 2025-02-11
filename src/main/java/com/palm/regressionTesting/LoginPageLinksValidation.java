@@ -27,10 +27,6 @@ public class LoginPageLinksValidation implements Callable<String>
 		this.sheetData = sheetData;
 		this.driver = driver;
 	}
-	/*
-	 * public WebDriver openDriver(String browserName) { return
-	 * DriverManager.getDriver(browserName); }
-	 */
 	
 	public void LoginIcon()
 	{
@@ -130,12 +126,6 @@ public class LoginPageLinksValidation implements Callable<String>
 
 		try
 		{
-			/*
-			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			 * OpenWebsite.openSite(driver);
-			 */
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.loginPageLinksLocator = new LoginPageLinksLocator(this.driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{

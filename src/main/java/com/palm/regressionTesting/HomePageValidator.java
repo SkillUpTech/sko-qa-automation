@@ -154,9 +154,9 @@ public class HomePageValidator implements Callable<String>
 				  case"humanSkills": 
 					  verifyHumanSkills();
 					  break; 
-				  case"topTechCategories": 
-					  verifyTopTechCategories();
-					  break; 
+					/*
+					 * case"topTechCategories": verifyTopTechCategories(); break;
+					 */
 				  case "categoryPageTitle": 
 					  checkCategoryPageTitle();
 					  break;

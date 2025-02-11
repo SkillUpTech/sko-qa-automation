@@ -18,6 +18,7 @@ public class LoginPageLinksLocator {
 	String url ;
 	WebDriver driver;
 	String parentWindow = "";
+	String LoginPageWindow = "";
 	//OpenWebsite openWebsite;
 	
 	@FindBy(css = "div[class*='Header_loginBtn']>a")
@@ -49,7 +50,7 @@ public class LoginPageLinksLocator {
 	
 	@FindBy(css = "ul[class='nav sinup-tabs']>li[id='signuplink']>a")
 	private List<WebElement> clickSignUpTab;
-	
+	String loginPageWindow = "";
 	public LoginPageLinksLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -63,18 +64,23 @@ public class LoginPageLinksLocator {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			parentWindow = driver.getWindowHandle();
+			String getURL = driver.getCurrentUrl();
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(getURL);
+			
+			loginPageWindow = driver.getWindowHandle();
 			
 			if(clickLoginIcon.size()>0)
 			{
 				js.executeScript("arguments[0].scrollIntoView();", clickLoginIcon.get(0));
-				String getURL = clickLoginIcon.get(0).getAttribute("href");
+				String getURLOfLogin = clickLoginIcon.get(0).getAttribute("href");
 				driver.switchTo().newWindow(WindowType.TAB);
-				driver.get(getURL);
-				parentWindow = driver.getWindowHandle();
-				System.out.println("Parent Window : login page");
+				driver.get(getURLOfLogin);
 				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(100));
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
+				LoginPageWindow = driver.getWindowHandle();
 			}
 		}
 		catch(Exception e)
@@ -102,7 +108,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch(Exception e)
@@ -129,7 +135,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -156,7 +162,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -184,7 +190,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) 
@@ -213,7 +219,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -241,7 +247,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -269,7 +275,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -297,7 +303,7 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
 		}
 		catch (Exception e) {
@@ -325,8 +331,10 @@ public class LoginPageLinksLocator {
 				driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(100));
 				status = "pass";
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(LoginPageWindow);
 			}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

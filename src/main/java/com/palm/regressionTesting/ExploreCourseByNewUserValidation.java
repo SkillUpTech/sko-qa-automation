@@ -35,23 +35,12 @@ public class ExploreCourseByNewUserValidation implements Callable<String>
 		}
 	}
 	
-	public void CheckExploreCourse()
-	{
-		String status = exploreCourseByNewUserLocator.CheckExploreCourse();
-		if(status.equalsIgnoreCase("fail"))
-		{
-			sheetStatus="Fail";
-			RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("ExploreCourseByNewUser").get(1).set(0, "CheckExploreCourse - failed");
-		}
-	}
 	@Override
 	public String call() throws Exception {
 		System.out.println("Sign up Page links process started");
 
 		try
 		{
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.exploreCourseByNewUserLocator = new ExploreCourseByNewUserLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -61,9 +50,6 @@ public class ExploreCourseByNewUserValidation implements Callable<String>
 			{
 				case "Signup":
 					Signup(row);
-					break;
-				case "CheckExploreCourse":
-					CheckExploreCourse();
 					break;
 			}
 		}

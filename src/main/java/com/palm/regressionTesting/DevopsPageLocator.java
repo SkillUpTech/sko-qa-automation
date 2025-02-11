@@ -24,6 +24,7 @@ public class DevopsPageLocator
 			String url = driver.getCurrentUrl()+"devops/";
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(url);
+			
 			if(driver.findElements(By.cssSelector("div[class*='TopSection_TopSecRgt'] div[class*='DownloadForm_downloadFromBottom']>iframe")).size()>0)
 			{
 				System.out.println("Form is present on Devops Engg page");
@@ -49,6 +50,7 @@ public class DevopsPageLocator
 		try
 		{
 			WebElement topContent = driver.findElement(By.xpath("//div[contains(@class,'TopSection_DevopsMain')]//parent::*"));
+			js.executeScript("arguments[0].scrollIntoView();", topContent);
 			System.out.println(topContent.getText());
 			if(topContent.getText().equalsIgnoreCase(dataFromExcel))
 			{

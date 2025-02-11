@@ -159,8 +159,9 @@ public class ExploreAllLocator
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(getURL);
 			HomePage = driver.getWindowHandle();
-			
-			WebElement clickExploreAllFromHomePage = driver.findElement(By.xpath("//div[contains(@class,'LearningCatalog_navAndTab_')]//button[contains(text(),'Explore All')]"));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+			js.executeScript("window.scroll", 0, 500);
+			WebElement clickExploreAllFromHomePage = driver.findElement(By.xpath("//button[contains(@class,'LearningCatalog_exploreAllButton_')][contains(text(),'Explore All')]"));
 			js.executeScript("arguments[0].scrollIntoView();", clickExploreAllFromHomePage);
 			if(clickExploreAllFromHomePage.isDisplayed())
 			{

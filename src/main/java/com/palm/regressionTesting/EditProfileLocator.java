@@ -3155,7 +3155,8 @@ public class EditProfileLocator
 					}
 					}
 				}
-			
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

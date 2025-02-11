@@ -12,11 +12,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 
 public class CategoryBannerLocator
 {
 	WebDriver driver;
 	String parentWindow = "";
+	String categoryBannerPage = "";
 	public CategoryBannerLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -25,33 +27,43 @@ public class CategoryBannerLocator
 	public String checkURLStatus(String data)
 	{
 		String status = "fail";
-			HttpURLConnection huc = null;
-			int respCode = 200;
-			String addHosturl = data;
-			try
-			{
-				huc = (HttpURLConnection)(new URL(addHosturl).openConnection());
-				huc.setRequestMethod("HEAD");
-				huc.connect();
-				respCode = huc.getResponseCode();
-				System.out.println("status code : "+respCode + " " +addHosturl);
-				if(respCode > 200)
-				{
-					System.out.println("broken link : "+addHosturl);
-					System.out.println("response code : "+respCode);
-					status = "fail" + respCode;
-				}
-				else
-				{
-					System.out.println("unbroken link : "+" "+addHosturl+" "+respCode);
-					status = "success";
-				}
-			}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			return status;
+	    HttpURLConnection connection = null;
+	    int responseCode = 200;
+        try
+        {
+            if (data != null && !data.isEmpty())
+            {
+                connection = (HttpURLConnection) (new URL(data).openConnection());
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+                connection.connect();
+                responseCode = connection.getResponseCode();
+                System.out.println("Status code: " + responseCode + " URL: " + data);
+                if (responseCode >= 400 && responseCode <= 405 || responseCode == 410 || responseCode == 429 || responseCode >= 500 && responseCode <= 505) {
+                    System.out.println("Broken link: " + data);
+                    status = "fail: " + responseCode;
+                } else {
+                    System.out.println("Unbroken link: " + data + " " + responseCode);
+                    status = "success";
+                }
+            } 
+            else 
+            {
+                System.out.println("Invalid URL: " + data);
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+		 finally
+		 {
+	            if (connection != null)
+	            {
+	                connection.disconnect();
+	            }
+		 }
+		return status;
 	}
 	
 	public ArrayList<String> verifyBanner(ArrayList<String> data)
@@ -59,7 +71,12 @@ public class CategoryBannerLocator
 		ArrayList<String> status = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		boolean checkStatus = false;
+		
 		parentWindow = driver.getWindowHandle();
+		String getURL = driver.getCurrentUrl();
+		driver.switchTo().newWindow(WindowType.TAB);
+		driver.get(getURL);
+		categoryBannerPage = driver.getWindowHandle();
 		try
 		{
 			for(int i = 1; i < data.size(); i++)
@@ -69,7 +86,8 @@ public class CategoryBannerLocator
 				
 				if(!urlStatus.contains("fail"))
 				{
-					driver.get(OpenWebsite.setHost+data.get(i));
+					driver.switchTo().newWindow(WindowType.TAB);
+					driver.get(urlLink);
 					
 					List<WebElement> banners = driver.findElements(By.xpath("//ul[@class='slick-dots']/li/button"));
 					
@@ -154,6 +172,8 @@ public class CategoryBannerLocator
 					}	
 				}
 			}
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

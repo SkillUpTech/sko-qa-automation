@@ -5,7 +5,6 @@ import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,16 +20,10 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.WindowType;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.regression.utility.TestUtil;
-import com.seo.dataProvider.ConfigFileReader;
-import com.seo.regression.testing.OpenWebsite;
-import com.seo.regression.testing.RegressionTesting;
 
 
 public class NewAboutCourseLocator
@@ -44,6 +37,8 @@ public class NewAboutCourseLocator
 	String setLoginURL ;
 	String setMetaHost;
 	String imageHost;
+	
+	
 	public WebDriver getDriver()
 	{
 		return driver;
@@ -57,6 +52,7 @@ public class NewAboutCourseLocator
 	
 	public String getCourseCodeText(String code)
 	{
+		
 		String CourseCodeStatus = "false";
 		HttpURLConnection huc = null;
 		int respCode = 200;

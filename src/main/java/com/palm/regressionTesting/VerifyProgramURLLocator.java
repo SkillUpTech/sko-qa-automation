@@ -25,15 +25,15 @@ public class VerifyProgramURLLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			String url = driver.getCurrentUrl()+data.get(0);
+			String url = driver.getCurrentUrl()+data.get(1);
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(url);
 			String coursePage = driver.getWindowHandle();
 			
 			List<WebElement> programURL = driver.findElements(By.xpath("//div[contains(@class,'CourseDescription_infoBoxText')]//ul/li/a"));
-			js.executeScript("arguments[0].scrollIntoView();", programURL);
 			for(WebElement getURL : programURL)
             {
+				js.executeScript("arguments[0].scrollIntoView();", getURL);
 				String programURLText = getURL.getAttribute("href");
 				String getProgramName = getURL.getText();
 				driver.switchTo().newWindow(WindowType.TAB);
@@ -51,6 +51,7 @@ public class VerifyProgramURLLocator
 				driver.close();
 				driver.switchTo().window(coursePage);
             }
+			driver.close();
 			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)

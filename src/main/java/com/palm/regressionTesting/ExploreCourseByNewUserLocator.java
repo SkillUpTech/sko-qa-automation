@@ -131,18 +131,4 @@ public class ExploreCourseByNewUserLocator
 		return statusOfTestCase;
 	}
 	
-	public String CheckExploreCourse()
-	{
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		String status = "";
-		try
-		{
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
 }

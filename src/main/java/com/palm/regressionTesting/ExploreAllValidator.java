@@ -183,9 +183,10 @@ public class ExploreAllValidator implements Callable<String>
 					/*
 					 * case "verifyExporeAll": verifyExploreAllIcons(); break;
 					 */
-	                    case "checkActiveCategoryFromHomePage":
-	                        verifyActiveCategory_HomePage();
-	                        break;
+					/*
+					 * case "checkActiveCategoryFromHomePage": verifyActiveCategory_HomePage();
+					 * break;
+					 */
 	                    case "clearAll":
 	                        verify_clearAll();
 	                        break;

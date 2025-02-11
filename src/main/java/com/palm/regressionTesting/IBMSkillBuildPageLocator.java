@@ -20,41 +20,59 @@ public class IBMSkillBuildPageLocator
 		this.driver = driver;
 	}
 	String parentWindow = "";
-	
-	public ArrayList<String> headerFeatureOnCategory(String data)
+	String IBMPage = "";
+	public ArrayList<String> headerFeatureOnCategory(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{	
-			//driver.switchTo().newWindow(WindowType.TAB);
 			parentWindow = driver.getWindowHandle();
-			String url = driver.getCurrentUrl()+data;
-			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get(url);
-			
-					if(driver.findElements(By.cssSelector("div[class*='Header_headerRight']")).size()>0)
-					{
-						System.out.println("header present");
-						status.add("fail");
-					}
-					else
-					{
-						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-						System.out.println("header not present");
-						
-					}
+			String getURL = driver.getCurrentUrl();
+			for (int i = 1; i < data.size(); i++)
+			{
+				String url = getURL+data.get(i);
+				
+				driver.switchTo().newWindow(WindowType.TAB);
+				driver.get(url);
+				IBMPage = driver.getWindowHandle();
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(150));
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+				if(driver.findElements(By.xpath("//header[@id='headerBody']")).size()>0)
+				{
+					System.out.println("header present on " +data.get(i));
+					status.add("header present on  " +data.get(i));
+				}
+				else
+				{
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-					if(driver.findElements(By.cssSelector("footer#newsletter")).size()>0)
-					{
-						System.out.println("footer present");
-						status.add("fail");
-					}
-					else
-					{
-						System.out.println("footer not present");
-					}
-					driver.close();
-					driver.switchTo().window(parentWindow);
+					System.out.println("header not present");
+					
+				}
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+				if(driver.findElements(By.xpath("//*[contains(text(),'Testimonials')]")).size()>0)
+				{
+					System.out.println("Testimonials present on " + data.get(i));
+				}
+				else
+				{
+					System.out.println("Testimonials not present");
+					status.add("Testimonials not present on " + data.get(i));
+				}
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+				if(driver.findElements(By.xpath("//footer[@id='newsletter']")).size()>0)
+				{
+					System.out.println("footer not present");
+				}
+				else
+				{
+					System.out.println("footer present");
+					status.add("footer present on "+data.get(i));
+				}
+				
+				driver.close();
+				driver.switchTo().window(parentWindow);
+			}
+			
 			
 		}
 		catch(Exception e)

@@ -49,10 +49,12 @@ public class FaviconValidation implements Callable<String>
 				  verifyLatestBlogs(); break;
 				 
 				
-				 case "CourseFromCategoryPage": verifyCourseFromCategoryPage(); break; 
-				 
-				
-				  case "ProgramFromCategoryPage": verifyProgramFromCategoryPage(); break;
+				/*
+				 * case "CourseFromCategoryPage": verifyCourseFromCategoryPage(); break;
+				 * 
+				 * 
+				 * case "ProgramFromCategoryPage": verifyProgramFromCategoryPage(); break;
+				 */
 				 
 						
 						

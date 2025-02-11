@@ -30,7 +30,7 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 	}
 	
 		
-	public void headerFeatureOnPage(String data)
+	public void headerFeatureOnPage(ArrayList<String> data)
 	{
 		ArrayList<String> getStatus = ibmSkillBuildPageLocator.headerFeatureOnCategory(data);
 		if(getStatus.contains("fail"))
@@ -56,8 +56,8 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 			String firstColumn = row.get(0);
 			switch(firstColumn)
 			{
-				case "headerFeatureOnPage":
-					headerFeatureOnPage(row.get(1));
+				case "headerFeatureNotOnPage":
+					headerFeatureOnPage(row);
 					break;
 				
 			}
@@ -92,7 +92,6 @@ public class IBMSkillBuildPageValidation implements Callable<String>
 					(getExecutionStatus)+ Utils.DELIMITTER + "bold" + Utils.DELIMITTER + "color" + (getExecutionStatus.equalsIgnoreCase("Pass") ? "Green" : "Red"));
 		}
 		
-		DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

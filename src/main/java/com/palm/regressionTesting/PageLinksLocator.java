@@ -12,7 +12,7 @@ import org.openqa.selenium.WindowType;
 public class PageLinksLocator
 {
 	WebDriver driver;
-	
+	String parentWindow = "";
 	public PageLinksLocator(WebDriver driver)
 	{
 		this.driver = driver;
@@ -62,8 +62,10 @@ public class PageLinksLocator
 		String getURL = "";
 		try
 		{
+			parentWindow = driver.getWindowHandle();
+			
 			String currentEnv = driver.getCurrentUrl();
-			String parentWindow = driver.getWindowHandle();
+			
 			for (int i = 1; i < data.size(); i++) 
 			{
 				if(i == 1)
@@ -158,7 +160,7 @@ public class PageLinksLocator
 					}
 					else
 					{
-						getURL =  OpenWebsite.setHost+eachRow;
+						getURL =  driver.getCurrentUrl()+eachRow;
 						System.out.println(getURL);
 					}
 					

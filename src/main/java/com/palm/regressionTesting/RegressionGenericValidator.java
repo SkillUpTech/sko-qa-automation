@@ -36,12 +36,13 @@ public class RegressionGenericValidator implements Callable<String>
 		this.SHEET_NAME = sheetName; 
 		this.ROWS = rows;
 		this.driver = driver;
-		parentWindow = driver.getWindowHandle();
 	}
 	
 	
 	public String processSheetData()
 	{
+		this.regressionGenericLocator = new RegressionGenericLocator(driver);
+		parentWindow = driver.getWindowHandle();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++)
 		{
@@ -52,7 +53,8 @@ public class RegressionGenericValidator implements Callable<String>
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
-		
+		driver.close();
+		driver.switchTo().window(parentWindow);
 		return sheetStatus;
 	}
 	

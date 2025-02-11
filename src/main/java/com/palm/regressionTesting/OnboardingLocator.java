@@ -28,6 +28,7 @@ WebDriver driver;
 	{
 		String status = "";
 		parentWindow = driver.getWindowHandle();
+		
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{

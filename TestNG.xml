@@ -5,7 +5,7 @@
 		<parameter name = "browser" value = "Chrome"/>
 		<parameter name = "env" value = "prod-in"/>
 	<classes>
-			<class name="com.palm.regressionTesting.RegressionTesting"/>
+			<class name="com.seo.verification.RegressionTesting"/>
 		</classes>
      </test> <!-- Test -->
 </suite> <!-- Suite -->

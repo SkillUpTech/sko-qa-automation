@@ -39,7 +39,6 @@ public class NewAboutCourseValidator implements Callable<String>
 		this.driver = driver;
 		this.SHEET_NAME = sheetName;
 		this.ROWS = rows;
-		parentWindow = driver.getWindowHandle();
 		System.out.println("About course process started");
 	}
 
@@ -47,6 +46,7 @@ public class NewAboutCourseValidator implements Callable<String>
 	{
 		this.newAboutCourseLocators = new NewAboutCourseLocator(driver);
 		
+		parentWindow = driver.getWindowHandle();
 		startTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		for (CURRENT_ROW = 0; CURRENT_ROW < ROWS.size(); CURRENT_ROW++) 
 		{
@@ -57,7 +57,8 @@ public class NewAboutCourseValidator implements Callable<String>
 		endTime = new SimpleDateFormat(Utils.DEFAULT_DATA_FORMAT).format(Calendar.getInstance().getTime());
 		duration = Utils.findDifference(startTime, endTime);
 		collectSheetResult();
-		
+		driver.close();
+		driver.switchTo().window(parentWindow);
 		return sheetStatus;
 	}
 	

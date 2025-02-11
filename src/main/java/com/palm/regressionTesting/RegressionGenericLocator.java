@@ -37,6 +37,7 @@ public class RegressionGenericLocator
 	String amountWithOutTax;
 	String checkPaymentProcess;
 	String coursePage = "";
+	String parentWindow = "";
 	public WebDriver getDriver()
 	{
 		return driver;
@@ -85,6 +86,7 @@ public class RegressionGenericLocator
 		String CourseCodeStatus = "fail";
 		try
 		{
+			parentWindow = driver.getWindowHandle();
 			String addHosturl = driver.getCurrentUrl() + code;
 			String checkURL = this.checkURLStatus(addHosturl);
 			if(checkURL.contains("fail"))

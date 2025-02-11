@@ -210,6 +210,7 @@ public class FluidEducationLocator
 			JavascriptExecutor js = (JavascriptExecutor) driver;
 			js.executeScript("window.scrollBy(0, 3000)", "");
 			driver.switchTo().defaultContent();
+			
 			List<WebElement> ListOfProgram = driver.findElements(By.cssSelector("section[class*='DiscountSection_DataScienceAiCour'] div[class*='container-fluid DiscountSection_containerInner']>div[class='row']:nth-child(2) div[class*='DiscountSection_programcardDiv']"));
 			for(int i = 0; i < ListOfProgram.size(); i++)
 			{
@@ -616,8 +617,11 @@ public class FluidEducationLocator
 						cardData.clear();
 						pageData.clear();
 						driver.close();
-						driver.switchTo().window(parentwindow);
+						driver.switchTo().window(FluideducationPage);
 						System.out.println("tech program card verification done for "+programPageName);
+						/*
+						 * driver.close(); driver.switchTo().window(parentwindow);
+						 */
 					}
 					catch(Exception e)
 					{
@@ -650,7 +654,6 @@ public class FluidEducationLocator
 			 driver.switchTo().newWindow(WindowType.TAB);
 			 driver.get(clickExploreAll.getAttribute("href"));
 			 Thread.sleep(500);
-			String parentWindow = driver.getWindowHandle();
 			Set<String> allWindows = driver.getWindowHandles();
 			for(String windows : allWindows)
 			{
@@ -663,26 +666,11 @@ public class FluidEducationLocator
 					break;
 				}
 			}
-			driver.switchTo().window(parentWindow);
+			driver.switchTo().window(FluideducationPage);
 		}
 		
 		driver.close();
-		
-		Set<String> allScreen = driver.getWindowHandles();
-		 for (String handle : allScreen) 
-		 {
-			 driver.switchTo().window(handle);
-	            if(handle.equals(driver.getWindowHandle()))
-	            {
-	                driver.switchTo().window(handle);
-	                if(driver.getCurrentUrl().equalsIgnoreCase(OpenWebsite.setURL+"/"))
-	                {
-	                	 driver.switchTo().window(handle);
-	                	 break;
-	                }
-	            }
-	            driver.switchTo().window(handle);
-	      }
+		driver.switchTo().window(parentWindow);
 		return status;
 	}
 }

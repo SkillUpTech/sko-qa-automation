@@ -13,13 +13,11 @@ import org.openqa.selenium.WindowType;
 public class SignUpPageLinksLocator 
 {
 	WebDriver driver;
-	//MicrosoftCourseLocator microsoftCourseLocator;
 	String parentWindow = "";
 	String signUpPage = "";
 	public SignUpPageLinksLocator(WebDriver driver)
 	{
 		this.driver = driver;
-		//this.microsoftCourseLocator = new MicrosoftCourseLocator(this.driver);
 	}
 	
 	public String checkSignupLink()
@@ -31,6 +29,7 @@ public class SignUpPageLinksLocator
 		{
 			WebElement topElement = driver.findElement(By.tagName("body")); // Or any top element
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", topElement);
+			
 			WebElement clickSignup = driver.findElement(By.cssSelector("div[class*='Header_signupBtn']>a"));
 			js.executeScript("arguments[0].scrollIntoView();", clickSignup);
 			if(clickSignup.isDisplayed())

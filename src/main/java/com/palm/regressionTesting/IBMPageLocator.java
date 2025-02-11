@@ -24,6 +24,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class IBMPageLocator 
 {
 	WebDriver driver;
+	String IBMWindow = "";
 	@FindBy(xpath = "//div[contains(@class,'container-fluid Courses_containerInner')]/div[3]")
 	private List<WebElement> programCardSection;
 	
@@ -134,6 +135,7 @@ public class IBMPageLocator
 	String CoursePageEnrollStatus = ".//div[contains(@class,'CourseDescription_PreferredCohort')]//div[contains(@class,'CourseDescription_CohortBox')]/button|//div[contains(@class,'CourseDescription_buttonsContent')]/h6|//div[contains(@class,'CourseDescription_buttonsContent')]/button[1]";
 	
 	String CoursePagePrice = ".//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p|//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'From')]/following-sibling::p";
+	
 	String parentWindow = "";
 	
 	public IBMPageLocator(WebDriver driver)
@@ -183,15 +185,14 @@ public class IBMPageLocator
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			//google cloud = google-cloud-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA
-			//ibm = ibm-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA
+			parentWindow = driver.getWindowHandle();
 			String IBMURL = driver.getCurrentUrl()+"ibm-courses-and-programs/?utm_source=websiteinternal&utm_medium=megamenu&utm_campaign=NA";
 			driver.switchTo().newWindow(WindowType.TAB);
 			driver.get(IBMURL);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 			
-			parentWindow = driver.getWindowHandle();
+			IBMWindow = driver.getWindowHandle();
 			
 		}
 		catch (Exception e) 
@@ -466,7 +467,7 @@ public class IBMPageLocator
 							{
 								if ((cardLevelStatus.get(0).toLowerCase()).equals(pageLevelStatus.get(0).toLowerCase()))
 								{
-									String getDurationText = programPageSection.findElement(By.xpath(ProgramPageSelfOrVilt)).getText(); //Starts on
+									//String getDurationText = programPageSection.findElement(By.xpath(ProgramPageSelfOrVilt)).getText(); //Starts on
 									
 									if(pageLevelStatus.get(0).toLowerCase().contains("Self-Paced"))//self paced
 									{
@@ -532,7 +533,7 @@ public class IBMPageLocator
 					pagePriceStatus.clear();
 					pageEnrollmentStatus.clear();
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(IBMWindow);
 				}
 			}
 			else
@@ -946,7 +947,7 @@ public class IBMPageLocator
 					pagePriceStatus.clear();
 					pageEnrollmentStatus.clear();
 				driver.close();
-				driver.switchTo().window(parentWindow);
+				driver.switchTo().window(IBMWindow);
 				}
 				}
 			}
@@ -954,7 +955,8 @@ public class IBMPageLocator
 			{
 				System.out.println("Program cards are not available in google cloud partner page");
 			}
-			
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch (Exception e) 
 		{
