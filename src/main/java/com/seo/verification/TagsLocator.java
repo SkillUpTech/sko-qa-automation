@@ -1,6 +1,7 @@
 package com.seo.verification;
 
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,12 +109,14 @@ public class TagsLocator
 	
 	public String checkURLStatus(String data)
 	{
-		  String status = "fail";
+		  String status = "";
 	        HttpURLConnection connection = null;
 	        int responseCode = 200;
 			 try 
 			 {
-		            connection = (HttpURLConnection) (new URL(data).openConnection());
+				 	URI uri = new URI(data); // Convert string to URI
+		            URL url = uri.toURL();
+		            connection = (HttpURLConnection) url.openConnection();
 		            connection.setRequestMethod("GET");
 		            connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 		            connection.connect();
@@ -134,13 +137,6 @@ public class TagsLocator
 			 {
 		            e.printStackTrace();
 		     }
-			 finally
-			 {
-		            if (connection != null)
-		            {
-		                connection.disconnect();
-		            }
-			 }
 			return status;
 	}
 	
@@ -197,8 +193,10 @@ public class TagsLocator
 	public String FAQ()
 	{
 		String status = "";
+		String getURL = "";
 		try
 		{
+			getURL = driver.getCurrentUrl();
 			boolean isFAQSchemaPresent = validateSchema(driver, "//script[contains(@id,'schema')]", "FAQPage");
 			if(isFAQSchemaPresent)
 			{
@@ -207,13 +205,13 @@ public class TagsLocator
 			} 
 			else
 			{
-				status = "faq  : "+ driver.getCurrentUrl();
+				status = "faq  not available on "+ getURL;
 			}
 
 	    } 
 		catch (Exception e)
 		{
-			System.out.println("issue on faq"+ driver.getCurrentUrl());
+			System.out.println("fail on faq "+ getURL);
 		}
 		return status;
 	}
@@ -221,8 +219,10 @@ public class TagsLocator
 	public String courseSchema()
 	{
 		String status = "";
+		String getURL = "";
 		try
 		{
+			getURL = driver.getCurrentUrl();
 			boolean isCourseSchemaPresent = validateSchema(driver, "//script[contains(@id,'courseschema')]|//script[contains(@id,'CourseSchema')]", "Course");
 			if(isCourseSchemaPresent)
 			{
@@ -231,13 +231,13 @@ public class TagsLocator
             } 
             else
             {
-                status = "CourseSchema  : " + driver.getCurrentUrl();
+                status = "CourseSchema  : " + getURL;
             }
 
 	    } 
 		catch (Exception e)
 		{
-	            System.out.println("issue on course schema"+ driver.getCurrentUrl());
+	            System.out.println("fail on course schema"+ getURL);
 		}
 		return status;
 	}
@@ -245,8 +245,10 @@ public class TagsLocator
 	public String checkH1Tag(WebElement locator)
 	{
 		String status = "";
+		String getURL = "";
 		try
 		{
+		getURL = driver.getCurrentUrl();	
 			WebElement isH1Present = locator;
 			
 			if (isH1Present.isDisplayed())
@@ -256,12 +258,12 @@ public class TagsLocator
 			}
 			else 
 			{
-				status="H1  : " + driver.getCurrentUrl();
+				status="H1  : " + getURL;
 			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("issue on h1"+ driver.getCurrentUrl());
+			System.out.println("  h1 fail "+ getURL);
 		}
 		return status;
 	}
@@ -377,7 +379,7 @@ public class TagsLocator
 		}
 		catch (Exception e) 
 		{
-			status.add("issue on url : " +urlToLanuch);
+			status.add("fail on url : " +urlToLanuch);
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -523,7 +525,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			status.add("issue on programs " + "- URL - "+ driver.getCurrentUrl());
+			status.add("issue/fail on programs " + "- URL - "+ driver.getCurrentUrl());
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -657,7 +659,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			status.add("issue on courses " + "- URL - "+ driver.getCurrentUrl());
+			status.add("issue/fail on courses " + "- URL - "+ driver.getCurrentUrl());
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -828,9 +830,11 @@ public class TagsLocator
 			status.add(this.FAQ());
 			status.add(this.checkH1Tag(googleCloudH1Tag));
 			status.addAll(this.checkMetaTags());
-			}
-			if (!checkPageStatus) 
-			{
+			checkValidationPage = false;
+			checkHomePage = false;
+			/*
+			 * } if (!checkPageStatus) {
+			 */
 				driver.close();
 				driver.switchTo().window(parentWindow);
 			}
@@ -880,11 +884,13 @@ public class TagsLocator
 			status.add(this.FAQ());
 			status.add(this.checkH1Tag(PLUH1Tag));
 			status.addAll(this.checkMetaTags());
-			}
-			if (!checkPageStatus) 
-			{
+			/*
+			 * } if (!checkPageStatus) {
+			 */
 				driver.close();
 				driver.switchTo().window(parentWindow);
+				checkValidationPage = false;
+				checkHomePage = false;
 			}
 		} 
 		catch (Exception e)
