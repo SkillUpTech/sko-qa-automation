@@ -149,17 +149,20 @@ public class TagsLocator
 		ArrayList<String> status = new ArrayList<String>();
 		
 		HashMap<String, List<WebElement>> metaTags = new HashMap<String, List<WebElement>>();
-		metaTags.put("ogTypeInfo", ogType);
+			metaTags.put("ogTypeInfo", ogType);
 		
-		  metaTags.put("ogURLInfo", ogURL); metaTags.put("ogTitleInfo", ogTitle);
-		  metaTags.put("ogDesciptionInfo", ogDescription); metaTags.put("ogImageInfo",
-		  ogImage); metaTags.put("twitterURLInfo", twitterURL);
+		  metaTags.put("ogURLInfo", ogURL); 
+		  metaTags.put("ogTitleInfo", ogTitle);
+		  metaTags.put("ogDesciptionInfo", ogDescription); 
+		  metaTags.put("ogImageInfo",
+		  ogImage); 
+		  metaTags.put("twitterURLInfo", twitterURL);
 		  metaTags.put("twitterCardInfo", twitterCard);
 		  metaTags.put("twitterTitleInfo", twitterTitle);
 		  metaTags.put("twitterDescriptionInfo", twitterDescription);
 		  metaTags.put("twitterImageInfo", twitterImage);
 		 
-		
+		  String key ="";
 		
 		try
 		{
@@ -168,7 +171,7 @@ public class TagsLocator
 			{
 				if (tag.getValue().size() > 0)
 				{
-					String key = tag.getKey();
+					key = tag.getKey();
 					String value = tag.getValue().get(0).getAttribute("content");
 					if (value != null && value != "")
 					{
@@ -176,7 +179,7 @@ public class TagsLocator
 					}
 					else 
 					{
-						status.add("Meta " +key+ ": not available in : "+ driver.getCurrentUrl());
+						status.add(key+ " : "+ driver.getCurrentUrl());
 					}
 				}
 			}
@@ -186,7 +189,7 @@ public class TagsLocator
 		}
 		catch (Exception e)
 		{
-			status.add("issue on Meta tags verification in : "+ driver.getCurrentUrl());
+			System.out.println("issue on meta tags "+ key+ " : "+ driver.getCurrentUrl());;
 		}
 		return status;
 	}
@@ -204,13 +207,13 @@ public class TagsLocator
 			} 
 			else
 			{
-				status = "FAQ Schema is not present in : "+ driver.getCurrentUrl();
+				status = "faq  : "+ driver.getCurrentUrl();
 			}
 
 	    } 
 		catch (Exception e)
 		{
-	            status ="issue on FAQ schema verification in : "+ driver.getCurrentUrl();
+			System.out.println("issue on faq"+ driver.getCurrentUrl());
 		}
 		return status;
 	}
@@ -228,13 +231,13 @@ public class TagsLocator
             } 
             else
             {
-                status = "Course Schema is not present in : " + driver.getCurrentUrl();
+                status = "CourseSchema  : " + driver.getCurrentUrl();
             }
 
 	    } 
 		catch (Exception e)
 		{
-	            status = "issue on course schema - fail" +" URL - "+ driver.getCurrentUrl();
+	            System.out.println("issue on course schema"+ driver.getCurrentUrl());
 		}
 		return status;
 	}
@@ -253,12 +256,12 @@ public class TagsLocator
 			}
 			else 
 			{
-				status="H1 Tag is not present" +" URL - "+ driver.getCurrentUrl();
+				status="H1  : " + driver.getCurrentUrl();
 			}
 		}
 		catch (Exception e)
 		{
-			status = "issue on H1 tag - fail" +" URL - "+ driver.getCurrentUrl();
+			System.out.println("issue on h1"+ driver.getCurrentUrl());
 		}
 		return status;
 	}
@@ -374,8 +377,7 @@ public class TagsLocator
 		}
 		catch (Exception e) 
 		{
-			e.printStackTrace();
-			status.add("issue on opening page - fail");
+			status.add("issue on url : " +urlToLanuch);
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -490,7 +492,6 @@ public class TagsLocator
 							{
 								
 								status.add(this.FAQ());
-								status.add(this.courseSchema());
 								status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses));
 								status.addAll(this.checkMetaTags());
 								driver.close();
@@ -522,8 +523,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail" +" URL - "+ driver.getCurrentUrl());
+			status.add("issue on programs " + "- URL - "+ driver.getCurrentUrl());
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -657,8 +657,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner courses - fail"+" URL - "+ driver.getCurrentUrl());
+			status.add("issue on courses " + "- URL - "+ driver.getCurrentUrl());
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -674,7 +673,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 				status.add(this.FAQ());
-				status.add(this.courseSchema());
 				status.add(this.checkH1Tag(IBMH1Tag));
 				status.addAll(this.checkMetaTags());
 			}
@@ -688,8 +686,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
         {
-            e.printStackTrace();
-            status.add("issue on IBM partner page - fail");
+            System.out.println("issue on ibm partner page - fail");
         }
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -705,8 +702,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on ibm partner page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -722,8 +718,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on ibm partner page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -739,8 +734,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on AI page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -757,8 +751,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on AI page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -774,7 +767,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(MicrosoftH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -786,7 +778,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on microsoft page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -801,8 +793,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on microsoft program page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -819,8 +810,7 @@ public class TagsLocator
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on microsoft course  page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -836,7 +826,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(googleCloudH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -848,7 +837,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on google cloud page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -860,8 +849,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on google cloud page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -873,8 +861,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on google cloud page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -891,7 +878,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(PLUH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -903,7 +889,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on plu page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -915,8 +901,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on plu page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -928,8 +913,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on plu page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -944,7 +928,6 @@ public class TagsLocator
             {
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(FutureSkillH1Tag));
 			status.addAll(this.checkMetaTags());
             }
@@ -956,7 +939,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on futureskills page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -968,8 +951,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on futureskills page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -981,8 +963,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on futureskills page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -998,7 +979,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1010,7 +990,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on AI page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1022,8 +1002,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on AI page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1035,8 +1014,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on AI page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1052,7 +1030,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1064,7 +1041,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on azure page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1076,8 +1053,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on azure page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1089,8 +1065,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on azure page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1106,7 +1081,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1118,7 +1092,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on bigdata page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1130,8 +1104,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on bigdata page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1143,8 +1116,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on bigdata page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1160,7 +1132,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1172,7 +1143,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on blockchain page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1184,8 +1155,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on blockchain page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1197,8 +1167,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on blockchain page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1214,7 +1183,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1226,7 +1194,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on business App page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1238,8 +1206,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on business App page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1251,8 +1218,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on business App page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1268,7 +1234,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1280,7 +1245,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on cloud computing page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1292,8 +1257,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on cloud computing page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1305,8 +1269,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on cloud computing page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1322,7 +1285,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1334,7 +1296,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on posh page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1347,8 +1309,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on posh page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1360,8 +1321,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on posh page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1377,7 +1337,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1389,7 +1348,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on cybersecurity page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1401,8 +1360,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on cybersecurity page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1414,67 +1372,14 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on cybersecurity page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
 	}
 	
 	
-	public ArrayList<String> BusinessApplication_CategoryPage(String data)
-	{
-		ArrayList<String> status = new ArrayList<String>();
-		try 
-		{
-			status.addAll(this.openPage(data));
-			if(!status.contains("fail"))
-			{
-				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.courseSchema());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
-			}
-			if (!checkPageStatus) 
-			{
-				driver.close();
-				driver.switchTo().window(parentWindow);
-			}
-		} 
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status.stream()
-                .filter(s -> s != null && !s.trim().isEmpty())
-                .collect(Collectors.toCollection(ArrayList::new));
-	}
 	
-	public ArrayList<String> BusinessApplication_CategoryPage_Programs() {
-		ArrayList<String> status = new ArrayList<String>();
-		try {
-			status.addAll(this.checkPrograms());
-		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
-		}
-		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
-				.collect(Collectors.toCollection(ArrayList::new));
-
-	}
-	
-	public ArrayList<String> BusinessApplication_CategoryPage_Courses() {
-		ArrayList<String> status = new ArrayList<String>();
-		try {
-			status.addAll(this.checkCourses());
-		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
-		}
-		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
-				.collect(Collectors.toCollection(ArrayList::new));
-	}
 	
 	public ArrayList<String> checkDataAnalytics_CategoryPage(String data)
 	{
@@ -1486,7 +1391,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1498,7 +1402,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on data analytics page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1510,8 +1414,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on data analytics page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1523,8 +1426,7 @@ public class TagsLocator
         try {
             status.addAll(this.checkCourses());
         } catch (Exception e) {
-            e.printStackTrace();
-            status.add("issue on partner programs - fail");
+        	System.out.println("issue on data analytics page - fail");
         }
         return status.stream().filter(s -> s != null && !s.trim().isEmpty())
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -1540,7 +1442,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1552,7 +1453,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on data science page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1564,8 +1465,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on data science page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1577,8 +1477,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on data science page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1594,7 +1493,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1606,7 +1504,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on devops page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1619,8 +1517,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on devops page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1632,8 +1529,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on devops page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1649,7 +1545,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1661,7 +1556,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on humanskills page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1674,8 +1569,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on humanskills page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1687,8 +1581,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on humanskills page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1704,7 +1597,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1716,7 +1608,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on IOT page - fail");
 		}
 		return status.stream()
                 .filter(s -> s != null && !s.trim().isEmpty())
@@ -1729,8 +1621,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on IOT page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1742,8 +1633,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on IOT page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1760,7 +1650,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1772,7 +1661,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on Modern Workplace  page - fail");
 		}
 		return status;
 	}
@@ -1782,8 +1671,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on Modern Workplace  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1795,8 +1683,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on Modern Workplace  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1814,7 +1701,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1826,7 +1712,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on power BI  page - fail");
 		}
 		return status;
 	}
@@ -1836,8 +1722,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on power BI  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1849,8 +1734,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on power BI  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1868,7 +1752,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1880,7 +1763,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on Power Platform  page - fail");
 		}
 		return status;
 	}
@@ -1890,8 +1773,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on Power Platform  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1903,8 +1785,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on Power Platform  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1922,7 +1803,6 @@ public class TagsLocator
 			{
 				checkPageStatus = true;
 			status.add(this.FAQ());
-			status.add(this.courseSchema());
 			status.add(this.checkH1Tag(categoryH1Tag));
 			status.addAll(this.checkMetaTags());
 			}
@@ -1934,7 +1814,7 @@ public class TagsLocator
 		} 
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("issue on productivity  page - fail");
 		}
 		return status;
 	}
@@ -1944,8 +1824,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkPrograms());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on productivity  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
@@ -1957,8 +1836,7 @@ public class TagsLocator
 		try {
 			status.addAll(this.checkCourses());
 		} catch (Exception e) {
-			e.printStackTrace();
-			status.add("issue on partner programs - fail");
+			System.out.println("issue on productivity  page - fail");
 		}
 		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
 				.collect(Collectors.toCollection(ArrayList::new));
