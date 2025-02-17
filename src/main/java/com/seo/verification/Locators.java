@@ -62,6 +62,7 @@ public class Locators
         dataScienceLocators.put("coursesShowmore", "//div[@id='learningCatalogCourses']//button[contains(text(),'Show more')]");
         dataScienceLocators.put("coursesShowless", "//div[@id='learningCatalogCourses']//button[contains(text(),'Show less')]");
         dataScienceLocators.put("courses", "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]//div[contains(@class,'LearningCatalog_cardRow')]//a");
+        
         pageLocators.put("DataScience", dataScienceLocators);
         
         Map<String, String> humanskillsLocators = new HashMap<>();
@@ -105,6 +106,18 @@ public class Locators
         microsoftLocators.put("coursesShowmore", "//button[contains(text(),'Show more')]");
         microsoftLocators.put("coursesShowless", "//button[contains(text(),'Show less')]");
         microsoftLocators.put("courses", "//div[contains(@class,'container-fluid')]/div[2]//div[contains(@class,'LearningCatalog_cardRow')]//a");
+        microsoftLocators.put( "cardLocator", "//div[contains(@class,'LearningCatalog_cardRow')]//div[contains(@class,'LearningCatalog_customCard')]");
+        microsoftLocators.put("cardPartner ",".//div[contains(@class,'RegularCourseCard_courseCompany')]");
+        microsoftLocators.put(" cardURL  ",".//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a");
+        microsoftLocators.put(" cardCourseLabel ", ".//div[contains(@class,'RegularCourseCard_courseType')]//p[contains(text(),'Course')]");
+        microsoftLocators.put(" cardHeading ",".//div[contains(@class,'RegularCourseCard_courseHeading')]/p");
+        microsoftLocators.put(" cardLevel1  ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[1]");
+        microsoftLocators.put(" cardLevel2 ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[2]");
+        microsoftLocators.put(" cardLevel3 ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[3]");
+        microsoftLocators.put(" enrollPriceSection ", ".//div[contains(@class,'RegularCourseCard_priceSection')]");
+        microsoftLocators.put(" cardprice  ",".//div[contains(@class,'RegularCourseCard_priceRight')]/h2[contains(text(),'From')]/following-sibling::p");
+        microsoftLocators.put(" EnrollStatus = ",".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2");
+        
         pageLocators.put("Microsoft", microsoftLocators);
 	}
 	
