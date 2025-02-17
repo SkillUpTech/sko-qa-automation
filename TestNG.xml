@@ -3,9 +3,9 @@
 <suite name="Testing Google Apps">
     <test name="Regression">
 		<parameter name = "browser" value = "Chrome"/>
-		<parameter name = "env" value = "prod-in"/>
+		<parameter name = "env" value = "qa"/>
 	<classes>
-			<class name="com.seo.verification.RegressionTesting"/>
+			<class name="com.palm.regressionTesting.RegressionTesting"/>
 		</classes>
      </test> <!-- Test -->
 </suite> <!-- Suite -->

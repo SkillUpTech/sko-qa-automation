@@ -135,12 +135,12 @@ public class TagsLocator
 		        } 
 			 catch (Exception e) 
 			 {
-		            e.printStackTrace();
+				 status = "issue/fail on url : "+data;
 		     }
 			return status;
 	}
 	
-	public ArrayList<String> checkMetaTags()
+	public ArrayList<String> checkMetaTags(String data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -175,7 +175,7 @@ public class TagsLocator
 					}
 					else 
 					{
-						status.add(key+ " : "+ driver.getCurrentUrl());
+						status.add(key+ " : "+ data);
 					}
 				}
 			}
@@ -185,18 +185,16 @@ public class TagsLocator
 		}
 		catch (Exception e)
 		{
-			System.out.println("issue on meta tags "+ key+ " : "+ driver.getCurrentUrl());;
+			System.out.println("issue/fail on meta tags "+ key+ " : "+ data);;
 		}
 		return status;
 	}
 	
-	public String FAQ()
+	public String FAQ(String data)
 	{
 		String status = "";
-		String getURL = "";
 		try
 		{
-			getURL = driver.getCurrentUrl();
 			boolean isFAQSchemaPresent = validateSchema(driver, "//script[contains(@id,'schema')]", "FAQPage");
 			if(isFAQSchemaPresent)
 			{
@@ -205,24 +203,22 @@ public class TagsLocator
 			} 
 			else
 			{
-				status = "faq  not available on "+ getURL;
+				status = "faq  not available on "+ data;
 			}
 
 	    } 
 		catch (Exception e)
 		{
-			System.out.println("fail on faq "+ getURL);
+			System.out.println("fail on faq "+ data);
 		}
 		return status;
 	}
 	
-	public String courseSchema()
+	public String courseSchema(String data)
 	{
 		String status = "";
-		String getURL = "";
 		try
 		{
-			getURL = driver.getCurrentUrl();
 			boolean isCourseSchemaPresent = validateSchema(driver, "//script[contains(@id,'courseschema')]|//script[contains(@id,'CourseSchema')]", "Course");
 			if(isCourseSchemaPresent)
 			{
@@ -231,24 +227,22 @@ public class TagsLocator
             } 
             else
             {
-                status = "CourseSchema  : " + getURL;
+                status = "CourseSchema  : " + data;
             }
 
 	    } 
 		catch (Exception e)
 		{
-	            System.out.println("fail on course schema"+ getURL);
+	            System.out.println("fail on course schema"+ data);
 		}
 		return status;
 	}
 
-	public String checkH1Tag(WebElement locator)
+	public String checkH1Tag(WebElement locator, String data)
 	{
 		String status = "";
-		String getURL = "";
 		try
 		{
-		getURL = driver.getCurrentUrl();	
 			WebElement isH1Present = locator;
 			
 			if (isH1Present.isDisplayed())
@@ -258,12 +252,12 @@ public class TagsLocator
 			}
 			else 
 			{
-				status="H1  : " + getURL;
+				status="H1  : " + data;
 			}
 		}
 		catch (Exception e)
 		{
-			System.out.println("  h1 fail "+ getURL);
+			System.out.println("  h1 tag fail : "+ data);
 		}
 		return status;
 	}
@@ -297,6 +291,33 @@ public class TagsLocator
 			
 		}
 		return false;
+	}
+	
+	public String checkCanonicalTag(String data)
+	{
+		String status = "";
+		try
+		{
+			WebElement canonicalTag = driver.findElement(By.xpath("//link[@rel='canonical']"));
+
+            // Check if the href attribute is present and not empty
+            String hrefValue = canonicalTag.getAttribute("href");
+
+            if (hrefValue != null && !hrefValue.trim().isEmpty())
+            {
+                System.out.println("Canonical tag is present with href: " + hrefValue);
+            } 
+            else
+            {
+                System.out.println("Canonical tag is missing or href attribute is empty!");
+                status = "canonical tag not available" + data;
+            }
+		}
+		catch (Exception e) 
+		{
+			System.out.println("issue on canonical tag");
+		}
+		return status;
 	}
 	boolean checkHomePage;
 	boolean checkValidationPage;
@@ -492,10 +513,10 @@ public class TagsLocator
 							status.addAll(this.openPage(programURL));
 							if (!status.contains("fail"))
 							{
-								
-								status.add(this.FAQ());
-								status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses));
-								status.addAll(this.checkMetaTags());
+								status.add(this.checkCanonicalTag(programURL));
+								status.add(this.FAQ(programURL));
+								status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses, programURL));
+								status.addAll(this.checkMetaTags(programURL));
 								driver.close();
 								driver.switchTo().window(validationPage);
 								checkValidationPage = true;
@@ -634,10 +655,11 @@ public class TagsLocator
 						status.addAll(this.openPage(courseURL));
 						if (!status.contains("fail"))
 						{
-							status.add(this.FAQ());
-							status.add(this.courseSchema());
-							status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses));
-							status.addAll(this.checkMetaTags());
+							status.add(this.checkCanonicalTag(courseURL));
+							status.add(this.FAQ(courseURL));
+							status.add(this.courseSchema(courseURL));
+							status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses, courseURL));
+							status.addAll(this.checkMetaTags(courseURL));
 							driver.close();
 							driver.switchTo().window(validationPage);
 							checkValidationPage = true;
@@ -674,9 +696,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.FAQ());
-				status.add(this.checkH1Tag(IBMH1Tag));
-				status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+				status.add(this.FAQ(data));
+				status.add(this.checkH1Tag(IBMH1Tag, data));
+				status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -768,9 +791,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(MicrosoftH1Tag));
-			status.addAll(this.checkMetaTags());
+			status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(MicrosoftH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -827,9 +851,9 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(googleCloudH1Tag));
-			status.addAll(this.checkMetaTags());
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(googleCloudH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			checkValidationPage = false;
 			checkHomePage = false;
 			/*
@@ -881,9 +905,9 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(PLUH1Tag));
-			status.addAll(this.checkMetaTags());
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(PLUH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			/*
 			 * } if (!checkPageStatus) {
 			 */
@@ -933,9 +957,9 @@ public class TagsLocator
 			if(!status.contains("fail"))
             {
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(FutureSkillH1Tag));
-			status.addAll(this.checkMetaTags());
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(FutureSkillH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
             }
 			if (!checkPageStatus) 
 			{
@@ -984,9 +1008,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+			status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1035,9 +1060,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1086,9 +1112,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1137,9 +1164,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1188,9 +1216,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1239,9 +1268,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1290,9 +1320,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1342,9 +1373,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1396,9 +1428,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1447,9 +1480,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1498,9 +1532,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1550,9 +1585,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1602,9 +1638,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1655,9 +1692,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1706,9 +1744,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1757,9 +1796,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1808,9 +1848,10 @@ public class TagsLocator
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ());
-			status.add(this.checkH1Tag(categoryH1Tag));
-			status.addAll(this.checkMetaTags());
+				status.add(this.checkCanonicalTag(data));
+			status.add(this.FAQ(data));
+			status.add(this.checkH1Tag(categoryH1Tag, data));
+			status.addAll(this.checkMetaTags(data));
 			}
 			if (!checkPageStatus) 
 			{

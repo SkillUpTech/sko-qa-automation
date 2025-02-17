@@ -131,13 +131,13 @@ public class EditProfileLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-					WebElement clickDropDown = driver.findElement(By.cssSelector("a[class='dropdown-toggle']"));
+					WebElement clickDropDown = driver.findElement(By.xpath("//div[@class='userAvatar false']//img[@alt='icon']"));
 					js.executeScript("arguments[0].scrollIntoView();", clickDropDown);
 					if(clickDropDown.isDisplayed())
 					{
 						try
 						{
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("a[class='dropdown-toggle']>img")));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//div[@class='userAvatar false']//img[@alt='icon']")));
 							js.executeScript("arguments[0].click()", clickDropDown);
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));Thread.sleep(1000);
 				        } 
@@ -151,14 +151,14 @@ public class EditProfileLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(150));
 					
-					WebElement clickProfile = driver.findElement(By.cssSelector("ul[class*='dropdown-menu']>li:nth-child(3)>a"));
+					WebElement clickProfile = driver.findElement(By.xpath("//a[@class='avatarDropDownLink'][normalize-space()='Profile']"));
 					js.executeScript("arguments[0].scrollIntoView();", clickProfile);
 					driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));Thread.sleep(1000);
 					if(clickProfile.isDisplayed())
 					{
 						try
 						{
-							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.cssSelector("ul[class*='dropdown-menu']>li:nth-child(3)>a")));
+							wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(By.xpath("//a[@class='avatarDropDownLink'][normalize-space()='Profile']")));
 							js.executeScript("arguments[0].click()", clickProfile);
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));Thread.sleep(1000);
 				        } 
@@ -353,6 +353,11 @@ public class EditProfileLocator
 					System.out.println("contact with invalid data process done");
 				}
 				else
+				{
+					status = "fail";
+				}
+				
+				if (status.isBlank() || status.isEmpty()) 
 				{
 					status = "fail";
 				}

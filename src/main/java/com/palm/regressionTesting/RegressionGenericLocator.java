@@ -1315,7 +1315,7 @@ public String navigateProcess() {
 				if (i == 1) 
 				{
 					WebElement navigationButton = driver
-							.findElement(By.cssSelector("div#whySkillUp h2[class*='_titleText']"));
+							.findElement(By.xpath("//div[contains(@class,'WhyLearnSkillUp_mainContent')]"));
 					js.executeScript("arguments[0].scrollIntoView();", navigationButton);
 					String question = navigationButton.getText().replaceAll("\\s", "").replaceAll("\u00A0", "")
 							.replaceAll("[^\\p{ASCII}]", "");
@@ -1575,61 +1575,71 @@ public String navigateProcess() {
 			System.out.println(value);
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			
-			WebElement fullName = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] input[placeholder='Full Name']"));
-			js.executeScript("arguments[0].scrollIntoView();", fullName);
-			if (fullName.isDisplayed())
+			if(driver.findElements(By.xpath("//input[@pattern='^[a-zA-Z]+ [a-zA-Z]+$']")).size()>0)
 			{
-				System.out.println("Full Name is displayed");
+				WebElement fullName = driver.findElement(By.xpath("//input[@pattern='^[a-zA-Z]+ [a-zA-Z]+$']"));
+				js.executeScript("arguments[0].scrollIntoView();", fullName);
 				fullName.clear();
-				fullName.sendKeys(key);
+				if (fullName.isDisplayed())
+				{
+					System.out.println("Full Name is displayed");
+					fullName.clear();
+					fullName.sendKeys(key);
+				}
 			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			checkSubscribeProcess.add(this.validationProcess());
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-			WebElement email = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] input[placeholder='Email']"));
-			js.executeScript("arguments[0].scrollIntoView();", email);
-			if (fullName.isDisplayed())
+			if(driver.findElements(By.xpath("//input[@pattern='^[a-zA-Z]+ [a-zA-Z]+$']")).size()>0)
 			{
-				System.out.println("email is displayed");
-				email.clear();
-				email.sendKeys(value);
+				WebElement fullName = driver.findElement(By.xpath("//input[@pattern='^[a-zA-Z]+ [a-zA-Z]+$']"));
+				js.executeScript("arguments[0].scrollIntoView();", fullName);
+				if (fullName.isDisplayed())
+				{
+					System.out.println("email is displayed");
+					fullName.clear();
+					fullName.sendKeys(value);
+				}
 			}
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			checkSubscribeProcess.add(this.validationProcess());
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
 			
-			WebElement clickSubscribe = driver.findElement(By.cssSelector("form[class*='NewsAndUpdates_formSection'] button"));
-			js.executeScript("arguments[0].scrollIntoView();", clickSubscribe);
-			if (clickSubscribe.isDisplayed())
+			if(driver.findElements(By.xpath("//button[@class='globbtn primarydarkbgdiabled undefined']")).size()>0)
 			{
-				try 
+				WebElement clickSubscribe = driver.findElement(By.xpath("//button[@class='globbtn primarydarkbgdiabled undefined']"));
+				js.executeScript("arguments[0].scrollIntoView();", clickSubscribe);
+				if (clickSubscribe.isDisplayed())
 				{
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
-					js.executeScript("arguments[0].scrollIntoView()", clickSubscribe);
-					WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
-					wait.until(ExpectedConditions.elementToBeClickable(clickSubscribe));
-					((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickSubscribe);
-					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-				} 
-				catch (Exception e)
-				{
-					e.printStackTrace();
-					checkSubscribeProcess.add("fail");
-				}
-				List<WebElement> checkValidationLocator = driver.findElements(By.cssSelector("p[class='mt-2  NewsAndUpdates_inputMessage___Y1G_ mt-1']"));
-				if (checkValidationLocator.size() > 0)
-				{
-					System.out.println("validation message shown");
-					checkSubscribeProcess.add("fail");
-				} 
-				else
-				{
-					checkSubscribeProcess.add("pass");
+					try 
+					{
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+						js.executeScript("arguments[0].scrollIntoView()", clickSubscribe);
+						WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
+						wait.until(ExpectedConditions.elementToBeClickable(clickSubscribe));
+						((JavascriptExecutor) driver).executeScript("arguments[0].click();", clickSubscribe);
+						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					} 
+					catch (Exception e)
+					{
+						e.printStackTrace();
+						checkSubscribeProcess.add("fail");
+					}
+					List<WebElement> checkValidationLocator = driver.findElements(By.cssSelector("p[class='mt-2  NewsAndUpdates_inputMessage___Y1G_ mt-1']"));
+					if (checkValidationLocator.size() > 0)
+					{
+						System.out.println("validation message shown");
+						checkSubscribeProcess.add("fail");
+					} 
+					else
+					{
+						checkSubscribeProcess.add("pass");
+					}
 				}
 			}
+		
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
 		} 
 		catch (Exception e) 
