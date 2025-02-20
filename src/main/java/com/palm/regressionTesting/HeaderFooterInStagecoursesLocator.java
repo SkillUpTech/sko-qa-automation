@@ -21,69 +21,68 @@ public class HeaderFooterInStagecoursesLocator
 	@FindBy(xpath = "//a[contains(text(),'LOGIN')]")
 	private List<WebElement> clickLoginIcon;
 	
-	@FindBy(css = "div[class='TickerButton']>a") //Find out more
-	private WebElement clickFindOutMoreIcon;
 	
-	@FindBy(xpath = "//ul[contains(@class,'nav navbar-nav MobIlE_MenU')]//a[contains(text(),'About SkillUp')]")
+	@FindBy(xpath = "//a[contains(@href,'about')][contains(@href,'header')]")
 	private List<WebElement> clickAboutSkillupIcon;
 	
-	@FindBy(xpath = "//ul[contains(@class,'nav navbar-nav MobIlE_MenU')]//a[contains(text(),'Contact us')]")
+	@FindBy(xpath = "//a[contains(@href,'contact')][contains(@href,'header')]")
 	private List<WebElement> clickContactUSIcon;
 	
-	@FindBy(xpath = "//ul[contains(@class,'nav navbar-nav MobIlE_MenU')]//a[contains(text(),'Blog')]")
+	@FindBy(xpath = "//a[contains(@href,'blog')][contains(@href,'header')]")
 	private List<WebElement> clickBlogIcon;
 	
-	@FindBy(xpath = "//a[contains(@href,'twitter')]")
+	@FindBy(xpath = "//img[@alt='twitter']/parent::a")
 	private List<WebElement> clickTwitter;
 	
-	@FindBy(xpath = "//a[contains(@href,'facebook')]")
+	@FindBy(xpath = "//img[@alt='facebook']/parent::a")
 	private List<WebElement> clickFacebook;
 	
-	@FindBy(xpath = "//a[contains(@href,'linkedin')]")
+	@FindBy(xpath = "//img[@alt='linkedin']/parent::a")
 	private List<WebElement> clickLinkedIn;
 	
-	@FindBy(xpath = "//a[contains(@href,'instagram')]")
+	@FindBy(xpath = "//img[@alt='instagram']/parent::a")
 	private List<WebElement> clickInstagram;
 	
-	@FindBy(xpath = "//a[contains(@href,'youtube')]")
+	@FindBy(xpath = "//img[@alt='youtube']/parent::a")
 	private List<WebElement> clickYoutube;
 	
-	@FindBy(xpath = "//div[@class='ContActUs']//a[contains(@href,'contact')]")
+	@FindBy(xpath = "//a[contains(@href,'contact')][contains(@href,'Footer')]")
 	private List<WebElement> clickContactUSFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'about?')]")
+	@FindBy(xpath = "//a[contains(@href,'about')][contains(@href,'Footer')]")
 	private List<WebElement> clickAboutSkillupOnlineFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'enterprise')]")
+	@FindBy(xpath = "//a[contains(@href,'enterprise')][contains(@href,'Footer')]")
 	private List<WebElement> clickBusinessFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'faq')]")
+	@FindBy(xpath = "//a[contains(@href,'faq')][contains(@href,'Footer')]")
 	private List<WebElement> clickFAQFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'privacy')]")
+	@FindBy(xpath = "//a[contains(@href,'privacy')][contains(@href,'Footer')]")
 	private List<WebElement> clickPrivacyFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'tos')]")
+	@FindBy(xpath = "//a[contains(@href,'tos')][contains(@href,'Footer')]")
 	private List<WebElement> clickTOSFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'blog?')]")
+	@FindBy(xpath = "//a[contains(@href,'blog?')][contains(@href,'Footer')]")
 	private List<WebElement> clickBlogFooter;
 	
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'prpage?')]")
+	@FindBy(xpath = "//a[contains(@href,'prpage')][contains(@href,'Footer')]")
 	private List<WebElement> clickPressReleaseFooter;
 	
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'events?')]")
+	@FindBy(xpath = "//a[contains(@href,'events')][contains(@href,'Footer')]")
 	private List<WebElement> clickEventsFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'newsletterpage?')]")
+	@FindBy(xpath = "//a[contains(@href,'news')][contains(@href,'Footer')]")
 	private List<WebElement> clickNewsLetterPageFooter;
 	
-	@FindBy(xpath = "//div[@class='FootMenu']//a[contains(@href,'placement?')]")
+	@FindBy(xpath = "//a[contains(@href,'place')][contains(@href,'Footer')]")
 	private List<WebElement> clickPlacementFooter;
 	
 	String parentWindow = "";
+	String baseWindow = "";
 	
 	public HeaderFooterInStagecoursesLocator(WebDriver driver)
 	{
@@ -91,56 +90,20 @@ public class HeaderFooterInStagecoursesLocator
 		PageFactory.initElements(driver, this);
 	}
 	
-	
-	public String FindOutMoreProcess(String data)
-	{
-		String status = "fail";
-		try
-		{
-			if(clickFindOutMoreIcon.isDisplayed())
-			{
-				Actions action = new Actions(driver);
-				action.keyDown(Keys.CONTROL).click(clickFindOutMoreIcon).keyUp(Keys.CONTROL).build().perform();
-				String ParentWindow = driver.getWindowHandle();
-				Set<String> allWindows = driver.getWindowHandles();
-				for(String windows : allWindows)
-				{
-					driver.switchTo().window(windows);
-					if(driver.getCurrentUrl().contains("futureskills"))
-					{
-						driver.switchTo().window(windows);
-						String hostURL[] = driver.getCurrentUrl().split("online/");
-						String getCurrentURLAfterHost = hostURL[1];
-						if(data.equals(getCurrentURLAfterHost))
-						{
-							status = "pass";
-						}
-						else
-						{
-							status = getCurrentURLAfterHost;
-						}
-						driver.close();
-						
-						driver.switchTo().window(ParentWindow);
-						break;
-					}
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return status;
-	}
+	String checkPageLink = "";
 	
 	public String AboutSkillupOnlineProcess(String data)
 	{
 		String status = "fail";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
-		parentWindow = driver.getWindowHandle();
+		baseWindow = driver.getWindowHandle();
 		try
 		{
+			String getURL = driver.getCurrentUrl();
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(getURL);
+			
+			checkPageLink = driver.getWindowHandle();
 			if ((clickLoginIcon).size() > 0)
 			{
 				js.executeScript("arguments[0].scrollIntoView();", clickLoginIcon.get(0));
@@ -172,7 +135,6 @@ public class HeaderFooterInStagecoursesLocator
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(getURL);
 						status = "pass";
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -214,7 +176,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(contactURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -256,7 +217,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(blogURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -299,7 +259,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(twitterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -341,7 +300,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(facebookURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -383,7 +341,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(linkedInURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -425,7 +382,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(instagramURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -467,7 +423,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(youtubeURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -509,7 +464,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(contactUsFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -551,7 +505,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(AboutSkillupFromFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -593,7 +546,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(businessFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -636,7 +588,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(FAQFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -678,7 +629,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(privacyFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -720,7 +670,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(TOSFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data))
@@ -763,7 +712,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(BlogFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -808,7 +756,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(pressReleaseFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -852,7 +799,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(EventsFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -896,7 +842,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(newsLetterFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -914,7 +859,10 @@ public class HeaderFooterInStagecoursesLocator
 	                }
 				}
 			}
-		
+			Thread.sleep(500);
+			driver.close();
+			driver.switchTo().window(baseWindow);
+			System.out.println("homepage and login page link comparision is done");
 			
 		}
 		catch (Exception e)
@@ -940,7 +888,6 @@ public class HeaderFooterInStagecoursesLocator
 	                {
 						driver.switchTo().newWindow(WindowType.TAB);
 						driver.get(PlacementFooterURL);
-						driver.manage().window().maximize();
 						driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 						driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
 						if(driver.getCurrentUrl().contains(data.get(1)))
@@ -955,6 +902,10 @@ public class HeaderFooterInStagecoursesLocator
 						}
 						driver.close();
 						driver.switchTo().window(parentWindow);
+						Thread.sleep(500);
+						driver.close();
+						driver.switchTo().window(baseWindow);
+						System.out.println("homepage");
 	                }
 				}
 			}

@@ -133,7 +133,7 @@ public class MicrosoftCourseLocator
 		String pageLevel3 = ".//div[contains(@class,'CourseDescription_levelSection')]/h3[2]";
 		String pageEnrollPriceSection = ".//div[contains(@class,'CourseDescription_buttonsContent')]";
 		String pageIsSelfpacedOrVilt = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2";
-		String pageEnrollStatus = ".//button[contains(@class,'CourseDescription_enrollNowBtn')] | //div[contains(@class,'CourseDescription_buttonsContent')]/h6";
+		String pageEnrollStatus = ".//button[contains(@class,'CourseDescription_enrollNowBtn')] | //div[contains(@class,'CourseDescription_buttonsContent')]/h6|//div[contains(@class,'CourseDescription_buttonsContent')]/a/button[1]";
 		String pagePrice = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p";
 		String pagePartner = ".//img[@alt='org-logo']";
 		String courseCardName = ".//div[contains(@class,'RegularCourseCard_courseHeading')]/p";
@@ -314,9 +314,9 @@ public class MicrosoftCourseLocator
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 							driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(200));
 							driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-							if(driver.getTitle().contains("null")|| driver.getTitle().contains("undefined")||driver.getTitle().contains("500")||driver.getTitle().contains("404"))
+							if(driver.getTitle().contains("null")|| driver.getTitle().contains("undefined")||driver.getCurrentUrl().contains("/microsoft-courses-and-programs/"))
 							{
-								status.add("null or undefined  is present on page title  " + courseCardNames);
+								status.add("null or undefined or issue  is present on page   " + courseCardNames);
 							}
 						else
 						{

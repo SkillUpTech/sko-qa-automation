@@ -1341,28 +1341,23 @@ public class TagsLocator
 	}
 	
 	
-	public ArrayList<String> checkCompliancePOSH_CategoryPage_Programs() {
-		ArrayList<String> status = new ArrayList<String>();
-		try {
-			status.addAll(this.checkPrograms());
-		} catch (Exception e) {
-			System.out.println("issue on posh page - fail");
-		}
-		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
-				.collect(Collectors.toCollection(ArrayList::new));
-
-	}
-	
-	public ArrayList<String> checkCompliancePOSH_CategoryPage_Courses() {
-		ArrayList<String> status = new ArrayList<String>();
-		try {
-			status.addAll(this.checkCourses());
-		} catch (Exception e) {
-			System.out.println("issue on posh page - fail");
-		}
-		return status.stream().filter(s -> s != null && !s.trim().isEmpty())
-				.collect(Collectors.toCollection(ArrayList::new));
-	}
+	/*
+	 * public ArrayList<String> checkCompliancePOSH_CategoryPage_Programs() {
+	 * ArrayList<String> status = new ArrayList<String>(); try {
+	 * status.addAll(this.checkPrograms()); } catch (Exception e) {
+	 * System.out.println("issue on posh page - fail"); } return
+	 * status.stream().filter(s -> s != null && !s.trim().isEmpty())
+	 * .collect(Collectors.toCollection(ArrayList::new));
+	 * 
+	 * }
+	 * 
+	 * public ArrayList<String> checkCompliancePOSH_CategoryPage_Courses() {
+	 * ArrayList<String> status = new ArrayList<String>(); try {
+	 * status.addAll(this.checkCourses()); } catch (Exception e) {
+	 * System.out.println("issue on posh page - fail"); } return
+	 * status.stream().filter(s -> s != null && !s.trim().isEmpty())
+	 * .collect(Collectors.toCollection(ArrayList::new)); }
+	 */
 	
 	public ArrayList<String> checkCybersecurity_CategoryPage(String data)
 	{

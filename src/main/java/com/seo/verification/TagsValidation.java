@@ -35,25 +35,22 @@ public class TagsValidation implements Callable<String> {
 				String firstColumn = row.get(0);
 				switch (firstColumn) {
 
-				/*
-				 * case "IBM_PartnerPage": IBM_PartnerPage(row.get(1)); break;
-				 * 
-				 * case "IBM_PartnerPage_Programs": IBM_PartnerPage_Programs(); break;
-				 * 
-				 * case "IBM_PartnerPage_Courses": IBM_PartnerPage_Courses(); break;
-				 */
+				
+				  case "IBM_PartnerPage": IBM_PartnerPage(row.get(1)); break;
+				  
+				  case "IBM_PartnerPage_Programs": IBM_PartnerPage_Programs(); break;
+				  
+				  case "IBM_PartnerPage_Courses": IBM_PartnerPage_Courses(); break;
+				 
 
-				case "Microsoft_PartnerPage":
-					Microsoft_PartnerPage(row.get(1));
-					break;
-
-				case "Microsoft_PartnerPage_Programs":
-					Microsoft_PartnerPage_Programs();
-					break;
-
-				case "Microsoft_PartnerPage_Courses":
-					Microsoft_PartnerPage_Courses();
-					break;
+				
+				  case "Microsoft_PartnerPage": Microsoft_PartnerPage(row.get(1)); break;
+				  
+				  case "Microsoft_PartnerPage_Programs": Microsoft_PartnerPage_Programs();
+				  break;
+				  
+				  case "Microsoft_PartnerPage_Courses": Microsoft_PartnerPage_Courses(); break;
+				 
 
 				// case "GoogleCloud_PartnerPage": GoogleCloud_PartnerPage(row.get(1)); break;
 
@@ -70,55 +67,39 @@ public class TagsValidation implements Callable<String> {
 				 * "PLU_PartnerPage_Courses": PLU_PartnerPage_Courses(); break;
 				 */
 
-				case "FutureSkill_PartnerPage":
-					FutureSkill_PartnerPage(row.get(1));
-					break;
+				
+				
+				  case "FutureSkill_PartnerPage": FutureSkill_PartnerPage(row.get(1)); break;
+				  
+				  case "FutureSkill_PartnerPage_Programs": FutureSkill_PartnerPage_Programs();
+				  break;
+				  
+				  case "FutureSkill_PartnerPage_Courses": FutureSkill_PartnerPage_Courses();
+				  break;
+				 
+				  
+				  case "AI_CategoryPage": AI_CategoryPage(row.get(1)); break;
+				  
+				  case "AI_CategoryPage_Programs": AI_CategoryPage_Programs(); break;
+				  
+				  case "AI_CategoryPage_Courses": AI_CategoryPage_Courses(); break;
+				 
 
-				case "FutureSkill_PartnerPage_Programs":
-					FutureSkill_PartnerPage_Programs();
-					break;
-
-				case "FutureSkill_PartnerPage_Courses":
-					FutureSkill_PartnerPage_Courses();
-					break;
-
-				case "AI_CategoryPage":
-					AI_CategoryPage(row.get(1));
-					break;
-
-				case "AI_CategoryPage_Programs":
-					AI_CategoryPage_Programs();
-					break;
-
-				case "AI_CategoryPage_Courses":
-					AI_CategoryPage_Courses();
-					break;
-
-				case "Azure_CategoryPage":
-					Azure_CategoryPage(row.get(1));
-					break;
-
-				case "Azure_CategoryPage_Programs":
-					Azure_CategoryPage_Programs();
-					break;
-
-				case "Azure_CategoryPage_Courses":
-					Azure_CategoryPage_Courses();
-					break;
-
-				case "BigData_CategoryPage":
-					BigData_CategoryPage(row.get(1));
-					break;
-
-				case "BigData_CategoryPage_Programs":
-					BigData_CategoryPage_Programs();
-					break;
-
-				case "BigData_CategoryPage_Courses":
-					BigData_CategoryPage_Courses();
-					break;
+					/*
+					 * case "Azure_CategoryPage": Azure_CategoryPage(row.get(1)); break;
+					 * 
+					 * case "Azure_CategoryPage_Programs": Azure_CategoryPage_Programs(); break;
+					 * 
+					 * case "Azure_CategoryPage_Courses": Azure_CategoryPage_Courses(); break;
+					 */
 
 				
+				  case "BigData_CategoryPage": BigData_CategoryPage(row.get(1)); break;
+				  
+				  case "BigData_CategoryPage_Programs": BigData_CategoryPage_Programs(); break;
+				  
+				  case "BigData_CategoryPage_Courses": BigData_CategoryPage_Courses(); break;
+				  
 				  case "Blockchain_CategoryPage": Blockchain_CategoryPage(row.get(1)); break;
 				  
 				  case "Blockchain_CategoryPage_Programs": Blockchain_CategoryPage_Programs();
@@ -145,16 +126,20 @@ public class TagsValidation implements Callable<String> {
 				  case "CloudComputing_CategoryPage_Courses":
 				  CloudComputing_CategoryPage_Courses(); break;
 				  
-				  case "CompliancePOSH_CategoryPage": CompliancePOSH_CategoryPage(row.get(1));
-				  break;
-				  
-				  
-				  case "CompliancePOSH_CategoryPage_Programs":
-				  CompliancePOSH_CategoryPage_Programs(); break;
-				  
-				  case "CompliancePOSH_CategoryPage_Courses":
-				  CompliancePOSH_CategoryPage_Courses(); break;
-				  
+				/*
+				 * case "CompliancePOSH_CategoryPage": CompliancePOSH_CategoryPage(row.get(1));
+				 * break;
+				 * 
+				 * 
+				 * case "CompliancePOSH_CategoryPage_Programs":
+				 * CompliancePOSH_CategoryPage_Programs(); break;
+				 * 
+				 * case "CompliancePOSH_CategoryPage_Courses":
+				 * CompliancePOSH_CategoryPage_Courses(); break;
+				 */
+				 
+
+				
 				  case "Cybersecurity_CategoryPage": Cybersecurity_CategoryPage(row.get(1));
 				  break;
 				  
@@ -860,37 +845,33 @@ public class TagsValidation implements Callable<String> {
 		}
 	}
 
-	public void CompliancePOSH_CategoryPage_Programs() {
-		try {
-
-			ArrayList<String> status = tagsLocator.checkCompliancePOSH_CategoryPage_Programs();
-			updateExcelData(status, 35);
-			/*
-			 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
-			 * "Fail";
-			 * com.seo.verification.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP
-			 * .get("TagsVerification").get(35).add(i+1, (status.get(i) + " - failed")); } }
-			 */
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void CompliancePOSH_CategoryPage_Courses() {
-		try {
-
-			ArrayList<String> status = tagsLocator.checkCompliancePOSH_CategoryPage_Courses();
-			updateExcelData(status, 36);
-			/*
-			 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
-			 * "Fail";
-			 * com.seo.verification.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP
-			 * .get("TagsVerification").get(36).add(i+1, (status.get(i) + " - failed")); } }
-			 */
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * public void CompliancePOSH_CategoryPage_Programs() { try {
+	 * 
+	 * ArrayList<String> status =
+	 * tagsLocator.checkCompliancePOSH_CategoryPage_Programs();
+	 * updateExcelData(status, 35);
+	 * 
+	 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
+	 * "Fail";
+	 * com.seo.verification.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP
+	 * .get("TagsVerification").get(35).add(i+1, (status.get(i) + " - failed")); } }
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); } }
+	 * 
+	 * public void CompliancePOSH_CategoryPage_Courses() { try {
+	 * 
+	 * ArrayList<String> status =
+	 * tagsLocator.checkCompliancePOSH_CategoryPage_Courses();
+	 * updateExcelData(status, 36);
+	 * 
+	 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
+	 * "Fail";
+	 * com.seo.verification.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP
+	 * .get("TagsVerification").get(36).add(i+1, (status.get(i) + " - failed")); } }
+	 * 
+	 * } catch (Exception e) { e.printStackTrace(); } }
+	 */
 
 	public void Cybersecurity_CategoryPage(String data) {
 		try {

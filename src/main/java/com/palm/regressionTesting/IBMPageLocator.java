@@ -74,7 +74,7 @@ public class IBMPageLocator
 	
 	String programPagePartner = ".//img[@alt='org-logo']";
 	
-	String programPageEnrollStatus = ".//button[contains(@class,'CourseDescription_EnrollBtn')]|//div[contains(@class,'CourseDescription_buttonsContent')]/button[1]";
+	String programPageEnrollStatus = ".//button[contains(@class,'CourseDescription_EnrollBtn')]|//div[contains(@class,'CourseDescription_buttonsContent')]/a/button[1]";
 	
 	
 	String programPageDurationSection = ".//div[contains(@class,'CourseDescription_durationAndPriceSection')]";
@@ -132,7 +132,7 @@ public class IBMPageLocator
 	
 	String CoursePageEnrollmentSection = ".//div[contains(@class,'CourseDescription_PreferredCohort')]|//div[contains(@class,'CourseDescription_buttonsContent')]";
 	
-	String CoursePageEnrollStatus = ".//div[contains(@class,'CourseDescription_PreferredCohort')]//div[contains(@class,'CourseDescription_CohortBox')]/button|//div[contains(@class,'CourseDescription_buttonsContent')]/h6|//div[contains(@class,'CourseDescription_buttonsContent')]/button[1]";
+	String CoursePageEnrollStatus = ".//div[contains(@class,'CourseDescription_PreferredCohort')]//div[contains(@class,'CourseDescription_CohortBox')]/button|//div[contains(@class,'CourseDescription_buttonsContent')]/h6|//div[contains(@class,'CourseDescription_buttonsContent')]/a/button[1]";
 	
 	String CoursePagePrice = ".//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'Fee')]/following-sibling::p|//div[contains(@class,'CourseDescription_courseAboutTextSection')]/h2[contains(text(),'From')]/following-sibling::p";
 	

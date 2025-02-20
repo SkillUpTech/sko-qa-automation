@@ -65,6 +65,7 @@ public class HomepageLocator
 					}
 					
 				}
+				
 			
 		}
 		catch(Exception e)
@@ -117,15 +118,16 @@ public class HomepageLocator
 	public ArrayList<String> checkLearningPartners()
 	{
 		ArrayList<String> verifyPocess = new ArrayList<String>();
-		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		JavascriptExecutor js = (JavascriptExecutor)driver;
 		String partnerLocator = "div[class='Collaborate_excollaborationInner__0u_r2'] ul li a";
 		try
 		{
 			System.out.println("learning Partners process started");
+			 js.executeScript("window.scrollBy(0, 5000);"); 
 			List<WebElement> partnerList = driver.findElements(By.cssSelector(partnerLocator));
 			for(int i = 0; i < partnerList.size(); i++)
 			{
-					jse.executeScript("arguments[0].scrollIntoView();",  partnerList.get(i));
+					js.executeScript("arguments[0].scrollIntoView();",  partnerList.get(i));
 					if(partnerList.get(i).isDisplayed())
 					{
 						System.out.println("partner name : " +partnerList.get(i).getText());
@@ -166,6 +168,7 @@ public class HomepageLocator
 		
 		try
 		{
+			 js.executeScript("window.scrollBy(0, 5000);"); 
 			List<WebElement> learningCatalogCourses = driver.findElements(By.cssSelector(learningCatalogLocator));
 			for(int j = 0; j < learningCatalogCourses.size(); j++)
 			{
@@ -207,7 +210,7 @@ public class HomepageLocator
 		String humanSkillsLocator = "div[class*='LearningCatalog_browserCard'] a";
 		try
 		{
-			
+			 js.executeScript("window.scrollBy(0, 5000);"); 
 			List<WebElement> humanSkillsCourses = driver.findElements(By.cssSelector(humanSkillsLocator));
 			for(int i = 0; i < humanSkillsCourses.size(); i++)
 			{
@@ -251,6 +254,7 @@ public class HomepageLocator
 		String topTechCategoriesLocator = "div[class='TechCategories_exCollaborationInner__nW6ww'] ul li a";
 		try
 		{
+			 js.executeScript("window.scrollBy(0, 5000);"); 
 			List<WebElement> topTechCategories = driver.findElements(By.cssSelector(topTechCategoriesLocator));
 			for(int i = 0; i < topTechCategories.size(); i++)
 			{
@@ -569,12 +573,11 @@ public class HomepageLocator
 						{
 							System.out.println("no course : "+categoryLink);
 						}
-						driver.close();
-						driver.switchTo().window(HomePage);
 					}
 				}
+				driver.close();
+				driver.switchTo().window(HomePage);
 			}
-			driver.switchTo().window(HomePage);
 			driver.close();
 			driver.switchTo().window(baseWindow);
 		}

@@ -3,7 +3,7 @@
 <suite name="Failed suite [Testing Google Apps]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Regression(failed)">
     <parameter name="browser" value="Chrome"/>
-    <parameter name="env" value="prod-in"/>
+    <parameter name="env" value="qa"/>
     <classes>
       <class name="com.palm.regressionTesting.RegressionTesting">
         <methods>

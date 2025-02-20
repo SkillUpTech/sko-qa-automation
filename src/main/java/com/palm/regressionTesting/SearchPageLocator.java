@@ -424,7 +424,7 @@ public ArrayList<String> searchFunction(ArrayList<String> dataFromExcel, String 
           	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(70));
           	            js.executeScript("window.scrollTo(0, 0);");
           	            //to verify searched test is present or not in explore all page
-          	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+          	            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
           	            if(driver.findElements(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_topFilterResults']")).size()>0)
           	            {
           	            	 WebElement checkTextFromExplorePage = driver.findElement(By.cssSelector("div[class*='CourseSection_courseResultContainer'] div[class*='CourseSection_topFilterResults']"));
@@ -515,7 +515,9 @@ public ArrayList<String> searchFunction(ArrayList<String> dataFromExcel, String 
 public ArrayList<String> searchCategoryProcess(ArrayList<String> dataFromExcel) 
 {
 	parentPage = driver.getWindowHandle();
+	
 	String getParentWindowURL = driver.getCurrentUrl();
+	
 	driver.switchTo().newWindow(WindowType.TAB);
 	driver.get(getParentWindowURL);
 	searchPage = driver.getWindowHandle();
@@ -757,8 +759,11 @@ public ArrayList<String> searchProgramProcess(ArrayList<String> dataFromExcel)
 				}
         	}
         	driver.switchTo().window(searchPage);
+        	Thread.sleep(300);
         	driver.close();
+        	Thread.sleep(300);
         	driver.switchTo().window(parentPage);
+        	Thread.sleep(300);
         }
         catch (Exception e) 
         {

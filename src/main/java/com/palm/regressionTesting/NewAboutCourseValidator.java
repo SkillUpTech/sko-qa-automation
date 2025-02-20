@@ -93,9 +93,6 @@ public class NewAboutCourseValidator implements Callable<String>
 			case "courseInformation":
 				courseInformation(row);
 				break;
-			case "CourseOutline":
-				courseOutline();
-				break;
 			case "typeofCertificate":
 				typeofCertificate(row.get(1));
 				break;
@@ -348,18 +345,6 @@ public class NewAboutCourseValidator implements Callable<String>
 		}
 	}
 
-	private void courseOutline()
-	{
-		try
-		{
-			newAboutCourseLocators.processCourseOutLineSection();
-		} 
-		catch (Exception e)
-		{
-			sheetStatus = "Fail";
-			markProcessFailed();
-		}
-	}
 
 
 	private void typeofCertificate(String typeOfCertificateFromExcel)

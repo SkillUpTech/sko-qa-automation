@@ -513,15 +513,6 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 				  Blog();
 				  break; 
 				  
-				/*
-				 * case "Categories": Categories(); break;
-				 * 
-				 * case "PartnerPage": PartnerPage(); break;
-				 * 
-				 * case "PopularCourses": PopularCourses(); break;
-				 * 
-				 * case "ExploreAll": ExploreAll(); break;
-				 */
 				  
 			   case "twitter": 
 				   twitter(); 
@@ -556,10 +547,6 @@ public class HeaderFooterInErrorScreenValidation implements Callable<String>
 					  SkillupOnlineForBusiness(); 
 					  break; 
 				  
-					/*
-					 * case "Placement": Placement(); break;
-					 */
-			   
 			   case "FAQ": 
 				   FAQ();
 				   break;

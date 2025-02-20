@@ -333,6 +333,7 @@ public class LoginPageLinksLocator {
 				driver.close();
 				driver.switchTo().window(LoginPageWindow);
 			}
+			Thread.sleep(2000);
 			driver.close();
 			driver.switchTo().window(parentWindow);
 		}

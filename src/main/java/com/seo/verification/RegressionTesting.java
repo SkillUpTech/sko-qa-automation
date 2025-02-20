@@ -86,15 +86,15 @@ public class RegressionTesting
 	    	
 	    	if(env.equalsIgnoreCase("stage"))
 	    	{
-	    		getEnvironment = "stage";
+	    		getEnvironment = "stage.";
 	    	}
 	    	else if(env.equalsIgnoreCase("stage-in"))
 	    	{
-	    		getEnvironment = "stage-in";
+	    		getEnvironment = "stage-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("prod-in"))
 	    	{
-	    		getEnvironment = "in";
+	    		getEnvironment = "in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("prod"))
 	    	{
@@ -102,19 +102,19 @@ public class RegressionTesting
 	    	}
 	    	else if(env.equalsIgnoreCase("dev-in"))
 	    	{
-	    		getEnvironment = "dev-in";
+	    		getEnvironment = "dev-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("dev"))
 	    	{
-	    		getEnvironment = "dev";
+	    		getEnvironment = "dev.";
 	    	}
 	    	else if(env.equalsIgnoreCase("qa-in"))
 	    	{
-	    		getEnvironment = "qa-in";
+	    		getEnvironment = "qa-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("qa"))
 	    	{
-	    		getEnvironment = "qa";
+	    		getEnvironment = "qa.";
 	    	}
 	    	driver = this.openDriver(browserName, getEnvironment);
 	    }

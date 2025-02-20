@@ -109,58 +109,7 @@ public class RegressionGenericLocator
 		return CourseCodeStatus;
 	}
 
-	/*
-	 * public String navigateProcess() { String navigationStatus = "fail";
-	 * JavascriptExecutor js = (JavascriptExecutor) driver; // div[@class='d-flex
-	 * try { //
-	 * CourseDescription_navigationBar__Zg6b3']//button[contains(text(),'Overview')]
-	 * js.executeScript("window.scrollBy(0,800)"); List<WebElement>
-	 * navigateFunctions = driver .findElements(By.
-	 * cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"
-	 * )); WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(80));
-	 * wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy( By.
-	 * cssSelector("div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button"
-	 * ))); for (int i = 0; i < navigateFunctions.size(); i++) { if (i == 0) {
-	 * WebElement overview = driver.findElement(By.cssSelector(
-	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(1)"
-	 * )); js.executeScript("arguments[0].scrollIntoView();", overview);
-	 * if(overview.isDisplayed()) {
-	 * 
-	 * js.executeScript("arguments[0].click(), overview"); } Thread.sleep(1000);
-	 * System.out.println("Overview is displayed"); navigationStatus = "pass"; }
-	 * driver.navigate().refresh(); Thread.sleep(1000); if (i == 1) { WebElement
-	 * detailsNavigation = driver.findElement(By.cssSelector(
-	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(2)"
-	 * )); js.executeScript("arguments[0].scrollIntoView();", detailsNavigation);
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	 * if(detailsNavigation.isDisplayed()) {
-	 * wait.until(ExpectedConditions.elementToBeClickable(detailsNavigation));
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-	 * Thread.sleep(1000); js.executeScript("arguments[0].click();",
-	 * detailsNavigation); } Thread.sleep(1000);
-	 * System.out.println("Details content is displayed"); navigationStatus =
-	 * "pass"; } if (i == 2) { WebElement whySkillupNavigation =
-	 * driver.findElement(By.cssSelector(
-	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(3)"
-	 * )); js.executeScript("arguments[0].scrollIntoView();", whySkillupNavigation);
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(70));
-	 * if(whySkillupNavigation.isDisplayed()) {
-	 * wait.until(ExpectedConditions.elementToBeClickable(whySkillupNavigation));
-	 * driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(700));
-	 * Thread.sleep(1000); js.executeScript("arguments[0].click();",
-	 * whySkillupNavigation); } Thread.sleep(1000);
-	 * System.out.println("WhySkillUpOnline? content is displayed");
-	 * navigationStatus = "pass"; } if (i == 3) { WebElement FAQNavigation =
-	 * driver.findElement(By.cssSelector(
-	 * "div[class='d-flex FixedContentBar_navigationBar__GFCDl'] button:nth-child(4)"
-	 * )); js.executeScript("arguments[0].scrollIntoView();", FAQNavigation);
-	 * if(FAQNavigation.isDisplayed()) {
-	 * wait.until(ExpectedConditions.elementToBeClickable(FAQNavigation)); }
-	 * js.executeScript("arguments[0].click();", FAQNavigation); Thread.sleep(1000);
-	 * System.out.println("FAQ is displayed"); navigationStatus = "pass"; } } }
-	 * catch (Exception e) { e.printStackTrace(); navigationStatus = "fail"; }
-	 * return navigationStatus; }
-	 */
+	
 
 public String navigateProcess() {
     String navigationStatus = "fail";
@@ -332,30 +281,6 @@ public String navigateProcess() {
 						driver.get(getURL);
 						driver.close();
 						driver.switchTo().window(parentwindow);
-						/*
-						 * Set<String> allWindows = driver.getWindowHandles(); for (String handle :
-						 * allWindows) { if (!handle.equals(parentwindow)) {
-						 * driver.switchTo().window(handle); System.out.println(driver.getCurrentUrl());
-						 * if (driver.getCurrentUrl().contains("/privacy/")) {
-						 * driver.switchTo().window(handle);
-						 * System.out.println("privacy policy window");
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * Thread.sleep(1000);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * driver.close();
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * driver.switchTo().window(parentwindow);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60)); } else if
-						 * (driver.getCurrentUrl().contains( "/tos/")) {
-						 * driver.switchTo().window(handle); System.out.println("terms of service");
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * Thread.sleep(1000);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * driver.close();
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-						 * driver.switchTo().window(parentwindow);
-						 * driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60)); } } }
-						 */
 					}
 				}
 				

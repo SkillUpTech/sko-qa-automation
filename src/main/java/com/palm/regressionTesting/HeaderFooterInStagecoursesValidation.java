@@ -20,10 +20,6 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 		this.driver = driver;
 	}
 
-	/*
-	 * public WebDriver openDriver(String browserName) { return
-	 * DriverManager.getDriver(browserName); }
-	 */
 	public void AboutSkillupOnline(String data)
 	{
 		String status = headerFooterInStagecoursesLocator.AboutSkillupOnlineProcess(data);
@@ -251,12 +247,8 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 
 		try
 		{
-			/*
-			 * driver = this.openDriver(RegressionTesting.nameOfBrowser);
-			 * OpenWebsite.openSite(driver);
-			 */
-			driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(90));
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(90));
 		this.headerFooterInStagecoursesLocator = new HeaderFooterInStagecoursesLocator(driver);
 		for(int i = 0; i < this.sheetData.size(); i++)
 		{
@@ -309,9 +301,9 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			  case "TermsOfService": 
 				  TermsOfService(row.get(1)); 
 				  break; 					 
-			  case "BlogFooter": 
-				  BlogFooter(row); 
-				  break; 		 
+				/*
+				 * case "BlogFooter": BlogFooter(row); break;
+				 */		 
 			  case "pressRelease": 
 				  pressRelease(row); 
 				  break; 
@@ -321,9 +313,9 @@ public class HeaderFooterInStagecoursesValidation implements Callable<String>
 			  case "newsLetter": 
 				  newsLetter(row); 
 				  break; 
-			  case "placement": 
-				  placement(row); 
-				  break; 
+				/*
+				 * case "placement": placement(row); break;
+				 */
 			}
 		}
 		//DriverManager.quitDriver();

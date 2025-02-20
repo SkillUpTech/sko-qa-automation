@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
@@ -68,8 +70,10 @@ public class RegressionTesting
        extentSparkReporter.config().setTheme(Theme.STANDARD);
        extentSparkReporter.config().setTimeStampFormat("EEEE, MMMM dd, yyyy, hh:mm a '('zzz')'");
 		System.out.println("welcome");
+		
 		nameOfBrowser = browserName;
 		nameOfEnvironment = env;
+		
 	    if (browserName.equalsIgnoreCase("firefox"))
 	    {
 	    	driver = this.openDriver(browserName, getEnvironment);
@@ -79,15 +83,15 @@ public class RegressionTesting
 	    	
 	    	if(env.equalsIgnoreCase("stage"))
 	    	{
-	    		getEnvironment = "stage";
+	    		getEnvironment = "stage.";
 	    	}
 	    	else if(env.equalsIgnoreCase("stage-in"))
 	    	{
-	    		getEnvironment = "stage-in";
+	    		getEnvironment = "stage-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("prod-in"))
 	    	{
-	    		getEnvironment = "in";
+	    		getEnvironment = "in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("prod"))
 	    	{
@@ -95,19 +99,19 @@ public class RegressionTesting
 	    	}
 	    	else if(env.equalsIgnoreCase("dev-in"))
 	    	{
-	    		getEnvironment = "dev-in";
+	    		getEnvironment = "dev-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("dev"))
 	    	{
-	    		getEnvironment = "dev";
+	    		getEnvironment = "dev.";
 	    	}
 	    	else if(env.equalsIgnoreCase("qa-in"))
 	    	{
-	    		getEnvironment = "qa-in";
+	    		getEnvironment = "qa-in.";
 	    	}
 	    	else if(env.equalsIgnoreCase("qa"))
 	    	{
-	    		getEnvironment = "qa";
+	    		getEnvironment = "qa.";
 	    	}
 	    	driver = this.openDriver(browserName, getEnvironment);
 	    }
@@ -131,9 +135,6 @@ public class RegressionTesting
 		
 		extent.attachReporter(htmlReporter);
 		System.out.println("Reporter attached to ExtentReports.");
-		ExecutorService service = Executors.newFixedThreadPool(1);
-		
-		//CompletionService<String> completionService = new ExecutorCompletionService<>(service);
 		
 		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
 		
@@ -152,13 +153,13 @@ public class RegressionTesting
 			
 			ArrayList<ArrayList<String>> master = data.get("Master");// Master sheet in excel
 			ArrayList<String> environment = master.get(1);// Environment row in excel
-			if(master.get(1).toString().contains(getEnvironment))
+			if(master.get(1).toString().contains(nameOfEnvironment))
 			{
 				ENV_TO_USE = environment.get(1);//Use envToUse appropriately
 			}
 			ArrayList<String> jiraExecution = master.get(1);
 			jiraStatusUpdation = jiraExecution.get(1);
-			//ENV_TO_USE = getEnvironment;
+			ENV_TO_USE = nameOfEnvironment;
 			
 			
 			ArrayList<String> pages = master.get(0);// Pages row in excel
@@ -197,25 +198,12 @@ public class RegressionTesting
 							case "HeaderSection":
 								taskMap.put(sheetName, new HeaderSectionValidation(driver, sheetData));
 							break;
-						/*
-						 * case "Dashboard": taskMap.put(sheetName, new
-						 * com.palm.regressionTesting.DashboardValidation(driver, sheetData)); break;
-						 */
 							case"HomePage":
 								taskMap.put(sheetName, new com.palm.regressionTesting.HomePageValidator(driver, sheetData));
 								break;
-							/*
-							 * case"ContactInfo": taskMap.put(sheetName, new ContactInfoValidation(driver,
-							 * sheetData)); break; case "ContactUSForm": taskMap.put(sheetName, new
-							 * com.palm.regressionTesting.ContactUsValidation(driver, sheetData)); break;
-							 */
 							case "MicrosoftPage":
 								taskMap.put(sheetName, new com.palm.regressionTesting.MicrosoftCourseValidation(driver, sheetData));
 								break;
-							/*
-							 * case "Pacific": taskMap.put(sheetName, new
-							 * com.palm.regressionTesting.PLUValidation(driver, sheetData)); break;
-							 */
 							/*
 							 * case "ExploreAll": taskMap.put(sheetName, new
 							 * com.palm.regressionTesting.ExploreAllValidator(driver, sheetData)); break;
@@ -235,33 +223,18 @@ public class RegressionTesting
 							 case "GLX":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.GLXValidation(driver, sheetData));
 								 break;
-								/*
-								 * case "FAQ": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.FAQValidation(driver, sheetData)); break;
-								 */
 							 case "LinkInStagecourseAndHomepage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInStagecoursesValidation(driver, sheetData));
 								 break;
 							 case "HeaderFooterErrorScreen":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFooterInErrorScreenValidation(driver, sheetData));
 								 break;
-								/*
-								 * case "BlogPage": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.BlogPageValidation(driver, sheetData)); break;
-								 */
 							 case "SignUpPageLinks":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.SignUpPageLinksValidation(driver, sheetData));
 								 break;
 							 case "ExploreCourseByNewUser":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.ExploreCourseByNewUserValidation(driver, sheetData));
 								 break;
-								/*
-								 * case "ViewCertificate": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.CertificateValidation(driver, sheetData)); break;
-								 * case "PlacementPage": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.PlacementPageValidation(driver, sheetData));
-								 * break;
-								 */
 							 case "HeaderFeature":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.HeaderFeatureValidation(driver, sheetData, jiraStatusUpdation));
 								 break;
@@ -298,19 +271,6 @@ public class RegressionTesting
 							 case "ProgramURLandSlug":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.verifyProgramURLValidation(driver, sheetData, jiraStatusUpdation));
 								 break;
-								/*
-								 * case "URLValidation": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.ErrorCodeValidation(driver, sheetData)); break;
-								 */
-								/*
-								 * case "TNSDC1": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.TNSDC_Phase1Validation(driver, sheetData)); break;
-								 * case "TNSDC2": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.TNSDC_Phase2Validation(driver, sheetData)); break;
-								 * case "SPOC": taskMap.put(sheetName, new
-								 * com.palm.regressionTesting.SPOC_DashboardValidation(driver, sheetData));
-								 * break;
-								 */
 							 case "PageLinks":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.PageLinksValidation(driver, sheetData));
 								 break;
@@ -332,6 +292,7 @@ public class RegressionTesting
 							default:
 								System.out.println("Not class found to work with the sheet");
 						}
+						sheetsResult.put(sheetName, sheetStatus);
 					} 
 					catch (Exception e) 
 					{
@@ -339,77 +300,33 @@ public class RegressionTesting
 					}
 				}
 			}
-			/*
-			 * // Map to store the results // Create a list to keep the tasks in order //
-			 * List and submission of tasks List<Map.Entry<String, Callable<String>>>
-			 * taskList = new ArrayList<>(taskMap.entrySet()); Map<Future<String>, String>
-			 * futureToSheetMap = new HashMap<>(); // Submit the initial set of tasks up to
-			 * the pool size (3) int submittedTasks = 0; for (int i = 0; i < Math.min(5,
-			 * taskList.size()); i++) { Map.Entry<String, Callable<String>> entry =
-			 * taskList.get(i); Future<String> future =
-			 * completionService.submit(entry.getValue()); futureToSheetMap.put(future,
-			 * entry.getKey()); System.out.println("Submitting task: " + entry.getKey());
-			 * submittedTasks++; }
-			 * 
-			 * // Process the tasks as they complete and submit new ones until all tasks are
-			 * done for (int i = 0; i < taskList.size(); i++) { try { Future<String>
-			 * completedFuture = completionService.take(); // This will block until a task
-			 * completes String result = completedFuture.get(); String sheetName =
-			 * futureToSheetMap.remove(completedFuture); ExtentTest testLogger =
-			 * extent.createTest(sheetName); if ("Fail".equalsIgnoreCase(result)) {
-			 * testLogger.fail(sheetName + " execution failed");
-			 * 
-			 * } else { testLogger.pass(sheetName + " executed successfully"); }
-			 * System.out.println("Result: " + result); // Handle potential exceptions here
-			 * Map.Entry<String, Callable<String>> completedEntry = taskList.get(i);
-			 * sheetsResult.put(completedEntry.getKey(), result);//we get status of
-			 * sheetname System.out.println("Completed task: " + sheetName +
-			 * " with result: " + result); if(result.contains("Pass")) {
-			 * 
-			 * extentTest = extentReports.createTest(sheetName +
-			 * "This test case has passed"); } else { extentTest =
-			 * extentReports.createTest(sheetName+ "This test case has failed");
-			 * 
-			 * } System.out.println("Completed task: " + sheetName + " with result: " +
-			 * result); sheetsResult.put(sheetName, result);
-			 * 
-			 * // Submit the next task if there are remaining tasks to be submitted if
-			 * (submittedTasks < taskList.size()) { Map.Entry<String, Callable<String>>
-			 * nextEntry = taskList.get(submittedTasks); Future<String> future =
-			 * completionService.submit(nextEntry.getValue()); futureToSheetMap.put(future,
-			 * nextEntry.getKey()); System.out.println("Submitting task: " +
-			 * nextEntry.getKey()); submittedTasks++; }
-			 * 
-			 * } catch (Exception e) { e.printStackTrace(); } } DriverManager.quitDriver();
-			 */
-			 for (Map.Entry<String, Callable<String>> entry : taskMap.entrySet()) {
-		            String sheetName = entry.getKey();
-		            Callable<String> task = entry.getValue();
-		            String result = "Fail";
+			// Execute each task sequentially
+			for (Map.Entry<String, Callable<String>> entry : taskMap.entrySet()) {
+			    String sheetName = entry.getKey();
+			    Callable<String> task = entry.getValue();
+			    String result = "Fail"; // Default to "Fail" to prevent uninitialized issues
 
-		            try 
-		            {
-		                System.out.println("Executing test case for: " + sheetName);
-		                result = task.call(); // Execute test case directly
-		            } 
-		            catch (Exception e)
-		            {
-		                e.printStackTrace();
-		            }
+			    try {
+			        System.out.println("Executing test case for: " + sheetName);
+			        result = task.call(); // Execute the test case directly
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			    }
 
-		            // Log results in Extent Reports
-		            ExtentTest testLogger = extent.createTest(sheetName);
-		            if ("Fail".equalsIgnoreCase(result)) 
-		            {
-		                testLogger.fail(sheetName + " execution failed");
-		            } 
-		            else 
-		            {
-		                testLogger.pass(sheetName + " executed successfully");
-		            }
+			    // Log results in Extent Reports using the correct `extent` instance
+			    extent.createTest(sheetName)
+			          .log(result.equalsIgnoreCase("Fail") ? Status.FAIL : Status.PASS, 
+			               sheetName + " execution result: " + result);
 
-		            sheetsResult.put(sheetName, result); // Store test result
-		        }
+			    // Store test result
+			    synchronized (sheetsResult) {
+			        sheetsResult.put(sheetName, result);
+			    }
+			}
+
+			// Ensure the report is flushed to write results
+			extent.flush();
+			System.out.println("Extent Report generated successfully.");
 
 		        DriverManager.quitDriver();
 		}
@@ -465,9 +382,7 @@ public class RegressionTesting
 			{
 				ProcessExcel.writeExcelFileAsRows(EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP, "D:\\", "prodUS_result_" + formattedDateTime + ".xlsx");
 			}
-			service.shutdown();
 	        System.out.println("All tasks completed.");
-	        driver.quit();
 		}
 		
 	}

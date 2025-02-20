@@ -37,7 +37,7 @@ public class DriverManager
 
             driver.manage().window().maximize();
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(TestUtil.IMPLICIT_WAIT));
-            driver.get("https://" + env + ".skillup.online/");
+            driver.get("https://" + env + "skillup.online/");
 			System.out.println(driver.getTitle());
 			driverThreadLocal.set(driver);
         }

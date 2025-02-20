@@ -1206,6 +1206,7 @@ public class FaviconLocator
 									}
 								}
 							}
+							Thread.sleep(2000);
 							driver.close();
 							driver.switchTo().window(parentWindow);
 						}

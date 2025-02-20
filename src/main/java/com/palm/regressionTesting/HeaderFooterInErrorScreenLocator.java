@@ -28,7 +28,7 @@ public class HeaderFooterInErrorScreenLocator
 	@FindBy(xpath = "//a[contains(text(),'SIGNUP ')]") //Find out more
 	private WebElement clickSignUpIcon;
 	
-	@FindBy(xpath = "//div[@class='navbar-brand']/a|//div[contains(@class,'Header_headerLeft')]") //skillup icon
+	@FindBy(xpath = "//img[@alt='logo']/ancestor::a[@href]") //skillup icon
 	private WebElement clickSkillupIcon;
 	
 	@FindBy(xpath = "//a[contains(text(),'About SkillUp')]")
@@ -214,8 +214,9 @@ public class HeaderFooterInErrorScreenLocator
 		parentWindow = driver.getWindowHandle();
 		try
 		{
+			String getURL = driver.getCurrentUrl();
 			driver.switchTo().newWindow(WindowType.TAB);
-			driver.get("https://qa-in.skillup.online/courses/");
+			driver.get(getURL+"courses/");
 			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(80));
 		}
 		catch (Exception e)
@@ -470,6 +471,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickTwitter);
 			String statusURL = this.checkURLStatus(clickTwitter.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -492,6 +494,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickFacebook);
 			String statusURL = this.checkURLStatus(clickFacebook.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -514,6 +517,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickLinkedIn);
 			String statusURL = this.checkURLStatus(clickLinkedIn.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -536,6 +540,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickInstagram);
 			String statusURL = this.checkURLStatus(clickInstagram.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -558,6 +563,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickYoutube);
 			String statusURL = this.checkURLStatus(clickYoutube.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -580,6 +586,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickContactUSIcon);
 			String statusURL = this.checkURLStatus(clickContactUSIcon.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -603,6 +610,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickSkillupLogoOnFooter);
 			String statusURL = this.checkURLStatus(clickSkillupLogoOnFooter.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -626,6 +634,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickAboutSkillupOnlineFooter);
 			String statusURL = this.checkURLStatus(clickAboutSkillupOnlineFooter.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -648,6 +657,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickSkillupOnlineForBusiness);
 			String statusURL = this.checkURLStatus(clickSkillupOnlineForBusiness.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -670,6 +680,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickPlacement);
 			String statusURL = this.checkURLStatus(clickPlacement.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -692,6 +703,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickFAQ);
 			String statusURL = this.checkURLStatus(clickFAQ.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -714,6 +726,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickPrivacyPolicy);
 			String statusURL = this.checkURLStatus(clickPrivacyPolicy.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -736,6 +749,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickTermsOfService);
 			String statusURL = this.checkURLStatus(clickTermsOfService.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -758,6 +772,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickBlogFooter);
 			String statusURL = this.checkURLStatus(clickBlogFooter.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -780,6 +795,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickPressRelease);
 			String statusURL = this.checkURLStatus(clickPressRelease.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -801,6 +817,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickEvents);
 			String statusURL = this.checkURLStatus(clickEvents.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -822,6 +839,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			js.executeScript("arguments[0].scrollIntoView();", clickNewsLetter);
 			String statusURL = this.checkURLStatus(clickNewsLetter.getAttribute("href"));
 			if (statusURL.contains("fail"))
@@ -870,6 +888,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			for (WebElement eachPopularCoursesFromFooter : checkPopularCoursesOnFooter) 
 			{
 				js.executeScript("arguments[0].scrollIntoView();", eachPopularCoursesFromFooter);
@@ -895,6 +914,7 @@ public class HeaderFooterInErrorScreenLocator
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 			for (WebElement eachBlogsFromFooter : checkLatestBlogsOnFooter) 
 			{
 				js.executeScript("arguments[0].scrollIntoView();", eachBlogsFromFooter);

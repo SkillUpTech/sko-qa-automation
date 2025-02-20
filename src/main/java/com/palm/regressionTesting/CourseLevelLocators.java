@@ -158,6 +158,8 @@ public class CourseLevelLocators
 		try
 		{
 			parentWindow = driver.getWindowHandle();
+			js.executeScript("window.scrollBy(0,1000)");
+			Thread.sleep(2000);
 			if(driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]//div[@id='learningCatalog2']//div[contains(@class,'LearningCatalog_cardRow')]/div")).size()>0)////section[contains(@class,'Courses_mainSection')]/div/div[@class='row'][2]//div[contains(@class,'LearningCatalog_browserCard')]
 			{
 				List<WebElement> courseCards = driver.findElements(By.xpath("//section[contains(@class,'Courses_mainSection')]//div[@id='learningCatalog2']//div[contains(@class,'LearningCatalog_cardRow')]/div"));

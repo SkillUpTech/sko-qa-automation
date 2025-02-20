@@ -63,7 +63,7 @@ public class FooterSectionLocator
 					driver.switchTo().window(footerValidationPage);
 				}
 			} 
-			
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -99,6 +99,7 @@ public class FooterSectionLocator
 					driver.switchTo().window(footerValidationPage);
                 }
 	        }
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -136,6 +137,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			} 
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -175,6 +177,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			} 
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
         {
@@ -212,7 +215,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			}
-			
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e) 
 		{
@@ -251,6 +254,7 @@ public class FooterSectionLocator
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
 				}
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e) 
 		{
@@ -291,6 +295,7 @@ public class FooterSectionLocator
 				}
 			
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e)
 		{
@@ -330,6 +335,7 @@ public class FooterSectionLocator
 				}
 			
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch (Exception e) 
 		{
@@ -376,6 +382,7 @@ public class FooterSectionLocator
 				System.out.println("FAQ is not displayed");
 				status = "fail";
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -415,6 +422,7 @@ public class FooterSectionLocator
 				}
 			
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -456,6 +464,7 @@ public class FooterSectionLocator
 				}
 			
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -498,6 +507,7 @@ public class FooterSectionLocator
 				}
 			
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -550,6 +560,7 @@ public class FooterSectionLocator
 			{
 				status.add("popular categories not displayed on footer section");
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(StaleElementReferenceException e)
 		{
@@ -638,6 +649,7 @@ public class FooterSectionLocator
 			{
 				status.add("popular courses not displayed on footer section");
 			}
+			js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 		}
 		catch(Exception e)
 		{
@@ -681,7 +693,7 @@ public class FooterSectionLocator
 	                driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(300));
 	            }
 			}
-			driver.switchTo().window(footerValidationPage);
+			Thread.sleep(100);
 			driver.close();
 			driver.switchTo().window(parentWindow);
 		}

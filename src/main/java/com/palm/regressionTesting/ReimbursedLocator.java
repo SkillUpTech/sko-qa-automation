@@ -148,6 +148,8 @@ public class ReimbursedLocator
 					}
 			driver.close();
 			driver.switchTo().window(coursePage);
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch(Exception e)
 		{

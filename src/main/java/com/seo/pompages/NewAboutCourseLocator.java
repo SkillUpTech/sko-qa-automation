@@ -522,6 +522,7 @@ String addHosturl;
 	public String getTypeofCertificate(String typeOfCertificateFromExcel)
 	{
 		String checkCertificateContent = "";
+		JavascriptExecutor js =  (JavascriptExecutor) driver;
 		try
 		{
 			String courseOffering = "Type of certificate";
@@ -534,6 +535,7 @@ String addHosturl;
 				List<WebElement> typeOfCertificateImage = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection__GqLBS')])[2]/div[contains(@class,'CourseOffering_courseProperty')]/div[@class='d-block']//img"));
 				for(int i = 0; i < typeOfCertificateImage.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", typeOfCertificateImage.get(i));
 					if(typeOfCertificateImage.get(i).getAttribute("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equalsIgnoreCase("certificate"))
 					{
 						System.out.println("type of certificate image is displayed");
@@ -548,10 +550,12 @@ String addHosturl;
 				List<WebElement> typeOfCertificate = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /p"));
 				for(int j = 0; j < typeOfCertificate.size(); j++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", typeOfCertificate.get(j));
 					String getTypeOfCertificateText = typeOfCertificate.get(j).getText();
 					if(getTypeOfCertificateText.equalsIgnoreCase(courseOffering))
 					{
 						WebElement getContentLocator = driver.findElement(By.xpath("((//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'])["+j+"+1]"));
+						js.executeScript("arguments[0].scrollIntoView();", getContentLocator);
 						String getContent = getContentLocator.getAttribute("innerText").replaceAll(courseOffering, "");
 						getContent = getContent.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 						String contentFromExcel = typeOfCertificateFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
@@ -585,6 +589,7 @@ String addHosturl;
 	public String getAboutCourse(String aboutCourseFromExcel)
 	{
 		String checkAboutCourseContent = "";
+		JavascriptExecutor js =  (JavascriptExecutor) driver;
 		try
 		{
 			if(aboutCourseFromExcel.equals("NA"))
@@ -596,6 +601,7 @@ String addHosturl;
 				List<WebElement> aboutCourseImage = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection__GqLBS')])[2]/div[contains(@class,'CourseOffering_courseProperty')]/div[@class='d-block']//img"));
 				for(int i = 0; i < aboutCourseImage.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", aboutCourseImage.get(i));
 					if(aboutCourseImage.get(i).getAttribute("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equalsIgnoreCase("course"))
 					{
 						System.out.println("about course image is displayed");
@@ -609,11 +615,13 @@ String addHosturl;
 				List<WebElement> aboutCourseLocator = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /h2"));
 				for(int j = 0; j < aboutCourseLocator.size(); j++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", aboutCourseLocator.get(j));
 					String aboutCourseText = aboutCourseLocator.get(j).getText();
 					String courseOffering = "About this course";
 					if(aboutCourseText.equalsIgnoreCase(courseOffering))
 					{
 						WebElement getContentLocator = driver.findElement(By.xpath("((//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'])["+j+"+1]"));
+						js.executeScript("arguments[0].scrollIntoView();", getContentLocator);
 						String getContent = getContentLocator.getAttribute("innerText").replaceAll(courseOffering, "");
 						getContent = getContent.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 						String getContentFromExcel = aboutCourseFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
@@ -644,6 +652,7 @@ String addHosturl;
 	public String getIncludes(String includesFromExcel)
 	{
 		String checkIncludesContentStatus = "";
+		JavascriptExecutor js =  (JavascriptExecutor) driver;
 		
 		try
 		{
@@ -656,6 +665,7 @@ String addHosturl;
 				List<WebElement> includesImage = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection__GqLBS')])[2]/div[contains(@class,'CourseOffering_courseProperty')]/div[@class='d-block']//img"));
 				for(int i = 0; i < includesImage.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", includesImage.get(i));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					if(includesImage.get(i).getAttribute("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equalsIgnoreCase("includes"))
 					{
@@ -670,11 +680,13 @@ String addHosturl;
 				List<WebElement> includesLocator = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /h2"));
 				for(int j = 0; j < includesLocator.size(); j++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", includesLocator.get(j));
 					String includesText = includesLocator.get(j).getText();
 					String courseOffering = "Includes";
 					if(includesText.equalsIgnoreCase(courseOffering))
 					{
 						WebElement getContentLocator = driver.findElement(By.xpath("((//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'])["+j+"+1]"));
+						js.executeScript("arguments[0].scrollIntoView();", getContentLocator);
 						String getContent = getContentLocator.getAttribute("innerText").replaceAll(courseOffering, "");
 						getContent = getContent.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
 						String getContentFromExcel = includesFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
@@ -707,7 +719,7 @@ String addHosturl;
 	{
 		String checkCreateContentStatus = "";
 		JavascriptExecutor js = (JavascriptExecutor)driver;
-		js.executeScript("window.scrollBy(0, 100)");
+		js.executeScript("window.scrollBy(0, 600)");
 		try
 		{
 			if(createFromExcel.equals("NA"))
@@ -719,6 +731,7 @@ String addHosturl;
 				List<WebElement> createImage = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection__GqLBS')])[2]/div[contains(@class,'CourseOffering_courseProperty')]/div[@class='d-block']//img"));
 				for(int i = 0; i < createImage.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", createImage.get(i));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					if(createImage.get(i).getAttribute("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equalsIgnoreCase("create"))
 					{
@@ -733,11 +746,14 @@ String addHosturl;
 				List<WebElement> createLocator = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /h2"));
 				for(int j = 0; j < createLocator.size(); j++)
 				{
+
+					js.executeScript("arguments[0].scrollIntoView();", createLocator.get(j));
 					String createText = createLocator.get(j).getText();
 					String courseOffering = "Create";
 					if(createText.equalsIgnoreCase(courseOffering))
 					{
 						WebElement getContentLocator = driver.findElement(By.xpath("((//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'])["+j+"+1]"));
+						js.executeScript("arguments[0].scrollIntoView();", getContentLocator);
 						String getContent = getContentLocator.getAttribute("innerText");
 						System.out.println(getContent);
 						getContent = getContent.replaceAll(courseOffering, "").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
@@ -782,6 +798,7 @@ String addHosturl;
 				List<WebElement> exerciseToExploreImage = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection__GqLBS')])[2]/div[contains(@class,'CourseOffering_courseProperty')]/div[@class='d-block']//img"));
 				for(int i = 0; i < exerciseToExploreImage.size(); i++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", exerciseToExploreImage.get(i));
 					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
 					if(exerciseToExploreImage.get(i).getAttribute("alt").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "").equalsIgnoreCase("exercises"))
 					{
@@ -796,11 +813,13 @@ String addHosturl;
 				List<WebElement> exerciseToExploreLocator = driver.findElements(By.xpath("(//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'] /h2"));
 				for(int j = 0; j < exerciseToExploreLocator.size(); j++)
 				{
+					js.executeScript("arguments[0].scrollIntoView();", exerciseToExploreLocator.get(j));
 					String exerciseToExploreText = exerciseToExploreLocator.get(j).getText();
 					String courseOffering = "Exercises to explore";
 					if(exerciseToExploreText.equalsIgnoreCase(courseOffering))
 					{
 						WebElement getContentLocator = driver.findElement(By.xpath("((//div[contains(@class,'CourseOffering_coursePropertiesSection')])[2]//div[contains(@class,'CourseOffering_courseProperty')]//div[@class='CourseOffering_coursePropertyText__px0TE'])["+j+"+1]"));
+						js.executeScript("arguments[0].scrollIntoView();", getContentLocator);
 						String getContent = getContentLocator.getAttribute("innerText");
 						System.out.println(getContent);
 						getContent = getContent.replaceAll(courseOffering, "").replaceAll("\\s", "").replaceAll("\u00A0", "").replaceAll("[^\\p{ASCII}]", "");
@@ -951,6 +970,8 @@ String addHosturl;
 	public String getDurationInfo(String durationFromExcel)
 	{
 		String checkDurationStatus = "fail";
+		JavascriptExecutor js =  (JavascriptExecutor) driver;
+		
 		try
 		{
 			if(durationFromExcel.equalsIgnoreCase("NA"))
@@ -960,7 +981,9 @@ String addHosturl;
 			else
 			{
 				WebElement focus_Duration = driver.findElement(By.cssSelector("div[class*='CourseDescription_durationAndPriceSection']>div[class='d-flex gap-2']:nth-child(1)"));
+				js.executeScript("arguments[0].scrollIntoView()", focus_Duration);
 				WebElement checkDurationIcon = focus_Duration.findElement(By.cssSelector(" div>span"));
+				js.executeScript("arguments[0].scrollIntoView()", checkDurationIcon);
 				if(checkDurationIcon.isDisplayed())
 				{
 					System.out.println("Duration icon is present");
@@ -971,6 +994,7 @@ String addHosturl;
 					checkDurationStatus = "fail";
 				}
 				WebElement durationHeader = focus_Duration.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				js.executeScript("arguments[0].scrollIntoView()", durationHeader);
 				if(durationHeader.getText().equalsIgnoreCase("Duration"))
 				{
 					System.out.println("Duration is present");
@@ -980,6 +1004,7 @@ String addHosturl;
 					System.out.println("Duration is not present");
 				}
 				WebElement durationContent = focus_Duration.findElement(By.cssSelector(" div[class*='CourseDescription_courseAboutTextSection']>div"));
+				js.executeScript("arguments[0].scrollIntoView()", durationContent);
 				String getDurationText = durationContent.getText();
 				if(getDurationText.trim().equalsIgnoreCase(durationFromExcel.trim()))
 				{
@@ -1003,6 +1028,7 @@ String addHosturl;
 	public String getflatPrice(String flatPriceWithoutGSTFromExcel)
 	{
 		String checkPriceWOGSTStatus = "fail";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
 			if(flatPriceWithoutGSTFromExcel.equalsIgnoreCase("NA"))
@@ -1012,6 +1038,7 @@ String addHosturl;
 			else
 			{
 				WebElement FeeIcon = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2)>div[class='d-block'], div[class='d-flex gap-2']:nth-child(3)>div[class='d-block']"));
+				js.executeScript("arguments[0].scrollIntoView()", FeeIcon);
 				if(FeeIcon.isDisplayed())
 				{
 					System.out.println("Fee icon is present");
@@ -1022,6 +1049,7 @@ String addHosturl;
 					checkPriceWOGSTStatus = "fail";
 				}
 				WebElement FeeHeader = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2) div[class*='CourseDescription_courseAboutTextSection']>h2, div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection']>h2"));
+				js.executeScript("arguments[0].scrollIntoView()", FeeHeader);
 				if(FeeHeader.getText().equalsIgnoreCase("Fee"))
 				{
 					System.out.println("fee header is present");
@@ -1032,6 +1060,7 @@ String addHosturl;
 					checkPriceWOGSTStatus = "fail";
 				}
 				WebElement feeContent = driver.findElement(By.cssSelector("div[class='d-flex gap-2']:nth-child(2) div[class*='CourseDescription_courseAboutTextSection'] p, div[class='d-flex gap-2']:nth-child(3) div[class*='CourseDescription_courseAboutTextSection'] p"));
+				js.executeScript("arguments[0].scrollIntoView()", feeContent);
 				String getStartsOnText = feeContent.getText();
 				if(getStartsOnText.replaceAll("[^\\d]", "").trim().contains(flatPriceWithoutGSTFromExcel.replaceAll("[^\\d]", "").trim()))
 				{
@@ -1292,12 +1321,15 @@ String addHosturl;
 		ArrayList<String> ans = new ArrayList<String>();
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		js.executeScript("window.scrollBy(0, 3000)");
+		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
+		js.executeScript("window.scrollBy(0, 300)");
 		List<WebElement> listOfFAQ = driver.findElements(By.cssSelector("div[class='border-0 my-1 accordion-item']"));
 		if(listOfFAQ.size()>0)
 		{
 			for(int i = 0; i < listOfFAQ.size(); i++)
 			{
 				WebElement faq = listOfFAQ.get(i);
+				js.executeScript("window.scrollBy(0, 300)");
 				WebElement question = faq.findElement(By.cssSelector(" h2[class*='Accordion_accordionTitle'] button"));
 				String questionText = question.getText().replaceAll("\\s", "").replaceAll("[^\\p{ASCII}]", "");
 				if(questionText.equalsIgnoreCase(questionFromExcel.replaceAll("\\s", "").replaceAll("\u00A0", "")))

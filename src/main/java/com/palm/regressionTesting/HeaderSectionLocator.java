@@ -378,9 +378,13 @@ public class HeaderSectionLocator
 						status = "pass";
 						driver.close();
 						driver.switchTo().window(HeaderPage);
+						
 					}
 				}
 			}
+			Thread.sleep(3000);
+			driver.close();
+			driver.switchTo().window(parentWindow);
 		}
 		catch (Exception e) 
 		{
