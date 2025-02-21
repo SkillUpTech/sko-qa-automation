@@ -1,5 +1,6 @@
 
 package com.palm.regressionTesting;
+import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -122,7 +123,7 @@ public class RegressionTesting
 	}
 	public WebDriver openDriver(String browserName, String env)
 	{
-        return DriverManager.getDriver(browserName, env);
+        return com.palm.regressionTesting.DriverManager.getDriver(browserName, env);
     }
 	@Test
 	public void startTesting()
@@ -328,7 +329,7 @@ public class RegressionTesting
 			extent.flush();
 			System.out.println("Extent Report generated successfully.");
 
-		        DriverManager.quitDriver();
+		        com.palm.regressionTesting.DriverManager.quitDriver();
 		}
 		catch(Exception e)
 		{

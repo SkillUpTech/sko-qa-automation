@@ -1,21 +1,10 @@
 package com.palm.regressionTesting;
 
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WindowType;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 
-import com.palm.regressionTesting.GLXLocator;
-import com.palm.regressionTesting.OpenWebsite;
-import com.palm.regressionTesting.RegressionTesting;
-import com.regression.utility.TestUtil;
 
 public class TechMasterValidation implements Callable<String>
 {

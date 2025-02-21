@@ -479,6 +479,7 @@ public class TagsLocator
 		        String showMoreLocatorForProgram = Locators.getLocator(currentPageType, "programShowmore");
 		        String showLessLocatorForProgram = Locators.getLocator(currentPageType, "programShowless");
 		        String programLocator = Locators.getLocator(currentPageType, "programs");
+		        
 		        if (showMoreLocatorForProgram != null && !showMoreLocatorForProgram.isEmpty())
 		        {
 		            while (driver.findElements(By.xpath(showMoreLocatorForProgram)).size() > 0) {
