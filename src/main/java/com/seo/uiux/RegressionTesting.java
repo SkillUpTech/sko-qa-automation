@@ -1,6 +1,5 @@
 
 package com.seo.uiux;
-import java.sql.DriverManager;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -8,14 +7,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
@@ -133,7 +128,7 @@ public class RegressionTesting
 		extent.attachReporter(htmlReporter);
 		System.out.println("Reporter attached to ExtentReports.");
 		
-		String excelPath = "D:\\Doc\\RegressionTesting.xlsx";
+		String excelPath = "D:\\Doc\\UI_UX.xlsx";
 		
 		EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP = new LinkedHashMap<String, ArrayList<ArrayList<String>>>();
 		
@@ -176,7 +171,7 @@ public class RegressionTesting
 						
 						switch(sheetName)
 						{
-							case "EditProfile":
+							case "LearnerDashboard":
 								taskMap.put(sheetName, new com.seo.uiux.LearnerDashboardResult(driver, sheetData, jiraStatusUpdation));
 								break;
 							default:

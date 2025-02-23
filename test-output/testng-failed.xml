@@ -3,16 +3,16 @@
 <suite name="Failed suite [Testing Google Apps]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Regression(failed)">
     <parameter name="browser" value="Chrome"/>
-    <parameter name="env" value="qa"/>
+    <parameter name="env" value="qa-in"/>
     <classes>
-      <class name="com.palm.regressionTesting.RegressionTesting">
+      <class name="com.seo.uiux.RegressionTesting">
         <methods>
+          <include name="getResult"/>
+          <include name="startTesting"/>
           <include name="tearDown"/>
           <include name="setup"/>
-          <include name="startTesting"/>
-          <include name="getResult"/>
         </methods>
-      </class> <!-- com.palm.regressionTesting.RegressionTesting -->
+      </class> <!-- com.seo.uiux.RegressionTesting -->
     </classes>
   </test> <!-- Regression(failed) -->
 </suite> <!-- Failed suite [Testing Google Apps] -->
