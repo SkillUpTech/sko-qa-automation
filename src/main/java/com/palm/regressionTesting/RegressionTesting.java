@@ -242,9 +242,6 @@ public class RegressionTesting
 							 case "ReimbursedProcess":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.ReimbursedValidation(driver, sheetData));
 								 break;
-							 case "ApplyCoupon":
-								 taskMap.put(sheetName, new com.palm.regressionTesting.ApplyCouponValidation(driver, sheetData));
-								 break;
 							 case "IBMSkillBuildPage":
 								 taskMap.put(sheetName, new com.palm.regressionTesting.IBMSkillBuildPageValidation(driver, sheetData, jiraStatusUpdation));
 								 break;
