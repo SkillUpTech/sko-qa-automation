@@ -3,25 +3,28 @@ package com.seo.uiux;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.WindowType;
 import org.testng.Assert;
 
 public class LearnerDashboardPage
 {
 	
 	WebDriver driver;
-	
+	String dashboardURL = "";
+	String currentPageType = "";
+	String parentWindow = "";
 	public LearnerDashboardPage(WebDriver driver)
 	{
 		this.driver = driver;
 	}
-	String dashboardURL = driver.getCurrentUrl();
-	String currentPageType = "";
 	public int getHTTPResponse(String urlString)
 	{
         try {
@@ -36,65 +39,100 @@ public class LearnerDashboardPage
         }
     }
 	String programName = "";
-	public ArrayList<String> checkImage(ArrayList<String> data)
+	
+	public void checkDashboardPage()
 	{
-		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		JavascriptExecutor js = (JavascriptExecutor) driver;
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			
+			parentWindow = driver.getCurrentUrl();
+			currentPageType = "";
+			WebElement clickLogin = driver.findElement(By.xpath("//a[normalize-space()='LOGIN']"));
+			js.executeScript("arguments[0].scrollIntoView();", clickLogin);
+			String loginURL = clickLogin.getAttribute("href");
+			driver.switchTo().newWindow(WindowType.TAB);
+			driver.get(loginURL);
+			dashboardURL = driver.getWindowHandle();
+			
+			WebElement enterMail = driver.findElement(By.xpath("//input[@id='email']"));
+			js.executeScript("arguments[0].scrollIntoView();", enterMail);
+			enterMail.sendKeys("Hemamalini@skillup.tech");
+			WebElement enterPassword = driver.findElement(By.xpath("//input[@id='password']"));
+			js.executeScript("arguments[0].scrollIntoView();", enterPassword);
+			enterPassword.sendKeys("Test@123");
+			WebElement clickLoginButton = driver.findElement(By.xpath("//input[@id='login_in']"));
+			js.executeScript("arguments[0].scrollIntoView();", clickLoginButton);
+			js.executeScript("arguments[0].click();", clickLoginButton);
+			Thread.sleep(2000);
+		}
+		catch (Exception e) {
+			System.out.println("Exception: " + e);
+		}
+		
+	}
+	public ArrayList<String> checkImage(ArrayList<String> data)
+	{
+		this.checkDashboardPage();
+		ArrayList<String> status = new ArrayList<String>();
+		String width = data.get(4);
+		String height = data.get(5);
+		try
+		{
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
-			
-			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
-			String getProgramCardImage = UILocators.getLocator(currentPageType, "programCardImage");
-			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
-			
-			
-			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
-			{
-				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
-				
-				for(WebElement card : listOfProgramCards)
+				String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
+				String getProgramCardImage = UILocators.getLocator(currentPageType, "programCardImage");
+				String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+				driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+				if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 				{
-					if(card.findElements(By.xpath(getProgramCardImage)).size()>0)
+					List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
+					
+					for(WebElement card : listOfProgramCards)
 					{
-						
-						WebElement image = card.findElement(By.xpath(getProgramCardImage));
-						int appWidth = image.getSize().getWidth();
-						int appHeight = image.getSize().getHeight();
-						
-						String imageSrc = image.getAttribute("src");
-						
-						WebElement getProgramName = card.findElement(By.xpath(getProgramTitle));
-						
-						programName = getProgramName.getText();
-						
-						
-						
-						if (imageSrc.isEmpty() || imageSrc.equals(null))
+						if(card.findElements(By.xpath(getProgramCardImage)).size()>0)
 						{
-							status.add("Program Image is Broken : "+programName);
-						}
-						int responseCode = getHTTPResponse(imageSrc);
-						Assert.assertEquals(responseCode, 200, "Broken Image: " + imageSrc);
-						if (appWidth != width || appHeight != height) 
-						{
-							status.add("Image size not match for "+programName+ " /n "
-									+ "app image width is "+appWidth+ " , "+"app image height is "+appWidth);
 							
-							System.out.println("Bug: Image size mismatch. App: " + appWidth + "x" + appHeight  +"y");
-						} 
+							WebElement image = card.findElement(By.xpath(getProgramCardImage));
+							String appWidth = image.getCssValue("width");
+							String appHeight = image.getCssValue("height");
+							
+							String imageSrc = image.getAttribute("src");
+							
+							WebElement getProgramName = card.findElement(By.xpath(getProgramTitle));
+							
+							programName = getProgramName.getText();
+							
+							
+							
+							if (imageSrc.isEmpty() || imageSrc.equals(null))
+							{
+								status.add("Program Image is Broken : "+programName);
+							}
+							int respStringCode = getHTTPResponse(imageSrc);
+							Assert.assertEquals(respStringCode, 200, "Broken Image: " + imageSrc);
+							if (appWidth != width || appHeight != height) 
+							{
+								status.add("Image size not match for "+programName+ " /n "
+										+ "app image width is "+appWidth+ " , "+"app image height is "+appHeight);
+								
+								System.out.println("Bug: Image size mismatch. App: " + appWidth + "x" + appHeight  +"y");
+							} 
+						}
+						else
+						{
+							status.add("no image "+programName);
+						}
 					}
-					else
-					{
-						status.add("no image "+programName);
-					}
+					
 				}
-				
 			}
+			
+			
+			
 			
 		}
 		catch(Exception e)
@@ -106,29 +144,30 @@ public class LearnerDashboardPage
 	public ArrayList<String> checkProgramIcon(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramIcon = UILocators.getLocator(currentPageType, "programIcon");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramIcon)).size()>0)
 					{
 						WebElement checkProgramIcon = card.findElement(By.xpath(getProgramIcon));
-						int appWidth = checkProgramIcon.getSize().getWidth();
-						int appHeight = checkProgramIcon.getSize().getHeight();
+						String appWidth = checkProgramIcon.getCssValue("width");
+						String appHeight = checkProgramIcon.getCssValue("height");
 						String imageSrc = checkProgramIcon.getAttribute("src");
 						
 						WebElement getProgramName = card.findElement(By.xpath(getProgramTitle));
@@ -144,13 +183,14 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("program icon size not match for "+programName+ " /n "
-									+ "app program icon width is "+appWidth+ " , "+"app program icon height is "+appWidth);
+									+ "app program icon width is "+appWidth+ " , "+"app program icon height is "+appHeight);
 							
 							System.out.println("Bug: program icon size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
 					}
 				}
 			}
+		}
 		}
 		catch(Exception e)
 		{
@@ -161,29 +201,31 @@ public class LearnerDashboardPage
 	public ArrayList<String> checkProgramLabel(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
+			
 			String getProgramNameLabel = UILocators.getLocator(currentPageType, "programNameLabel");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramNameLabel)).size()>0)
 					{
 						WebElement checkProgramNameLabel = card.findElement(By.xpath(getProgramNameLabel));
-						int appWidth =checkProgramNameLabel.getSize().getWidth();
-						int appHeight = checkProgramNameLabel.getSize().getHeight();
+						String appWidth =checkProgramNameLabel.getCssValue("width");
+						String appHeight = checkProgramNameLabel.getCssValue("height");
 						String fontName = checkProgramNameLabel.getCssValue("font-family");
 						String fontSize = checkProgramNameLabel.getCssValue("font-size");
 						String fontColor = checkProgramNameLabel.getCssValue("color");
@@ -195,7 +237,7 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("program label size not match for "+programName+ " /n "
-									+ "app program label width is "+appWidth+ " , "+"app program label height is "+appWidth);
+									+ "app program label width is "+appWidth+ " , "+"app program label height is "+appHeight);
 							
 							System.out.println("Bug: label size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -218,6 +260,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+			}
 		}
 		catch(Exception e)
 		{
@@ -228,32 +271,32 @@ public class LearnerDashboardPage
 	public ArrayList<String> checkProgramName(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
-			
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
-				{
+				{driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramTitle)).size()>0)
 					{
 						WebElement getProgramName = card.findElement(By.xpath(getProgramTitle));
 						programName = getProgramName.getText();
 						
-						int appWidth =getProgramName.getSize().getWidth();
-						int appHeight = getProgramName.getSize().getHeight();
+						String appWidth =getProgramName.getCssValue("width");
+						String appHeight = getProgramName.getCssValue("height");
 						String fontName = getProgramName.getCssValue("font-family");
 				        String fontSize = getProgramName.getCssValue("font-size");
 				        String fontColor = getProgramName.getCssValue("color");
@@ -262,7 +305,7 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("program name size not match for "+programName+ " /n "
-									+ "app program name  width is "+appWidth+ " , "+"app program name  height is "+appWidth);
+									+ "app program name  width is "+appWidth+ " , "+"app program name  height is "+appHeight);
 							
 							System.out.println("Bug: program name  size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -286,6 +329,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+			}
 		}
 		catch(Exception e)
 		{
@@ -298,19 +342,21 @@ public class LearnerDashboardPage
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramPartner = UILocators.getLocator(currentPageType, "programPartner");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramPartner)).size()>0)
 					{
 						WebElement checkProgramPartner = card.findElement(By.xpath(getProgramPartner));
@@ -347,6 +393,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+			}
 		}
 		catch(Exception e)
 		{
@@ -359,19 +406,21 @@ public class LearnerDashboardPage
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramLevel = UILocators.getLocator(currentPageType, "programLevel");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramLevel)).size()>0)
 					{
 						WebElement checkProgramLevel = card.findElement(By.xpath(getProgramLevel));
@@ -403,6 +452,7 @@ public class LearnerDashboardPage
 				}
 			}
 		}
+		}
 		catch(Exception e)
 		{
 			System.out.println("Exception: "+e);
@@ -412,23 +462,25 @@ public class LearnerDashboardPage
 	public ArrayList<String> checkStartNowButton(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramStartNowButton = UILocators.getLocator(currentPageType, "programStartNowButton");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramStartNowButton)).size()>0)
 					{
 						WebElement checkProgramStartNowButton = card.findElement(By.xpath(getProgramStartNowButton));
@@ -436,14 +488,14 @@ public class LearnerDashboardPage
 						String fontSize = checkProgramStartNowButton.getCssValue("font-size");
 						String fontColor = checkProgramStartNowButton.getCssValue("color");
 						String fontThickness = checkProgramStartNowButton.getCssValue("font-weight");
-						int appWidth =checkProgramStartNowButton.getSize().getWidth();
-						int appHeight = checkProgramStartNowButton.getSize().getHeight();
+						String appWidth =checkProgramStartNowButton.getCssValue("width");
+						String appHeight = checkProgramStartNowButton.getCssValue("height");
 						WebElement getProgramName = card.findElement(By.xpath(getProgramTitle));
 						programName = getProgramName.getText();
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("ProgramStartNowButton size not match for "+programName+ " /n "
-									+ "app ProgramStartNowButton width is "+appWidth+ " , "+"app label height is "+appWidth);
+									+ "app ProgramStartNowButton width is "+appWidth+ " , "+"app label height is "+appHeight);
 							
 							System.out.println("Bug: ProgramStartNowButton size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -467,6 +519,7 @@ public class LearnerDashboardPage
 				}
 			}
 		}
+		}
 		catch(Exception e)
 		{
 			status.add("fail - startNow verification");
@@ -477,28 +530,30 @@ public class LearnerDashboardPage
 	public ArrayList<String> checkShareIcon(ArrayList<String> data)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try 
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramShareIcon = UILocators.getLocator(currentPageType, "programShareIcon");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramShareIcon)).size()>0)
 					{
 						WebElement checkProgramShareIcon = card.findElement(By.xpath(getProgramShareIcon));
-						int appWidth =checkProgramShareIcon.getSize().getWidth();
-						int appHeight = checkProgramShareIcon.getSize().getHeight();
+						String appWidth =checkProgramShareIcon.getCssValue("width");
+						String appHeight = checkProgramShareIcon.getCssValue("height");
 						String fontName = checkProgramShareIcon.getCssValue("font-family");
 						String fontSize = checkProgramShareIcon.getCssValue("font-size");
 						String fontColor = checkProgramShareIcon.getCssValue("color");
@@ -510,7 +565,7 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("share icon size not match for "+programName+ " /n "
-									+ "app share icon width is "+appWidth+ " , "+"app label height is "+appWidth);
+									+ "app share icon width is "+appWidth+ " , "+"app label height is "+appHeight);
 							
 							System.out.println("Bug: share icon size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -539,6 +594,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+		}
 		} 
 		catch (Exception e) {
 			status.add("fail - share icon verification");
@@ -548,28 +604,30 @@ public class LearnerDashboardPage
 
 	public ArrayList<String> checkIncludeCourses(ArrayList<String> data) {
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try 
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramIncludeCourses = UILocators.getLocator(currentPageType, "programIncludeCourses");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramIncludeCourses)).size()>0)
 					{
 						WebElement checkIncludeCourses = card.findElement(By.xpath(getProgramIncludeCourses));
-						int appWidth =checkIncludeCourses.getSize().getWidth();
-						int appHeight = checkIncludeCourses.getSize().getHeight();
+						String appWidth =checkIncludeCourses.getCssValue("width");
+						String appHeight = checkIncludeCourses.getCssValue("height");
 						String fontName = checkIncludeCourses.getCssValue("font-family");
 						String fontSize = checkIncludeCourses.getCssValue("font-size");
 						String fontColor = checkIncludeCourses.getCssValue("color");
@@ -582,7 +640,7 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("include courses size not match for "+programName+ " /n "
-									+ "app include courses width is "+appWidth+ " , "+"app label height is "+appWidth);
+									+ "app include courses width is "+appWidth+ " , "+"app label height is "+appHeight);
 							
 							System.out.println("Bug: include courses size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -612,6 +670,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+			}
 		} catch (Exception e) {
 			status.add("fail - include courses link verification");
 		}
@@ -623,19 +682,21 @@ public class LearnerDashboardPage
 		ArrayList<String> status = new ArrayList<String>();
 		try
 		{
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramLinkedCourses = UILocators.getLocator(currentPageType, "programLinkedCourses");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramLinkedCourses)).size()>0)
 					{
 						WebElement checkProgramLinkedCourses = card.findElement(By.xpath(getProgramLinkedCourses));
@@ -670,6 +731,7 @@ public class LearnerDashboardPage
 				}
 			}
 		}
+		}
 		catch(Exception e)
 		{
 			status.add("fail - program - course Name verification");
@@ -679,27 +741,29 @@ public class LearnerDashboardPage
 
 	public ArrayList<String> checkGoToCourse(ArrayList<String> data) {
 		ArrayList<String> status = new ArrayList<String>();
-		int width = Integer.valueOf(data.get(4));
-		int height = Integer.valueOf(data.get(5));
+		String width = data.get(4);
+		String height = data.get(5);
 		try {
-			if (dashboardURL.contains("learner-dashboard")) 
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
+			if (driver.getCurrentUrl().contains("learner-dashboard")) 
 			{
 				currentPageType = "learner-dashboard";
-			}
 			String getProgramGoToCourse = UILocators.getLocator(currentPageType, "programGoToCourse");
 			String getProgramCardList = UILocators.getLocator(currentPageType, "programCardList");
 			String getProgramTitle = UILocators.getLocator(currentPageType, "programTitle");
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 			if(driver.findElements(By.xpath(getProgramCardList)).size()>0)
 			{
 				List<WebElement> listOfProgramCards = driver.findElements(By.xpath(getProgramCardList));
 				
 				for(WebElement card : listOfProgramCards)
 				{
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(50));
 					if(card.findElements(By.xpath(getProgramGoToCourse)).size()>0)
 					{
 						WebElement checkProgramGoToCourses = card.findElement(By.xpath(getProgramGoToCourse));
-						int appWidth =checkProgramGoToCourses.getSize().getWidth();
-						int appHeight = checkProgramGoToCourses.getSize().getHeight();
+						String appWidth =checkProgramGoToCourses.getCssValue("width");
+						String appHeight = checkProgramGoToCourses.getCssValue("height");
 						String fontName = checkProgramGoToCourses.getCssValue("font-family");
 						String fontSize = checkProgramGoToCourses.getCssValue("font-size");
 						String fontColor = checkProgramGoToCourses.getCssValue("color");
@@ -711,7 +775,7 @@ public class LearnerDashboardPage
 						if (appWidth != width || appHeight != height) 
 						{
 							status.add("Go To Course size not match for "+programName+ " /n "
-									+ "app Go To Course width is "+appWidth+ " , "+"app label height is "+appWidth);
+									+ "app Go To Course width is "+appWidth+ " , "+"app label height is "+appHeight);
 							
 							System.out.println("Bug: Go To Course size mismatch. App: " + appWidth + "x" + appHeight  +"y");
 						} 
@@ -741,6 +805,7 @@ public class LearnerDashboardPage
 					}
 				}
 			}
+		}
 		} catch (Exception e) {
 			status.add("fail - Go To Course link verification");
 		}

@@ -35,7 +35,7 @@ public class RegressionTesting
 	public static String ENV_TO_USE = "";
 	String getEnvironment = "";
 	WebDriver driver;
-	public static String  driverPath = "D:\\chromedriver_129\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "D:\\chromedriver133\\chromedriver-win64\\chromedriver.exe";
 	
 	@BeforeTest
 	@Parameters({"browser","env"})

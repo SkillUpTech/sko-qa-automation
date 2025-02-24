@@ -3,7 +3,7 @@ package com.seo.verification;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Locators 
+public class CardLocators 
 {
 	private static final Map<String, Map<String, String>> pageLocators = new HashMap<String, Map<String, String>>();
 	

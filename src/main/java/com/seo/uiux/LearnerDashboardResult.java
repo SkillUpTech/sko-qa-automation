@@ -27,7 +27,7 @@ public class LearnerDashboardResult implements Callable<String>
 	}
 	@Override
 	public String call() throws Exception {
-		System.out.println("IBM Skills build page validation Process started");
+		System.out.println("Dashboard UIUX Process started");
 
 		try
 		{
@@ -120,33 +120,36 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(1).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(1).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("image validation completed");
 	}
 	public void programIcon(ArrayList<String> data)
 	{
-		ArrayList<String> status = learnerDashboardPage.checkImage(data);
+		ArrayList<String> status = learnerDashboardPage.checkProgramIcon(data);
 		if(status.size()>0)
 		{
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(2).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(2).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("program Icon validation completed");
 	}
 	public void programLabel(ArrayList<String> data)
 	{
-		ArrayList<String> status = learnerDashboardPage.checkImage(data);
+		ArrayList<String> status = learnerDashboardPage.checkProgramLabel(data);
 		if(status.size()>0)
 		{
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(3).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(3).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program label validation completed");
 	}
 	public void ProgramName(ArrayList<String> data)
 	{
@@ -156,9 +159,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(4).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(4).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program name validation completed");
 	}
 	public void ProgramPartner(ArrayList<String> data)
 	{
@@ -168,9 +172,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(5).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(5).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program partner validation completed");
 	}
 	public void level(ArrayList<String> data)
 	{
@@ -180,9 +185,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(6).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(6).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program level validation completed");
 	}
 	public void StartNowButton(ArrayList<String> data)
 	{
@@ -192,9 +198,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(7).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(7).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program startnow button validation completed");
 	}
 	public void shareIcon(ArrayList<String> data)
 	{
@@ -204,9 +211,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(8).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(8).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program share icon validation completed");
 	}
 	public void IncludeCourses(ArrayList<String> data)
 	{
@@ -216,9 +224,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(9).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(9).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program Include course validation completed");
 	}
 	public void CourseNameGoHere(ArrayList<String> data)
 	{
@@ -228,9 +237,10 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(10).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(10).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program course Name Go Here validation completed");
 	}
 	public void GoToCourse(ArrayList<String> data)
 	{
@@ -240,8 +250,9 @@ public class LearnerDashboardResult implements Callable<String>
 			for(int i = 0; i < status.size(); i++)
 			{
 					sheetStatus = "Fail";
-					RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(11).add(status.size()+i, (status.get(i) + " - failed"));
+					com.seo.uiux.RegressionTesting.EXCEL_DATA_AS_SHEEET_NAME_AND_ROWS_MAP.get("LearnerDashboard").get(11).add(data.size(), (status.get(i) + " - failed"));
 			}
 		}
+		System.out.println("Program GoToCourse validation completed");
 	}
 }

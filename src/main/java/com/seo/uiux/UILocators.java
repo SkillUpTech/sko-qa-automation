@@ -22,7 +22,7 @@ public class UILocators
 		learnerDashboard_ProgramSection.put("programIncludeCourses", ".//div[@class='course-list-header']");
 		learnerDashboard_ProgramSection.put("programLinkedCourses", ".//div[@class='course-list course-list-expanded']/div//p[@class='program-course-name']");
 		learnerDashboard_ProgramSection.put("programGoToCourse", ".//div[@class='course-list course-list-expanded']/div//a[@class='go-to-course-link sko-font']");
-		pageLocators.put("leanerDashboard_Program", learnerDashboard_ProgramSection);
+		pageLocators.put("learner-dashboard", learnerDashboard_ProgramSection);
 	}
 	
 	public static String getLocator(String page, String element)

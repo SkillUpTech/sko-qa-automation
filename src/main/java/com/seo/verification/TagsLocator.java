@@ -476,9 +476,9 @@ public class TagsLocator
 					currentPageType = "Unknown";
 				}
 		        
-		        String showMoreLocatorForProgram = Locators.getLocator(currentPageType, "programShowmore");
-		        String showLessLocatorForProgram = Locators.getLocator(currentPageType, "programShowless");
-		        String programLocator = Locators.getLocator(currentPageType, "programs");
+		        String showMoreLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowmore");
+		        String showLessLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowless");
+		        String programLocator = CardLocators.getLocator(currentPageType, "programs");
 		        
 		        if (showMoreLocatorForProgram != null && !showMoreLocatorForProgram.isEmpty())
 		        {
@@ -619,9 +619,9 @@ public class TagsLocator
 					currentPageType = "Unknown";
 				}
 
-				String showMoreLocatorForCourses = Locators.getLocator(currentPageType, "coursesShowmore");
-				String showLessLocatorForCourses = Locators.getLocator(currentPageType, "coursesShowless");
-				String courseLocator = Locators.getLocator(currentPageType, "courses");
+				String showMoreLocatorForCourses = CardLocators.getLocator(currentPageType, "coursesShowmore");
+				String showLessLocatorForCourses = CardLocators.getLocator(currentPageType, "coursesShowless");
+				String courseLocator = CardLocators.getLocator(currentPageType, "courses");
 				
 				
 				//show more button verification for courses

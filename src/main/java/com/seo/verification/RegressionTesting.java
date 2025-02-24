@@ -62,7 +62,7 @@ public class RegressionTesting
 	ExtentSparkReporter extentSparkReporter;
 	   ExtentReports extentReports;
 	   ExtentTest extentTest;
-	public static String  driverPath = "D:\\chromedriver131\\chromedriver-win64\\chromedriver.exe";
+	public static String  driverPath = "D:\\chromedriver133\\chromedriver-win64\\chromedriver.exe";
 	@BeforeTest
 	@Parameters({"browser","env"})
 	public void setup(String browserName, String env) throws Exception
