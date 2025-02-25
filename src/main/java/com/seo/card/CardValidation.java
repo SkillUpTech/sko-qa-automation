@@ -10,13 +10,12 @@ import org.openqa.selenium.WebDriver;
 
 import com.palm.regressionTesting.JiraTicketStatusUpdate;
 import com.palm.regressionTesting.RegressionTesting;
-import com.seo.verification.TagsLocator;
 
 public class CardValidation implements Callable<String>
 {
 	ArrayList<ArrayList<String>> sheetData = null;
 	String jiraProcess = "";
-	TagsLocator tagsLocator;
+	CardProcess cardProcess;
 	String sheetStatus = "Pass";
 	WebDriver driver;
 
@@ -31,27 +30,28 @@ public class CardValidation implements Callable<String>
 		System.out.println("SEO Tag validation Process started");
 
 		try {
-			this.tagsLocator = new TagsLocator(driver);
+			this.cardProcess = new CardProcess(driver);
 			for (int i = 0; i < this.sheetData.size(); i++) {
 				ArrayList<String> row = this.sheetData.get(i);
 				String firstColumn = row.get(0);
 				switch (firstColumn) {
 
-				
-				  case "IBM_PartnerPage": IBM_PartnerPage(row.get(1)); break;
-				  
-				  case "IBM_PartnerPage_Programs": IBM_PartnerPage_Programs(); break;
-				  
-				  case "IBM_PartnerPage_Courses": IBM_PartnerPage_Courses(); break;
-				 
-
-				
-				  case "Microsoft_PartnerPage": Microsoft_PartnerPage(row.get(1)); break;
-				  
-				  case "Microsoft_PartnerPage_Programs": Microsoft_PartnerPage_Programs();
-				  break;
-				  
-				  case "Microsoft_PartnerPage_Courses": Microsoft_PartnerPage_Courses(); break;
+				/*
+				 * case "IBM_PartnerPage": IBM_PartnerPage(row.get(1)); break;
+				 * 
+				 * case "IBM_PartnerPage_Programs": IBM_PartnerPage_Programs(); break;
+				 * 
+				 * case "IBM_PartnerPage_Courses": IBM_PartnerPage_Courses(); break;
+				 * 
+				 * 
+				 * 
+				 * case "Microsoft_PartnerPage": Microsoft_PartnerPage(row.get(1)); break;
+				 * 
+				 * case "Microsoft_PartnerPage_Programs": Microsoft_PartnerPage_Programs();
+				 * break;
+				 * 
+				 * case "Microsoft_PartnerPage_Courses": Microsoft_PartnerPage_Courses(); break;
+				 */
 				 
 
 				// case "GoogleCloud_PartnerPage": GoogleCloud_PartnerPage(row.get(1)); break;
@@ -71,20 +71,22 @@ public class CardValidation implements Callable<String>
 
 				
 				
-				  case "FutureSkill_PartnerPage": FutureSkill_PartnerPage(row.get(1)); break;
-				  
-				  case "FutureSkill_PartnerPage_Programs": FutureSkill_PartnerPage_Programs();
-				  break;
-				  
-				  case "FutureSkill_PartnerPage_Courses": FutureSkill_PartnerPage_Courses();
-				  break;
-				 
-				  
-				  case "AI_CategoryPage": AI_CategoryPage(row.get(1)); break;
-				  
-				  case "AI_CategoryPage_Programs": AI_CategoryPage_Programs(); break;
-				  
-				  case "AI_CategoryPage_Courses": AI_CategoryPage_Courses(); break;
+				/*
+				 * case "FutureSkill_PartnerPage": FutureSkill_PartnerPage(row.get(1)); break;
+				 * 
+				 * case "FutureSkill_PartnerPage_Programs": FutureSkill_PartnerPage_Programs();
+				 * break;
+				 * 
+				 * case "FutureSkill_PartnerPage_Courses": FutureSkill_PartnerPage_Courses();
+				 * break;
+				 * 
+				 * 
+				 * case "AI_CategoryPage": AI_CategoryPage(row.get(1)); break;
+				 * 
+				 * case "AI_CategoryPage_Programs": AI_CategoryPage_Programs(); break;
+				 * 
+				 * case "AI_CategoryPage_Courses": AI_CategoryPage_Courses(); break;
+				 */
 				 
 
 					/*
@@ -96,37 +98,39 @@ public class CardValidation implements Callable<String>
 					 */
 
 				
-				  case "BigData_CategoryPage": BigData_CategoryPage(row.get(1)); break;
-				  
-				  case "BigData_CategoryPage_Programs": BigData_CategoryPage_Programs(); break;
-				  
-				  case "BigData_CategoryPage_Courses": BigData_CategoryPage_Courses(); break;
-				  
-				  case "Blockchain_CategoryPage": Blockchain_CategoryPage(row.get(1)); break;
-				  
-				  case "Blockchain_CategoryPage_Programs": Blockchain_CategoryPage_Programs();
-				  break;
-				  
-				  case "Blockchain_CategoryPage_Courses": Blockchain_CategoryPage_Courses();
-				  break;
-				  
-				  case "BusinessApplication_CategoryPage":
-				  BusinessApplication_CategoryPage(row.get(1)); break;
-				  
-				  case "BusinessApplication_CategoryPage_Programs":
-				  BusinessApplication_CategoryPage_Programs(); break;
-				  
-				  case "BusinessApplication_CategoryPage_Courses":
-				  BusinessApplication_CategoryPage_Courses(); break;
-				  
-				  case "CloudComputing_CategoryPage": CloudComputing_CategoryPage(row.get(1));
-				  break;
-				  
-				  case "CloudComputing_CategoryPage_Programs":
-				  CloudComputing_CategoryPage_Programs(); break;
-				  
-				  case "CloudComputing_CategoryPage_Courses":
-				  CloudComputing_CategoryPage_Courses(); break;
+					/*
+					 * case "BigData_CategoryPage": BigData_CategoryPage(row.get(1)); break;
+					 * 
+					 * case "BigData_CategoryPage_Programs": BigData_CategoryPage_Programs(); break;
+					 * 
+					 * case "BigData_CategoryPage_Courses": BigData_CategoryPage_Courses(); break;
+					 * 
+					 * case "Blockchain_CategoryPage": Blockchain_CategoryPage(row.get(1)); break;
+					 * 
+					 * case "Blockchain_CategoryPage_Programs": Blockchain_CategoryPage_Programs();
+					 * break;
+					 * 
+					 * case "Blockchain_CategoryPage_Courses": Blockchain_CategoryPage_Courses();
+					 * break;
+					 * 
+					 * case "BusinessApplication_CategoryPage":
+					 * BusinessApplication_CategoryPage(row.get(1)); break;
+					 * 
+					 * case "BusinessApplication_CategoryPage_Programs":
+					 * BusinessApplication_CategoryPage_Programs(); break;
+					 * 
+					 * case "BusinessApplication_CategoryPage_Courses":
+					 * BusinessApplication_CategoryPage_Courses(); break;
+					 * 
+					 * case "CloudComputing_CategoryPage": CloudComputing_CategoryPage(row.get(1));
+					 * break;
+					 * 
+					 * case "CloudComputing_CategoryPage_Programs":
+					 * CloudComputing_CategoryPage_Programs(); break;
+					 * 
+					 * case "CloudComputing_CategoryPage_Courses":
+					 * CloudComputing_CategoryPage_Courses(); break;
+					 */
 				  
 				/*
 				 * case "CompliancePOSH_CategoryPage": CompliancePOSH_CategoryPage(row.get(1));
@@ -142,55 +146,63 @@ public class CardValidation implements Callable<String>
 				 
 
 				
-				  case "Cybersecurity_CategoryPage": Cybersecurity_CategoryPage(row.get(1));
-				  break;
+				/*
+				 * case "Cybersecurity_CategoryPage": Cybersecurity_CategoryPage(row.get(1));
+				 * break;
+				 * 
+				 * case "Cybersecurity_CategoryPage_Programs":
+				 * Cybersecurity_CategoryPage_Programs(); break;
+				 * 
+				 * case "Cybersecurity_CategoryPage_Courses":
+				 * Cybersecurity_CategoryPage_Courses(); break;
+				 * 
+				 * case "DataAnalytics_CategoryPage": DataAnalytics_CategoryPage(row.get(1));
+				 * break;
+				 * 
+				 * case "DataAnalytics_CategoryPage_Programs":
+				 * DataAnalytics_CategoryPage_Programs(); break;
+				 * 
+				 * case "DataAnalytics_CategoryPage_Courses":
+				 * DataAnalytics_CategoryPage_Courses(); break;
+				 * 
+				 * case "IOT_CategoryPage": IOT_CategoryPage(row.get(1)); break; case
+				 * "IOT_CategoryPage_Programs": IOT_CategoryPage_Programs(); break; case
+				 * "IOT_CategoryPage_Courses": IOT_CategoryPage_Courses(); break;
+				 */
+				  case  "HumanSkills_CategoryPage": HumanSkills_CategoryPage(row.get(1));
+				  break; 
+				  case  "HumanSkills_CategoryPage_Programs": HumanSkills_CategoryPage_Programs();
+				  break; 
+				  case "HumanSkills_CategoryPage_Courses":  HumanSkills_CategoryPage_Courses(); 
+				  break; 
 				  
-				  case "Cybersecurity_CategoryPage_Programs":
-				  Cybersecurity_CategoryPage_Programs(); break;
-				  
-				  case "Cybersecurity_CategoryPage_Courses":
-				  Cybersecurity_CategoryPage_Courses(); break;
-				  
-				  case "DataAnalytics_CategoryPage": DataAnalytics_CategoryPage(row.get(1));
-				  break;
-				  
-				  case "DataAnalytics_CategoryPage_Programs":
-				  DataAnalytics_CategoryPage_Programs(); break;
-				  
-				  case "DataAnalytics_CategoryPage_Courses":
-				  DataAnalytics_CategoryPage_Courses(); break;
-				  
-				  case "IOT_CategoryPage": IOT_CategoryPage(row.get(1)); break; case
-				  "IOT_CategoryPage_Programs": IOT_CategoryPage_Programs(); break; case
-				  "IOT_CategoryPage_Courses": IOT_CategoryPage_Courses(); break; case
-				  "HumanSkills_CategoryPage": HumanSkills_CategoryPage(row.get(1)); break; case
-				  "HumanSkills_CategoryPage_Programs": HumanSkills_CategoryPage_Programs();
-				  break; case "HumanSkills_CategoryPage_Courses":
-				  HumanSkills_CategoryPage_Courses(); break; case "DataScience_CategoryPage":
-				  DataScience_CategoryPage(row.get(1)); break; case
-				  "DataScience_CategoryPage_Programs": DataScience_CategoryPage_Programs();
-				  break; case "DataScience_CategoryPage_Courses":
-				  DataScience_CategoryPage_Courses(); break; case "Devops_CategoryPage":
-				  DevOps_CategoryPage(row.get(1)); break; case "DevOps_CategoryPage_Programs":
-				  DevOps_CategoryPage_Programs(); break; case "DevOps_CategoryPage_Courses":
-				  DevOps_CategoryPage_Courses(); break; case "ModernWorkplace_CategoryPage":
-				  ModernWorkplace_CategoryPage(row.get(1)); break; case
-				  "ModernWorkplace_CategoryPage_Programs":
-				  ModernWorkplace_CategoryPage_Programs(); break; case
-				  "ModernWorkplace_CategoryPage_Courses":
-				  ModernWorkplace_CategoryPage_Courses(); break; case "PowerBI_CategoryPage":
-				  PowerBI_CategoryPage(row.get(1)); break; case
-				  "PowerBI_CategoryPage_Programs": PowerBI_CategoryPage_Programs(); break; case
-				  "PowerBI_CategoryPage_Courses": PowerBI_CategoryPage_Courses(); break; case
-				  "PowerPlatform_CategoryPage": PowerPlatform_CategoryPage(row.get(1)); break;
-				  case "PowerPlatform_CategoryPage_Programs":
-				  PowerPlatform_CategoryPage_Programs(); break; case
-				  "PowerPlatform_CategoryPage_Courses": PowerPlatform_CategoryPage_Courses();
-				  break; case "Productivity_CategoryPage":
-				  Productivity_CategoryPage(row.get(1)); break; case
-				  "Productivity_CategoryPage_Programs": Productivity_CategoryPage_Programs();
-				  break; case "Productivity_CategoryPage_Courses":
-				  Productivity_CategoryPage_Courses(); break;
+				/*
+				 * case "DataScience_CategoryPage": DataScience_CategoryPage(row.get(1)); break;
+				 * case "DataScience_CategoryPage_Programs":
+				 * DataScience_CategoryPage_Programs(); break; case
+				 * "DataScience_CategoryPage_Courses": DataScience_CategoryPage_Courses();
+				 * break; case "Devops_CategoryPage": DevOps_CategoryPage(row.get(1)); break;
+				 * case "DevOps_CategoryPage_Programs": DevOps_CategoryPage_Programs(); break;
+				 * case "DevOps_CategoryPage_Courses": DevOps_CategoryPage_Courses(); break;
+				 * case "ModernWorkplace_CategoryPage":
+				 * ModernWorkplace_CategoryPage(row.get(1)); break; case
+				 * "ModernWorkplace_CategoryPage_Programs":
+				 * ModernWorkplace_CategoryPage_Programs(); break; case
+				 * "ModernWorkplace_CategoryPage_Courses":
+				 * ModernWorkplace_CategoryPage_Courses(); break; case "PowerBI_CategoryPage":
+				 * PowerBI_CategoryPage(row.get(1)); break; case
+				 * "PowerBI_CategoryPage_Programs": PowerBI_CategoryPage_Programs(); break; case
+				 * "PowerBI_CategoryPage_Courses": PowerBI_CategoryPage_Courses(); break; case
+				 * "PowerPlatform_CategoryPage": PowerPlatform_CategoryPage(row.get(1)); break;
+				 * case "PowerPlatform_CategoryPage_Programs":
+				 * PowerPlatform_CategoryPage_Programs(); break; case
+				 * "PowerPlatform_CategoryPage_Courses": PowerPlatform_CategoryPage_Courses();
+				 * break; case "Productivity_CategoryPage":
+				 * Productivity_CategoryPage(row.get(1)); break; case
+				 * "Productivity_CategoryPage_Programs": Productivity_CategoryPage_Programs();
+				 * break; case "Productivity_CategoryPage_Courses":
+				 * Productivity_CategoryPage_Courses(); break;
+				 */
 				 
 
 				}
@@ -251,38 +263,26 @@ public class CardValidation implements Callable<String>
 
 					// Define column mappings for each issue
 					int columnIndex = -1;
-					if (issue.contains("H1"))
+					if (issue.contains("Image"))
 						columnIndex = 2;
-					if (issue.contains("canonical"))
+					if (issue.contains("Icon"))
 						columnIndex = 3;
-					if (issue.contains("ogURLInfo"))
-						columnIndex = 5;
-					if (issue.contains("ogTypeInfo"))
+					if (issue.contains("Label"))
 						columnIndex = 4;
-					if (issue.contains("ogTitleInfo"))
-						columnIndex = 7;
-					if (issue.contains("ogDesciptionInfo"))
+					if (issue.contains("Title"))
+						columnIndex = 5;
+					if (issue.contains("Partner"))
 						columnIndex = 6;
-					if (issue.contains("ogImageInfo"))
+					if (issue.contains("Levels"))
+						columnIndex = 7;
+					if (issue.contains("LevelValue"))
 						columnIndex = 8;
-					if (issue.contains("twitterURLInfo"))
-						columnIndex = 10;
-					if (issue.contains("twitterCardInfo"))
+					if (issue.contains("Price"))
 						columnIndex = 9;
-					if (issue.contains("twitterTitleInfo"))
-						columnIndex = 13;
-					if (issue.contains("twitterDescriptionInfo"))
-						columnIndex = 12;
-					if (issue.contains("twitterImageInfo"))
-						columnIndex = 13;
-					if (issue.contains("twitterTypeInfo"))
+					if (issue.contains("EnrollStatus"))
+						columnIndex = 10;
+					if (issue.contains("issue"))
 						columnIndex = 11;
-					if (issue.contains("CourseSchema"))
-						columnIndex = 14;
-					if (issue.contains("faq"))
-						columnIndex = 15;
-					if (issue.contains("fail"))
-						columnIndex = 16;
 
 					while (rowData.size() <= columnIndex) {
 						rowData.add(""); // Ensure column exists
@@ -302,7 +302,7 @@ public class CardValidation implements Callable<String>
 
 	public void IBM_PartnerPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.checkIBM_PartnerPage(data);
+			ArrayList<String> status = cardProcess.checkIBM_PartnerPage(data);
 			updateExcelData(status, 1);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -312,7 +312,7 @@ public class CardValidation implements Callable<String>
 	public void IBM_PartnerPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkIBM_Partner_Programs();
+			ArrayList<String> status = cardProcess.checkIBM_Partner_Programs();
 			updateExcelData(status, 2);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -322,7 +322,7 @@ public class CardValidation implements Callable<String>
 	public void IBM_PartnerPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkIBM_Partner_Courses();
+			ArrayList<String> status = cardProcess.checkIBM_Partner_Courses();
 			updateExcelData(status, 3);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -332,7 +332,7 @@ public class CardValidation implements Callable<String>
 	public void PLU_PartnerPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPLU_PartnerPage(data);
+			ArrayList<String> status = cardProcess.checkPLU_PartnerPage(data);
 			updateExcelData(status, 10);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -342,7 +342,7 @@ public class CardValidation implements Callable<String>
 	public void PLU_PartnerPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPLU_PartnerPage_Programs();
+			ArrayList<String> status = cardProcess.checkPLU_PartnerPage_Programs();
 			updateExcelData(status, 11);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -352,7 +352,7 @@ public class CardValidation implements Callable<String>
 	public void PLU_PartnerPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPLU_PartnerPage_Courses();
+			ArrayList<String> status = cardProcess.checkPLU_PartnerPage_Courses();
 			updateExcelData(status, 12);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -361,7 +361,7 @@ public class CardValidation implements Callable<String>
 
 	public void FutureSkill_PartnerPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.checkFutureSkill_PartnerPage(data);
+			ArrayList<String> status = cardProcess.checkFutureSkill_PartnerPage(data);
 			updateExcelData(status, 13);
 
 		} catch (Exception e) {
@@ -371,7 +371,7 @@ public class CardValidation implements Callable<String>
 
 	public void FutureSkill_PartnerPage_Programs() {
 		try {
-			ArrayList<String> status = tagsLocator.checkFutureSkill_PartnerPage_Programs();
+			ArrayList<String> status = cardProcess.checkFutureSkill_PartnerPage_Programs();
 			updateExcelData(status, 14);
 
 		} catch (Exception e) {
@@ -381,7 +381,7 @@ public class CardValidation implements Callable<String>
 
 	public void FutureSkill_PartnerPage_Courses() {
 		try {
-			ArrayList<String> status = tagsLocator.checkFutureSkill_PartnerPage_Courses();
+			ArrayList<String> status = cardProcess.checkFutureSkill_PartnerPage_Courses();
 			updateExcelData(status, 15);
 
 		} catch (Exception e) {
@@ -392,7 +392,7 @@ public class CardValidation implements Callable<String>
 	public void Microsoft_PartnerPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkMicrosoft_PartnerPage(data);
+			ArrayList<String> status = cardProcess.checkMicrosoft_PartnerPage(data);
 			updateExcelData(status, 4);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -402,7 +402,7 @@ public class CardValidation implements Callable<String>
 	public void Microsoft_PartnerPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkMicrosoft_PartnerPage_Programs();
+			ArrayList<String> status = cardProcess.checkMicrosoft_PartnerPage_Programs();
 			updateExcelData(status, 5);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -412,7 +412,7 @@ public class CardValidation implements Callable<String>
 	public void Microsoft_PartnerPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkMicrosoft_PartnerPage_Courses();
+			ArrayList<String> status = cardProcess.checkMicrosoft_PartnerPage_Courses();
 			updateExcelData(status, 6);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -422,7 +422,7 @@ public class CardValidation implements Callable<String>
 	public void GoogleCloud_PartnerPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkGoogleCloud_PartnerPage(data);
+			ArrayList<String> status = cardProcess.checkGoogleCloud_PartnerPage(data);
 			updateExcelData(status, 7);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -432,7 +432,7 @@ public class CardValidation implements Callable<String>
 	public void GoogleCloud_PartnerPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkGoogleCloud_PartnerPage_Programs();
+			ArrayList<String> status = cardProcess.checkGoogleCloud_PartnerPage_Programs();
 			updateExcelData(status, 8);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -442,7 +442,7 @@ public class CardValidation implements Callable<String>
 	public void GoogleCloud_PartnerPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkGoogleCloud_PartnerPage_Courses();
+			ArrayList<String> status = cardProcess.checkGoogleCloud_PartnerPage_Courses();
 			updateExcelData(status, 9);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -451,7 +451,7 @@ public class CardValidation implements Callable<String>
 
 	public void AI_CategoryPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.AI_CategoryPage(data);
+			ArrayList<String> status = cardProcess.AI_CategoryPage(data);
 			updateExcelData(status, 16);
 
 		} catch (Exception e) {
@@ -462,7 +462,7 @@ public class CardValidation implements Callable<String>
 	public void AI_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkAI_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkAI_CategoryPage_Programs();
 			updateExcelData(status, 17);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -472,7 +472,7 @@ public class CardValidation implements Callable<String>
 	public void AI_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkAI_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkAI_CategoryPage_Courses();
 			updateExcelData(status, 18);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -482,7 +482,7 @@ public class CardValidation implements Callable<String>
 	public void Azure_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkAzure_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkAzure_CategoryPage(data);
 			updateExcelData(status, 19);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -492,7 +492,7 @@ public class CardValidation implements Callable<String>
 	public void Azure_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkAzure_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkAzure_CategoryPage_Programs();
 			updateExcelData(status, 20);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -502,7 +502,7 @@ public class CardValidation implements Callable<String>
 	public void Azure_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkAzure_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkAzure_CategoryPage_Courses();
 			updateExcelData(status, 21);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -512,7 +512,7 @@ public class CardValidation implements Callable<String>
 	public void BigData_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBigData_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkBigData_CategoryPage(data);
 			updateExcelData(status, 22);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -522,7 +522,7 @@ public class CardValidation implements Callable<String>
 	public void BigData_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBigData_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkBigData_CategoryPage_Programs();
 			updateExcelData(status, 23);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -532,7 +532,7 @@ public class CardValidation implements Callable<String>
 	public void BigData_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBigData_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkBigData_CategoryPage_Courses();
 			updateExcelData(status, 24);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -542,7 +542,7 @@ public class CardValidation implements Callable<String>
 	public void Blockchain_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBlockchain_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkBlockchain_CategoryPage(data);
 			updateExcelData(status, 25);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -552,7 +552,7 @@ public class CardValidation implements Callable<String>
 	public void Blockchain_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBlockchain_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkBlockchain_CategoryPage_Programs();
 			updateExcelData(status, 26);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -562,7 +562,7 @@ public class CardValidation implements Callable<String>
 	public void Blockchain_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkBlockchain_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkBlockchain_CategoryPage_Courses();
 			updateExcelData(status, 27);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -571,7 +571,7 @@ public class CardValidation implements Callable<String>
 
 	public void BusinessApplication_CategoryPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.checkBusinessApplication_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkBusinessApplication_CategoryPage(data);
 			updateExcelData(status, 28);
 
 		} catch (Exception e) {
@@ -581,7 +581,7 @@ public class CardValidation implements Callable<String>
 
 	public void BusinessApplication_CategoryPage_Programs() {
 		try {
-			ArrayList<String> status = tagsLocator.checkBusinessApplication_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkBusinessApplication_CategoryPage_Programs();
 			updateExcelData(status, 29);
 
 		} catch (Exception e) {
@@ -591,7 +591,7 @@ public class CardValidation implements Callable<String>
 
 	public void BusinessApplication_CategoryPage_Courses() {
 		try {
-			ArrayList<String> status = tagsLocator.checkBusinessApplication_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkBusinessApplication_CategoryPage_Courses();
 			updateExcelData(status, 30);
 
 		} catch (Exception e) {
@@ -602,7 +602,7 @@ public class CardValidation implements Callable<String>
 	public void CloudComputing_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCloudComputing_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkCloudComputing_CategoryPage(data);
 			updateExcelData(status, 31);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -612,7 +612,7 @@ public class CardValidation implements Callable<String>
 	public void CloudComputing_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCloudComputing_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkCloudComputing_CategoryPage_Programs();
 			updateExcelData(status, 32);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -622,7 +622,7 @@ public class CardValidation implements Callable<String>
 	public void CloudComputing_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCloudComputing_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkCloudComputing_CategoryPage_Courses();
 			updateExcelData(status, 33);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -632,7 +632,7 @@ public class CardValidation implements Callable<String>
 	public void CompliancePOSH_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCompliancePOSH_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkCompliancePOSH_CategoryPage(data);
 			updateExcelData(status, 34);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -643,7 +643,7 @@ public class CardValidation implements Callable<String>
 	 * public void CompliancePOSH_CategoryPage_Programs() { try {
 	 * 
 	 * ArrayList<String> status =
-	 * tagsLocator.checkCompliancePOSH_CategoryPage_Programs();
+	 * cardProcess.checkCompliancePOSH_CategoryPage_Programs();
 	 * updateExcelData(status, 35);
 	 * 
 	 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
@@ -656,7 +656,7 @@ public class CardValidation implements Callable<String>
 	 * public void CompliancePOSH_CategoryPage_Courses() { try {
 	 * 
 	 * ArrayList<String> status =
-	 * tagsLocator.checkCompliancePOSH_CategoryPage_Courses();
+	 * cardProcess.checkCompliancePOSH_CategoryPage_Courses();
 	 * updateExcelData(status, 36);
 	 * 
 	 * if(status.size()>0) { for (int i = 0; i < status.size(); i++) { sheetStatus =
@@ -670,7 +670,7 @@ public class CardValidation implements Callable<String>
 	public void Cybersecurity_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCybersecurity_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkCybersecurity_CategoryPage(data);
 			updateExcelData(status, 37);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -680,7 +680,7 @@ public class CardValidation implements Callable<String>
 	public void Cybersecurity_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCybersecurity_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkCybersecurity_CategoryPage_Programs();
 			updateExcelData(status, 38);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -690,7 +690,7 @@ public class CardValidation implements Callable<String>
 	public void Cybersecurity_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkCybersecurity_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkCybersecurity_CategoryPage_Courses();
 			updateExcelData(status, 39);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -700,7 +700,7 @@ public class CardValidation implements Callable<String>
 	public void DataAnalytics_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataAnalytics_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkDataAnalytics_CategoryPage(data);
 			updateExcelData(status, 40);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -710,7 +710,7 @@ public class CardValidation implements Callable<String>
 	public void DataAnalytics_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataAnalytics_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkDataAnalytics_CategoryPage_Programs();
 			updateExcelData(status, 41);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -720,7 +720,7 @@ public class CardValidation implements Callable<String>
 	public void DataAnalytics_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataAnalytics_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkDataAnalytics_CategoryPage_Courses();
 			updateExcelData(status, 42);
 		 } catch (Exception e) {
 			e.printStackTrace();
@@ -730,7 +730,7 @@ public class CardValidation implements Callable<String>
 	public void DataScience_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataScience_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkDataScience_CategoryPage(data);
 			updateExcelData(status, 43);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -740,7 +740,7 @@ public class CardValidation implements Callable<String>
 	public void DataScience_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataScience_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkDataScience_CategoryPage_Programs();
 			updateExcelData(status, 44);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -750,7 +750,7 @@ public class CardValidation implements Callable<String>
 	public void DataScience_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDataScience_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkDataScience_CategoryPage_Courses();
 			updateExcelData(status, 45);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -760,7 +760,7 @@ public class CardValidation implements Callable<String>
 	public void DevOps_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDevOps_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkDevOps_CategoryPage(data);
 			updateExcelData(status, 46);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -770,7 +770,7 @@ public class CardValidation implements Callable<String>
 	public void DevOps_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDevOps_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkDevOps_CategoryPage_Programs();
 			updateExcelData(status, 47);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -780,7 +780,7 @@ public class CardValidation implements Callable<String>
 	public void DevOps_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkDevOps_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkDevOps_CategoryPage_Courses();
 			updateExcelData(status, 48);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -790,7 +790,7 @@ public class CardValidation implements Callable<String>
 	public void HumanSkills_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkHumanSkills_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkHumanSkills_CategoryPage(data);
 			updateExcelData(status, 49);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -800,7 +800,7 @@ public class CardValidation implements Callable<String>
 	public void HumanSkills_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkHumanSkills_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkHumanSkills_CategoryPage_Programs();
 			updateExcelData(status, 50);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -810,7 +810,7 @@ public class CardValidation implements Callable<String>
 	public void HumanSkills_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkHumanSkills_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkHumanSkills_CategoryPage_Courses();
 			updateExcelData(status, 51);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -820,7 +820,7 @@ public class CardValidation implements Callable<String>
 	public void IOT_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkIOT_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkIOT_CategoryPage(data);
 			updateExcelData(status, 52);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -830,7 +830,7 @@ public class CardValidation implements Callable<String>
 	public void IOT_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkIOT_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkIOT_CategoryPage_Programs();
 			updateExcelData(status, 53);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -840,7 +840,7 @@ public class CardValidation implements Callable<String>
 	public void IOT_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkIOT_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkIOT_CategoryPage_Courses();
 			updateExcelData(status, 54);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -849,7 +849,7 @@ public class CardValidation implements Callable<String>
 
 	public void ModernWorkplace_CategoryPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.checkModernWorkplace_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkModernWorkplace_CategoryPage(data);
 			updateExcelData(status, 55);
 
 		} catch (Exception e) {
@@ -859,7 +859,7 @@ public class CardValidation implements Callable<String>
 
 	public void ModernWorkplace_CategoryPage_Programs() {
 		try {
-			ArrayList<String> status = tagsLocator.checkModernWorkplace_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkModernWorkplace_CategoryPage_Programs();
 			updateExcelData(status, 56);
 
 		} catch (Exception e) {
@@ -869,7 +869,7 @@ public class CardValidation implements Callable<String>
 
 	public void ModernWorkplace_CategoryPage_Courses() {
 		try {
-			ArrayList<String> status = tagsLocator.checkModernWorkplace_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkModernWorkplace_CategoryPage_Courses();
 			updateExcelData(status, 57);
 
 		} catch (Exception e) {
@@ -880,7 +880,7 @@ public class CardValidation implements Callable<String>
 	public void PowerBI_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPowerBI_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkPowerBI_CategoryPage(data);
 			updateExcelData(status, 58);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -890,7 +890,7 @@ public class CardValidation implements Callable<String>
 	public void PowerBI_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPowerBI_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkPowerBI_CategoryPage_Programs();
 			updateExcelData(status, 59);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -900,7 +900,7 @@ public class CardValidation implements Callable<String>
 	public void PowerBI_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkPowerBI_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkPowerBI_CategoryPage_Courses();
 			updateExcelData(status, 60);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -909,7 +909,7 @@ public class CardValidation implements Callable<String>
 
 	public void PowerPlatform_CategoryPage(String data) {
 		try {
-			ArrayList<String> status = tagsLocator.checkPowerPlatform_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkPowerPlatform_CategoryPage(data);
 			updateExcelData(status, 61);
 
 		} catch (Exception e) {
@@ -919,7 +919,7 @@ public class CardValidation implements Callable<String>
 
 	public void PowerPlatform_CategoryPage_Programs() {
 		try {
-			ArrayList<String> status = tagsLocator.checkPowerPlatform_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkPowerPlatform_CategoryPage_Programs();
 			updateExcelData(status, 62);
 
 		} catch (Exception e) {
@@ -929,7 +929,7 @@ public class CardValidation implements Callable<String>
 
 	public void PowerPlatform_CategoryPage_Courses() {
 		try {
-			ArrayList<String> status = tagsLocator.checkPowerPlatform_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkPowerPlatform_CategoryPage_Courses();
 			updateExcelData(status, 63);
 
 		} catch (Exception e) {
@@ -940,7 +940,7 @@ public class CardValidation implements Callable<String>
 	public void Productivity_CategoryPage(String data) {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkProductivity_CategoryPage(data);
+			ArrayList<String> status = cardProcess.checkProductivity_CategoryPage(data);
 			updateExcelData(status, 64);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -950,7 +950,7 @@ public class CardValidation implements Callable<String>
 	public void Productivity_CategoryPage_Programs() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkProductivity_CategoryPage_Programs();
+			ArrayList<String> status = cardProcess.checkProductivity_CategoryPage_Programs();
 			updateExcelData(status, 65);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -960,7 +960,7 @@ public class CardValidation implements Callable<String>
 	public void Productivity_CategoryPage_Courses() {
 		try {
 
-			ArrayList<String> status = tagsLocator.checkProductivity_CategoryPage_Courses();
+			ArrayList<String> status = cardProcess.checkProductivity_CategoryPage_Courses();
 			updateExcelData(status, 66);
 		} catch (Exception e) {
 			e.printStackTrace();
