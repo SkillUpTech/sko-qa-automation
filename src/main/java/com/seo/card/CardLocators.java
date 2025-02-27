@@ -21,6 +21,8 @@ public class CardLocators
         aiLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         aiLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         aiLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        aiLocators.put("programCardEnrollIsClose", "");
+        aiLocators.put("programCardEnrollStartedStatus", "");
         aiLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
       
         
@@ -47,6 +49,9 @@ public class CardLocators
         aiLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         aiLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         aiLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        aiLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        aiLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
+
         pageLocators.put("Artificial", aiLocators);
         
         Map<String, String> azureLocators = new HashMap<>();
@@ -74,6 +79,9 @@ public class CardLocators
         azureLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         azureLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         azureLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        azureLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        azureLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
+
         pageLocators.put("Azure", azureLocators);
         
         Map<String, String> bigDataLocators = new HashMap<>();
@@ -86,6 +94,8 @@ public class CardLocators
         bigDataLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         bigDataLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         bigDataLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        bigDataLocators.put("programCardEnrollIsClose", "");
+        bigDataLocators.put("programCardEnrollStartedStatus", "");
         bigDataLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         
@@ -113,6 +123,8 @@ public class CardLocators
         bigDataLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         bigDataLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         bigDataLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        bigDataLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        bigDataLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("BigData", bigDataLocators);
         
@@ -140,6 +152,8 @@ public class CardLocators
         businessApplicationLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         businessApplicationLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         businessApplicationLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        businessApplicationLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        businessApplicationLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("BusinessApplication", businessApplicationLocators);
         
@@ -165,6 +179,8 @@ public class CardLocators
         blockchainLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         blockchainLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         blockchainLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        blockchainLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        blockchainLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("Blockchain", blockchainLocators);
         
@@ -180,6 +196,8 @@ public class CardLocators
         cloudComputingLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         cloudComputingLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         cloudComputingLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        cloudComputingLocators.put("programCardEnrollIsClose", "");
+        cloudComputingLocators.put("programCardEnrollStartedStatus", "");
         cloudComputingLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         cloudComputingLocators.put("coursePageImage", "//div[contains(@class,'CourseMain_mainSection')]/div[2]/div[@id='videoOrImage']//following-sibling::img|//div[contains(@class,'container-fluid CourseMain_containerInner')]/div/div[2]//following-sibling::img[@alt]");
@@ -192,6 +210,8 @@ public class CardLocators
         cloudComputingLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         cloudComputingLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         cloudComputingLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        cloudComputingLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        cloudComputingLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("CloudComputing", cloudComputingLocators);
         
@@ -206,7 +226,8 @@ public class CardLocators
         cybersecurityLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         cybersecurityLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
         cybersecurityLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
-
+        cybersecurityLocators.put("programCardEnrollIsClose", "");
+        cybersecurityLocators.put("programCardEnrollStartedStatus", "");
         
         
         cybersecurityLocators.put("courses", "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]//div[contains(@class,'LearningCatalog_cardRow')]//a");
@@ -230,6 +251,8 @@ public class CardLocators
         cybersecurityLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         cybersecurityLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         cybersecurityLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        cybersecurityLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        cybersecurityLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("CyberSecurity", cybersecurityLocators);
         
@@ -243,6 +266,8 @@ public class CardLocators
         dataAnalyticsLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         dataAnalyticsLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         dataAnalyticsLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        dataAnalyticsLocators.put("programCardEnrollIsClose", "");
+        dataAnalyticsLocators.put("programCardEnrollStartedStatus", "");
         dataAnalyticsLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         
@@ -267,6 +292,8 @@ public class CardLocators
         dataAnalyticsLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         dataAnalyticsLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         dataAnalyticsLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        dataAnalyticsLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        dataAnalyticsLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         
         pageLocators.put("DataAnalytics", dataAnalyticsLocators);
@@ -281,6 +308,8 @@ public class CardLocators
         dataScienceLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         dataScienceLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         dataScienceLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        dataScienceLocators.put("programCardEnrollIsClose", "");
+        dataScienceLocators.put("programCardEnrollStartedStatus", "");
         dataScienceLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         
@@ -307,13 +336,59 @@ public class CardLocators
         dataScienceLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         dataScienceLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         dataScienceLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        dataScienceLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        dataScienceLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         
         pageLocators.put("DataScience", dataScienceLocators);
         
+        Map<String, String> devOpsLocators = new HashMap<>();
+        devOpsLocators.put("programs", "//div[contains(@class,'container-fluid Courses_containerInner')]/div/div[3]//a");
+        
+        devOpsLocators.put("programCardImage", ".//img[@alt='course-image']");
+        devOpsLocators.put("programCardIcon", ".//div[contains(@class,'FlatCourseCard_topRightSide')]//img[@alt='Course-Image']");
+        devOpsLocators.put("programCardLabel", ".//h3[contains(@class,'FlatCourseCard_courseType')]");
+        devOpsLocators.put("programCardName", ".//div[contains(@class,'FlatCourseCard_courseDescription')]/h2");
+        devOpsLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
+        devOpsLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
+        devOpsLocators.put("programCardEnrollStatus", ".//*[contains(text(),'Enrollment Status')]//following-sibling::h4");
+        devOpsLocators.put("programCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]");
+        devOpsLocators.put("programCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p");
+        devOpsLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
+
+        
+        devOpsLocators.put("coursesShowmore", "//div[@id='learningCatalogCourses']//button[contains(text(),'Show more')]");
+        devOpsLocators.put("coursesShowless", "//div[@id='learningCatalogCourses']//button[contains(text(),'Show less')]");
+        devOpsLocators.put("courses", "//div[contains(@class,'container-fluid Courses_containerInner')]/div[5]//div[contains(@class,'LearningCatalog_cardRow')]//a");
+        
+        devOpsLocators.put("CourseCardImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
+        devOpsLocators.put("CourseCardIcon", ".//div[contains(@class,'RegularCourseCard_courseType')]//following-sibling::img");
+        devOpsLocators.put("CourseCardLabel", ".//div[contains(@class,'RegularCourseCard_courseType')]//following-sibling::p");
+        devOpsLocators.put("CourseCardName", ".//div[contains(@class,'RegularCourseCard_courseHeading')]/p");
+        devOpsLocators.put("CourseCardLevel", ".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li");
+        devOpsLocators.put("CourseCardPartner", ".//h6[contains(@class,'FlatCourseCard_companyTitle')]");
+        devOpsLocators.put("CourseCardEnrollStatus", ".//h6[contains(text(),'Enrollment Status')]/following-sibling::h4");
+        devOpsLocators.put("CourseCardPrice", ".//div[contains(@class,'RegularCourseCard_priceRight')]/h2[not(contains(@class,'exclude'))]/following-sibling::p[not(@span)]");
+
+        devOpsLocators.put("CoursePageImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
+        devOpsLocators.put("coursePageIcon", "//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='course-icon']");
+        devOpsLocators.put("coursePageLabel", "//section[contains(@class,'CourseDescription_mainSection')]//h4[contains(@class,'CourseDescription_courseLabel')]");
+        devOpsLocators.put("coursePagePartner", "//section[contains(@class,'CourseDescription_mainSection')]/div/div[2]//img[@alt='org-logo']");
+        devOpsLocators.put("coursePageName", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_courseText')]/h1");
+        devOpsLocators.put("coursePageLevels", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_levelSection')]");
+        devOpsLocators.put("coursePageLevel1", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_levelSection')]/h2");
+        devOpsLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
+        devOpsLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
+        devOpsLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        devOpsLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        devOpsLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
+
+        
+        pageLocators.put("DevOps", devOpsLocators);
+        
         Map<String, String> humanskillsLocators = new HashMap<>();
-        humanskillsLocators.put("coursesShowmore", "//section[@id='scrollToTop']//button[contains(text(),'Show more')]");
-        humanskillsLocators.put("coursesShowless", "//section[@id='scrollToTop']//button[contains(text(),'Show less')]");
+        humanskillsLocators.put("coursesShowmore", "//button[contains(text(),'Show more')]");
+        humanskillsLocators.put("coursesShowless", "//button[contains(text(),'Show less')]");
         humanskillsLocators.put("courses", "//div[contains(@class,'container-fluid Courses_containerInner')]/div[1]//div[contains(@class,'LearningCatalog_cardRow')]//a");
         
         humanskillsLocators.put("CourseCardImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
@@ -322,7 +397,8 @@ public class CardLocators
         humanskillsLocators.put("CourseCardName", ".//div[contains(@class,'RegularCourseCard_courseHeading')]/p");
         humanskillsLocators.put("CourseCardLevel", ".//div[contains(@class,'RegularCourseCard_courseHeading')]/ul/li");
         humanskillsLocators.put("CourseCardPartner", ".//h6[contains(@class,'FlatCourseCard_companyTitle')]");
-        humanskillsLocators.put("CourseCardEnrollStatus", ".//h6[contains(text(),'Enrollment Status')]/following-sibling::h4");
+        humanskillsLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        humanskillsLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
         humanskillsLocators.put("CourseCardPrice", ".//div[contains(@class,'RegularCourseCard_priceRight')]/h2[not(contains(@class,'exclude'))]/following-sibling::p[not(@span)]");
 
         humanskillsLocators.put("CoursePageImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
@@ -335,6 +411,8 @@ public class CardLocators
         humanskillsLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         humanskillsLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         humanskillsLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        humanskillsLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        humanskillsLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("HumanSkills", humanskillsLocators);
         
@@ -348,6 +426,8 @@ public class CardLocators
         IOTLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         IOTLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         IOTLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        IOTLocators.put("programCardEnrollIsClose", "");
+        IOTLocators.put("programCardEnrollStartedStatus", "");
         IOTLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         IOTLocators.put("CoursePageImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
@@ -360,6 +440,8 @@ public class CardLocators
         IOTLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         IOTLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         IOTLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        IOTLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        IOTLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("IoT", IOTLocators);
         
@@ -385,6 +467,8 @@ public class CardLocators
         modernWorkplaceLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         modernWorkplaceLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         modernWorkplaceLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        modernWorkplaceLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        modernWorkplaceLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("ModernWorkplace", modernWorkplaceLocators);
         
@@ -412,6 +496,8 @@ public class CardLocators
         powerBILocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         powerBILocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         powerBILocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        powerBILocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        powerBILocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("PowerBI", powerBILocators);
         
@@ -437,6 +523,8 @@ public class CardLocators
         powerPlatformLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         powerPlatformLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         powerPlatformLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        powerPlatformLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        powerPlatformLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("PowerPlatform", powerPlatformLocators);
         
@@ -464,6 +552,8 @@ public class CardLocators
         futureSkillsLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         futureSkillsLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         futureSkillsLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        futureSkillsLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        futureSkillsLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("FutureSkills", futureSkillsLocators);
         
@@ -477,6 +567,8 @@ public class CardLocators
         ibmLocators.put("programCardLevel", ".//div[contains(@class,'FlatCourseCard_propertiesList')]/ul/li");
         ibmLocators.put("programCardPartner", ".//div[contains(@class,'RegularCourseCard_courseCompany')]");
         ibmLocators.put("programCardEnrollStatus", ".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2[contains(text(),'Enrollment Status')]/following-sibling::p");
+        ibmLocators.put("programCardEnrollIsClose", "");
+        ibmLocators.put("programCardEnrollStartedStatus", "");
         ibmLocators.put("programCardPrice", ".//div[contains(@class,'FlatCourseCard_priceSection')]/h3[not(@span)]");
 
         
@@ -503,6 +595,8 @@ public class CardLocators
         ibmLocators.put("coursePageLevel1Value", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[1]//descendant::h2");
         ibmLocators.put("coursePagePrice", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_durationAndPriceSection')]/div[2]//child::h2/following-sibling::P[not(@span)]");
         ibmLocators.put("coursePageEnrollStatus", "//section[contains(@class,'CourseDescription_mainSection')]//div[contains(@class,'CourseDescription_buttonsContent')]//button[contains(text(),'Enroll Now')]/ancestor::a");
+        ibmLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        ibmLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
 
         pageLocators.put("IBM", ibmLocators);
         
@@ -513,16 +607,18 @@ public class CardLocators
         
         microsoftLocators.put( "cardLocator", "//div[contains(@class,'LearningCatalog_cardRow')]//div[contains(@class,'LearningCatalog_customCard')]");
       
-        microsoftLocators.put("cardPartner ",".//div[contains(@class,'RegularCourseCard_courseCompany')]");
-        microsoftLocators.put(" cardURL  ",".//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a");
-        microsoftLocators.put(" cardCourseLabel ", ".//div[contains(@class,'RegularCourseCard_courseType')]//p[contains(text(),'Course')]");
-        microsoftLocators.put(" cardHeading ",".//div[contains(@class,'RegularCourseCard_courseHeading')]/p");
-        microsoftLocators.put(" cardLevel1  ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[1]");
-        microsoftLocators.put(" cardLevel2 ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[2]");
-        microsoftLocators.put(" cardLevel3 ",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[3]");
-        microsoftLocators.put(" enrollPriceSection ", ".//div[contains(@class,'RegularCourseCard_priceSection')]");
-        microsoftLocators.put(" cardprice  ",".//div[contains(@class,'RegularCourseCard_priceRight')]/h2[contains(text(),'From')]/following-sibling::p");
-        microsoftLocators.put(" EnrollStatus = ",".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2");
+        microsoftLocators.put("CourseCardPartner",".//div[contains(@class,'RegularCourseCard_courseCompany')]");
+        microsoftLocators.put("CourseCardcardURL ",".//div[contains(@class,'RegularCourseCard_RegularcardLinks')]/a");
+        microsoftLocators.put("CourseCardcardCourseLabel", ".//div[contains(@class,'RegularCourseCard_courseType')]//p[contains(text(),'Course')]");
+        microsoftLocators.put("CourseCardcardHeading",".//div[contains(@class,'RegularCourseCard_courseHeading')]/p");
+        microsoftLocators.put("CourseCardcardLevel1",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[1]");
+        microsoftLocators.put("CourseCardcardLevel2",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[2]");
+        microsoftLocators.put("CourseCardcardLevel3",".//div[contains(@class,'RegularCourseCard_courseHeading')]//ul/li[3]");
+        microsoftLocators.put("CourseCardenrollPriceSection", ".//div[contains(@class,'RegularCourseCard_priceSection')]");
+        microsoftLocators.put("CourseCardcardprice",".//div[contains(@class,'RegularCourseCard_priceRight')]/h2[contains(text(),'From')]/following-sibling::p");
+        microsoftLocators.put("CourseCardEnrollIsClose", ".//*[contains(text(),'Coming soon')]"); //closed
+        microsoftLocators.put("CourseCardEnrollStartedStatus", ".//*[contains(text(),'Course started on')]/following-sibling::p"); 
+        microsoftLocators.put("CourseCardEnrollStatus = ",".//div[contains(@class,'RegularCourseCard_priceLeft')]/h2");
         
         microsoftLocators.put("CoursePageImage", ".//div[contains(@class,'RegularCourseCard_customCard')]/span//following-sibling::img");
         microsoftLocators.put("coursePageIcon", "//section[contains(@class,'CourseDescription_mainSection')]//img[@alt='course-icon']");

@@ -3,6 +3,8 @@ package com.seo.card;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +20,9 @@ import com.seo.card.CardLocators;
 public class CardProcess
 {
 	WebDriver driver;
-	
+	String cardName = "";
+	String pageName = "";
+	String statusOfCard = "";
 	public CardProcess(WebDriver driver)
 	{
 		this.driver = driver;
@@ -57,10 +61,9 @@ public class CardProcess
 	}
 	
 	
-	public ArrayList<String> checkImage(String data)
+	public ArrayList<String> checkImage(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
-		
 		try
 		{
 			
@@ -72,7 +75,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkIcon(String data)
+	public ArrayList<String> checkIcon(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -87,7 +90,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkLabel(String data)
+	public ArrayList<String> checkLabel(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -102,7 +105,7 @@ public class CardProcess
 		return status;
 	}
 
-	public ArrayList<String> checkTitle(String data)
+	public ArrayList<String> checkTitle(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -117,7 +120,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkPartner(String data) 
+	public ArrayList<String> checkPartner(String data, String statusOfCard) 
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -132,7 +135,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkLevels(String data)
+	public ArrayList<String> checkLevels(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -147,7 +150,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkLevel1Value(String data)
+	public ArrayList<String> checkLevel1Value(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -162,7 +165,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkPrice(String data)
+	public ArrayList<String> checkPrice(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -177,7 +180,7 @@ public class CardProcess
 		return status;
 	}
 	
-	public ArrayList<String> checkEnrollStatus(String data)
+	public ArrayList<String> checkEnrollStatus(String data, String statusOfCard)
 	{
 		ArrayList<String> status = new ArrayList<String>();
 		
@@ -198,6 +201,44 @@ public class CardProcess
 	String programOrCourcePage = "";
 	String urlToLanuch = "";
 	String verifyStatus = "";
+	
+	String showMoreLocatorForProgram = "";
+    String showLessLocatorForProgram =  "";
+    String programLocator =  "";
+    
+    String programCardImageLocator =  "";
+    String programCardIconLocator =  "";
+    String programCardLabelLocator =  "";
+    String programCardNameLocator =  "";
+    String programCardLevelLocator =  "";
+    String programCardPartnerLocator =  "";
+    String programCardEnrollStatusLocator =  "";
+    String programCardEnrollIsCloseLocator =  "";
+    String programCardEnrollStartedStatusLocator =  ""; 
+    String programCardPriceLocator =  "";
+    
+    String courseCardImageLocator =  "";
+    String courseCardIconLocator =  "";
+    String courseCardLabelLocator =  "";
+    String courseCardNameLocator =  "";
+    String courseCardLevelLocator =  "";
+    String courseCardPartnerLocator =  "";
+    String courseCardEnrollStatusLocator =  "";
+    String courseCardEnrollIsCloseLocator =  "";
+    String courseCardEnrollStartedStatusLocator =  ""; 
+    String courseCardPriceLocator =  "";
+    
+    String coursePageImageLocator =  "";
+    String coursePageIconLocator =  "";
+    String coursePageLabelLocator =  "";
+    String coursePagePartnerLocator =  "";
+    String coursePageLevelsLocator =  "";
+    String coursePageLevel1Locator =  "";
+    String coursePageLevel1ValueLocator =  "";
+    String coursePagePriceLocator =  "";
+    String coursePageEnrollStatusLocator =  "";
+    
+    
 	public ArrayList<String> openPage(String url)
 	{
 		ArrayList<String> status = new ArrayList<String>();
@@ -286,6 +327,7 @@ public class CardProcess
 	public ArrayList<String> checkPrograms()
 	{
 		ArrayList<String> status = new ArrayList<String>();
+		ArrayList<String> enrollStatus = new ArrayList<String>();
 		try
 		{
 			
@@ -332,7 +374,7 @@ public class CardProcess
 				} else if (currentURL.contains("data-science")) {
 					currentPageType = "DataScience";
 				} else if (currentURL.contains("devops")) {
-					currentPageType = "Devops";
+					currentPageType = "DevOps";
 				} 
 				else if (currentURL.contains("human-skills")) {
 					currentPageType = "HumanSkills";
@@ -350,27 +392,32 @@ public class CardProcess
 					currentPageType = "Unknown";
 				}
 		        
-		        String showMoreLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowmore");
-		        String showLessLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowless");
-		        String programLocator = CardLocators.getLocator(currentPageType, "programs");
+		         showMoreLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowmore");
+		         showLessLocatorForProgram = CardLocators.getLocator(currentPageType, "programShowless");
+		         programLocator = CardLocators.getLocator(currentPageType, "programs");
 		        
-		        String programCardImageLocator = CardLocators.getLocator(currentPageType, "programCardImage");
-		        String programCardIconLocator = CardLocators.getLocator(currentPageType, "programCardIcon");
-		        String programCardLabelLocator = CardLocators.getLocator(currentPageType, "programCardLabel");
-		        String programCardNameLocator = CardLocators.getLocator(currentPageType, "programCardName");
-		        String programCardLevelLocator = CardLocators.getLocator(currentPageType, "programCardLevel");
-		        String programCardPartnerLocator = CardLocators.getLocator(currentPageType, "programCardPartner");
-		        String programCardEnrollStatusLocator = CardLocators.getLocator(currentPageType, "programCardEnrollStatus");
-		        String programCardPriceLocator = CardLocators.getLocator(currentPageType, "programCardPrice");
+		         programCardImageLocator = CardLocators.getLocator(currentPageType, "programCardImage");
+		         programCardIconLocator = CardLocators.getLocator(currentPageType, "programCardIcon");
+		         programCardLabelLocator = CardLocators.getLocator(currentPageType, "programCardLabel");
+		         programCardNameLocator = CardLocators.getLocator(currentPageType, "programCardName");
+		         programCardLevelLocator = CardLocators.getLocator(currentPageType, "programCardLevel");
+		         programCardPartnerLocator = CardLocators.getLocator(currentPageType, "programCardPartner");
+		         programCardEnrollStatusLocator = CardLocators.getLocator(currentPageType, "programCardEnrollStatus");
+		         programCardEnrollIsCloseLocator = CardLocators.getLocator(currentPageType, "programCardEnrollIsClose");
+		         programCardEnrollStartedStatusLocator = CardLocators.getLocator(currentPageType, "courseCardEnrollStartedStatus"); 
+		         programCardPriceLocator = CardLocators.getLocator(currentPageType, "programCardPrice");
 		        
-		        String coursePageIconLocator = CardLocators.getLocator(currentPageType, "coursePageIcon");
-		        String coursePageLabelLocator = CardLocators.getLocator(currentPageType, "coursePageLabel");
-		        String coursePagePartnerLocator = CardLocators.getLocator(currentPageType, "coursePagePartner");
-		        String coursePageLevelsLocator = CardLocators.getLocator(currentPageType, "coursePageLevels");
-		        String coursePageLevel1Locator = CardLocators.getLocator(currentPageType, "coursePageLevel1");
-		        String coursePageLevel1ValueLocator = CardLocators.getLocator(currentPageType, "coursePageLevel1Value");
-		        String coursePagePriceLocator = CardLocators.getLocator(currentPageType, "coursePagePrice");
-		        String coursePageEnrollStatusLocator = CardLocators.getLocator(currentPageType, "coursePageEnrollStatus");
+		        
+		        
+		         coursePageImageLocator = CardLocators.getLocator(currentPageType, "coursePageImage");
+		         coursePageIconLocator = CardLocators.getLocator(currentPageType, "coursePageIcon");
+		         coursePageLabelLocator = CardLocators.getLocator(currentPageType, "coursePageLabel");
+		         coursePagePartnerLocator = CardLocators.getLocator(currentPageType, "coursePagePartner");
+		         coursePageLevelsLocator = CardLocators.getLocator(currentPageType, "coursePageLevels");
+		         coursePageLevel1Locator = CardLocators.getLocator(currentPageType, "coursePageLevel1");
+		         coursePageLevel1ValueLocator = CardLocators.getLocator(currentPageType, "coursePageLevel1Value");
+		         coursePagePriceLocator = CardLocators.getLocator(currentPageType, "coursePagePrice");
+		         coursePageEnrollStatusLocator = CardLocators.getLocator(currentPageType, "coursePageEnrollStatus");
 		        
 		        
 		        
@@ -406,14 +453,122 @@ public class CardProcess
 				        // Perform operations on programs
 				        for (WebElement program : programs) 
 				        {
-							String programURL = program.getAttribute("href");
+				        	WebElement getProgramCard = program;
+				        	
+				        	//name verifictaion
+				        	if(getProgramCard.findElements(By.xpath(programCardNameLocator)).size()>0)
+				        	{
+				        		cardName = getProgramCard.findElement(By.xpath(programCardNameLocator)).getText();
+				        	}
+				        	else
+				        	{
+				        		status.add("Name not found for program card : "+driver.getCurrentUrl());
+				        		
+				        	}
+				        	//image verification
+				        	if(getProgramCard.findElements(By.xpath(programCardImageLocator)).size()<0)
+				        	{
+				        		status.add("Image not found for program card : "+cardName);
+				        	}
+				        	//icon verification
+							if (getProgramCard.findElements(By.xpath(programCardIconLocator)).size() < 0)
+							{
+								status.add("Icon not found for program card : " + cardName);
+							}
+				        	//label verification
+							if (getProgramCard.findElements(By.xpath(programCardLabelLocator)).size() < 0)
+							{
+								status.add("Label not found for program card : " + cardName);
+                            }
+                        	//partner verification
+							if (getProgramCard.findElements(By.xpath(programCardPartnerLocator)).size() < 0) 
+							{
+								status.add("Partner not found for program card : " + cardName);
+							}
+							
+							//level verification
+							if (getProgramCard.findElements(By.xpath(programCardLevelLocator)).size() < 0)
+							{
+								status.add("Level not found for program card : " + cardName);
+							}
+							String EnrollData = "";
+							//enroll status verification
+							if(getProgramCard.findElements(By.xpath(programCardEnrollStatusLocator)).size() > 0)
+							{
+								WebElement enroll = getProgramCard.findElement(By.xpath(programCardEnrollStatusLocator));
+								EnrollData = enroll.getText();
+								if(EnrollData.contains("Open"))
+								{
+									enrollStatus.add("Open");
+								}
+								else if (EnrollData.contains("Closed"))
+								{
+									enrollStatus.add("Close");
+								}
+								else if (EnrollData.contains("Coming soon"))
+								{
+									enrollStatus.add("Close");
+								}
+							}
+							else if(getProgramCard.findElements(By.xpath(programCardEnrollIsCloseLocator)).size() > 0)
+							{
+								WebElement enroll = getProgramCard.findElement(By.xpath(programCardEnrollStatusLocator));
+								EnrollData = enroll.getText();
+								if(EnrollData.contains("Open"))
+								{
+									enrollStatus.add("Open");
+								}
+								else if (EnrollData.contains("Closed"))
+								{
+									enrollStatus.add("Close");
+								}
+								else if (EnrollData.contains("Coming soon"))
+								{
+									enrollStatus.add("Close");
+								}
+							}
+							else if(getProgramCard.findElements(By.xpath(programCardEnrollStartedStatusLocator)).size() > 0)
+							{
+								WebElement enroll = getProgramCard.findElement(By.xpath(programCardEnrollStatusLocator));
+								EnrollData = enroll.getText();//Aug 22, 2023
+								DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+						        LocalDate dateToCheck = LocalDate.parse(EnrollData, formatter);
+						        LocalDate currentDate = LocalDate.now();
+						        
+						        if (dateToCheck.isBefore(currentDate))
+						        {
+						            System.out.println(EnrollData + " is in the past.");
+						            enrollStatus.add("Open");
+						        } 
+						        else if (dateToCheck.isAfter(currentDate))
+						        {
+						            System.out.println(EnrollData + " is in the future.");
+						            enrollStatus.add("Close");
+						        } 
+						        else
+						        {
+						            System.out.println(EnrollData + " is today.");
+						            enrollStatus.add("Open");
+						        }
+							}
+							else
+							{
+								status.add("enroll status not found for program card : " + cardName);
+							}
+							
+							String programURL = getProgramCard.getAttribute("href");
 							status.addAll(this.openPage(programURL));
 							if (!status.contains("fail"))
 							{
-								status.add(this.checkImage(programCardImageLocator, course));
-								status.add(this.FAQ(programURL));
-								status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses, programURL));
-								status.addAll(this.checkMetaTags(programURL));
+								status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+								status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 								driver.close();
 								driver.switchTo().window(validationPage);
 								checkValidationPage = true;
@@ -519,21 +674,43 @@ public class CardProcess
 				String showLessLocatorForCourses = CardLocators.getLocator(currentPageType, "coursesShowless");
 				String courseLocator = CardLocators.getLocator(currentPageType, "courses");
 				
+				 courseCardImageLocator = CardLocators.getLocator(currentPageType, "CourseCardImage");
+				 courseCardIconLocator = CardLocators.getLocator(currentPageType, "CourseCardIcon");
+				 courseCardLabelLocator = CardLocators.getLocator(currentPageType, "CourseCardLabel");
+				 courseCardNameLocator = CardLocators.getLocator(currentPageType, "CourseCardName");
+				 courseCardLevelLocator = CardLocators.getLocator(currentPageType, "CourseCardLevel");
+				 courseCardPartnerLocator = CardLocators.getLocator(currentPageType, "CourseCardPartner");
+				 courseCardEnrollStatusLocator = CardLocators.getLocator(currentPageType, "CourseCardEnrollStatus");
+				 courseCardEnrollIsCloseLocator = CardLocators.getLocator(currentPageType, "CourseCardEnrollIsClose");
+				 courseCardEnrollStartedStatusLocator = CardLocators.getLocator(currentPageType, "CourseCardEnrollStartedStatus"); 
+				 courseCardPriceLocator = CardLocators.getLocator(currentPageType, "CourseCardPrice");
 				
+				 coursePageImageLocator = CardLocators.getLocator(currentPageType, "coursePageImage");
+		         coursePageIconLocator = CardLocators.getLocator(currentPageType, "coursePageIcon");
+		         coursePageLabelLocator = CardLocators.getLocator(currentPageType, "coursePageLabel");
+		         coursePagePartnerLocator = CardLocators.getLocator(currentPageType, "coursePagePartner");
+		         coursePageLevelsLocator = CardLocators.getLocator(currentPageType, "coursePageLevels");
+		         coursePageLevel1Locator = CardLocators.getLocator(currentPageType, "coursePageLevel1");
+		         coursePageLevel1ValueLocator = CardLocators.getLocator(currentPageType, "coursePageLevel1Value");
+		         coursePagePriceLocator = CardLocators.getLocator(currentPageType, "coursePagePrice");
+		         coursePageEnrollStatusLocator = CardLocators.getLocator(currentPageType, "coursePageEnrollStatus");
 				
 				
 				//show more button verification for courses
 				if (showMoreLocatorForCourses != null && !showMoreLocatorForCourses.isEmpty())
 				{
-				    while (!driver.findElements(By.xpath(showMoreLocatorForCourses)).isEmpty()) {
+				    while (!driver.findElements(By.xpath(showMoreLocatorForCourses)).isEmpty()) 
+				    {
 				        List<WebElement> showMore = driver.findElements(By.xpath(showMoreLocatorForCourses));
 
-				        for (WebElement show : showMore) {
+				        for (WebElement show : showMore)
+				        {
 				            js.executeScript("arguments[0].scrollIntoView();", show);
 				            js.executeScript("arguments[0].click();", show);
 
 				            // Check if "Show Less" button exists, then break
-				            if (!driver.findElements(By.xpath(showLessLocatorForCourses)).isEmpty()) {
+				            if (!driver.findElements(By.xpath(showLessLocatorForCourses)).isEmpty())
+				            {
 				                break;
 				            }
 				        }
@@ -554,11 +731,15 @@ public class CardProcess
 						status.addAll(this.openPage(courseURL));
 						if (!status.contains("fail"))
 						{
-							status.add(this.checkCanonicalTag(courseURL));
-							status.add(this.FAQ(courseURL));
-							status.add(this.courseSchema(courseURL));
-							status.add(this.checkH1Tag(H1TagForCategoryProgramsAndCourses, courseURL));
-							status.addAll(this.checkMetaTags(courseURL));
+							status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+							status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 							driver.close();
 							driver.switchTo().window(validationPage);
 							checkValidationPage = true;
@@ -685,10 +866,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(MicrosoftH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -745,9 +931,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(googleCloudH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			checkValidationPage = false;
 			checkHomePage = false;
 			/*
@@ -799,9 +991,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(PLUH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			/*
 			 * } if (!checkPageStatus) {
 			 */
@@ -851,9 +1049,15 @@ public class CardProcess
 			if(!status.contains("fail"))
             {
 				checkPageStatus = true;
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(FutureSkillH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
             }
 			if (!checkPageStatus) 
 			{
@@ -902,10 +1106,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-			status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -954,10 +1163,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1006,10 +1220,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1058,10 +1277,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1110,10 +1334,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1162,10 +1391,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1214,10 +1448,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1262,10 +1501,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1317,10 +1561,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1369,10 +1618,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1421,10 +1675,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1474,10 +1733,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1527,10 +1791,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1581,10 +1850,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1633,10 +1907,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1685,10 +1964,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
@@ -1737,10 +2021,15 @@ public class CardProcess
 			if(!status.contains("fail"))
 			{
 				checkPageStatus = true;
-				status.add(this.checkCanonicalTag(data));
-			status.add(this.FAQ(data));
-			status.add(this.checkH1Tag(categoryH1Tag, data));
-			status.addAll(this.checkMetaTags(data));
+				status.addAll(this.checkImage(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkIcon(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLabel(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkTitle(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPartner(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevels(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkLevel1Value(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkPrice(coursePageImageLocator, statusOfCard));
+				status.addAll(this.checkEnrollStatus(coursePageImageLocator, statusOfCard));
 			}
 			if (!checkPageStatus) 
 			{
